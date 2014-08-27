@@ -1,0 +1,15 @@
+*.iml
+.idea
+
+.sass-cache
+
+node_modules/
+bower_components/
+build/
+
+test/vendor/
+src/vendor/
+
+dev/
+
+coverage
