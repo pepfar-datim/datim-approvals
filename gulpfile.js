@@ -18,6 +18,7 @@ var files = [
 
     //Test files
     'src/test/utils/*.js',
+    'src/test/matchers/*.js',
     'src/test/fixtures/*.js',
     'src/test/mocks/*.js',
     'src/test/specs/**/*.js'

@@ -41,13 +41,13 @@ describe('Tree node directive', function () {
     });
 
     it('should display the item name in the last span', function () {
-        var firstLevelFirstItem = element.find(':first-child span').last();
+        var firstLevelFirstItem = element.find(':first-child > span').last();
 
         expect(firstLevelFirstItem.text()).toBe('Malawi');
     });
 
     it('should give the name span a class tree-node-name', function () {
-        var firstLevelFirstItem = element.find(':first-child span').last();
+        var firstLevelFirstItem = element.find(':first-child > span').last();
 
         expect(firstLevelFirstItem.hasClass('tree-node-name')).toBe(true);
     });
@@ -74,7 +74,7 @@ describe('Tree node directive', function () {
         it('should pass the node to the getSubTree method when clicked', function () {
             expandIcon.click();
 
-            expect(controller.expandIconClick).toHaveBeenCalledWith('malawi');
+            expect(controller.expandIconClick).toHaveBeenCalledWith({ name : 'Malawi', id : 'malawi', $$hashKey : '047' });
         });
     });
 
@@ -97,7 +97,39 @@ describe('Tree node directive', function () {
             expect(treeService.getItemsFor).toHaveBeenCalledWith('rwanda');
 
             expect(element.find('ul').find('span').first().text()).toBe('DOD');
-            expect(element.find('ul').find('span').last().text()).toBe('USAID');
+            expect(element.find('ul').find('li > span').last().text()).toBe('USAID');
+        });
+    });
+
+    describe('loading icon', function () {
+        var treeService;
+
+        beforeEach(inject(function (_treeService_) {
+            treeService = _treeService_;
+        }));
+
+        it('should not show the loading icon when collapsed', function () {
+            expect(element.find('div').hasClass('ng-hide')).toBe(true);
+        });
+
+        it('should show the loading icon when expanded but without items', function () {
+            controller.expandIconClick({ name : 'Malawi', id : 'malawi' });
+
+            scope.$apply();
+
+            expect(element.find('li:first-child > div').hasClass('ng-hide')).toBe(false);
+        });
+
+        it('should stop showing the icon when items are added', function () {
+            controller.expandIconClick({ name : 'Malawi', id : 'malawi' });
+            scope.$apply();
+            expect(element.find('li:first-child > div').hasClass('ng-hide')).toBe(false);
+            treeService.items.malawi.items = [
+                { "name": "DOD" },
+                { "name": "USAID" }
+            ];
+            scope.$apply();
+            expect(element.find('li:first-child > div').hasClass('ng-hide')).toBe(true);
         });
     });
 });

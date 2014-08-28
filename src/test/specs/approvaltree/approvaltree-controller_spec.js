@@ -1,11 +1,12 @@
 describe('Approval tree controller', function () {
-    var controller;
+    var controller, treeService;
 
     beforeEach(module('PEPFAR.approvals'));
     beforeEach(inject(function ($controller, $rootScope) {
+        treeService = new treeServiceMock();
         controller = $controller('approvalTreeController', {
             $scope: $rootScope.$new(),
-            treeService: new treeServiceMock()
+            treeService: treeService
         });
     }));
 
@@ -42,13 +43,46 @@ describe('Approval tree controller', function () {
         it('should toggle the expand status of the node', function () {
             expect(controller.isExpanded('myId')).toBe(false);
 
-            controller.expandIconClick('myId');
+            controller.expandIconClick({ id : 'myId' });
 
             expect(controller.isExpanded('myId')).toBe(true);
 
-            controller.expandIconClick('myId');
+            controller.expandIconClick({ id : 'myId' });
 
             expect(controller.isExpanded('myId')).toBe(false);
+        });
+
+        it('should call the loadItemsFor method on the service for elements without children', function () {
+            spyOn(treeService, 'loadItemsFor');
+            controller.expandIconClick({ id : 'myId' });
+
+            expect(treeService.loadItemsFor).toHaveBeenCalledOnce();
+        });
+    });
+
+    describe('hasItems', function () {
+
+        beforeEach(function () {
+            treeService.items = {
+                myId: {
+                    items: [
+                        {}, {}
+                    ]
+                },
+                anotherId: {
+                    items: {
+
+                    }
+                }
+            };
+        });
+
+        it('should return true when the the node has children', function () {
+            expect(controller.hasItems('myId')).toBe(true);
+        });
+
+        it('should return false when the node has no children', function () {
+            expect(controller.hasItems('anotherId')).toBe(false);
         });
     });
 });

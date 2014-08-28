@@ -1,17 +1,18 @@
 describe('Tree service', function () {
-    var service, $httpBackend;
+    var service, treeCacheService, $httpBackend;
 
     beforeEach(module('d2-rest'));
     beforeEach(module('d2'));
     beforeEach(module('PEPFAR.approvals'));
-    beforeEach(inject(function (treeService, _$httpBackend_) {
+    beforeEach(inject(function (treeService, _treeCacheService_, _$httpBackend_) {
         service = treeService;
+        treeCacheService = _treeCacheService_;
         $httpBackend = _$httpBackend_;
 
-        $httpBackend.expectGET('/dhis/api/dataApprovalLevels?fields=id,name,orgUnitLevel,level,categoryOptionGroupSet&paging=false')
+        $httpBackend.expectGET('/dhis/api/dataApprovalLevels?fields=id,name,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name,displayName,categoryOptionGroups%5Bid,name%5D%5D&paging=false')
             .respond(200, fixtures.get('approvalLevels'));
 
-        $httpBackend.whenGET('/dhis/api/organisationUnits?fields=id,name,level&filter=level:eq:1&paging=false')
+        $httpBackend.whenGET('/dhis/api/organisationUnits?fields=id,name,level,parent%5Bid%5D,children%5Bid,name,level%5D&filter=level:eq:1&paging=false')
             .respond(200, fixtures.get('orgUnitLevel1'));
     }));
 
@@ -54,26 +55,39 @@ describe('Tree service', function () {
             expect(service.getLevels()).toEqual(expectedArray);
         });
 
-        it('should call the loadLevel method with the first level object', function () {
+        it('should call the loadOrganisationUnitsLevel method with the first level object', function () {
             var firstevelObject = { name: "global", level: 1 };
 
-            spyOn(service, 'loadLevel');
+            spyOn(service, 'preLoad');
 
             service.parseApprovalLevels([firstevelObject]);
 
-            expect(service.loadLevel).toHaveBeenCalledWith(firstevelObject);
+            expect(service.preLoad).toHaveBeenCalledWith();
         });
 
-        it('should not call the loadLevel method when there are no levels', function () {
-            spyOn(service, 'loadLevel');
+        it('should not call the preLoad method when there are no levels', function () {
+            spyOn(service, 'preLoad');
 
             service.parseApprovalLevels([]);
 
-            expect(service.loadLevel).not.toHaveBeenCalled();
+            expect(service.preLoad).not.toHaveBeenCalled();
+        });
+
+        it('should call build the treeStructure based on the approvalLevels', function () {
+            var expectedTreeStructure = [
+                { "id":"aypLtfWShE5", "type": "organisationUnits", "orgUnitLevel": 1, "level": 1 },
+                { "id":"JNpaWdWCyDN", "type": "organisationUnits", "orgUnitLevel": 2, "level": 2 },
+                { "id":"vqWNeqjozr9", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 3 },
+                { "id":"WccDi5x6FSp", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 4 }
+            ];
+
+            service.parseApprovalLevels(fixtures.get('approvalLevels').dataApprovalLevels);
+
+            expect(service.getTreeStructure()).toEqual(expectedTreeStructure);
         });
     });
 
-    describe('loadLevel', function () {
+    describe('loadOrganisationUnitsLevel', function () {
         var firstLevel;
 
         beforeEach(function () {
@@ -84,10 +98,10 @@ describe('Tree service', function () {
             $httpBackend.flush();
             $httpBackend.resetExpectations();
 
-            $httpBackend.expectGET('/dhis/api/organisationUnits?fields=id,name,level&filter=level:eq:1&paging=false')
+            $httpBackend.expectGET('/dhis/api/organisationUnits?fields=id,name,level,parent%5Bid%5D,children%5Bid,name,level%5D&filter=level:eq:1&paging=false')
                 .respond(200, fixtures.get('orgUnitLevel1'));
 
-            service.loadLevel(firstLevel);
+            service.loadOrganisationUnitsLevel(1);
 
             $httpBackend.flush();
         });
@@ -95,11 +109,11 @@ describe('Tree service', function () {
         it('should call the addItems method with the orgunitItems to add and the level', function () {
             spyOn(service, 'addItems');
 
-            service.loadLevel(firstLevel);
+            service.loadOrganisationUnitsLevel(1);
 
             $httpBackend.flush();
 
-            expect(service.addItems).toHaveBeenCalledWith(fixtures.get('orgUnitLevel1').organisationUnits, firstLevel.level);
+            expect(service.addItems).toHaveBeenCalledWith(fixtures.get('orgUnitLevel1').organisationUnits, 1);
         });
     });
 
@@ -110,12 +124,18 @@ describe('Tree service', function () {
             itemsArray = [
                 { id: 'dfwhghrfww', name: 'item1', level: "1" },
                 { id: 'dffds3wfww', name: 'item2', level: "1" },
-                { id: 'd242dfwfww', name: 'item3', level: "1" }
+                { id: 'd242dfwfww', name: 'item3', level: "1", children: [
+                    { id: 'sdfhrfww', name: 'item4', level: "2" },
+                    { id: 'dc234fww', name: 'item5', level: "2" }
+                ] }
             ];
             expectedItems = {
                 dfwhghrfww: { id: 'dfwhghrfww', name: 'item1', level: "1" },
                 dffds3wfww: { id: 'dffds3wfww', name: 'item2', level: "1" },
-                d242dfwfww: { id: 'd242dfwfww', name: 'item3', level: "1" }
+                d242dfwfww: { id: 'd242dfwfww', name: 'item3', level: "1", items: [
+                    { id: 'sdfhrfww', name: 'item4', level: "2" },
+                    { id: 'dc234fww', name: 'item5', level: "2" }
+                ] }
             };
         });
 
@@ -152,6 +172,18 @@ describe('Tree service', function () {
            var unknownTree = service.getItemsFor('idonotexist');
 
             expect(unknownTree).toEqual([]);
+        });
+    });
+
+    describe('getLevels', function () {
+        it('should call the treeCacheService for a category when the level is a category', function () {
+            $httpBackend.flush();
+
+            spyOn(treeCacheService, 'getCategory');
+
+            service.loadItemsFor({ level: 2 });
+
+            expect(treeCacheService.getCategory).toHaveBeenCalledWith('vqWNeqjozr9');
         });
     });
 });
