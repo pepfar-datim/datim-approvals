@@ -3,6 +3,6 @@
         <i class="fa" ng-class="{ true: 'fa-minus-square-o', false: 'fa-plus-square-o'}[tree.isExpanded(node.id)]" ng-click="tree.expandIconClick(node)"></i>
         <span class="tree-node-name" ng-bind="node.name"></span>
         <tree-node ng-show="tree.isExpanded(node.id)" tree-nodes="tree.getItemsFor(node.id)"></tree-node>
-        <div ng-show="tree.isShowLoading(node.id)"><i class="fa fa-circle-o-notch fa-spin"></i><span>Loading</span></div>
+        <div ng-show="tree.isShowLoading(node)"><i class="fa fa-circle-o-notch fa-spin"></i><span>Loading</span></div>
     </li>
 </ul>

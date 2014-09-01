@@ -45,7 +45,7 @@ function treeServiceMock() {
         return emptyArray;
     };
 
-    this.loadItemsFor = function (id) {
-
+    this.loadItemsFor = function (node) {
+        node.loading = true;
     };
 }

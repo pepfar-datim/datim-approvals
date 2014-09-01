@@ -74,7 +74,7 @@ describe('Tree node directive', function () {
         it('should pass the node to the getSubTree method when clicked', function () {
             expandIcon.click();
 
-            expect(controller.expandIconClick).toHaveBeenCalledWith({ name : 'Malawi', id : 'malawi', $$hashKey : '047' });
+            expect(controller.expandIconClick).toHaveBeenCalledWith({ name : 'Malawi', id : 'malawi', $$hashKey : '048' });
         });
     });
 

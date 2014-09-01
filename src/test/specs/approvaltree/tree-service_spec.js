@@ -85,6 +85,16 @@ describe('Tree service', function () {
 
             expect(service.getTreeStructure()).toEqual(expectedTreeStructure);
         });
+
+        it('should add the approval levels category options to the tree cache', function () {
+            var expectedCache = {
+                vqWNeqjozr9: fixtures.get('approvalLevels').dataApprovalLevels[2].categoryOptionGroupSet.categoryOptionGroups,
+                WccDi5x6FSp: fixtures.get('approvalLevels').dataApprovalLevels[3].categoryOptionGroupSet.categoryOptionGroups
+            }
+            service.parseApprovalLevels(fixtures.get('approvalLevels').dataApprovalLevels);
+
+            expect(treeCacheService.categoryOptionGroupsPerLevels).toEqual(expectedCache);
+        });
     });
 
     describe('loadOrganisationUnitsLevel', function () {
@@ -149,11 +159,11 @@ describe('Tree service', function () {
     describe('getItemsFor', function () {
 
         beforeEach(function () {
-            service.items = {
+            service.addItems({
                 dfwhghrfww: { id: 'dfwhghrfww', name: 'item1', level: "1", items: [ { id: "subitemid" } ] },
                 dffds3wfww: { id: 'dffds3wfww', name: 'item2', level: "1" },
                 d242dfwfww: { id: 'd242dfwfww', name: 'item3', level: "1" }
-            };
+            }, 1);
         });
 
         it('should return the root when the id "root" is passed in', function () {

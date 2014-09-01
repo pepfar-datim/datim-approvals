@@ -14,7 +14,7 @@ function treeService(d2Api, treeCacheService, $q) {
         orgUnit: 'organisationUnits'
     }
 
-
+    this.flattenedTree = [];
     this.items = {};
 
     this.parseApprovalLevels = function (approvalLevels) {
@@ -27,6 +27,10 @@ function treeService(d2Api, treeCacheService, $q) {
 
             if (approvalLevel.categoryOptionGroupSet) {
                 treeStructureNode.type = LEVEL_TYPE.category;
+                treeCacheService.addCategory(
+                    approvalLevel.categoryOptionGroupSet.categoryOptionGroups,
+                    treeStructureNode.id
+                );
             } else {
                 treeStructureNode.type = LEVEL_TYPE.orgUnit;
             }
@@ -99,11 +103,12 @@ function treeService(d2Api, treeCacheService, $q) {
                 this.items[orgUnit.id] = orgUnit;
             }, this);
         }
+        service.buildFlattenVersionOfTree();
     };
 
     this.getItemsFor = function (id) {
-        if (this.items[id]) {
-            return this.items[id].items;
+        if (this.flattenedTree[id]) {
+            return this.flattenedTree[id].items;
         }
         if (id === 'root') {
             return this.items;
@@ -115,11 +120,42 @@ function treeService(d2Api, treeCacheService, $q) {
         return levels;
     };
 
+    function getItems(items) {
+        var getValues = function (item) { return _.pick(item, ['id', 'items']); };
+
+        return _.map(items, function (item) {
+            return getItems(item.items).concat([getValues(item)]);
+        });
+    }
+
+    function getUniqueById(values) {
+        return _.uniq(values, function (item) {
+            return item.id;
+        });
+    }
+
+    this.buildFlattenVersionOfTree = function () {
+        var structure = getItems(this.items);
+        _.forEach(getUniqueById(_.flatten(structure)), function (item) {
+            this.flattenedTree[item.id] = item;
+        }, this);
+    }
+
     this.loadItemsFor = function (node) {
-        var level = _.filter(treeStructure, {level: (node.level + 1) }).pop();
+        var level;
+        node.loading = true;
+        if (!node || !node.level) { return; }
+        level = _.filter(treeStructure, {level: (node.level + 1) }).pop();
+
         if (level.type === LEVEL_TYPE.category) {
-            node.items = treeCacheService.getCategory(level.id);
+            node.items = _.map(treeCacheService.getCategory(level.id), function (item) {
+                item.level = node.level + 1;
+                return item;
+            });
+
+            node.loading = false;
         }
+        service.buildFlattenVersionOfTree();
     };
 
     //Configure the api endpoints we will use

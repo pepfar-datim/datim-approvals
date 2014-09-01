@@ -37,8 +37,8 @@ function approvalTreeController($scope, treeService) {
         return false;
     };
 
-    this.isShowLoading = function (id) {
-        return (!this.hasItems(id) && this.isExpanded(id));
+    this.isShowLoading = function (node) {
+        return (!this.hasItems(node.id) && this.isExpanded(node.id)) && ! node.loading;
     };
 }
 
