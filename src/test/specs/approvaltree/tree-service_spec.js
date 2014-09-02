@@ -9,7 +9,7 @@ describe('Tree service', function () {
         treeCacheService = _treeCacheService_;
         $httpBackend = _$httpBackend_;
 
-        $httpBackend.expectGET('/dhis/api/dataApprovalLevels?fields=id,name,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name,displayName,categoryOptionGroups%5Bid,name%5D%5D&paging=false')
+        $httpBackend.expectGET('/dhis/api/dataApprovalLevels?fields=id,name,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name,displayName%5D&paging=false')
             .respond(200, fixtures.get('approvalLevels'));
 
         $httpBackend.whenGET('/dhis/api/organisationUnits?fields=id,name,level,parent%5Bid%5D,children%5Bid,name,level%5D&filter=level:eq:1&paging=false')
@@ -77,8 +77,8 @@ describe('Tree service', function () {
             var expectedTreeStructure = [
                 { "id":"aypLtfWShE5", "type": "organisationUnits", "orgUnitLevel": 1, "level": 1 },
                 { "id":"JNpaWdWCyDN", "type": "organisationUnits", "orgUnitLevel": 2, "level": 2 },
-                { "id":"vqWNeqjozr9", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 3 },
-                { "id":"WccDi5x6FSp", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 4 }
+                { "id":"vqWNeqjozr9", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 3, categoryId : 'bw8KHXzxd9i' },
+                { "id":"WccDi5x6FSp", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 4, categoryId : 'BOyWrF33hiR' }
             ];
 
             service.parseApprovalLevels(fixtures.get('approvalLevels').dataApprovalLevels);
@@ -183,6 +183,14 @@ describe('Tree service', function () {
 
             expect(unknownTree).toEqual([]);
         });
+
+        it('should ask for the mechanisms (category options) when there are no more levels', function () {
+            spyOn(service, 'getCategoryOptions').andCallThrough();
+
+            service.loadItemsFor({ id: 'Cs2c30KKxg6', level: 3 });
+
+            expect(service.getCategoryOptions).toHaveBeenCalled();
+        });
     });
 
     describe('getLevels', function () {
@@ -194,6 +202,111 @@ describe('Tree service', function () {
             service.loadItemsFor({ level: 2 });
 
             expect(treeCacheService.getCategory).toHaveBeenCalledWith('vqWNeqjozr9');
+        });
+    });
+
+    describe('getCategoryOptions', function () {
+        it('should call the findParentOf node', function () {
+            spyOn(service, 'findParentOf');
+
+            service.getCategoryOptions();
+
+            expect(service.findParentOf).toHaveBeenCalled();
+        });
+
+        it('should call findParentOf with the node that is passed in', function () {
+            var node = { id: "someId", level: 2 };
+            spyOn(service, 'findParentOf');
+
+            service.getCategoryOptions(node);
+
+            expect(service.findParentOf).toHaveBeenCalledWith(node);
+        });
+
+        it('should load the category options for the current level mapped with the level above', function () {
+            $httpBackend.flush();
+
+            service.getCategoryOptions();
+        });
+    });
+
+    describe('findParentOf', function () {
+        it('should return the parent node of the passed node', function () {
+            var actualParentNode, expectedParentNode = {
+
+            };
+            $httpBackend.flush();
+
+            actualParentNode = service.findParentOf();
+
+            //expect(actualParentNode).toEqual(expectedParentNode);
+        });
+    });
+
+    describe('loadItemsFor', function () {
+        it('should load the category options when they are not loaded', function () {
+            var node = { id: "someId", level: 2 };
+
+            $httpBackend.flush();
+            $httpBackend.resetExpectations();
+
+            $httpBackend.expectGET('/dhis/api/categoryOptionGroups?fields=id,name&filter=categoryOptionGroupSet.id:eq:bw8KHXzxd9i&paging=false')
+                .respond(200, fixtures.get('categoryOptionGroups'));
+
+            service.loadItemsFor(node);
+
+            $httpBackend.flush();
+        });
+
+        it('should have loaded the category options', function () {
+            var node = { id: "someId", level: 2 };
+            var expectedCategories = [
+                {"id": "OO5qyDIwoMk", "name": "DOD", level: 3},
+                {"id": "FPUgmtt8HRi", "name": "HHS/CDC", level: 3},
+                {"id": "RGC9tURSc3W", "name": "HHS/HRSA", level: 3},
+                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
+                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
+                {"id": "NLV6dy7BE2O", "name": "USAID", level: 3},
+                {"id": "ICxISjHPJF4", "name": "USDOS/BAA", level: 3},
+                {"id": "MWmqTPSvhD1", "name": "USDOS/BPRM", level: 3}
+            ];
+
+            $httpBackend.flush();
+            $httpBackend.resetExpectations();
+
+            $httpBackend.expectGET('/dhis/api/categoryOptionGroups?fields=id,name&filter=categoryOptionGroupSet.id:eq:bw8KHXzxd9i&paging=false')
+                .respond(200, fixtures.get('categoryOptionGroups'));
+
+            service.loadItemsFor(node);
+
+            $httpBackend.flush();
+            expect(treeCacheService.getCategory('vqWNeqjozr9')).toEqual(expectedCategories);
+        });
+
+        it('should add the items on the node', function () {
+            var node = { id: "someId", level: 2 };
+            var expectedCategories = [
+                {"id": "OO5qyDIwoMk", "name": "DOD", level: 3},
+                {"id": "FPUgmtt8HRi", "name": "HHS/CDC", level: 3},
+                {"id": "RGC9tURSc3W", "name": "HHS/HRSA", level: 3},
+                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
+                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
+                {"id": "NLV6dy7BE2O", "name": "USAID", level: 3},
+                {"id": "ICxISjHPJF4", "name": "USDOS/BAA", level: 3},
+                {"id": "MWmqTPSvhD1", "name": "USDOS/BPRM", level: 3}
+            ];
+
+            $httpBackend.flush();
+            $httpBackend.resetExpectations();
+
+            $httpBackend.expectGET('/dhis/api/categoryOptionGroups?fields=id,name&filter=categoryOptionGroupSet.id:eq:bw8KHXzxd9i&paging=false')
+                .respond(200, fixtures.get('categoryOptionGroups'));
+
+            service.loadItemsFor(node);
+
+            $httpBackend.flush();
+
+            expect(node.items).toEqual(expectedCategories);
         });
     });
 });

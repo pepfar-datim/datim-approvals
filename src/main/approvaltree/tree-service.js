@@ -1,4 +1,4 @@
-function treeService(d2Api, treeCacheService, $q) {
+function treeService(d2Api, treeCacheService, $q, $rootScope) {
     var service = this;
     //Empty array stub that is returned when no items are available
     //We return an empty array from a variable instead of a return []; so we
@@ -27,10 +27,7 @@ function treeService(d2Api, treeCacheService, $q) {
 
             if (approvalLevel.categoryOptionGroupSet) {
                 treeStructureNode.type = LEVEL_TYPE.category;
-                treeCacheService.addCategory(
-                    approvalLevel.categoryOptionGroupSet.categoryOptionGroups,
-                    treeStructureNode.id
-                );
+                treeStructureNode.categoryId = approvalLevel.categoryOptionGroupSet.id;
             } else {
                 treeStructureNode.type = LEVEL_TYPE.orgUnit;
             }
@@ -55,7 +52,9 @@ function treeService(d2Api, treeCacheService, $q) {
             return false;
         }, this);
 
-        if (orgUnitLevels.length === 0) { return; }
+        if (orgUnitLevels.length === 0) {
+            return;
+        }
         orgUnitLevels = orgUnitLevels.reverse();
 
         function loadOrgUnitLevels() {
@@ -64,6 +63,7 @@ function treeService(d2Api, treeCacheService, $q) {
                 loadOrgUnitLevels();
             });
         }
+
         loadOrgUnitLevels();
     };
 
@@ -116,12 +116,22 @@ function treeService(d2Api, treeCacheService, $q) {
         return emptyArray;
     };
 
+    this.getCategoryOptions = function (node) {
+        this.findParentOf(node);
+        return $q.when();
+    };
+
+    this.findParentOf = function () {
+    };
+
     this.getLevels = function () {
         return levels;
     };
 
     function getItems(items) {
-        var getValues = function (item) { return _.pick(item, ['id', 'items']); };
+        var getValues = function (item) {
+            return _.pick(item, ['id', 'items']);
+        };
 
         return _.map(items, function (item) {
             return getItems(item.items).concat([getValues(item)]);
@@ -139,35 +149,75 @@ function treeService(d2Api, treeCacheService, $q) {
         _.forEach(getUniqueById(_.flatten(structure)), function (item) {
             this.flattenedTree[item.id] = item;
         }, this);
-    }
+    };
+
+    this.loadCategoryItems = function (node, level) {
+        var deferred = $q.defer();
+
+        if (treeCacheService.getCategory(level.id) === undefined) {
+            d2Api.categoryOptionGroups.getList({
+                fields: 'id,name',
+                filter: 'categoryOptionGroupSet.id:eq:' + level.categoryId,
+                paging: 'false'
+            }).then(function (categoryOptionGroups) {
+                    var category;
+                    treeCacheService.addCategory(categoryOptionGroups.getDataOnly(), level.id);
+                    category = _.map(treeCacheService.getCategory(level.id), function (item) {
+                        item.level = node.level + 1;
+                        return item;
+                    });
+                    deferred.resolve(category);
+                });
+        } else {
+            deferred.resolve(_.map(treeCacheService.getCategory(level.id), function (item) {
+                item.level = node.level + 1;
+                return item;
+            }));
+        }
+
+        return deferred.promise;
+    };
 
     this.loadItemsFor = function (node) {
         var level;
-        node.loading = true;
-        if (!node || !node.level) { return; }
+
+        if (!node || !node.level) {
+            return;
+        }
         level = _.filter(treeStructure, {level: (node.level + 1) }).pop();
 
-        if (level.type === LEVEL_TYPE.category) {
-            node.items = _.map(treeCacheService.getCategory(level.id), function (item) {
-                item.level = node.level + 1;
-                return item;
+        //When there are no more levels load the mechanisms
+        if (!level) {
+            this.getCategoryOptions().then(function (categoryOptions) {
+                console.log(categoryOptions);
+                node.items = categoryOptions;
             });
 
-            node.loading = false;
+            return;
         }
+
+        //When the level type is a category check the cache for category
+        if (level.type === LEVEL_TYPE.category && level.categoryId) {
+            this.loadCategoryItems(node, level).then(function (data) {
+                node.items = data;
+                service.buildFlattenVersionOfTree();
+            });
+        }
+
         service.buildFlattenVersionOfTree();
     };
 
     //Configure the api endpoints we will use
     d2Api.addEndPoint('dataApprovalLevels');
     d2Api.addEndPoint('organisationUnits');
+    d2Api.addEndPoint('categoryOptionGroups');
 
     d2Api.dataApprovalLevels.getList({
-        "fields": "id,name,orgUnitLevel,level,categoryOptionGroupSet[id,name,displayName,categoryOptionGroups[id,name]]",
+        "fields": "id,name,orgUnitLevel,level,categoryOptionGroupSet[id,name,displayName]",
         "paging": "false"
     }).then(function (data) {
-        service.parseApprovalLevels(data.getDataOnly())
-    });
+            service.parseApprovalLevels(data.getDataOnly())
+        });
 }
 
 angular.module('PEPFAR.approvals').service('treeService', treeService);
