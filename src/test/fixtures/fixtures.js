@@ -52,7 +52,7 @@
         {"id": "vqWNeqjozr9", "name": "2 - Funding Agency", "level": 3, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "bw8KHXzxd9i", "name": "Funding Agency", "displayName": "Funding Agency"}},
         {"id": "WccDi5x6FSp", "name": "2 - Implementing Partner", "level": 4, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "BOyWrF33hiR", "name": "Implementing Partner", "displayName": "Implementing Partner"}}
     ]};
-    library.categoryOptionGroups = {"categoryOptionGroups": [
+    library.fundingAgenciesCOG = {"categoryOptionGroups": [
         {"id": "OO5qyDIwoMk", "name": "DOD"},
         {"id": "FPUgmtt8HRi", "name": "HHS/CDC"},
         {"id": "RGC9tURSc3W", "name": "HHS/HRSA"},
@@ -61,6 +61,10 @@
         {"id": "NLV6dy7BE2O", "name": "USAID"},
         {"id": "ICxISjHPJF4", "name": "USDOS/BAA"},
         {"id": "MWmqTPSvhD1", "name": "USDOS/BPRM"}
+    ]};
+    library.implementingPartnersCOG = {"categoryOptionGroups": [
+        {"id": "Cs2c30KKxg6", "name": "Apple"},
+        {"id": "pBimh5znu2H", "name": "Banana"}
     ]};
 
 

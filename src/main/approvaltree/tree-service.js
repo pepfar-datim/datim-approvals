@@ -5,7 +5,6 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
     //do not trigger new digest loops.
     var emptyArray = [];
     var orgUnitLevel = 1;
-    var approvalLevel = 1;
     var levels = [];
     var treeStructure = [];
     var preLoadLevelDepth = 2;
@@ -14,7 +13,7 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
         orgUnit: 'organisationUnits'
     }
 
-    this.flattenedTree = [];
+    this.flattenedTree = {};
     this.items = {};
 
     this.parseApprovalLevels = function (approvalLevels) {
@@ -98,6 +97,7 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
             _.map(orgUnits, function (orgUnit) {
                 if (angular.isArray(orgUnit.children)) {
                     orgUnit.items = orgUnit.children;
+                    this.addParentIdTo(orgUnit.items, orgUnit.id);
                     delete orgUnit.children;
                 }
                 this.items[orgUnit.id] = orgUnit;
@@ -117,11 +117,13 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
     };
 
     this.getCategoryOptions = function (node) {
+
         this.findParentOf(node);
         return $q.when();
     };
 
-    this.findParentOf = function () {
+    this.findParentOf = function (node) {
+        return this.flattenedTree[node.parentId];
     };
 
     this.getLevels = function () {
@@ -130,7 +132,7 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
 
     function getItems(items) {
         var getValues = function (item) {
-            return _.pick(item, ['id', 'items']);
+            return _.pick(item, ['id', 'name', 'items']);
         };
 
         return _.map(items, function (item) {
@@ -149,6 +151,7 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
         _.forEach(getUniqueById(_.flatten(structure)), function (item) {
             this.flattenedTree[item.id] = item;
         }, this);
+
     };
 
     this.loadCategoryItems = function (node, level) {
@@ -178,6 +181,13 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
         return deferred.promise;
     };
 
+    this.addParentIdTo = function (items, parentId) {
+        return _.map(items, function (item) {
+            item.parentId = parentId;
+            return item;
+        });
+    };
+
     this.loadItemsFor = function (node) {
         var level;
 
@@ -188,9 +198,8 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
 
         //When there are no more levels load the mechanisms
         if (!level) {
-            this.getCategoryOptions().then(function (categoryOptions) {
-                console.log(categoryOptions);
-                node.items = categoryOptions;
+            this.getCategoryOptions(node).then(function (categoryOptions) {
+                node.items = service.addParentIdTo(categoryOptions, node.id);
             });
 
             return;
@@ -199,7 +208,7 @@ function treeService(d2Api, treeCacheService, $q, $rootScope) {
         //When the level type is a category check the cache for category
         if (level.type === LEVEL_TYPE.category && level.categoryId) {
             this.loadCategoryItems(node, level).then(function (data) {
-                node.items = data;
+                node.items = service.addParentIdTo(data, node.id);
                 service.buildFlattenVersionOfTree();
             });
         }

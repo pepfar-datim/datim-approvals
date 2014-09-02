@@ -75,10 +75,10 @@ describe('Tree service', function () {
 
         it('should call build the treeStructure based on the approvalLevels', function () {
             var expectedTreeStructure = [
-                { "id":"aypLtfWShE5", "type": "organisationUnits", "orgUnitLevel": 1, "level": 1 },
-                { "id":"JNpaWdWCyDN", "type": "organisationUnits", "orgUnitLevel": 2, "level": 2 },
-                { "id":"vqWNeqjozr9", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 3, categoryId : 'bw8KHXzxd9i' },
-                { "id":"WccDi5x6FSp", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 4, categoryId : 'BOyWrF33hiR' }
+                { "id": "aypLtfWShE5", "type": "organisationUnits", "orgUnitLevel": 1, "level": 1 },
+                { "id": "JNpaWdWCyDN", "type": "organisationUnits", "orgUnitLevel": 2, "level": 2 },
+                { "id": "vqWNeqjozr9", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 3, categoryId: 'bw8KHXzxd9i' },
+                { "id": "WccDi5x6FSp", "type": "categoryOptionGroups", "orgUnitLevel": 2, "level": 4, categoryId: 'BOyWrF33hiR' }
             ];
 
             service.parseApprovalLevels(fixtures.get('approvalLevels').dataApprovalLevels);
@@ -140,11 +140,11 @@ describe('Tree service', function () {
                 ] }
             ];
             expectedItems = {
-                dfwhghrfww: { id: 'dfwhghrfww', name: 'item1', level: "1" },
-                dffds3wfww: { id: 'dffds3wfww', name: 'item2', level: "1" },
-                d242dfwfww: { id: 'd242dfwfww', name: 'item3', level: "1", items: [
-                    { id: 'sdfhrfww', name: 'item4', level: "2" },
-                    { id: 'dc234fww', name: 'item5', level: "2" }
+                dfwhghrfww: { id: 'dfwhghrfww', name: 'item1', level: '1' },
+                dffds3wfww: { id: 'dffds3wfww', name: 'item2', level: '1' },
+                d242dfwfww: { id: 'd242dfwfww', name: 'item3', level: '1', items: [
+                    { id: 'sdfhrfww', name: 'item4', level: '2', parentId: 'd242dfwfww' },
+                    { id: 'dc234fww', name: 'item5', level: '2', parentId: 'd242dfwfww' }
                 ] }
             };
         });
@@ -160,7 +160,9 @@ describe('Tree service', function () {
 
         beforeEach(function () {
             service.addItems({
-                dfwhghrfww: { id: 'dfwhghrfww', name: 'item1', level: "1", items: [ { id: "subitemid" } ] },
+                dfwhghrfww: { id: 'dfwhghrfww', name: 'item1', level: "1", items: [
+                    { id: "subitemid" }
+                ] },
                 dffds3wfww: { id: 'dffds3wfww', name: 'item2', level: "1" },
                 d242dfwfww: { id: 'd242dfwfww', name: 'item3', level: "1" }
             }, 1);
@@ -179,7 +181,7 @@ describe('Tree service', function () {
         });
 
         it('should return an empty array when the id does not exist', function () {
-           var unknownTree = service.getItemsFor('idonotexist');
+            var unknownTree = service.getItemsFor('idonotexist');
 
             expect(unknownTree).toEqual([]);
         });
@@ -222,25 +224,6 @@ describe('Tree service', function () {
 
             expect(service.findParentOf).toHaveBeenCalledWith(node);
         });
-
-        it('should load the category options for the current level mapped with the level above', function () {
-            $httpBackend.flush();
-
-            service.getCategoryOptions();
-        });
-    });
-
-    describe('findParentOf', function () {
-        it('should return the parent node of the passed node', function () {
-            var actualParentNode, expectedParentNode = {
-
-            };
-            $httpBackend.flush();
-
-            actualParentNode = service.findParentOf();
-
-            //expect(actualParentNode).toEqual(expectedParentNode);
-        });
     });
 
     describe('loadItemsFor', function () {
@@ -251,7 +234,7 @@ describe('Tree service', function () {
             $httpBackend.resetExpectations();
 
             $httpBackend.expectGET('/dhis/api/categoryOptionGroups?fields=id,name&filter=categoryOptionGroupSet.id:eq:bw8KHXzxd9i&paging=false')
-                .respond(200, fixtures.get('categoryOptionGroups'));
+                .respond(200, fixtures.get('fundingAgenciesCOG'));
 
             service.loadItemsFor(node);
 
@@ -261,21 +244,21 @@ describe('Tree service', function () {
         it('should have loaded the category options', function () {
             var node = { id: "someId", level: 2 };
             var expectedCategories = [
-                {"id": "OO5qyDIwoMk", "name": "DOD", level: 3},
-                {"id": "FPUgmtt8HRi", "name": "HHS/CDC", level: 3},
-                {"id": "RGC9tURSc3W", "name": "HHS/HRSA", level: 3},
-                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
-                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
-                {"id": "NLV6dy7BE2O", "name": "USAID", level: 3},
-                {"id": "ICxISjHPJF4", "name": "USDOS/BAA", level: 3},
-                {"id": "MWmqTPSvhD1", "name": "USDOS/BPRM", level: 3}
+                { id: 'OO5qyDIwoMk', name: 'DOD', level: 3, parentId: 'someId' },
+                { id: 'FPUgmtt8HRi', name: 'HHS/CDC', level: 3, parentId: 'someId' },
+                { id: 'RGC9tURSc3W', name: 'HHS/HRSA', level: 3, parentId: 'someId' },
+                { id: 'm4mzzwVQOUi', name: 'U.S. Peace Corps', level: 3, parentId: 'someId' },
+                { id: 'm4mzzwVQOUi', name: 'U.S. Peace Corps', level: 3, parentId: 'someId' },
+                { id: 'NLV6dy7BE2O', name: 'USAID', level: 3, parentId: 'someId' },
+                { id: 'ICxISjHPJF4', name: 'USDOS/BAA', level: 3, parentId: 'someId' },
+                { id: 'MWmqTPSvhD1', name: 'USDOS/BPRM', level: 3, parentId: 'someId' }
             ];
 
             $httpBackend.flush();
             $httpBackend.resetExpectations();
 
             $httpBackend.expectGET('/dhis/api/categoryOptionGroups?fields=id,name&filter=categoryOptionGroupSet.id:eq:bw8KHXzxd9i&paging=false')
-                .respond(200, fixtures.get('categoryOptionGroups'));
+                .respond(200, fixtures.get('fundingAgenciesCOG'));
 
             service.loadItemsFor(node);
 
@@ -286,21 +269,21 @@ describe('Tree service', function () {
         it('should add the items on the node', function () {
             var node = { id: "someId", level: 2 };
             var expectedCategories = [
-                {"id": "OO5qyDIwoMk", "name": "DOD", level: 3},
-                {"id": "FPUgmtt8HRi", "name": "HHS/CDC", level: 3},
-                {"id": "RGC9tURSc3W", "name": "HHS/HRSA", level: 3},
-                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
-                {"id": "m4mzzwVQOUi", "name": "U.S. Peace Corps", level: 3},
-                {"id": "NLV6dy7BE2O", "name": "USAID", level: 3},
-                {"id": "ICxISjHPJF4", "name": "USDOS/BAA", level: 3},
-                {"id": "MWmqTPSvhD1", "name": "USDOS/BPRM", level: 3}
+                { id: 'OO5qyDIwoMk', name: 'DOD', level: 3, parentId: 'someId' },
+                { id: 'FPUgmtt8HRi', name: 'HHS/CDC', level: 3, parentId: 'someId' },
+                { id: 'RGC9tURSc3W', name: 'HHS/HRSA', level: 3, parentId: 'someId' },
+                { id: 'm4mzzwVQOUi', name: 'U.S. Peace Corps', level: 3, parentId: 'someId' },
+                { id: 'm4mzzwVQOUi', name: 'U.S. Peace Corps', level: 3, parentId: 'someId' },
+                { id: 'NLV6dy7BE2O', name: 'USAID', level: 3, parentId: 'someId' },
+                { id: 'ICxISjHPJF4', name: 'USDOS/BAA', level: 3, parentId: 'someId' },
+                { id: 'MWmqTPSvhD1', name: 'USDOS/BPRM', level: 3, parentId: 'someId' }
             ];
 
             $httpBackend.flush();
             $httpBackend.resetExpectations();
 
             $httpBackend.expectGET('/dhis/api/categoryOptionGroups?fields=id,name&filter=categoryOptionGroupSet.id:eq:bw8KHXzxd9i&paging=false')
-                .respond(200, fixtures.get('categoryOptionGroups'));
+                .respond(200, fixtures.get('fundingAgenciesCOG'));
 
             service.loadItemsFor(node);
 
@@ -309,4 +292,39 @@ describe('Tree service', function () {
             expect(node.items).toEqual(expectedCategories);
         });
     });
-});
+
+    describe('addParentId', function () {
+        it('should add the parent id to the objects passed into it', function () {
+            var items = [
+                    { id: 'object1' },
+                    { id: 'object2' }
+                ],
+                expectedOutput = [
+                    { id: 'object1', parentId: 'parentId' },
+                    { id: 'object2', parentId: 'parentId' }
+                ];
+
+            service.addParentIdTo(items, 'parentId');
+
+            expect(items).toEqual(expectedOutput);
+        });
+
+
+        it('should return the items after adding the ids', function () {
+            var items = [
+                { id: 'object1' },
+                { id: 'object2' }
+            ];
+            var expectedOutput = [
+                { id: 'object1', parentId: 'parentId' },
+                { id: 'object2', parentId: 'parentId' }
+            ];
+            var returnedValue;
+
+            returnedValue = service.addParentIdTo(items, 'parentId');
+
+            expect(returnedValue).toEqual(expectedOutput);
+        });
+    });
+})
+;
