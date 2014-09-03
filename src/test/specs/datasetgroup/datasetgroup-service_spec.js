@@ -13,6 +13,10 @@ describe('Datasetgroup service', function () {
         $httpBackend.whenGET(/\/dhis\/api\/dataSets\/\w/).respond(409);
     }));
 
+    afterEach(function () {
+        $httpBackend.verifyNoOutstandingRequest();
+    });
+
     it('should be defined', function () {
         expect(service).toBeAnObject();
     });
@@ -29,13 +33,13 @@ describe('Datasetgroup service', function () {
 
     describe('getGroups', function () {
         beforeEach(function () {
-            $httpBackend.expectGET('/dhis/api/dataSets/iP8irTNtByO').respond(200, {
+            $httpBackend.expectGET('/dhis/api/dataSets/iP8irTNtByO?fields=name,shortName,id').respond(200, {
                 name: 'DSD: DS 1',
                 shortName: 'DSD: DS 1',
                 id: 'iP8irTNtByO'
             });
 
-            $httpBackend.expectGET('/dhis/api/dataSets/eLRAaV32xH5').respond(200, {
+            $httpBackend.expectGET('/dhis/api/dataSets/eLRAaV32xH5?fields=name,shortName,id').respond(200, {
                 name: 'EA: DataSet 1',
                 shortName: 'EA: DS1',
                 id: 'eLRAaV32xH5'
@@ -81,12 +85,12 @@ describe('Datasetgroup service', function () {
 
     describe('filterDataSetsForUser', function () {
         beforeEach(function () {
-            $httpBackend.expectGET('/dhis/api/dataSets/eLRAaV32xH5').respond(200, {
+            $httpBackend.expectGET('/dhis/api/dataSets/eLRAaV32xH5?fields=name,shortName,id').respond(200, {
                 name: 'EA: DataSet 1',
                 shortName: 'EA: DS1',
                 id: 'eLRAaV32xH5'
             });
-            $httpBackend.expectGET('/dhis/api/dataSets/A4ivU53utt2').respond(200, {
+            $httpBackend.expectGET('/dhis/api/dataSets/A4ivU53utt2?fields=name,shortName,id').respond(200, {
                 name: 'EA: DataSet 2',
                 shortName: 'EA: DS 2',
                 id: 'A4ivU53utt2'
@@ -128,13 +132,13 @@ describe('Datasetgroup service', function () {
 
     describe('getDataSetGroupNames', function () {
         beforeEach(function () {
-            $httpBackend.expectGET('/dhis/api/dataSets/iP8irTNtByO').respond(200, {
+            $httpBackend.expectGET('/dhis/api/dataSets/iP8irTNtByO?fields=name,shortName,id').respond(200, {
                 name: 'DSD: DS 1',
                 shortName: 'DSD: DS 1',
                 id: 'iP8irTNtByO'
             });
 
-            $httpBackend.expectGET('/dhis/api/dataSets/eLRAaV32xH5').respond(200, {
+            $httpBackend.expectGET('/dhis/api/dataSets/eLRAaV32xH5?fields=name,shortName,id').respond(200, {
                 name: 'EA: DataSet 1',
                 shortName: 'EA: DS1',
                 id: 'eLRAaV32xH5'
@@ -149,6 +153,22 @@ describe('Datasetgroup service', function () {
             $httpBackend.flush();
 
             expect(service.getDataSetGroupNames()).toEqual([ 'MER', 'EA' ]);
+        });
+    });
+
+    describe('getDataSets', function () {
+        beforeEach(function () {
+            $httpBackend.expectGET('/dhis/api/dataSets/iP8irTNtByO?fields=name,shortName,id').respond(200, {
+                name: 'DSD: DS 1',
+                shortName: 'DSD: DS 1',
+                id: 'iP8irTNtByO'
+            });
+
+            $httpBackend.flush();
+        });
+
+        it('should return the datasets based for this the key', function () {
+            expect(service.getDataSetsForGroup('MER')).toEqual([{ id : 'iP8irTNtByO', name : 'DSD: DS 1', shortName : 'DSD: DS 1' }]);
         });
     });
 });

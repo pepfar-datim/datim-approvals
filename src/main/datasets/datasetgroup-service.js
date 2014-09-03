@@ -1,15 +1,20 @@
 function dataSetGroupService(d2Api, $q) {
     var service = this;
     var dataSetGroups = {};
+    var dataSetGroupNames = [];
 
     this.getGroups = function () {
         return dataSetGroups;
     };
 
     this.filterDataSetsForUser = function (resultDataSetGroups) {
+        var dataSetGroupsPromises = [];
+
         function getDataSetData(dataSetId) {
             var deferred = $q.defer();
-            d2Api.dataSets.get(dataSetId).then(function (dataSet) {
+            d2Api.dataSets.get(dataSetId, {
+                fields: 'name,shortName,id'
+            }).then(function (dataSet) {
                 deferred.resolve({
                     id: dataSet.id,
                     name: dataSet.name,
@@ -32,24 +37,39 @@ function dataSetGroupService(d2Api, $q) {
                 promises.push(getDataSetData(dataSetId));
             });
 
-            $q.all(promises).then(function (dataSets) {
+            dataSetGroupsPromises.push($q.all(promises).then(function (dataSets) {
                 filteredGroup.dataSets = _.filter(dataSets, function (dataSet) {
                     if (dataSet) {
                         return true;
                     }
                     return false;
                 });
+
+               return filteredGroup;
+            }));
+        });
+
+        $q.all(dataSetGroupsPromises).then(function (datasetGroups) {
+            _.each(datasetGroups, function (filteredGroup) {
                 if (filteredGroup.dataSets.length > 0) {
                     dataSetGroups[filteredGroup.name] = filteredGroup;
                 }
+
+                dataSetGroupNames = _.map(dataSetGroups, function (dataSetGroup, key) {
+                    return key;
+                });
             });
         });
     };
 
     this.getDataSetGroupNames = function () {
-        return _.map(dataSetGroups, function (dataSetGroup, key) {
-            return key;
-        });
+        return dataSetGroupNames;
+    };
+
+    this.getDataSetsForGroup = function (dataSetGroupName) {
+        if (dataSetGroups[dataSetGroupName]) {
+            return dataSetGroups[dataSetGroupName].dataSets;
+        }
     };
 
     // Configure the api endpoints we use

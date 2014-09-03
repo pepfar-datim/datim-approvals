@@ -8,8 +8,13 @@ function appController(treeService, $scope) {
             { "name": "DOD" },
             { "name": "USAID" }
         ];
-        console.log(treeService.getItemsFor('rwanda'));
-    }
+    };
+
+    $scope.$on('DATASETGROUP.changed', function (dataSetGroup) {
+        console.log('i am being fired');
+        console.log('the new dataset group is:');
+        console.log(dataSetGroup);
+    });
 }
 
 angular.module('PEPFAR.approvals', ['d2']);
