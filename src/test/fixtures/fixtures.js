@@ -66,6 +66,36 @@
         {"id": "Cs2c30KKxg6", "name": "Apple"},
         {"id": "pBimh5znu2H", "name": "Banana"}
     ]};
+    library.dataSetGroups = JSON.stringify([
+        {
+            "name": "MER",
+            "dataSets": [
+                "cIGsv0OBVi8", "xY5nwObRyi7",
+                "lr508Rm7mHS", "vVhGT24UEw9",
+                "vX0MoAE7JfL", "vu4lNmAaBkm",
+                "m4DLLzOPF08", "hdjgjnHcr8H",
+                "KIG137Mm5rJ", "Zqg76KonUx1",
+                "wji7xi0tZGm", "z6YxZoMm227",
+                "NYveSOaHM3O", "maRBXO2gNjU",
+                "oIKX7smWRnp", "dGlmC3LBp4q",
+                "KDniz30AG0s", "BjJjrjHdsKT",
+                "qOv1iM5q1Mr", "HxkXrH39hmG",
+                "iP8irTNtByO", "iVC0ZksKDDM",
+                "S7f1nmVrLIT"
+            ]
+        },
+        {
+            "name": "EA",
+            "dataSets": [
+                "eLRAaV32xH5",
+                "kLPghhtGPvZ",
+                "A4ivU53utt2",
+                "wEKkfO7aAI3",
+                "JmnzNK18klO"
+            ]
+        }
+    ]);
+
 
 
     function getFixture(key) {
