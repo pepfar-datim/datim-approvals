@@ -1,4 +1,4 @@
-function dataSetGroupSelectorDirective(dataSetGroupService) {
+function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory) {
     return {
         restrict: 'E',
         replace: true,
@@ -22,8 +22,10 @@ function dataSetGroupSelectorDirective(dataSetGroupService) {
             });
 
             scope.onChange = function () {
-                var values = dataSetGroupService.getDataSetsForGroup(scope.selectedDataSetGroup);
-                scope.$emit('DATASETGROUP.changed', values);
+                scope.$emit(
+                    'DATASETGROUP.changed',
+                    dataSetGroupFactory(dataSetGroupService.getDataSetsForGroup(scope.selectedDataSetGroup))
+                );
             };
         }
     }

@@ -10,47 +10,30 @@ function dataSetGroupService(d2Api, $q) {
     this.filterDataSetsForUser = function (resultDataSetGroups) {
         var dataSetGroupsPromises = [];
 
-        function getDataSetData(dataSetId) {
-            var deferred = $q.defer();
-            d2Api.dataSets.get(dataSetId, {
-                fields: 'name,shortName,id'
-            }).then(function (dataSet) {
-                deferred.resolve({
-                    id: dataSet.id,
-                    name: dataSet.name,
-                    shortName: dataSet.shortName
-                });
-            }, function () {
-                deferred.resolve();
-            });
-
-            return deferred.promise;
-        }
-
         _.forEach(resultDataSetGroups, function (dataSetGroup) {
             var filteredGroup = {};
-            var promises = [];
+
+            var filters;
 
             filteredGroup.name = dataSetGroup.name;
             filteredGroup.dataSets = [];
-            _.forEach(dataSetGroup.dataSets, function (dataSetId) {
-                promises.push(getDataSetData(dataSetId));
+
+            filters = _.map(dataSetGroup.dataSets, function (dataSetId) {
+                return 'id:eq:' + dataSetId;
             });
 
-            dataSetGroupsPromises.push($q.all(promises).then(function (dataSets) {
-                filteredGroup.dataSets = _.filter(dataSets, function (dataSet) {
-                    if (dataSet) {
-                        return true;
-                    }
-                    return false;
-                });
-
-               return filteredGroup;
+            dataSetGroupsPromises.push(d2Api.dataSets.getList({
+                fields: 'name,shortName,id',
+                filters: filters,
+                paging: 'false'
+            }).then(function (dataSets) {
+                filteredGroup.dataSets = dataSets.getDataOnly();
+                return filteredGroup;
             }));
         });
 
         $q.all(dataSetGroupsPromises).then(function (datasetGroups) {
-            _.each(datasetGroups, function (filteredGroup) {
+            _.forEach(datasetGroups, function (filteredGroup) {
                 if (filteredGroup.dataSets.length > 0) {
                     dataSetGroups[filteredGroup.name] = filteredGroup;
                 }
@@ -82,4 +65,18 @@ function dataSetGroupService(d2Api, $q) {
     });
 }
 
+function dataSetGroupFactory() {
+    return function (dataSets) {
+        return {
+            get: function () {
+                return dataSets;
+            },
+            getIds: function () {
+                return _.pluck(dataSets, 'id');
+            }
+        }
+    }
+}
+
 angular.module('PEPFAR.approvals').service('dataSetGroupService', dataSetGroupService);
+angular.module('PEPFAR.approvals').factory('dataSetGroupFactory', dataSetGroupFactory);

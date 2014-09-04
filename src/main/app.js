@@ -10,10 +10,11 @@ function appController(treeService, $scope) {
         ];
     };
 
-    $scope.$on('DATASETGROUP.changed', function (dataSetGroup) {
+    $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
         console.log('i am being fired');
         console.log('the new dataset group is:');
-        console.log(dataSetGroup);
+        console.log(dataSets.get());
+        console.log(dataSets.getIds());
     });
 }
 
