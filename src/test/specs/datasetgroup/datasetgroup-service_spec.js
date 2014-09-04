@@ -4,9 +4,14 @@ describe('Datasetgroup service', function () {
 
     var service;
     var $httpBackend;
+    var periodService = {
+        filterPeriodTypes: jasmine.createSpy()
+    };
 
     beforeEach(module('d2-rest'));
-    beforeEach(module('PEPFAR.approvals'));
+    beforeEach(module('PEPFAR.approvals', {
+        periodService: periodService
+    }));
     beforeEach(inject(function (_$httpBackend_, dataSetGroupService) {
         $httpBackend = _$httpBackend_;
         service = dataSetGroupService;
@@ -132,7 +137,7 @@ describe('Datasetgroup service', function () {
         it('should return the data set group names', function () {
             $httpBackend.flush();
 
-            expect(service.getDataSetGroupNames()).toEqual([ 'MER', 'EA' ]);
+            expect(service.getDataSetGroupNames()).toEqual([ 'EA', 'MER' ]);
         });
     });
 
@@ -144,5 +149,11 @@ describe('Datasetgroup service', function () {
         it('should return the datasets based for this the key', function () {
             expect(service.getDataSetsForGroup('MER')).toEqual([{ id : 'iP8irTNtByO', name : 'DSD: DS 1', shortName : 'DSD: DS 1' }]);
         });
+    });
+
+    it('after loading the datasets it should call the periodService', function () {
+        $httpBackend.flush();
+
+        expect(periodService.filterPeriodTypes).toHaveBeenCalled();
     });
 });

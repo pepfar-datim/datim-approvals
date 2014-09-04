@@ -2,7 +2,7 @@ function treeService() {
 
 }
 
-function appController(treeService, $scope) {
+function appController(treeService, periodService, $scope) {
     this.addRwanda = function () {
         treeService.items.rwanda.items = [
             { "name": "DOD" },
@@ -11,10 +11,7 @@ function appController(treeService, $scope) {
     };
 
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
-        console.log('i am being fired');
-        console.log('the new dataset group is:');
-        console.log(dataSets.get());
-        console.log(dataSets.getIds());
+        periodService.filterPeriodTypes(dataSets.getPeriodTypes());
     });
 }
 

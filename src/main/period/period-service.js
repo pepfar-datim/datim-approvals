@@ -44,6 +44,8 @@
 function periodService(d2Api) {
     var service = this;
 
+    var currentPeriodType;
+    var generatedPeriods;
     var calendarType;
     var dateFormat = 'yyyy-mm-dd';
     var periodTypes = [
@@ -59,6 +61,7 @@ function periodService(d2Api) {
         "FinancialJuly",
         "FinancialOct"
     ];
+    var periodBaseList = periodTypes;
 
     var calendarTypes = [
         'coptic',
@@ -91,9 +94,20 @@ function periodService(d2Api) {
     };
 
     this.getPastPeriodsRecentFirst = function () {
-        var periods = dhis2.period.generator.generateReversedPeriods('Monthly', 0);
-        return dhis2.period.generator.filterFuturePeriodsExceptCurrent(periods);
+        return generatedPeriods;
     };
+
+    this.setCurrentPeriodType = function (periodType) {
+    };
+
+    this.setPeriodType = function (periodType) {
+        var periods;
+        if (_(periodTypes).contains(periodType)) {
+            currentPeriodType = periodType;
+            periods = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
+            generatedPeriods =  dhis2.period.generator.filterFuturePeriodsExceptCurrent(periods);
+        }
+    }
 
     this.loadCalendarScript = function (calendarType) {
         jQuery.getScript('../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarType + '.min.js',
@@ -103,6 +117,14 @@ function periodService(d2Api) {
                 throw new Error('Unable to load ' + calendarType + ' calendar');
             });
 
+    };
+
+    this.filterPeriodTypes = function (dataSetPeriodTypes) {
+        var firstPeriodIndex = _(periodBaseList).findLastIndex(function (periodType) {
+            return _(dataSetPeriodTypes).contains(periodType);
+        });
+        periodTypes = _.rest(periodBaseList, firstPeriodIndex);
+        return periodTypes;
     };
 
     d2Api.addEndPoint('system/info', true);

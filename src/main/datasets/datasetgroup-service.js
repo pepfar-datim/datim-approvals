@@ -1,4 +1,4 @@
-function dataSetGroupService(d2Api, $q) {
+function dataSetGroupService(d2Api, $q, periodService) {
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
@@ -33,6 +33,8 @@ function dataSetGroupService(d2Api, $q) {
         });
 
         $q.all(dataSetGroupsPromises).then(function (datasetGroups) {
+            var initialDataSets;
+
             _.forEach(datasetGroups, function (filteredGroup) {
                 if (filteredGroup.dataSets.length > 0) {
                     dataSetGroups[filteredGroup.name] = filteredGroup;
@@ -40,8 +42,12 @@ function dataSetGroupService(d2Api, $q) {
 
                 dataSetGroupNames = _.map(dataSetGroups, function (dataSetGroup, key) {
                     return key;
-                });
+                }).sort();
             });
+
+            //TODO: this code is a bit confusing?
+            initialDataSets = dataSetGroupFactory()(dataSetGroups[dataSetGroupNames[0]].dataSets);
+            periodService.filterPeriodTypes(initialDataSets.getPeriodTypes());
         });
     };
 
@@ -73,6 +79,9 @@ function dataSetGroupFactory() {
             },
             getIds: function () {
                 return _.pluck(dataSets, 'id');
+            },
+            getPeriodTypes: function () {
+                return _.uniq(_.pluck(dataSets, 'periodType'));
             }
         }
     }

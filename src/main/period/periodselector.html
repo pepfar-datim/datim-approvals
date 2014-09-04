@@ -1,0 +1,14 @@
+<div class="period-selector">
+    <select
+            name="period-type"
+            class="period-type"
+            ng-model="period.selectedPeriodType"
+            ng-options="periodType for periodType in period.periodTypes"
+            ng-change="changedPeriodType()"></select>
+    <select
+        name="periods"
+        class="periods"
+        ng-disabled="!period.selectedPeriodType"
+        ng-model="period.selectedPeriod"
+        ng-options="period.name for period in period.periodsRecentFirst"></select>
+</div>

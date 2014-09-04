@@ -140,9 +140,43 @@ describe('Period service', function () {
     //TODO: Mock out the period generator
     describe('getPastPeriodsRecentFirst', function () {
         it('should return periods', function () {
-            var periods = service.getPastPeriodsRecentFirst('Monthly', 0);
+            service.setPeriodType('Monthly');
 
-            expect(periods).toBeAnArray();
+            expect(service.getPastPeriodsRecentFirst()).toBeAnArray();
         });
+
+        it('it should not return a new array', function () {
+            service.setPeriodType('Monthly');
+
+            expect(service.getPastPeriodsRecentFirst()).toBe(service.getPastPeriodsRecentFirst());
+        });
+    });
+
+    describe('filterPeriodTypes', function () {
+        it('should be a method', function () {
+            expect(service.filterPeriodTypes).toBeAFunction();
+        });
+
+        it('filter period types on the lowerst available one', function () {
+            var filteredPeriods;
+
+            service.filterPeriodTypes(['Monthly', 'BiMonthly', 'Weekly', 'Daily']);
+            filteredPeriods = service.getPeriodTypes();
+
+            expect(filteredPeriods).toEqual(['BiMonthly', 'Quarterly', 'SixMonthly', 'SixMonthlyApril', 'Yearly', 'FinancialApril', 'FinancialJuly', 'FinancialOct']);
+        });
+
+        it('filter period types with yearly as the lowest', function () {
+            var filteredPeriods;
+
+            service.filterPeriodTypes(['Monthly', 'BiMonthly', 'Weekly', 'Daily', 'Yearly']);
+            filteredPeriods = service.getPeriodTypes();
+
+            expect(filteredPeriods).toEqual(['Yearly', 'FinancialApril', 'FinancialJuly', 'FinancialOct']);
+        });
+    });
+
+    it('should have a setCurrentPeriodType method', function () {
+        expect(service.setCurrentPeriodType).toBeAFunction();
     });
 });
