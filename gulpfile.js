@@ -12,16 +12,16 @@ var files = [
     'src/vendor/d2js/dist/js/d2.js',
     'src/vendor/restangular/dist/restangular.js',
 
-    //App files
-    'src/main/**/*.js',
-    'src/main/**/*.html',
-
     //Test files
     'src/test/utils/*.js',
     'src/test/matchers/*.js',
     'src/test/fixtures/*.js',
     'src/test/mocks/*.js',
-    'src/test/specs/**/*.js'
+    'src/test/specs/**/*.js',
+
+    //App files
+    'src/main/**/*.js',
+    'src/main/**/*.html'
 ];
 
 //General requires

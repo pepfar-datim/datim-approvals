@@ -23,7 +23,7 @@ function dataSetGroupService(d2Api, $q) {
             });
 
             dataSetGroupsPromises.push(d2Api.dataSets.getList({
-                fields: 'name,shortName,id',
+                fields: 'name,shortName,id,periodType',
                 filters: filters,
                 paging: 'false'
             }).then(function (dataSets) {
