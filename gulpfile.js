@@ -11,6 +11,7 @@ var files = [
     'src/vendor/angular-mocks/angular-mocks.js',
     'src/vendor/d2js/dist/js/d2.js',
     'src/vendor/restangular/dist/restangular.js',
+    'src/vendor/angular-ui-select/dist/select.js',
 
     //Test files
     'src/test/utils/*.js',

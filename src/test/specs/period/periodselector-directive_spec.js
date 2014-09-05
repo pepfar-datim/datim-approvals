@@ -25,13 +25,13 @@ describe('Period selector directive', function () {
     it('should add a select for the available period types', function () {
         var selectElement = element.children().first();
 
-        expect(selectElement.prop('tagName')).toBe('SELECT');
+        expect(selectElement.prop('tagName')).toBe('DIV');
     });
 
     it('should add a list of options to the select', function () {
-        var selectElement = element.children().first();
+        var selectElement = element.find('.ui-select-bootstrap').first();
 
-        expect(selectElement.children().length).toBe(12);
+        expect(selectElement.find('.ui-select-choices-row').length).toBe(11);
     });
 
     it('should update the list of available options if they change', function () {
@@ -48,16 +48,16 @@ describe('Period selector directive', function () {
     it('should display a select box for the periods', function () {
         var selectElementForPeriods;
 
-        selectElementForPeriods = element.children().last();
+        selectElementForPeriods = element.find('.ui-select-bootstrap').last();
         scope.$apply();
 
-        expect(selectElementForPeriods.children().length).toBe(5);
+        expect(selectElementForPeriods.find('.ui-select-choices-row').length).toBe(4);
     });
 
     it('should disable the period selectbox', function () {
         var selectElementForPeriods;
 
-        selectElementForPeriods = element.children().last();
+        selectElementForPeriods = element.find('.ui-select-bootstrap').last();
 
         expect(selectElementForPeriods.attr('disabled')).toBe('disabled');
     });
@@ -68,7 +68,7 @@ describe('Period selector directive', function () {
         scope.period.selectedPeriodType = 'Monthly';
         scope.$apply();
 
-        selectElementForPeriods = element.children().last();
+        selectElementForPeriods = element.find('.ui-select-bootstrap').last();
 
         expect(selectElementForPeriods.attr('disabled')).toBe('disabled');
     });

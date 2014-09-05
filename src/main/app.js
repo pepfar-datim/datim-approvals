@@ -15,7 +15,10 @@ function appController(treeService, periodService, $scope) {
     });
 }
 
-angular.module('PEPFAR.approvals', ['d2']);
+angular.module('PEPFAR.approvals', ['d2', 'ui.select']);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').service('treeService', treeService);
 
+angular.module('PEPFAR.approvals').config(function(uiSelectConfig) {
+    uiSelectConfig.theme = 'bootstrap';
+});

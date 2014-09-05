@@ -20,8 +20,8 @@ function periodSelectorDirective(periodService) {
                  }
             });
 
-            scope.changedPeriodType = function () {
-                periodService.setPeriodType(scope.period.selectedPeriodType);
+            scope.changedPeriodType = function ($item, $model) {
+                periodService.setPeriodType($item);
                 scope.period.periodsRecentFirst = periodService.getPastPeriodsRecentFirst();
 
                 //Always select the first period when a new type is picked
