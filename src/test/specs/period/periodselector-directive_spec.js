@@ -38,11 +38,9 @@ describe('Period selector directive', function () {
         var selectElement;
 
         spyOn(periodService, 'getPeriodTypes').andReturn(['Yearly']);
-
-        selectElement = element.children().first();
         scope.$apply();
 
-        expect(selectElement.children().length).toBe(2);
+        expect(element.children().first().find('.ui-select-choices-row').length).toBe(1);
     });
 
     it('should display a select box for the periods', function () {

@@ -6,9 +6,11 @@ function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory)
         templateUrl: 'datasets/datasetgroupselector.html',
         link: function (scope) {
             function updateDataSetGroups(datasetGroups) {
+                scope.dataset = {};
+
                 if (angular.isArray(datasetGroups)) {
-                    scope.datasetGroups = datasetGroups;
-                    scope.selectedDataSetGroup = scope.datasetGroups[0];
+                    scope.dataset.groups = datasetGroups;
+                    scope.dataset.selectedDataSetGroup = scope.dataset.groups[0];
                 }
             }
             updateDataSetGroups(dataSetGroupService.getDataSetGroupNames());
@@ -24,7 +26,7 @@ function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory)
             scope.onChange = function () {
                 scope.$emit(
                     'DATASETGROUP.changed',
-                    dataSetGroupFactory(dataSetGroupService.getDataSetsForGroup(scope.selectedDataSetGroup))
+                    dataSetGroupFactory(dataSetGroupService.getDataSetsForGroup(scope.dataset.selectedDataSetGroup))
                 );
             };
         }

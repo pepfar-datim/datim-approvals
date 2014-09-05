@@ -22,7 +22,7 @@ describe('Dataset group selector directive', function () {
 
     it('should have a select child', function () {
         expect(element.children().length).toBe(1);
-        expect(element.children().first().prop('tagName')).toBe('SELECT');
+        expect(element.children().first().prop('tagName')).toBe('DIV');
     });
 
     describe('select', function () {
@@ -38,21 +38,21 @@ describe('Dataset group selector directive', function () {
             dataSetGroupService.datasetGroups = [];
             scope.$apply();
 
-            expect(selectElement.children().length).toBe(1);
+            expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row').length).toBe(0);
         });
 
         it('should have options when they are set onto the scope', function () {
-            expect(selectElement.children().length).toBe(2);
+            expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row').length).toBe(2);
         });
 
         it('should display the options with the right names', function () {
-            expect(selectElement.children().first().text()).toBe('MER');
-            expect(selectElement.children().last().text()).toBe('EA');
+            expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row-inner').first().text().trim()).toBe('MER');
+            expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row-inner').last().text().trim()).toBe('EA');
         });
 
         it('should have the option id as values', function () {
-            expect(selectElement.children().first().val()).toBe('0');
-            expect(selectElement.children().last().val()).toBe('1');
+            expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row-inner').first().text().trim()).toBe('MER');
+            expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row-inner').last().text().trim()).toBe('EA');
         });
     });
 
@@ -79,7 +79,7 @@ describe('Dataset group selector directive', function () {
         }));
 
         it('should only display the options', function () {
-            expect(element.find('select').children().length).toBe(2);
+            expect(element.find('.ui-select-choices-row').length).toBe(2);
         });
     });
 });
