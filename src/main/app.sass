@@ -1,5 +1,6 @@
 @import "cde"
 @import "approvaltree/approvaltree"
+@import "datasets/dataset-view"
 
 *
   box-sizing: border-box
@@ -168,4 +169,38 @@ tr:nth-child(odd)
   color: #fff
   background-color: #F4B361
   border-color: #CD9752
-          
+
+.view-wrap
+  margin-top: 30px
+
+.data-set-report-links
+  li
+    width: 48%
+    display: inline-block
+    line-height: 1.2em
+    color: #3e606f
+    cursor: pointer
+
+    &:nth-child(even)
+      padding-left: 2%
+
+    .fa
+      color: #d1dbbd
+
+.back-to-top
+  background-color: #276696
+  color: #eeeeee
+  position: fixed
+  right: 10px
+  bottom: 10px
+  padding: 10px
+  border-radius: 5px
+  cursor: pointer
+
+.action-buttons
+  margin-bottom: 30px
+  position: relative
+
+.place-right
+  position: absolute
+  right: 0

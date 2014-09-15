@@ -16,12 +16,12 @@ function datasetViewDirective() {
     // dimension=bw8KHXzxd9i:NLV6dy7BE2O        - Funding Agency COG : USAID CO
 
 
-    function loadDataSetReport(details, element) {
+    function loadDataSetReport(details, ds, element) {
         var dataSetReportUrl = '../dhis-web-reporting/generateDataSetReport.action';
         var params = {
-            ds: 'cIGsv0OBVi8',
+            ds: ds.id,
             pe: details.period,
-            ou: 'HfVjCurKxh2',
+            ou: details.orgUnit,
             dimension: 'BOyWrF33hiR:BnjwQmbgK1b',
             cog: 'BnjwQmbgK1b'
         };
@@ -33,6 +33,24 @@ function datasetViewDirective() {
 
         jQuery.get(reportUrl).success(function (data) {
             var reportElement = jQuery('<div class="dataset-view"></div>').append(data);
+
+            var h3Elements = reportElement.find('h3');
+            var toRemoveElements = [];
+
+            h3Elements.first().html(ds.name)
+                .attr('id', ds.id);
+
+            if (h3Elements.length > 1) {
+                h3Elements.each(function (index, element) {
+                    if (index > 0) {
+                        toRemoveElements.push(element);
+                    }
+                });
+            }
+
+            _.each(toRemoveElements, function (element) {
+                jQuery(element).remove();
+            });
 
             //Remove the hidden input fields
             reportElement.find('input[type="hidden"]').remove();
@@ -52,6 +70,40 @@ function datasetViewDirective() {
 
             element.append(reportElement);
         });
+    }
+
+    function addLinksToReports(dataSets, element) {
+        var linkElement = jQuery('<div class="data-set-report-links"><ul></ul></div>');
+        var ulElement = linkElement.children('ul');
+
+        _.each(dataSets, function (dataSet) {
+            var linkElement = jQuery('<li><i class="fa fa-file"></i> ' + dataSet.name + '</li>');
+
+            linkElement.on('click', function (event) {
+                var element = jQuery('#' + dataSet.id);
+                var position;
+
+                if(element.length <= 0) { return; }
+                position = element.position();
+
+                window.scrollTo(0, position.top);
+            });
+
+            ulElement.append(linkElement);
+        });
+
+        element.prepend(linkElement);
+    }
+
+    //TODO: Take this into it's own directive (could be usable for reuse
+    function addBackToTop() {
+        var backToTop = jQuery('<div class="back-to-top"><i class="fa fa-angle-double-up"></i> Back to top</div>');
+
+        backToTop.on('click', function () {
+            window.scrollTo(0, 0);
+        });
+
+        jQuery('.view-wrap').append(backToTop);
     }
 
 
@@ -79,9 +131,22 @@ function datasetViewDirective() {
                     details.dataSets &&
                     details.cog &&
                     details.cogs) {
-                    loadDataSetReport(scope.details, element);
+
+                    //Move this out
+                    jQuery('.dataset-view-wrap').html('');
+
+                    addBackToTop();
+
+                    addLinksToReports(details.dataSets, element);
+
+                    details.dataSets.forEach(function (item) {
+                        loadDataSetReport(scope.details, item, element);
+                    });
                 }
             };
+
+            //Call the checkOnce for the initial loading
+            scope.checkValues();
         }
     };
 }

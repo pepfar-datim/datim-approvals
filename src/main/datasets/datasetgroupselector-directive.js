@@ -5,15 +5,17 @@ function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory)
         scope: {},
         templateUrl: 'datasets/datasetgroupselector.html',
         link: function (scope) {
-            function updateDataSetGroups(datasetGroups) {
-                scope.dataset = {};
+            scope.dataset = {
+                groups: undefined,
+                selectedDataSetGroup: undefined
+            };
 
+            function updateDataSetGroups(datasetGroups) {
                 if (angular.isArray(datasetGroups)) {
                     scope.dataset.groups = datasetGroups;
                     scope.dataset.selectedDataSetGroup = scope.dataset.groups[0];
                 }
             }
-            updateDataSetGroups(dataSetGroupService.getDataSetGroupNames());
 
             scope.$watch(function () {
                 return dataSetGroupService.getDataSetGroupNames();
@@ -23,11 +25,19 @@ function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory)
                 }
             });
 
-            scope.onChange = function () {
-                scope.$emit(
-                    'DATASETGROUP.changed',
-                    dataSetGroupFactory(dataSetGroupService.getDataSetsForGroup(scope.dataset.selectedDataSetGroup))
-                );
+            scope.$watch(function () {
+                return scope.dataset.selectedDataSetGroup;
+            }, function (newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    scope.$emit(
+                        'DATASETGROUP.changed',
+                        dataSetGroupFactory(dataSetGroupService.getDataSetsForGroup(scope.dataset.selectedDataSetGroup))
+                    );
+                }
+            });
+
+            scope.onChange = function ($item) {
+                scope.dataset.selectedDataSetGroup = $item;
             };
         }
     }

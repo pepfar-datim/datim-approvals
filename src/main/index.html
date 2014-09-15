@@ -12,8 +12,8 @@
 <body ng-app="PEPFAR.approvals" ng-controller="appController as app">
     <header-bar></header-bar>
 
-    <div class="label">
-
+    <div class="info-wrap">
+        <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-bind="app.status"></span></span>
     </div>
 
     <div class="dataset-group-selector-wrap">
@@ -24,13 +24,14 @@
         <period-selector></period-selector>
     </div>
 
-    <div class="dataset-view">
-        <dataset-view details="app.details"></dataset-view>
+    <div class="view-wrap" ng-view>
+
     </div>
 
     <script src="vendor/jquery/jquery.js"></script>
     <script src="vendor/lodash/lodash.compat.js"></script>
     <script src="vendor/angular/angular.js"></script>
+    <script src="vendor/angular-route/angular-route.js"></script>
     <script src="vendor/restangular/restangular.js"></script>
     <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="vendor/angular-ui-select/select.js"></script>

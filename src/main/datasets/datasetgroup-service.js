@@ -24,7 +24,7 @@ function dataSetGroupService(d2Api, $q, periodService) {
 
             dataSetGroupsPromises.push(d2Api.dataSets.getList({
                 fields: 'name,shortName,id,periodType',
-                filters: filters,
+                filter: filters,
                 paging: 'false'
             }).then(function (dataSets) {
                 filteredGroup.dataSets = dataSets.getDataOnly();
