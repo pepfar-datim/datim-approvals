@@ -26,6 +26,13 @@ function periodSelectorDirective(periodService) {
 
                 //Always select the first period when a new type is picked
                 scope.period.selectedPeriod = scope.period.periodsRecentFirst[0];
+                scope.changePeriod(scope.period.selectedPeriod);
+            };
+
+            scope.changePeriod = function ($item) {
+                if ($item === undefined) { return; }
+
+                periodService.period = $item;
             };
         }
     }

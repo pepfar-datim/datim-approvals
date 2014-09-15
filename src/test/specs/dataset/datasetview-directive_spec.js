@@ -26,5 +26,7 @@ describe('Dataset view directive', function () {
             dataSets: []
         };
         scope.$apply();
+
+        //TODO: there is no way to test this without getting the isolated scope?
     });
 });

@@ -1,6 +1,15 @@
-function appController(periodService, $scope) {
+function appController(periodService, $scope, currentUser) {
+    var controller = this;
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
         periodService.filterPeriodTypes(dataSets.getPeriodTypes());
+    });
+
+    $scope.$watch(function () {
+        return periodService.period;
+    }, function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+            controller.details.period = newVal.iso;
+        }
     });
 
     this.details = {
@@ -12,13 +21,15 @@ function appController(periodService, $scope) {
         cog: '1dsff22',
         cogs: '1dsff22'
     };
-    var stuff = this;
-    setTimeout(function () {
-        $scope.$apply(function () {
-            stuff.details.cogs = 'stuff';
-        });
-    }, 1000);
 
+    $scope.$watch(function () {
+        if (currentUser.organisationUnits)
+            return currentUser.organisationUnits[0].id;
+    }, function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+            controller.details.orgUnit = newVal;
+        }
+    })
 }
 
 angular.module('PEPFAR.approvals', ['d2', 'ui.select']);

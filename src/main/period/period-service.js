@@ -2,7 +2,7 @@
  * The following is period code taken from the core to give me an idea
  * of how to implement this.
  *
- * We should be able to remove this soon.
+ * TODO: We should be able to remove this soon.
  */
 
 //var periods = dhis2.period.generator.generateReversedPeriods('Monthly', 0);
@@ -41,10 +41,12 @@
 
 //console.log(periods);
 
+//FIXME: the service is not consistent with getters and setters
 function periodService(d2Api) {
     var service = this;
 
     var currentPeriodType;
+    var currentPeriod;
     var generatedPeriods;
     var calendarType;
     var dateFormat = 'yyyy-mm-dd';
@@ -72,6 +74,16 @@ function periodService(d2Api) {
         'thai'
     ];
 
+    Object.defineProperties(this, {
+        period: {
+            get: function () { return currentPeriod; },
+            set: function (period) { currentPeriod = period; }
+        },
+        periodType: {
+            get: function () { return currentPeriodType; }
+        }
+    });
+
     this.prepareCalendar = function () {
         var calendar = $.calendars.instance(service.getCalendarType());
         dhis2.period.generator = new dhis2.period.PeriodGenerator(calendar, this.getDateFormat());
@@ -95,9 +107,6 @@ function periodService(d2Api) {
 
     this.getPastPeriodsRecentFirst = function () {
         return generatedPeriods;
-    };
-
-    this.setCurrentPeriodType = function (periodType) {
     };
 
     this.setPeriodType = function (periodType) {

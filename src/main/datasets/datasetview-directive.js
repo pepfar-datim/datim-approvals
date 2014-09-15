@@ -2,11 +2,25 @@ function datasetViewDirective() {
     //http://localhost:8080/dhis/dhis-web-reporting/generateDataSetReport.action
     //?ds=cIGsv0OBVi8&pe=201409&ou=HfVjCurKxh2&dimension=BOyWrF33hiR%3ABnjwQmbgK1b&cog=BnjwQmbgK1b
 
+    //http://localhost:8080/dhis/dhis-web-reporting/generateDataSetReport.action
+    //?ds=Zqg76KonUx1
+    // &
+    // pe=2014&ou=HfVjCurKxh2
+    // &
+    // selectedUnitOnly=false
+    // &
+    // dimension=SH885jaRe0o:LPeJEUjotaB        - Funding Mechanism C : 1000 - Apple USAID Mechanism CO
+    // &
+    // dimension=BOyWrF33hiR:CSPJnuxBAnz        - Implementing Partner COG : University of Washington CO
+    // &
+    // dimension=bw8KHXzxd9i:NLV6dy7BE2O        - Funding Agency COG : USAID CO
+
+
     function loadDataSetReport(details, element) {
         var dataSetReportUrl = '../dhis-web-reporting/generateDataSetReport.action';
         var params = {
             ds: 'cIGsv0OBVi8',
-            pe: '201409',
+            pe: details.period,
             ou: 'HfVjCurKxh2',
             dimension: 'BOyWrF33hiR:BnjwQmbgK1b',
             cog: 'BnjwQmbgK1b'
@@ -17,12 +31,24 @@ function datasetViewDirective() {
 
         var reportUrl = [dataSetReportUrl, urlParams].join('?');
 
-        console.log(reportUrl);
-
         jQuery.get(reportUrl).success(function (data) {
-            var reportElement = jQuery(data);
+            var reportElement = jQuery('<div class="dataset-view"></div>').append(data);
 
-            reportElement = reportElement.remove('#shareForm');
+            //Remove the hidden input fields
+            reportElement.find('input[type="hidden"]').remove();
+
+            //Remove the userinfo field
+            reportElement.find('div#userInfo').remove();
+
+            //Remove empty p element
+            reportElement.find('div.cde p:last-child').remove();
+
+            //Remove the share form
+            reportElement.find('div#shareForm').remove();
+
+            //Remove the background and color inline styles and add a class to the items that had a background
+            reportElement.find('[style*="background"]').css('background', '').addClass('dataset-view-highlight');
+            reportElement.find('[style*="color"]').css('color', '');
 
             element.append(reportElement);
         });

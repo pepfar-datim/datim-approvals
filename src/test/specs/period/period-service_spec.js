@@ -176,7 +176,20 @@ describe('Period service', function () {
         });
     });
 
-    it('should have a setCurrentPeriodType method', function () {
-        expect(service.setCurrentPeriodType).toBeAFunction();
+    it('should have a periodType getter that gets the current period type', function () {
+        service.setPeriodType('Monthly');
+        expect(service.periodType).toBe('Monthly');
+    });
+
+    it('should not allow the periodType to be set on the object directly', function () {
+        function shouldThrow() {
+            service.periodType = 'Monthly';
+        }
+        expect(shouldThrow).toThrow();
+    });
+
+    it('should have a period getter and setter', function () {
+        service.period = 'value';
+        expect(service.period).toBe('value');
     });
 });
