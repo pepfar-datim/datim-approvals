@@ -1,6 +1,8 @@
+@import "../vendor/bootstrap/dist/css/bootstrap.css"
 @import "cde"
 @import "approvaltree/approvaltree"
 @import "datasets/dataset-view"
+
 
 *
   box-sizing: border-box
@@ -204,3 +206,35 @@ tr:nth-child(odd)
 .place-right
   position: absolute
   right: 0
+
+.record-table
+  input[type="text"]
+    color: #2c3e50
+    height: 1.5em
+    padding-left: .5em
+    font-weight: normal
+
+.record-table-header
+  a
+    color: #ffffff
+
+.sorting-:after, .sorting-asc:after, .sorting-desc:after
+  display: inline-block
+  font-family: FontAwesome
+  font-style: normal
+  font-weight: normal
+  line-height: 1
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+  padding-left: .5em
+
+.sorting-:after
+  content: "\f0dc"
+
+.sorting-asc:after
+  content: "\f0de"
+  color: red
+
+.sorting-desc:after
+  content: "\f0dd"
+  color: red

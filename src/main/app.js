@@ -53,7 +53,56 @@ function dataViewController($scope) {
 }
 
 function tableViewController($scope) {
+    this.approvalTableConfig = {
+        columns: [
+            { name: 'mechanism', sortable: true, searchable: true },
+            { name: 'country', sortable: true, searchable: true },
+            { name: 'agency', sortable: true, searchable: true },
+            { name: 'partner', sortable: true, searchable: true },
+            { name: 'status', sortable: true, searchable: true },
+            { name: 'actions', sortable: true, searchable: true }
+        ],
+        pageItems: 3
+    };
 
+    this.approvalTableData = [
+        {
+            mechanism: '12345 - Partner Jones: Systems Strengthening',
+            country: 'Rwanda',
+            agency: 'USAID',
+            partner: 'Partner Jones',
+            status: 'Submitted by country',
+            actions: 'Accept'
+        }, {
+            mechanism: 'Partner Jones: HPSS',
+            country: 'Rwanda',
+            agency: 'USAID',
+            partner: 'Partner Jones',
+            status: 'Accepted by global',
+            actions: 'Submit'
+        }, {
+            mechanism: 'MoH CoAg',
+            country: 'Rwanda',
+            agency: 'HHS/CDC',
+            partner: 'Ministry of Health Rwanda',
+            status: 'Submitted by country',
+            actions: 'Accept'
+        }, {
+            mechanism: 'Supporting implementation of National AIDS Framework',
+            country: 'Rwanda',
+            agency: 'HHS/CDC',
+            partner: 'Ministry of Health Rwanda',
+            status: 'Accepted by country',
+            actions: ''
+        }, {
+            mechanism: '23456 - Partner Jones: HIV Care',
+            country: 'Rwanda',
+            agency: 'USAID',
+            partner: 'Partner Jones',
+            status: 'Submitted by global',
+            actions: 'Unsubmit'
+        }
+    ];
 }
 
 angular.module('PEPFAR.approvals', ['ngRoute', 'd2', 'ui.select']);
