@@ -1,4 +1,13 @@
 #!/bin/bash
 
+if [[ $1 == 'true' ]] ; then
+  #Remove d2js
+  rm -r src/vendor/d2js/
+  rm -r build/vendor/d2js/
+
+  #Run bower install to get d2js
+  bower install
+fi
+
 gulp build
 gulp deploy
