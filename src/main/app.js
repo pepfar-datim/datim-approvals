@@ -62,7 +62,8 @@ function tableViewController($scope) {
             { name: 'status', sortable: true, searchable: true },
             { name: 'actions', sortable: true, searchable: true }
         ],
-        pageItems: 3
+        pageItems: 3,
+        select: true
     };
 
     this.approvalTableData = [
@@ -114,7 +115,7 @@ angular.module('PEPFAR.approvals').config(function(uiSelectConfig) {
     uiSelectConfig.theme = 'bootstrap';
 });
 
-angular.module('PEPFAR.approvals').config(function ($routeProvider, $locationProvider) {
+angular.module('PEPFAR.approvals').config(function ($routeProvider) {
     $routeProvider.when('/data-view', {
         templateUrl: 'dataview.html',
         controller: 'dataViewController',
