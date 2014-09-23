@@ -74,7 +74,7 @@ function tableViewController() {
             partner: 'Partner Jones',
             status: 'Submitted by country',
             actions: [
-                'accept'
+                'submit'
             ]
         }, {
             mechanism: 'Partner Jones: HPSS',
