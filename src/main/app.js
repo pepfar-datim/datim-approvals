@@ -21,7 +21,7 @@ function appController(periodService, $scope, currentUser) {
         }
 
         $scope.details.orgUnit =  orgUnit.id;
-        controller.title = orgUnit.name + ' - Data approval';
+        controller.title = orgUnit.name + ' - Data approval'; //TODO: Add COGS
     });
 
     //When the dataset group is changed update the filter types and the datasets
@@ -52,7 +52,7 @@ function dataViewController($scope) {
     this.details = $scope.details;
 }
 
-function tableViewController($scope) {
+function tableViewController() {
     this.approvalTableConfig = {
         columns: [
             { name: 'mechanism', sortable: true, searchable: true },
@@ -62,68 +62,145 @@ function tableViewController($scope) {
             { name: 'status', sortable: true, searchable: true },
             { name: 'actions', sortable: true, searchable: true }
         ],
-        pageItems: 3,
-        select: true
+        select: true,
+        headerInputClass: 'form-control'
     };
 
-    this.approvalTableData = [
+    this.approvalTableDataSource = [
         {
             mechanism: '12345 - Partner Jones: Systems Strengthening',
             country: 'Rwanda',
             agency: 'USAID',
             partner: 'Partner Jones',
             status: 'Submitted by country',
-            actions: 'Accept'
+            actions: [
+                'accept'
+            ]
         }, {
             mechanism: 'Partner Jones: HPSS',
             country: 'Rwanda',
             agency: 'USAID',
             partner: 'Partner Jones',
             status: 'Accepted by global',
-            actions: 'Submit'
+            actions: [
+                'unsubmit'
+            ]
         }, {
             mechanism: 'MoH CoAg',
             country: 'Rwanda',
             agency: 'HHS/CDC',
             partner: 'Ministry of Health Rwanda',
             status: 'Submitted by country',
-            actions: 'Accept'
+            actions: [
+                'unsubmit'
+            ]
         }, {
             mechanism: 'Supporting implementation of National AIDS Framework',
             country: 'Rwanda',
             agency: 'HHS/CDC',
             partner: 'Ministry of Health Rwanda',
             status: 'Accepted by country',
-            actions: ''
+            actions: [
+                ''
+            ]
         }, {
             mechanism: '23456 - Partner Jones: HIV Care',
             country: 'Rwanda',
             agency: 'USAID',
             partner: 'Partner Jones',
             status: 'Submitted by global',
-            actions: 'Unsubmit'
+            actions: [
+                'unsubmit'
+            ]
         }
     ];
+
+    this.hasItems = function (tabCtrl, tabName) {
+        tabCtrl.setActive(tabName, !!this.approvalTableData.length);
+
+        return !!this.approvalTableData.length;
+    }
+
+    this.mechanismHasActions = function (mechanism, actions) {
+        var result = false;
+        _.each(actions, function (action) {
+            result = result || _.contains(mechanism.actions, action);
+        });
+        return result;
+    };
+
+    this.actionsToFilterOn = [];
+    this.filterData = function () {
+        return _.filter(this.approvalTableDataSource, function (mechanism) {
+            if (this.mechanismHasActions(mechanism, this.actionsToFilterOn)) {
+                return true;
+            }
+            return false;
+        }, this);
+    };
 }
 
-angular.module('PEPFAR.approvals', ['ngRoute', 'd2', 'ui.select']);
+function recievedTableViewController($controller) {
+    $.extend(this, $controller('tableViewController', {}));
+
+    this.actionsToFilterOn = ['accept'];
+    this.approvalTableData = this.filterData();
+}
+
+function acceptedTableViewController($controller) {
+    $.extend(this, $controller('tableViewController', {}));
+
+    this.actionsToFilterOn = ['submit'];
+    this.approvalTableData = this.filterData();
+}
+
+function submittedTableViewController($controller) {
+    $.extend(this, $controller('tableViewController', {}));
+
+    this.actionsToFilterOn = ['unsubmit'];
+    this.approvalTableData = this.filterData();
+}
+
+function allTableViewController($controller) {
+    $.extend(this, $controller('tableViewController', {}));
+
+    //The filter always returns true.
+    this.filterData = function () {
+        return _.filter(this.approvalTableDataSource, function () {
+            return true;
+        }, this);
+    };
+    this.approvalTableData = this.filterData();
+}
+
+function tabController() {
+    this.state = {};
+
+    this.setActive = function (tabName, isActive) {
+        var active = _.filter(this.state, function (item) {
+            if (item === true) {
+                return true;
+            }
+            return false;
+        });
+
+        if (active.length === 0) {
+            _.each(this.state, function (item) {
+                if (item !== tabName) {
+                    item = false;
+                }
+            });
+            this.state[tabName] = isActive;
+        }
+    };
+}
+
+angular.module('PEPFAR.approvals', ['ngRoute', 'd2', 'ui.select', 'ui.bootstrap.tabs']);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('dataViewController', dataViewController);
-angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
+angular.module('PEPFAR.approvals').controller('tabController', tabController);
+//angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
 
 angular.module('PEPFAR.approvals').config(function(uiSelectConfig) {
     uiSelectConfig.theme = 'bootstrap';
-});
-
-angular.module('PEPFAR.approvals').config(function ($routeProvider) {
-    $routeProvider.when('/data-view', {
-        templateUrl: 'dataview.html',
-        controller: 'dataViewController',
-        controllerAs: 'dataView'
-    });
-    $routeProvider.otherwise({
-        templateUrl: 'tableview.html',
-        controller: 'tableViewController',
-        controllerAs: 'tableView'
-    });
 });

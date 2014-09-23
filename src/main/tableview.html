@@ -1,98 +1,9 @@
 <div class="table-view">
-    <div class="action-buttons">
-        <div class="btn-group">
-            <button class="btn btn-default" ng-disabled="!details.period" nav-click="data-view">View/Act</button>
-        </div>
-    </div>
-
     <div>
-        <h4>Mechanisms <span class="fa-stack fa-lg available-actions">
-                <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
-                <i class="fa-stack-1x available-actions-text">3</i>
-            </span></h4>
-
         <div class="table-wrap">
 
-            <record-Table table-config="tableView.approvalTableConfig" table-data="tableView.approvalTableData"></record-table>
+            <record-Table table-config="tableView.approvalTableConfig" table-data-source="tableView.approvalTableData"></record-table>
 
-            <table>
-                <tbody>
-                <tr>
-                    <th><input type="checkbox"></th>
-                    <th>
-                        Mechanism
-                    </th>
-                    <th>
-                        Country
-                    </th>
-                    <th>
-                        Agency
-                    </th>
-                    <th>
-                        Partner
-                    </th>
-                    <th>
-                        Status
-                    </th>
-                    <th>Action(s)</th>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>14245 - Partner Jones: Systems Strengthening</td>
-                    <td>Rwanda</td>
-                    <td>USAID</td>
-                    <td>ABT Associates</td>
-                    <td>Submitted by country</td>
-                    <td>Accept</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>Partner Jones: HPSS</td>
-                    <td>Rwanda</td>
-                    <td>USAID</td>
-                    <td>ABT Associates</td>
-                    <td>Accepted by global</td>
-                    <td>Submit</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>13422 - MoH CoAg</td>
-                    <td>Rwanda</td>
-                    <td>HHS/CDC</td>
-                    <td>Ministry of Health Rwanda</td>
-                    <td>Submitted by country</td>
-                    <td>Accept</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>34222 - Supporting implementation of National AIDS Framework</td>
-                    <td>Rwanda</td>
-                    <td>HHS/CDC</td>
-                    <td>Ministry of Health Rwanda</td>
-                    <td>Accepted by country</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>43322 - Partner Jones: HPSS</td>
-                    <td>Rwanda</td>
-                    <td>USAID</td>
-                    <td>Partner Jones</td>
-                    <td>Submitted by global</td>
-                    <td>Unsubmit</td>
-                </tr>
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td>342422 - Partner Jones: HIV Care</td>
-                    <td>Rwanda</td>
-                    <td>USAID</td>
-                    <td>Partner Jones</td>
-                    <td>Submitted by global</td>
-                    <td>Un-submit</td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </div>
-
 </div>

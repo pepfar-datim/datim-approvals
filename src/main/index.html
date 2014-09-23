@@ -23,9 +23,55 @@
     <div>
         <period-selector></period-selector>
     </div>
+    <div ng-controller="tabController as tabCtrl">
+        <div class="action-buttons">
+            <div class="btn-group">
+                <button class="btn btn-default" ng-disabled="!details.period" nav-click="data-view">View/Act</button>
+            </div>
+        </div>
 
-    <div class="view-wrap" ng-view>
-
+        <tabset justified="true">
+            <tab ng-controller="recievedTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'recieved')" active="tabCtrl.state.recieved">
+                <tab-heading>
+                    Recieved
+                    <span class="fa-stack fa-lg available-actions">
+                        <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
+                        <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
+                    </span>
+                </tab-heading>
+                <div ng-include="'tableview.html'"></div>
+            </tab>
+            <tab ng-controller="acceptedTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'accepted')" active="tabCtrl.state.accepted">
+                <tab-heading>
+                    Accepted
+                    <span class="fa-stack fa-lg available-actions">
+                        <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
+                        <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
+                    </span>
+                </tab-heading>
+                <div ng-include="'tableview.html'"></div>
+            </tab>
+            <tab ng-controller="submittedTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'submitted')" active="tabCtrl.state.submitted">
+                <tab-heading>
+                    Submitted
+                    <span class="fa-stack fa-lg available-actions">
+                        <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
+                        <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
+                    </span>
+                </tab-heading>
+                <div ng-include="'tableview.html'"></div>
+            </tab>
+            <tab ng-controller="allTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'all')" active="tabCtrl.state.all">
+                <tab-heading>
+                    All
+                    <span class="fa-stack fa-lg available-items">
+                        <i class="fa fa-stack-1x fa-square-o available-items-dot"></i>
+                        <i class="fa-stack-1x available-items-text" ng-bind="tableView.approvalTableData.length"></i>
+                    </span>
+                </tab-heading>
+                <div ng-include="'tableview.html'"></div>
+            </tab>
+        </tabset>
     </div>
 
     <script src="vendor/jquery/jquery.js"></script>

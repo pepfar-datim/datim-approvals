@@ -9,5 +9,15 @@ if [[ $1 == 'true' ]] ; then
   bower install
 fi
 
+if [[ $1 == 'dev' ]] ; then
+  #Remove d2js
+  rm -r src/vendor/d2js/
+  rm -r build/vendor/d2js/
+
+  bower install
+
+  cp -r ../apps/d2/dev/* src/vendor/d2js/dist
+fi
+
 gulp build
 gulp deploy

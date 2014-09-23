@@ -85,21 +85,34 @@ tr:nth-child(even)
 tr:nth-child(odd)
   background-color: #FCFCFC
 
-.available-actions
+.available-actions, .available-items
   position: absolute
   font-size: 1.2em
   height: 1em
   width: 1em
-  top: -.5em
+  top: 0.25em
   margin-left: .5em
+
+.available-actions-dot, .available-items-dot
+  font-size: 1.25em
+
+  .disabled &
+    color: #BEBEBE
 
 .available-actions-dot
   color: #E7AA5C
-  font-size: 1.25em
+
+.available-items-dot
+  color: #CCCCCC
+
+.available-actions-text, .available-items-text
+  font-size: .8em
 
 .available-actions-text
   color: white
-  font-size: .8em
+
+.available-items-text
+  color: #CCCCCC
 
 .info-wrap
   position: relative
@@ -238,3 +251,21 @@ tr:nth-child(odd)
 .sorting-desc:after
   content: "\f0dd"
   color: red
+
+.tab-content
+  padding: 15px
+  border-left: 1px solid #ccc
+  border-right: 1px solid #ccc
+  margin-bottom: 30px
+  border-bottom: 1px solid #ccc
+  border-radius: 0 0 4px 4px
+
+.period-selector
+  margin-bottom: 30px
+
+.nav-tabs
+  li
+    cursor: pointer
+
+    &:active
+      cursor: inherit
