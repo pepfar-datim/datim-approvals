@@ -21,3 +21,4 @@ fi
 
 gulp build
 gulp deploy
+gulp copy-fake-api

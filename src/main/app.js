@@ -52,62 +52,7 @@ function dataViewController($scope) {
     this.details = $scope.details;
 }
 
-function mechanismService(d2Api) {
-    this.approvalTableData = this.filterData([
-        {
-            mechanism: '12345 - Partner Jones: Systems Strengthening',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Submitted by country',
-            actions: [
-                'submit'
-            ]
-        },
-        {
-            mechanism: 'Partner Jones: HPSS',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Accepted by global',
-            actions: [
-                'unsubmit'
-            ]
-        },
-        {
-            mechanism: 'MoH CoAg',
-            country: 'Rwanda',
-            agency: 'HHS/CDC',
-            partner: 'Ministry of Health Rwanda',
-            status: 'Submitted by country',
-            actions: [
-                'unsubmit'
-            ]
-        },
-        {
-            mechanism: 'Supporting implementation of National AIDS Framework',
-            country: 'Rwanda',
-            agency: 'HHS/CDC',
-            partner: 'Ministry of Health Rwanda',
-            status: 'Accepted by country',
-            actions: [
-                ''
-            ]
-        },
-        {
-            mechanism: '23456 - Partner Jones: HIV Care',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Submitted by global',
-            actions: [
-                'unsubmit'
-            ]
-        }
-    ]);
-}
-
-function tableViewController() {
+function tableViewController(mechanismService) {
     this.approvalTableConfig = {
         columns: [
             { name: 'mechanism', sortable: true, searchable: true },
@@ -121,7 +66,7 @@ function tableViewController() {
         headerInputClass: 'form-control'
     };
 
-    this.approvalTableDataSource = [];
+    this.approvalTableDataSource = mechanismService.getData();
 
     this.hasItems = function (tabCtrl, tabName) {
         tabCtrl.setActive(tabName, !!this.approvalTableData.length);

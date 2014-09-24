@@ -116,7 +116,7 @@ function periodService(d2Api) {
             periods = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
             generatedPeriods =  dhis2.period.generator.filterFuturePeriodsExceptCurrent(periods);
         }
-    }
+    };
 
     this.loadCalendarScript = function (calendarType) {
         jQuery.getScript('../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarType + '.min.js',

@@ -13,4 +13,6 @@ src/vendor/
 dev/
 
 coverage
+
 __my_notes__
+fake-api

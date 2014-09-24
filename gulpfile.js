@@ -188,3 +188,9 @@ gulp.task('default', function () {
     rimraf(dhis_directory, function () {});
     runSequence('build', 'deploy');
 });
+
+gulp.task('copy-fake-api', function () {
+    gulp.src([
+        'fake-api/**/*.json'
+    ]).pipe(gulp.dest(dhis_directory));
+});
