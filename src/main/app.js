@@ -20,7 +20,7 @@ function appController(periodService, $scope, currentUser) {
             orgUnit = currentUser.valueFor('organisationUnits')[0];
         }
 
-        $scope.details.orgUnit =  orgUnit.id;
+        $scope.details.orgUnit = orgUnit.id;
         controller.title = orgUnit.name + ' - Data approval'; //TODO: Add COGS
     });
 
@@ -52,6 +52,61 @@ function dataViewController($scope) {
     this.details = $scope.details;
 }
 
+function mechanismService(d2Api) {
+    this.approvalTableData = this.filterData([
+        {
+            mechanism: '12345 - Partner Jones: Systems Strengthening',
+            country: 'Rwanda',
+            agency: 'USAID',
+            partner: 'Partner Jones',
+            status: 'Submitted by country',
+            actions: [
+                'submit'
+            ]
+        },
+        {
+            mechanism: 'Partner Jones: HPSS',
+            country: 'Rwanda',
+            agency: 'USAID',
+            partner: 'Partner Jones',
+            status: 'Accepted by global',
+            actions: [
+                'unsubmit'
+            ]
+        },
+        {
+            mechanism: 'MoH CoAg',
+            country: 'Rwanda',
+            agency: 'HHS/CDC',
+            partner: 'Ministry of Health Rwanda',
+            status: 'Submitted by country',
+            actions: [
+                'unsubmit'
+            ]
+        },
+        {
+            mechanism: 'Supporting implementation of National AIDS Framework',
+            country: 'Rwanda',
+            agency: 'HHS/CDC',
+            partner: 'Ministry of Health Rwanda',
+            status: 'Accepted by country',
+            actions: [
+                ''
+            ]
+        },
+        {
+            mechanism: '23456 - Partner Jones: HIV Care',
+            country: 'Rwanda',
+            agency: 'USAID',
+            partner: 'Partner Jones',
+            status: 'Submitted by global',
+            actions: [
+                'unsubmit'
+            ]
+        }
+    ]);
+}
+
 function tableViewController() {
     this.approvalTableConfig = {
         columns: [
@@ -66,60 +121,13 @@ function tableViewController() {
         headerInputClass: 'form-control'
     };
 
-    this.approvalTableDataSource = [
-        {
-            mechanism: '12345 - Partner Jones: Systems Strengthening',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Submitted by country',
-            actions: [
-                'submit'
-            ]
-        }, {
-            mechanism: 'Partner Jones: HPSS',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Accepted by global',
-            actions: [
-                'unsubmit'
-            ]
-        }, {
-            mechanism: 'MoH CoAg',
-            country: 'Rwanda',
-            agency: 'HHS/CDC',
-            partner: 'Ministry of Health Rwanda',
-            status: 'Submitted by country',
-            actions: [
-                'unsubmit'
-            ]
-        }, {
-            mechanism: 'Supporting implementation of National AIDS Framework',
-            country: 'Rwanda',
-            agency: 'HHS/CDC',
-            partner: 'Ministry of Health Rwanda',
-            status: 'Accepted by country',
-            actions: [
-                ''
-            ]
-        }, {
-            mechanism: '23456 - Partner Jones: HIV Care',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Submitted by global',
-            actions: [
-                'unsubmit'
-            ]
-        }
-    ];
+    this.approvalTableDataSource = [];
 
     this.hasItems = function (tabCtrl, tabName) {
         tabCtrl.setActive(tabName, !!this.approvalTableData.length);
 
         return !!this.approvalTableData.length;
-    }
+    };
 
     this.mechanismHasActions = function (mechanism, actions) {
         var result = false;
@@ -130,8 +138,8 @@ function tableViewController() {
     };
 
     this.actionsToFilterOn = [];
-    this.filterData = function () {
-        return _.filter(this.approvalTableDataSource, function (mechanism) {
+    this.filterData = function (data) {
+        return _.filter(data, function (mechanism) {
             if (this.mechanismHasActions(mechanism, this.actionsToFilterOn)) {
                 return true;
             }
@@ -144,29 +152,29 @@ function recievedTableViewController($controller) {
     $.extend(this, $controller('tableViewController', {}));
 
     this.actionsToFilterOn = ['accept'];
-    this.approvalTableData = this.filterData();
+    this.approvalTableData = this.filterData(this.approvalTableDataSource);
 }
 
 function acceptedTableViewController($controller) {
     $.extend(this, $controller('tableViewController', {}));
 
     this.actionsToFilterOn = ['submit'];
-    this.approvalTableData = this.filterData();
+    this.approvalTableData = this.filterData(this.approvalTableDataSource);
 }
 
 function submittedTableViewController($controller) {
     $.extend(this, $controller('tableViewController', {}));
 
     this.actionsToFilterOn = ['unsubmit'];
-    this.approvalTableData = this.filterData();
+    this.approvalTableData = this.filterData(this.approvalTableDataSource);
 }
 
 function allTableViewController($controller) {
     $.extend(this, $controller('tableViewController', {}));
 
     //The filter always returns true.
-    this.filterData = function () {
-        return _.filter(this.approvalTableDataSource, function () {
+    this.filterData = function (data) {
+        return _.filter(data, function () {
             return true;
         }, this);
     };
@@ -195,12 +203,16 @@ function tabController() {
     };
 }
 
-angular.module('PEPFAR.approvals', ['ngRoute', 'd2', 'ui.select', 'ui.bootstrap.tabs']);
+angular.module('PEPFAR.approvals', ['d2', 'ui.select', 'ui.bootstrap.tabs']);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('dataViewController', dataViewController);
 angular.module('PEPFAR.approvals').controller('tabController', tabController);
-//angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
+angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
+angular.module('PEPFAR.approvals').controller('recievedTableViewController', recievedTableViewController);
+angular.module('PEPFAR.approvals').controller('acceptedTableViewController', acceptedTableViewController);
+angular.module('PEPFAR.approvals').controller('submittedTableViewController', submittedTableViewController);
+angular.module('PEPFAR.approvals').controller('allTableViewController', allTableViewController);
 
-angular.module('PEPFAR.approvals').config(function(uiSelectConfig) {
+angular.module('PEPFAR.approvals').config(function (uiSelectConfig) {
     uiSelectConfig.theme = 'bootstrap';
 });

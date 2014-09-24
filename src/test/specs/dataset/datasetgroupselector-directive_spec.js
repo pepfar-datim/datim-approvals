@@ -54,32 +54,9 @@ describe('Dataset group selector directive', function () {
             expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row-inner').first().text().trim()).toBe('MER');
             expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row-inner').last().text().trim()).toBe('EA');
         });
-    });
-
-    describe('on change', function () {
-        var selectElement;
-        beforeEach(function () {
-            selectElement = element.children().first();
-        });
-
-        it('should call the onChange function on the scope', function () {
-            selectElement.change();
-        });
-    });
-
-    describe('initialization with values of dataset groups', function () {
-        beforeEach(inject(function ($rootScope, $compile) {
-            scope = $rootScope.$new();
-            scope.datasetGroups = [ 'MER', 'EA' ];
-
-            element = angular.element('<dataset-group-selector dataset-groups="datasetGroups"></dataset-group-selector>');
-
-            element = $compile(element)(scope);
-            scope.$digest();
-        }));
 
         it('should only display the options', function () {
-            expect(element.find('.ui-select-choices-row').length).toBe(2);
+            expect(element.find('.ui-select-choices-group .ui-select-choices-row-inner').length).toBe(2);
         });
     });
 });
