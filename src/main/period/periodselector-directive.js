@@ -17,6 +17,8 @@ function periodSelectorDirective(periodService) {
             }, function (newVal, oldVal) {
                  if (newVal !== oldVal) {
                      scope.period.periodTypes = periodService.getPeriodTypes();
+                     scope.period.selectedPeriodType = scope.period.periodTypes[0];
+                     scope.changedPeriodType(scope.period.selectedPeriodType);
                  }
             });
 

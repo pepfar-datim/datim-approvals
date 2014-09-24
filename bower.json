@@ -13,7 +13,7 @@
     "d2js": "/Work/UIO/dhis/apps/d2/.git",
     "restangular": "~1.4.0",
     "angular-bootstrap": "~0.11.0",
-    "angular-ui-select": "~0.6.0"
+    "angular-ui-select": "~0.7.0"
   },
   "devDependencies": {
     "angular-mocks": "~1.2.23"

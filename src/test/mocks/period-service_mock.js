@@ -28,6 +28,10 @@ function periodServiceMock() {
 
         getPastPeriodsRecentFirst: function () {
             return periodValues;
+        },
+
+        setPeriodType: function ($item) {
+
         }
     }
 }

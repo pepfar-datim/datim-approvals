@@ -31,7 +31,7 @@ describe('Period selector directive', function () {
     it('should add a list of options to the select', function () {
         var selectElement = element.find('.ui-select-bootstrap').first();
 
-        expect(selectElement.find('.ui-select-choices-row').length).toBe(11);
+        expect(selectElement.find('.ui-select-choices-row').length).toBe(4);
     });
 
     it('should update the list of available options if they change', function () {
@@ -40,7 +40,7 @@ describe('Period selector directive', function () {
         spyOn(periodService, 'getPeriodTypes').andReturn(['Yearly']);
         scope.$apply();
 
-        expect(element.children().first().find('.ui-select-choices-row').length).toBe(1);
+        expect(element.children().first().find('.ui-select-choices-row').length).toBe(4);
     });
 
     it('should display a select box for the periods', function () {

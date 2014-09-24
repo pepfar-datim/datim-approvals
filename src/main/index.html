@@ -16,13 +16,16 @@
         <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-bind="app.status"></span></span>
     </div>
 
-    <div class="dataset-group-selector-wrap">
-        <dataset-group-selector></dataset-group-selector>
+    <div class="dropdown-controls">
+        <div class="dataset-group-selector-wrap">
+            <dataset-group-selector></dataset-group-selector>
+        </div>
+
+        <div class="period-selector-wrap">
+            <period-selector></period-selector>
+        </div>
     </div>
 
-    <div>
-        <period-selector></period-selector>
-    </div>
     <div ng-controller="tabController as tabCtrl">
         <div class="action-buttons">
             <div class="btn-group">
