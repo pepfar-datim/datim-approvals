@@ -82,9 +82,18 @@ function dataSetGroupFactory() {
             },
             getPeriodTypes: function () {
                 return _.uniq(_.pluck(dataSets, 'periodType'));
+            },
+            getCategoryIds: function () {
+                var categoriesFromCategoryCombos;
+
+                categoriesFromCategoryCombos = _.pluck(_.pluck(dataSets, 'categoryCombo'), 'categories');
+                categoriesFromCategoryCombos = _.flatten(categoriesFromCategoryCombos);
+                categoriesFromCategoryCombos = _.pluck(categoriesFromCategoryCombos, 'id');
+
+                return _.uniq(categoriesFromCategoryCombos);
             }
-        }
-    }
+        };
+    };
 }
 
 angular.module('PEPFAR.approvals').service('dataSetGroupService', dataSetGroupService);

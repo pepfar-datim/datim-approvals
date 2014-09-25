@@ -1,5 +1,5 @@
 (function (window) {
-    var library = {}
+    var library = {};
 
     library.orgUnitLevel1 = {"organisationUnits": [
         {"id": "a9OHUtkxjO8", "level": 1, "name": "Eshu Dispensary", "children": [
@@ -95,8 +95,23 @@
             ]
         }
     ]);
-
-
+    library.dataSets = [
+        {"id": "Zqg76KonUx1", "name": "DS: Dataset One", "shortName": "DS: Dataset One", "periodType": "Monthly", "categoryCombo": {"categories": [
+            {"id": "SH885jaRe0o"}
+        ]}},
+        {"id": "cIGsv0OBVi8", "name": "DS: Dataset Two", "shortName": "DS: Dataset Two", "periodType": "Monthly", "categoryCombo": {"categories": [
+            {"id": "SH885jaRe0o"}
+        ]}},
+        {"id": "lr508Rm7mHS", "name": "DS: Dataset Three", "shortName": "DS: Dataset Three", "periodType": "Monthly", "categoryCombo": {"categories": [
+            {"id": "GLevLNI9wkl"}
+        ]}},
+        {"id": "xY5nwObRyi7", "name": "DS: Dataset Four", "shortName": "DS: Dataset Four", "periodType": "Yearly", "categoryCombo": {"categories": [
+            {"id": "SH885jaRe0o"}
+        ]}},
+        {"id": "vX0MoAE7JfL", "name": "DS: Dataset Five", "shortName": "DS: Dataset Five", "periodType": "Monthly", "categoryCombo": {"categories": [
+            {"id": "SH885jaRe0o"}
+        ]}}
+    ];
 
     function getFixture(key) {
         return library[key];
