@@ -2,60 +2,13 @@ describe('Mechanism service', function () {
     var mechanismService;
     var $httpBackend;
     var $log;
-    var apiUrl = '/dhis/api/../dhis-web-pepfar-approvals/mechanisms.json';
+    var apiUrlWithCorrectParameters = ['/dhis/api/categories?',
+        'fields=id,name,categoryOptions%5Bid,name,organisationUnits,',
+        'groups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D&',
+        'filter=id:eq:dsetId1&filter=id:eq:dsetId2&filter=id:eq:dsetId3',
+        '&paging=false&pe=2014'].join('');
 
-    var mechanismsFromApi = [
-        {
-            mechanism: '12345 - Partner Jones: Systems Strengthening',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Submitted by country',
-            actions: [
-                'submit'
-            ]
-        },
-        {
-            mechanism: 'Partner Jones: HPSS',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Accepted by global',
-            actions: [
-                'unsubmit'
-            ]
-        },
-        {
-            mechanism: 'MoH CoAg',
-            country: 'Rwanda',
-            agency: 'HHS/CDC',
-            partner: 'Ministry of Health Rwanda',
-            status: 'Submitted by country',
-            actions: [
-                'unsubmit'
-            ]
-        },
-        {
-            mechanism: 'Supporting implementation of National AIDS Framework',
-            country: 'Rwanda',
-            agency: 'HHS/CDC',
-            partner: 'Ministry of Health Rwanda',
-            status: 'Accepted by country',
-            actions: [
-                ''
-            ]
-        },
-        {
-            mechanism: '23456 - Partner Jones: HIV Care',
-            country: 'Rwanda',
-            agency: 'USAID',
-            partner: 'Partner Jones',
-            status: 'Submitted by global',
-            actions: [
-                'unsubmit'
-            ]
-        }
-    ];
+    var categoriesFromApi = fixtures.get('categories');
 
     beforeEach(module('d2-rest'));
     beforeEach(module('PEPFAR.approvals'));
@@ -64,8 +17,6 @@ describe('Mechanism service', function () {
         mechanismService = _mechanismService_;
         $httpBackend = _$httpBackend_;
         $log = _$log_;
-
-        $httpBackend.whenGET(apiUrl).respond(200, angular.copy(mechanismsFromApi));
     }));
 
     afterEach(function () {
@@ -79,32 +30,33 @@ describe('Mechanism service', function () {
             expect(mechanismService.getData().finally).toBeAFunction();
         });
 
-        it('should do a request to the api for the mechanisms', function () {
-            $httpBackend.expectGET(apiUrl);
+        it('should not do a request to the api for the mechanisms when period is missing', function () {
+            mechanismService.getData();
+        });
+
+        it('should add the parameters to the url', function () {
+            mechanismService.period = '2014';
+            mechanismService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
 
             mechanismService.getData();
 
-            $httpBackend.flush();
+            $httpBackend.expectGET(apiUrlWithCorrectParameters).respond(200);
         });
 
         it('should only return the data and not the added rest functions', function () {
             var mechanisms = [];
+
+            $httpBackend.expectGET(apiUrlWithCorrectParameters).respond(200, angular.copy(categoriesFromApi));
+
+            mechanismService.period = '2014';
+            mechanismService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
 
             mechanismService.getData().then(function (data) {
                 mechanisms = data
             });
             $httpBackend.flush();
 
-            expect(mechanisms).toEqual(mechanismsFromApi);
-        });
-
-        it('should add the parameters to the url', function () {
-            mechanismService.period = '2014';
-            mechanismService.datasets = ['dsetId1', 'dsetId2', 'dsetId3'];
-
-            mechanismService.getData();
-
-            $httpBackend.expectGET(apiUrl + '?ds=dsetId1&ds=dsetId2&ds=dsetId3&pe=2014').respond(200);
+            expect(mechanisms).toEqual(categoriesFromApi.categories);
         });
     });
 
@@ -122,19 +74,19 @@ describe('Mechanism service', function () {
         });
     });
 
-    describe('datasets property', function () {
+    describe('categories property', function () {
         it('should be set to an empty array', function () {
-            expect(mechanismService.datasets).toEqual([]);
+            expect(mechanismService.categories).toEqual([]);
         });
 
-        it('should set the dataset on the service', function () {
-            mechanismService.datasets = ['set1', 'set2', 'set3'];
+        it('should set the categories on the service', function () {
+            mechanismService.categories = ['set1', 'set2', 'set3'];
 
-            expect(mechanismService.datasets).toEqual(['set1', 'set2', 'set3']);
+            expect(mechanismService.categories).toEqual(['set1', 'set2', 'set3']);
         });
 
         it('should log an error when the given value is not an array', function () {
-            mechanismService.datasets = '';
+            mechanismService.categories = '';
 
             expect($log.error.logs).toContain(['Mechanism Service: Period should be a string']);
         });

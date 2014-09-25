@@ -1,5 +1,5 @@
 describe('Datasetgroup service', function () {
-    var merUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bcategories%5Bid%5D%5D&filter=id:eq:cIGsv0OBVi8&filter=id:eq:xY5nwObRyi7&filter=id:eq:lr508Rm7mHS&filter=id:eq:vVhGT24UEw9&filter=id:eq:vX0MoAE7JfL&filter=id:eq:vu4lNmAaBkm&filter=id:eq:m4DLLzOPF08&filter=id:eq:hdjgjnHcr8H&filter=id:eq:KIG137Mm5rJ&filter=id:eq:Zqg76KonUx1&filter=id:eq:wji7xi0tZGm&filter=id:eq:z6YxZoMm227&filter=id:eq:NYveSOaHM3O&filter=id:eq:maRBXO2gNjU&filter=id:eq:oIKX7smWRnp&filter=id:eq:dGlmC3LBp4q&filter=id:eq:KDniz30AG0s&filter=id:eq:BjJjrjHdsKT&filter=id:eq:qOv1iM5q1Mr&filter=id:eq:HxkXrH39hmG&filter=id:eq:iP8irTNtByO&filter=id:eq:iVC0ZksKDDM&filter=id:eq:S7f1nmVrLIT&paging=false';
+    var merUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bcategories%5Bid%5D%5D&filter=id:eq:fx2HjpODE5y&filter=id:eq:xXmmo2so2V8&filter=id:eq:gpJ2TLXI3mY&filter=id:eq:w9BiI08vABw&paging=false';
     var eaUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bcategories%5Bid%5D%5D&filter=id:eq:eLRAaV32xH5&filter=id:eq:kLPghhtGPvZ&filter=id:eq:A4ivU53utt2&filter=id:eq:wEKkfO7aAI3&filter=id:eq:JmnzNK18klO&paging=false';
 
     var service;

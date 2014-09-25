@@ -1,6 +1,7 @@
-function mechanismService(d2Api, $log) {
+function mechanismService(d2Api, $log, $q) {
     var period;
-    var datasets = [];
+    var categories = [];
+    var deferred = $q.defer();
 
     Object.defineProperty(this, 'period', {
         set: function (value) {
@@ -15,31 +16,53 @@ function mechanismService(d2Api, $log) {
         }
     });
 
-    Object.defineProperty(this, 'datasets', {
+    Object.defineProperty(this, 'categories', {
         set: function (value) {
             if (!angular.isArray(value)) {
                 $log.error('Mechanism Service: Period should be a string');
                 return;
             }
-            datasets = value;
+            categories = value;
         },
         get: function () {
-            return datasets;
+            return categories;
         }
     });
 
     this.getData = function () {
         var params = {
+            paging: false,
             pe: period,
-            ds: datasets
+            filter: _.map(categories, function (category) {
+                return 'id:eq:' + category;
+            }),
+            fields: 'id,name,categoryOptions[id,name,organisationUnits,groups[id,name,categoryOptionGroupSet[id]]'
         };
 
-        return d2Api.getEndPoint('../dhis-web-pepfar-approvals/mechanisms.json').getList(params).then(function (data) {
-            return data.getDataOnly();
-        });
+        if (this.areParamsCorrect(params)) {
+            d2Api.getEndPoint('categories').getList(params).then(function (data) {
+                deferred.resolve(data.getDataOnly());
+            });
+        } else {
+            deferred.reject('Not all required params are set');
+        }
+
+        return deferred.promise;
     };
 
-    d2Api.addEndPoint('../dhis-web-pepfar-approvals/mechanisms.json');
+    this.areParamsCorrect = function (params) {
+        if (!params.pe || (params.pe.length <= 0)) {
+            $log.error('Mechanism Service: Period should set when trying to request mechanisms');
+            return false;
+        }
+        if (params.filter.length <= 0) {
+            $log.error('Mechanism Service: Categories should set when trying to request mechanisms');
+            return false;
+        }
+        return true;
+    };
+
+    d2Api.addEndPoint('categories');
 }
 
 angular.module('PEPFAR.approvals').service('mechanismService', mechanismService);

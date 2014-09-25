@@ -119,6 +119,97 @@
             {"id": "SH885jaRe0o"}
         ]}}
     ];
+    library.categories = {"categories": [
+        {
+            "id": "SH885jaRe0o",
+            "name": "Funding Mechanism",
+            "categoryOptions": [
+                {
+                    "id": "IzVbuMzCCEe",
+                    "name": "1234 - How...",
+                    "organisationUnits": [
+                        {
+                            "id": "lZsCb6y0KDX",
+                            "name": "Malawi",
+                            "created": "2013-06-10T00:34:22.000+0000",
+                            "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ]
+                },
+                {
+                    "id": "KlqBLXUUwhW",
+                    "name": "9876 - Nat...",
+                    "organisationUnits": [
+                        {
+                            "id": "lZsCb6y0KDX",
+                            "name": "Malawi",
+                            "created": "2013-06-10T00:34:22.000+0000",
+                            "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ]
+                },
+                {
+                    "id": "F544HMM7tT7",
+                    "name": "2342 - Wat..",
+                    "organisationUnits": [
+                        {
+                            "id": "RZdCb6y0KRD",
+                            "name": "Rwanda",
+                            "created": "2013-06-10T00:34:22.000+0000",
+                            "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ]
+                },
+                {
+                    "id": "l32yP94G7HL",
+                    "name": "5433 - JH...",
+                    "organisationUnits": [
+                        {
+                            "id": "DRsCDEy0KDX",
+                            "name": "Kenya",
+                            "created": "2013-06-10T00:34:22.000+0000",
+                            "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ]
+                },
+                {
+                    "id": "tQV5xTc2JYj",
+                    "name": "7654 - Pre...",
+                    "organisationUnits": [
+                        {
+                            "id": "lZsCb6y0KDX",
+                            "name": "Malawi",
+                            "created": "2013-06-10T00:34:22.000+0000",
+                            "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ]
+                },
+                {
+                    "id": "GZIYLG1HWSW",
+                    "name": "1233 - Mal...",
+                    "organisationUnits": [
+                        {
+                            "id": "lZsCb6y0KDX",
+                            "name": "Malawi",
+                            "created": "2013-06-10T00:34:22.000+0000",
+                            "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "GLevLNI9wkl",
+            "name": "default",
+            "categoryOptions": [
+                {
+                    "id": "xYerKDKCefk",
+                    "name": "default",
+                    "organisationUnits": []
+                }
+            ]
+        }
+    ]};
 
     function getFixture(key) {
         return library[key];
