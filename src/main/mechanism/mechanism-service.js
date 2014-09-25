@@ -29,7 +29,7 @@ function mechanismService(d2Api, $log, $q) {
         }
     });
 
-    this.getData = function () {
+    this.getMechanisms = function () {
         var params = {
             paging: false,
 //            pe: period,

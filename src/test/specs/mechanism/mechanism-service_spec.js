@@ -23,22 +23,22 @@ describe('Mechanism service', function () {
         $httpBackend.verifyNoOutstandingExpectation();
     });
 
-    describe('getData', function () {
+    describe('getMechanisms', function () {
         it('should act like a promise', function () {
-            expect(mechanismService.getData().then).toBeAFunction();
-            expect(mechanismService.getData().catch).toBeAFunction();
-            expect(mechanismService.getData().finally).toBeAFunction();
+            expect(mechanismService.getMechanisms().then).toBeAFunction();
+            expect(mechanismService.getMechanisms().catch).toBeAFunction();
+            expect(mechanismService.getMechanisms().finally).toBeAFunction();
         });
 
-        it('should not do a request to the api for the mechanisms when period is missing', function () {
-            mechanismService.getData();
+        it('should not do a request to the api for the mechanisms when parameters are missing', function () {
+            mechanismService.getMechanisms();
         });
 
         it('should add the parameters to the url', function () {
             mechanismService.period = '2014';
             mechanismService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
 
-            mechanismService.getData();
+            mechanismService.getMechanisms();
 
             $httpBackend.expectGET(apiUrlWithCorrectParameters).respond(200);
         });
@@ -51,7 +51,7 @@ describe('Mechanism service', function () {
             mechanismService.period = '2014';
             mechanismService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
 
-            mechanismService.getData().then(function (data) {
+            mechanismService.getMechanisms().then(function (data) {
                 mechanisms = data
             });
             $httpBackend.flush();

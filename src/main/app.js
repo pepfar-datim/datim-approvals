@@ -29,6 +29,10 @@ function appController(periodService, $scope, currentUser, mechanismService) {
         periodService.filterPeriodTypes(dataSets.getPeriodTypes());
         $scope.details.dataSets = dataSets.get();
         mechanismService.categories = dataSets.getCategoryIds();
+
+        mechanismService.getMechanisms().then(function (mechanisms) {
+            $scope.$broadcast('MECHANISMS.updated', mechanisms);
+        });
     });
 
     $scope.$watch(function () {
@@ -68,7 +72,7 @@ function tableViewController(mechanismService, $scope) {
         headerInputClass: 'form-control'
     };
 
-    this.approvalTableDataSource = mechanismService.getData();
+    this.approvalTableDataSource = [];
 
     this.hasItems = function (tabCtrl, tabName) {
         tabCtrl.setActive(tabName, !!this.approvalTableData.length);
@@ -100,6 +104,10 @@ function recievedTableViewController($scope, $controller) {
 
     this.actionsToFilterOn = ['accept'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
+
+    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+        this.approvalTableData = this.filterData(mechanisms);
+    }).bind(this));
 }
 
 function acceptedTableViewController($scope, $controller) {
@@ -107,6 +115,10 @@ function acceptedTableViewController($scope, $controller) {
 
     this.actionsToFilterOn = ['submit'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
+
+    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+        this.approvalTableData = this.filterData(mechanisms);
+    }).bind(this));
 }
 
 function submittedTableViewController($scope, $controller) {
@@ -114,6 +126,10 @@ function submittedTableViewController($scope, $controller) {
 
     this.actionsToFilterOn = ['unsubmit'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
+
+    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+        this.approvalTableData = this.filterData(mechanisms);
+    }).bind(this));
 }
 
 function allTableViewController($scope, $controller) {
@@ -126,6 +142,10 @@ function allTableViewController($scope, $controller) {
         }, this);
     };
     this.approvalTableData = this.filterData();
+
+    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+        this.approvalTableData = this.filterData(mechanisms);
+    }).bind(this));
 }
 
 function tabController() {
