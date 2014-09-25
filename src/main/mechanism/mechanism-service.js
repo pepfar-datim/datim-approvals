@@ -1,20 +1,20 @@
 function mechanismService(d2Api, $log, $q) {
-    var period;
+    //var period;
     var categories = [];
     var deferred = $q.defer();
 
-    Object.defineProperty(this, 'period', {
-        set: function (value) {
-            if (!angular.isString(value)) {
-                $log.error('Mechanism Service: Period should be a string');
-                return;
-            }
-            period = value;
-        },
-        get: function () {
-            return period;
-        }
-    });
+//    Object.defineProperty(this, 'period', {
+//        set: function (value) {
+//            if (!angular.isString(value)) {
+//                $log.error('Mechanism Service: Period should be a string');
+//                return;
+//            }
+//            period = value;
+//        },
+//        get: function () {
+//            return period;
+//        }
+//    });
 
     Object.defineProperty(this, 'categories', {
         set: function (value) {
@@ -32,7 +32,7 @@ function mechanismService(d2Api, $log, $q) {
     this.getData = function () {
         var params = {
             paging: false,
-            pe: period,
+//            pe: period,
             filter: _.map(categories, function (category) {
                 return 'id:eq:' + category;
             }),
@@ -51,10 +51,10 @@ function mechanismService(d2Api, $log, $q) {
     };
 
     this.areParamsCorrect = function (params) {
-        if (!params.pe || (params.pe.length <= 0)) {
-            $log.error('Mechanism Service: Period should set when trying to request mechanisms');
-            return false;
-        }
+//        if (!params.pe || (params.pe.length <= 0)) {
+//            $log.error('Mechanism Service: Period should set when trying to request mechanisms');
+//            return false;
+//        }
         if (params.filter.length <= 0) {
             $log.error('Mechanism Service: Categories should set when trying to request mechanisms');
             return false;

@@ -1,4 +1,4 @@
-function appController(periodService, $scope, currentUser) {
+function appController(periodService, $scope, currentUser, mechanismService) {
     var controller = this;
 
     $scope.details = {
@@ -28,6 +28,7 @@ function appController(periodService, $scope, currentUser) {
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
         periodService.filterPeriodTypes(dataSets.getPeriodTypes());
         $scope.details.dataSets = dataSets.get();
+        mechanismService.categories = dataSets.getCategoryIds();
     });
 
     $scope.$watch(function () {
@@ -35,6 +36,7 @@ function appController(periodService, $scope, currentUser) {
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
             $scope.details.period = newVal.iso;
+            mechanismService.period = $scope.details.period;
         }
     });
 
@@ -52,7 +54,7 @@ function dataViewController($scope) {
     this.details = $scope.details;
 }
 
-function tableViewController(mechanismService) {
+function tableViewController(mechanismService, $scope) {
     this.approvalTableConfig = {
         columns: [
             { name: 'mechanism', sortable: true, searchable: true },
@@ -93,29 +95,29 @@ function tableViewController(mechanismService) {
     };
 }
 
-function recievedTableViewController($controller) {
-    $.extend(this, $controller('tableViewController', {}));
+function recievedTableViewController($scope, $controller) {
+    $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     this.actionsToFilterOn = ['accept'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 }
 
-function acceptedTableViewController($controller) {
-    $.extend(this, $controller('tableViewController', {}));
+function acceptedTableViewController($scope, $controller) {
+    $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     this.actionsToFilterOn = ['submit'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 }
 
-function submittedTableViewController($controller) {
-    $.extend(this, $controller('tableViewController', {}));
+function submittedTableViewController($scope, $controller) {
+    $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     this.actionsToFilterOn = ['unsubmit'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 }
 
-function allTableViewController($controller) {
-    $.extend(this, $controller('tableViewController', {}));
+function allTableViewController($scope, $controller) {
+    $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     //The filter always returns true.
     this.filterData = function (data) {

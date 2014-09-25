@@ -6,7 +6,7 @@ describe('Mechanism service', function () {
         'fields=id,name,categoryOptions%5Bid,name,organisationUnits,',
         'groups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D&',
         'filter=id:eq:dsetId1&filter=id:eq:dsetId2&filter=id:eq:dsetId3',
-        '&paging=false&pe=2014'].join('');
+        '&paging=false'].join('');
 
     var categoriesFromApi = fixtures.get('categories');
 
@@ -60,19 +60,19 @@ describe('Mechanism service', function () {
         });
     });
 
-    describe('period property', function () {
-        it('should set the period on the service', function () {
-            mechanismService.period = '2014';
-
-            expect(mechanismService.period).toEqual('2014');
-        });
-
-        it('should log an error when the given value is not a string', function () {
-            mechanismService.period = [];
-
-            expect($log.error.logs).toContain(['Mechanism Service: Period should be a string']);
-        });
-    });
+//    describe('period property', function () {
+//        it('should set the period on the service', function () {
+//            mechanismService.period = '2014';
+//
+//            expect(mechanismService.period).toEqual('2014');
+//        });
+//
+//        it('should log an error when the given value is not a string', function () {
+//            mechanismService.period = [];
+//
+//            expect($log.error.logs).toContain(['Mechanism Service: Period should be a string']);
+//        });
+//    });
 
     describe('categories property', function () {
         it('should be set to an empty array', function () {
