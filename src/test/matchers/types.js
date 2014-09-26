@@ -25,6 +25,17 @@ beforeEach(function () {
                 return 'Expected ' + this.actual + (result ? ' NOT' : '') + ' to be an function';
             }
             return result;
+        },
+
+        toBeAPromiseLikeObject: function () {
+            var result = angular.isFunction(this.actual.then) &&
+                         angular.isFunction(this.actual.catch) &&
+                         angular.isFunction(this.actual.finally);
+
+            this.message = function () {
+                return 'Expected ' + this.actual + (result ? ' NOT' : '') + ' to have the functions then, catch and finally';
+            }
+            return result;
         }
     });
 });

@@ -1,4 +1,4 @@
-function appController(periodService, $scope, currentUser, mechanismService) {
+function appController(periodService, $scope, currentUser, mechanismsService) {
     var controller = this;
 
     $scope.details = {
@@ -28,9 +28,9 @@ function appController(periodService, $scope, currentUser, mechanismService) {
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
         periodService.filterPeriodTypes(dataSets.getPeriodTypes());
         $scope.details.dataSets = dataSets.get();
-        mechanismService.categories = dataSets.getCategoryIds();
+        mechanismsService.categories = dataSets.getCategoryIds();
 
-        mechanismService.getMechanisms().then(function (mechanisms) {
+        mechanismsService.getMechanisms().then(function (mechanisms) {
             $scope.$broadcast('MECHANISMS.updated', mechanisms);
         });
     });
@@ -40,7 +40,7 @@ function appController(periodService, $scope, currentUser, mechanismService) {
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
             $scope.details.period = newVal.iso;
-            mechanismService.period = $scope.details.period;
+            mechanismsService.period = $scope.details.period;
         }
     });
 
@@ -58,7 +58,7 @@ function dataViewController($scope) {
     this.details = $scope.details;
 }
 
-function tableViewController(mechanismService, $scope) {
+function tableViewController(mechanismsService, $scope) {
     this.approvalTableConfig = {
         columns: [
             { name: 'mechanism', sortable: true, searchable: true },

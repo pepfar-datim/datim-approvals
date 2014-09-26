@@ -85,12 +85,6 @@
                 "wEKkfO7aAI3",
                 "JmnzNK18klO"
             ]
-        }/*,
-        {
-            "name": "POC",
-            "dataSets": [
-                "qAEmxYxKodg"
-            ]
         },
         {
             "name": "SIMS",
@@ -98,9 +92,9 @@
                 "nideTeYxXLu",
                 "J9Yq8jDd3nF",
                 "iqaWSeKDhS3",
-                "M059pmNzZYE",
+                "M059pmNzZYE"
             ]
-        }*/
+        }
     ]);
     library.dataSets = [
         {"id": "Zqg76KonUx1", "name": "DS: Dataset One", "shortName": "DS: Dataset One", "periodType": "Monthly", "categoryCombo": {"categories": [
@@ -134,6 +128,22 @@
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
                         }
+                    ],
+                    groups: [
+                        {
+                            id: "BnjwQmbgK1b",
+                            name: "Partner 1",
+                            categoryOptionGroupSet: {
+                                id: "BOyWrF33hiR"
+                            }
+                        },
+                        {
+                            id: "FPUgmtt8HRi",
+                            name: "Agency 1",
+                            categoryOptionGroupSet: {
+                                id: "bw8KHXzxd9i"
+                            }
+                        }
                     ]
                 },
                 {
@@ -145,6 +155,22 @@
                             "name": "Malawi",
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ],
+                    groups: [
+                        {
+                            id: "wxAh2TvsTUj",
+                            name: "Partner 5",
+                            categoryOptionGroupSet: {
+                                id: "BOyWrF33hiR"
+                            }
+                        },
+                        {
+                            id: "FPUgmtt8HRi",
+                            name: "Agency 1",
+                            categoryOptionGroupSet: {
+                                id: "bw8KHXzxd9i"
+                            }
                         }
                     ]
                 },
@@ -158,6 +184,22 @@
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
                         }
+                    ],
+                    groups: [
+                        {
+                            id: "CSPJnuxBAnz",
+                            name: "Partner 4",
+                            categoryOptionGroupSet: {
+                                id: "BOyWrF33hiR"
+                            }
+                        },
+                        {
+                            id: "RGC9tURSc3W",
+                            name: "Agency 3",
+                            categoryOptionGroupSet: {
+                                id: "bw8KHXzxd9i"
+                            }
+                        }
                     ]
                 },
                 {
@@ -169,6 +211,22 @@
                             "name": "Kenya",
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ],
+                    groups: [
+                        {
+                            id: "NLV6dy7BE2O",
+                            name: "Agency 2",
+                            categoryOptionGroupSet: {
+                                id: "bw8KHXzxd9i"
+                            }
+                        },
+                        {
+                            id: "yrIYjIn0aom",
+                            name: "Partner 3",
+                            categoryOptionGroupSet: {
+                                id: "BOyWrF33hiR"
+                            }
                         }
                     ]
                 },
@@ -182,6 +240,22 @@
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
                         }
+                    ],
+                    groups: [
+                        {
+                            id: "vNQlvpUamTo",
+                            name: "Partner 2",
+                            categoryOptionGroupSet: {
+                                id: "BOyWrF33hiR"
+                            }
+                        },
+                        {
+                            id: "NLV6dy7BE2O",
+                            name: "Agency 2",
+                            categoryOptionGroupSet: {
+                                id: "bw8KHXzxd9i"
+                            }
+                        }
                     ]
                 },
                 {
@@ -193,6 +267,22 @@
                             "name": "Malawi",
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ],
+                    groups: [
+                        {
+                            id: "iadd8tHFS9C",
+                            name: "Partner 1",
+                            categoryOptionGroupSet: {
+                                id: "BOyWrF33hiR"
+                            }
+                        },
+                        {
+                            id: "FPUgmtt8HRi",
+                            name: "Agency 1",
+                            categoryOptionGroupSet: {
+                                id: "bw8KHXzxd9i"
+                            }
                         }
                     ]
                 }
