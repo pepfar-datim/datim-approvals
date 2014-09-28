@@ -170,7 +170,7 @@ function tabController() {
     };
 }
 
-angular.module('PEPFAR.approvals', ['d2', 'ui.select', 'ui.bootstrap.tabs']);
+angular.module('PEPFAR.approvals', ['d2', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead']);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('dataViewController', dataViewController);
 angular.module('PEPFAR.approvals').controller('tabController', tabController);
