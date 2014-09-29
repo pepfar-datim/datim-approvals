@@ -354,6 +354,76 @@
         {"level": 8, "displayName": "In-country level 7"},
         {"level": 3, "displayName": "Province / Region"}
     ]};
+    library.cocApprovalStatus = [
+        {
+            "id": "qS0ABIH66TS",
+            "dataApprovalLevel": {
+                "id": "aypLtfWShE5",
+                "level": 2
+            },
+
+            "period": "2014",
+            "organisationUnit": {
+                "id": "ybg3MO3hcf4"
+            },
+            "accepted": true,
+            "mayApprove": true,
+            "mayUnapprove": false,
+            "mayUnaccept": true,
+            "mayAccept": false
+        },
+        {
+            "id": "Oae8B8z5H5Y",
+            "dataApprovalLevel": {
+                "id": "JNpaWdWCyDN",
+                "level": 2
+            },
+
+            "period": "2014",
+            "organisationUnit": {
+                "id": "ybg3MO3hcf4"
+            },
+            "accepted": false,
+            "mayApprove": false,
+            "mayUnapprove": true,
+            "mayUnaccept": false,
+            "mayAccept": true
+        },
+        {
+            "id": "RrjmU53u2Ls",
+            "dataApprovalLevel": {
+                "id": "vqWNeqjozr9",
+                "level": 1
+            },
+
+            "period": "2014",
+            "organisationUnit": {
+                "id": "ybg3MO3hcf4"
+            },
+            "accepted": false,
+            "mayApprove": false,
+            "mayUnapprove": true,
+            "mayUnaccept": false,
+            "mayAccept": false
+        },
+        {
+            "id": "qofeYTu7w0R",
+            "dataApprovalLevel": {
+                "id": "WccDi5x6FSp",
+                "level": 4
+            },
+
+            "period": "2014",
+            "organisationUnit": {
+                "id": "ybg3MO3hcf4"
+            },
+            "accepted": true,
+            "mayApprove": false,
+            "mayUnapprove": false,
+            "mayUnaccept": false,
+            "mayAccept": false
+        }
+    ];
 
     function getFixture(key) {
         return library[key];

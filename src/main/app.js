@@ -106,19 +106,19 @@ function tableViewController(mechanismsService, $scope) {
 
     this.actionsToFilterOn = [];
     this.filterData = function (data) {
-        return _.filter(data, function (mechanism) {
-            if (this.mechanismHasActions(mechanism, this.actionsToFilterOn)) {
-                return true;
-            }
-            return false;
-        }, this);
+        var filters = {};
+        _.map(this.actionsToFilterOn, function (filter) {
+           filters[filter] = true;
+        });
+        console.log(filters);
+        return _.filter(data, filters);
     };
 }
 
 function recievedTableViewController($scope, $controller) {
     $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
-    this.actionsToFilterOn = ['accept'];
+    this.actionsToFilterOn = ['mayAccept'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
@@ -129,7 +129,7 @@ function recievedTableViewController($scope, $controller) {
 function acceptedTableViewController($scope, $controller) {
     $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
-    this.actionsToFilterOn = ['submit'];
+    this.actionsToFilterOn = ['mayApprove', 'mayUnaccept'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
@@ -140,7 +140,7 @@ function acceptedTableViewController($scope, $controller) {
 function submittedTableViewController($scope, $controller) {
     $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
-    this.actionsToFilterOn = ['unsubmit'];
+    this.actionsToFilterOn = ['mayUnapprove'];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {

@@ -1,4 +1,5 @@
 function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
+    var self = this;
     var AGENCY_LEVEL = 3;
     var PARTNER_LEVEL = 4;
 
@@ -6,6 +7,12 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     var categories = [];
     var deferred = $q.defer();
 
+    var statuses = {
+        'accepted': 'Accepted',
+        'submitted': 'Submitted'
+    };
+
+    var mechanisms = [];
 
 //    Object.defineProperty(this, 'period', {
 //        set: function (value) {
@@ -60,8 +67,9 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                         agency: getAgencyFromCategoryOption(categoryOption.groups || [], agencyCOGSId),
                         partner: getPartnerFromCategoryOption(categoryOption.groups || [], parterCOGSId),
                         status: '',
-                        action: '',
-                        category: category.id
+                        actions: '',
+                        category: category.id,
+                        catComboId: categoryOption.categoryOptionCombos[0].id
                     };
                     return mechanism;
                 });
@@ -106,10 +114,43 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             return '';
         }
 
-        return $q.all([this.getData(), approvalLevelsService.get()]).then(function (data) {
-            return parseData(data[0], data[1].getCategoryOptionGroupSetIdsForLevels());
+        return $q.all([this.getData(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
+            var parsedData = parseData(data[0], data[1].getCategoryOptionGroupSetIdsForLevels());
+
+            self.filterMechanisms(data[2], parsedData);
+
+            return mechanisms;
         }, function (err) {
             $log.error('Mechanism Service: Unable to parse the mechanisms');
+        });
+    };
+
+    this.filterMechanisms = function (mechanismsStatuses, parsedData) {
+        _.each(mechanismsStatuses, function (mechanismStatus) {
+            console.log(mechanismsStatuses);
+            var mechanism =  _.find(parsedData, { catComboId: mechanismStatus.id });
+            if (!mechanism) {
+                return;
+            }
+            var actions = [];
+            if (mechanismStatus.mayApprove === true) {
+                mechanism.mayApprove = true;
+                actions.push('Submit');
+            }
+            if (mechanismStatus.mayUnapprove === true) {
+                mechanism.mayUnapprove = true;
+                actions.push('Unsubmit');
+            }
+            if (mechanismStatus.mayUnaccept === true) {
+                mechanism.mayUnaccept = true;
+                actions.push('Unaccept');
+            }
+            if (mechanismStatus.mayAccept === true) {
+                mechanism.mayAccept = true;
+                actions.push('Accept');
+            }
+            mechanism.actions = actions.join(', ')
+            mechanisms.push(mechanism);
         });
     };
 
@@ -137,6 +178,12 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         return deferred.promise;
     };
 
+    this.getStatuses = function () {
+        return d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/dataApproval.json').getList().then(function (data) {
+            return data.getDataOnly();
+        });
+    };
+
     this.areParamsCorrect = function (params) {
 //        if (!params.pe || (params.pe.length <= 0)) {
 //            $log.error('Mechanism Service: Period should set when trying to request mechanisms');
@@ -150,6 +197,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     d2Api.addEndPoint('categories');
+    d2Api.addEndPoint('../dhis-web-pepfar-approvals/fake-api/dataApproval.json');
 }
 
 angular.module('PEPFAR.approvals').service('mechanismsService', mechanismsService);

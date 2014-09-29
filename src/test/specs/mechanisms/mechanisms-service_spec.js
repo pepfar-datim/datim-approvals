@@ -23,6 +23,7 @@ describe('Mechanisms service', function () {
             .respond(200, fixtures.get('orgUnitLevels'));
         $httpBackend.whenGET('/dhis/api/dataApprovalLevels?fields=id,name,displayName,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name%5D')
             .respond(200, fixtures.get('approvalLevels'));
+
         $httpBackend.flush();
     }));
 
@@ -84,14 +85,17 @@ describe('Mechanisms service', function () {
     });
 
     describe('getMechanisms', function () {
-        var deferred;
+        var deferredGetData;
+        var deferredGetStatuses;
         var $rootScope;
 
         beforeEach(inject(function ($q, _$rootScope_) {
             $rootScope = _$rootScope_;
-            deferred = $q.defer();
+            deferredGetData = $q.defer();
+            deferredGetStatuses = $q.defer();
 
-            spyOn(mechanismsService, 'getData').andReturn(deferred.promise);
+            spyOn(mechanismsService, 'getData').andReturn(deferredGetData.promise);
+            spyOn(mechanismsService, 'getStatuses').andReturn(deferredGetStatuses.promise);
         }));
 
         it('should act like a promise', function () {
@@ -107,7 +111,8 @@ describe('Mechanisms service', function () {
                     dataResult = data;
                 });
 
-                deferred.resolve(categoriesFromApi.categories);
+                deferredGetData.resolve(categoriesFromApi.categories);
+                deferredGetStatuses.resolve(fixtures.get('cocApprovalStatus'));
                 $rootScope.$apply();
             }));
 
@@ -116,11 +121,11 @@ describe('Mechanisms service', function () {
             });
 
             it('should return all the categoryOptions in an array', function () {
-                expect(dataResult.length).toBe(7);
+                expect(dataResult.length).toBe(4);
             });
 
             it('should return the correct data', function () {
-                //console.log(dataResult);
+                expect(dataResult[0].action).toBe('Submit, Unaccept')
             });
         });
     });
@@ -154,6 +159,32 @@ describe('Mechanisms service', function () {
             mechanismsService.categories = '';
 
             expect($log.error.logs).toContain(['Mechanism Service: Period should be a string']);
+        });
+    });
+
+    describe('getStatuses', function () {
+
+        beforeEach(function () {
+            $httpBackend.expectGET('/dhis/api/../dhis-web-pepfar-approvals/fake-api/dataApproval.json')
+                .respond(200, fixtures.get('cocApprovalStatus'));
+        });
+
+        it('should request statuses from the API', function () {
+            mechanismsService.getStatuses();
+
+            $httpBackend.flush();
+        });
+
+        it('should return the status data from the api', function () {
+            var returnedData;
+
+            mechanismsService.getStatuses().then(function (data) {
+                returnedData = data;
+            });
+
+            $httpBackend.flush();
+
+            expect(returnedData).toEqual(fixtures.get('cocApprovalStatus'));
         });
     });
 });
