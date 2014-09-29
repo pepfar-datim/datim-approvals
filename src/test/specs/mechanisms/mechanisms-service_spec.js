@@ -19,7 +19,10 @@ describe('Mechanisms service', function () {
         $log = _$log_;
 
         //TODO: If we mock the approvalLevelsService we will not have to do the http call
-        $httpBackend.whenGET('/dhis/api/dataApprovalLevels?fields=id,name,displayName,orgUnitLevel,level,categoryOptionGroupSet%5Bid%5D').respond(200, fixtures.get('approvalLevels'));
+        $httpBackend.expectGET('/dhis/api/organisationUnitLevels?fields=level,displayName&paging=false')
+            .respond(200, fixtures.get('orgUnitLevels'));
+        $httpBackend.whenGET('/dhis/api/dataApprovalLevels?fields=id,name,displayName,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name%5D')
+            .respond(200, fixtures.get('approvalLevels'));
         $httpBackend.flush();
     }));
 
@@ -114,6 +117,10 @@ describe('Mechanisms service', function () {
 
             it('should return all the categoryOptions in an array', function () {
                 expect(dataResult.length).toBe(7);
+            });
+
+            it('should return the correct data', function () {
+                //console.log(dataResult);
             });
         });
     });

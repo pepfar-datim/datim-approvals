@@ -1,6 +1,16 @@
 function appController(periodService, $scope, currentUser, mechanismsService) {
     var controller = this;
 
+    this.hasAllDetails = function () {
+        if ($scope.details.period
+            && ($scope.currentSelection.length > 0
+            && $scope.details.dataSets
+            && $scope.details.orgUnit)) {
+            return true;
+        }
+        return false;
+    };
+
     $scope.details = {
         orgUnit: undefined,
         period: undefined,
@@ -8,6 +18,8 @@ function appController(periodService, $scope, currentUser, mechanismsService) {
         cog: '1dsff22',
         cogs: '1dsff22'
     };
+
+    $scope.currentSelection = [];
 
     //Get the users org unit off the user
     currentUser.then(function () {
@@ -33,6 +45,10 @@ function appController(periodService, $scope, currentUser, mechanismsService) {
         mechanismsService.getMechanisms().then(function (mechanisms) {
             $scope.$broadcast('MECHANISMS.updated', mechanisms);
         });
+    });
+
+    $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
+        $scope.currentSelection = selection;
     });
 
     $scope.$watch(function () {

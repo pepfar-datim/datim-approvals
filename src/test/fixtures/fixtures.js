@@ -300,6 +300,17 @@
             ]
         }
     ]};
+    library.orgUnitLevels =
+    {"organisationUnitLevels": [
+        {"level": 2, "displayName": "Country"},
+        {"level": 1, "displayName": "Global"},
+        {"level": 4, "displayName": "In-country level 3"},
+        {"level": 5, "displayName": "In-country level 4"},
+        {"level": 6, "displayName": "In-country level 5"},
+        {"level": 7, "displayName": "In-country level 6"},
+        {"level": 8, "displayName": "In-country level 7"},
+        {"level": 3, "displayName": "Province / Region"}
+    ]};
 
     function getFixture(key) {
         return library[key];

@@ -3,6 +3,8 @@
 <head>
     <title>PEPFAR Approvals App</title>
 
+    <link type="text/css" rel="stylesheet" media="screen" href="../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css">
+
     <link href="vendor/font-awesome/font-awesome.css" rel="stylesheet" type="text/css" />
     <link href="vendor/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="vendor/d2js/css/d2.css" rel="stylesheet" type="text/css" />
@@ -29,7 +31,7 @@
     <div ng-controller="tabController as tabCtrl">
         <div class="action-buttons">
             <div class="btn-group">
-                <button class="btn btn-default" ng-disabled="!details.period" nav-click="data-view">View/Act</button>
+                <button class="btn btn-default" ng-disabled="!app.hasAllDetails()" nav-click="data-view">View/Act</button>
             </div>
         </div>
 
@@ -77,6 +79,10 @@
         </tabset>
     </div>
 
+    <div ng-controller="dataViewController as dataView">
+        <div ng-include="'dataview.html'"></div>
+    </div>
+
     <script src="vendor/jquery/jquery.js"></script>
     <script src="vendor/lodash/lodash.compat.js"></script>
     <script src="vendor/angular/angular.js"></script>
@@ -87,10 +93,14 @@
     <script src="vendor/d2js/js/d2.js"></script>
 
     <!-- Dhis period/calendar support -->
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.min.js?_rev=16494"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.plus.min.js?_rev=16494"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.util.js?_rev=16494"></script>
-    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.period.js?_rev=16494"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.min.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.plus.min.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/dhis2/dhis2.period.js"></script>
+
+    <!-- Scripts for display of reports -->
+    <script type="text/javascript" src="../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+    <!--<script type="text/javascript" src="../dhis-web-dataentry/javascript/form.js"></script>-->
 
     <script src="js/app.js"></script>
 </body>

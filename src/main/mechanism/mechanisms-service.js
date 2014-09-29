@@ -52,18 +52,21 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             }).cogsId;
 
             data = _(categories).map(function (category) {
-                return category.categoryOptions;
+                return _.map(category.categoryOptions, function (categoryOption) {
+                    var mechanism = {
+                        id: categoryOption.id,
+                        mechanism: categoryOption.name,
+                        country: getCountryFromCategoryOption(categoryOption),
+                        agency: getAgencyFromCategoryOption(categoryOption.groups || [], agencyCOGSId),
+                        partner: getPartnerFromCategoryOption(categoryOption.groups || [], parterCOGSId),
+                        status: '',
+                        action: '',
+                        category: category.id
+                    };
+                    return mechanism;
+                });
             }).flatten();
-            data = data.map(function (categoryOption) {
-                var mechanism = {
-                  id: categoryOption.id,
-                  mechanism: categoryOption.name,
-                  country: getCountryFromCategoryOption(categoryOption),
-                  agency: getAgencyFromCategoryOption(categoryOption.groups || [], agencyCOGSId),
-                  partner: getPartnerFromCategoryOption(categoryOption.groups || [], parterCOGSId)
-                };
-                return mechanism;
-            });
+
             return data.__wrapped__;
         }
 
