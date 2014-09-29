@@ -129,6 +129,12 @@
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
                         }
                     ],
+                    categoryOptionCombos: [
+                        {
+                            id: "qS0ABIH66TS",
+                            name: "(1234 - How....)"
+                        }
+                    ],
                     groups: [
                         {
                             id: "BnjwQmbgK1b",
@@ -155,6 +161,12 @@
                             "name": "Malawi",
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ],
+                    categoryOptionCombos: [
+                        {
+                            id: "Oae8B8z5H5Y",
+                            name: "(9876 - Nat...)"
                         }
                     ],
                     groups: [
@@ -185,6 +197,12 @@
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
                         }
                     ],
+                    categoryOptionCombos: [
+                        {
+                            id: "RrjmU53u2Ls",
+                            name: "(2342 - Wat...)"
+                        }
+                    ],
                     groups: [
                         {
                             id: "CSPJnuxBAnz",
@@ -211,6 +229,12 @@
                             "name": "Kenya",
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                        }
+                    ],
+                    categoryOptionCombos: [
+                        {
+                            id: "tJoZs2lVXFc",
+                            name: "(5433 - JH...)"
                         }
                     ],
                     groups: [
@@ -241,6 +265,12 @@
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
                         }
                     ],
+                    categoryOptionCombos: [
+                        {
+                            id: "qofeYTu7w0R",
+                            name: "(7654 - Pre...)"
+                        }
+                    ],
                     groups: [
                         {
                             id: "vNQlvpUamTo",
@@ -269,6 +299,12 @@
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
                         }
                     ],
+                    categoryOptionCombos: [
+                        {
+                            id: "gJWUyJhnVBo",
+                            name: "(1233 - Mal...)"
+                        }
+                    ],
                     groups: [
                         {
                             id: "iadd8tHFS9C",
@@ -295,7 +331,14 @@
                 {
                     "id": "xYerKDKCefk",
                     "name": "default",
-                    "organisationUnits": []
+                    "organisationUnits": [],
+                    categoryOptionCombos: [
+                        {
+                            id: "HllvX50cXC0",
+                            name: "(default)"
+                        }
+                    ],
+                    groups: [ ]
                 }
             ]
         }
