@@ -136,6 +136,15 @@ describe('Mechanisms service', function () {
                 expect(dataResult[0].status).toBe('Accepted by Global');
                 expect(dataResult[1].status).toBe('Submitted by Country');
             });
+
+            it('should show pending for mechanisms without a level', function () {
+                expect(dataResult[3].status).toBe('Pending');
+            });
+
+            it('should add the mayReadData status to the mechanism', function () {
+                expect(dataResult[0].mayReadData).toBe(true);
+                expect(dataResult[3].mayReadData).toBe(false);
+            });
         });
     });
 

@@ -145,8 +145,12 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         _.each(mechanismsStatuses, function (mechanismStatus) {
             var actions = [];
             var status = [];
-            var approvalLevel = _.find(approvalLevels, { id: mechanismStatus.dataApprovalLevel.id });
+            var approvalLevel;
             var mechanism =  _.find(parsedData, { catComboId: mechanismStatus.id });
+
+            if (mechanismStatus.dataApprovalLevel && mechanismStatus.dataApprovalLevel.id) {
+                approvalLevel = _.find(approvalLevels, { id: mechanismStatus.dataApprovalLevel.id });
+            }
 
             if (!mechanism) { return; }
 
@@ -167,15 +171,23 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                 actions.push('Accept');
             }
 
-            if (mechanismStatus.accepted === true) {
-                status.push('Accepted');
+            if (mechanismStatus.mayReadData === true) {
+                mechanism.mayReadData = true;
             } else {
-                status.push('Submitted');
+                mechanism.mayReadData = false;
             }
 
             if (approvalLevel) {
+                if (mechanismStatus.accepted === true) {
+                    status.push('Accepted');
+                } else {
+                    status.push('Submitted');
+                }
                 status.push(approvalLevel.levelName);
+            } else {
+                status.push('Pending');
             }
+
 
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');

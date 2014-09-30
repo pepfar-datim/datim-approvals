@@ -370,7 +370,8 @@
             "mayApprove": true,
             "mayUnapprove": false,
             "mayUnaccept": true,
-            "mayAccept": false
+            "mayAccept": false,
+            "mayReadData": true
         },
         {
             "id": "Oae8B8z5H5Y",
@@ -387,7 +388,8 @@
             "mayApprove": false,
             "mayUnapprove": true,
             "mayUnaccept": false,
-            "mayAccept": true
+            "mayAccept": true,
+            "mayReadData": true
         },
         {
             "id": "RrjmU53u2Ls",
@@ -404,14 +406,12 @@
             "mayApprove": false,
             "mayUnapprove": true,
             "mayUnaccept": false,
-            "mayAccept": false
+            "mayAccept": false,
+            "mayReadData": true
         },
         {
             "id": "qofeYTu7w0R",
-            "dataApprovalLevel": {
-                "id": "WccDi5x6FSp",
-                "level": 4
-            },
+            "dataApprovalLevel": {},
 
             "period": "2014",
             "organisationUnit": {
@@ -421,7 +421,8 @@
             "mayApprove": false,
             "mayUnapprove": false,
             "mayUnaccept": false,
-            "mayAccept": false
+            "mayAccept": false,
+            "mayReadData": false
         }
     ];
 
