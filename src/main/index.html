@@ -36,7 +36,11 @@
         </div>
 
         <tabset justified="true">
-            <tab ng-show="app.tabs.accept.access" ng-controller="acceptTableViewController as tableView" disabled="!tableView.hasItems(app, 'accept')" active="app.tabs.accept.state">
+            <tab ng-show="app.tabs.accept.access"
+                 ng-controller="acceptTableViewController as tableView"
+                 disabled="!tableView.hasItems(app, 'accept')"
+                 active="app.tabs.accept.state"
+                 deselect="app.deSelect()">
                 <tab-heading>
                     {{ app.tabs.accept.name }}
                     <span class="fa-stack fa-lg available-actions">
@@ -46,7 +50,11 @@
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-controller="acceptedTableViewController as tableView" disabled="!tableView.hasItems(app, 'submit')" active="app.tabs.submit.state">
+            <tab ng-show="app.tabs.submit.access"
+                 ng-controller="acceptedTableViewController as tableView"
+                 disabled="!tableView.hasItems(app, 'submit')"
+                 active="app.tabs.submit.state"
+                 deselect="app.deSelect()">
                 <tab-heading>
                     {{ app.tabs.submit.name }}
                     <span class="fa-stack fa-lg available-actions">
@@ -56,7 +64,11 @@
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-controller="submittedTableViewController as tableView" disabled="!tableView.hasItems(app, 'unsubmit')" active="app.tabs.unsubmit.state">
+            <tab ng-show="app.tabs.unsubmit.access"
+                 ng-controller="submittedTableViewController as tableView"
+                 disabled="!tableView.hasItems(app, 'unsubmit')"
+                 active="app.tabs.unsubmit.state"
+                 deselect="app.deSelect()">
                 <tab-heading>
                     {{ app.tabs.unsubmit.name }}
                     <span class="fa-stack fa-lg available-actions">
@@ -66,7 +78,11 @@
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-controller="allTableViewController as tableView" disabled="!tableView.hasItems(app, 'all')" active="app.tabs.view.state">
+            <tab ng-show="app.tabs.view.access"
+                 ng-controller="allTableViewController as tableView"
+                 disabled="!tableView.hasItems(app, 'all')"
+                 active="app.tabs.view.state"
+                 deselect="app.deSelect()">
                 <tab-heading>
                     {{ app.tabs.view.name }}
                     <span class="fa-stack fa-lg available-items">

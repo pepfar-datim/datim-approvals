@@ -113,6 +113,10 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
         return _.find(this.tabs, { state: true } );
     };
 
+    this.deSelect = function () {
+        $scope.$broadcast('RECORDTABLE.selection.clear');
+    };
+
     self.approvalLevel = {};
 
     currentUser.permissions.then(function (permissions) {
