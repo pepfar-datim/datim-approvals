@@ -28,17 +28,17 @@
         </div>
     </div>
 
-    <div ng-controller="tabController as tabCtrl">
+    <div ng-show="!app.showData">
         <div class="action-buttons">
             <div class="btn-group">
-                <button class="btn btn-default" ng-disabled="!app.hasAllDetails()" nav-click="data-view">View/Act</button>
+                <button class="btn btn-default" ng-disabled="!app.hasAllDetails()" ng-click="app.updateDataView()">View/Act</button>
             </div>
         </div>
 
         <tabset justified="true">
-            <tab ng-controller="recievedTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'recieved')" active="tabCtrl.state.recieved">
+            <tab ng-show="app.tabs.accept.access" ng-controller="acceptTableViewController as tableView" disabled="!tableView.hasItems(app, 'accept')" active="app.tabs.accept.state">
                 <tab-heading>
-                    Recieved
+                    {{ app.tabs.accept.name }}
                     <span class="fa-stack fa-lg available-actions">
                         <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
                         <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
@@ -46,9 +46,9 @@
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-controller="acceptedTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'accepted')" active="tabCtrl.state.accepted">
+            <tab ng-controller="acceptedTableViewController as tableView" disabled="!tableView.hasItems(app, 'submit')" active="app.tabs.submit.state">
                 <tab-heading>
-                    Accepted
+                    {{ app.tabs.submit.name }}
                     <span class="fa-stack fa-lg available-actions">
                         <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
                         <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
@@ -56,9 +56,9 @@
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-controller="submittedTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'submitted')" active="tabCtrl.state.submitted">
+            <tab ng-controller="submittedTableViewController as tableView" disabled="!tableView.hasItems(app, 'unsubmit')" active="app.tabs.unsubmit.state">
                 <tab-heading>
-                    Submitted
+                    {{ app.tabs.unsubmit.name }}
                     <span class="fa-stack fa-lg available-actions">
                         <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
                         <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
@@ -66,9 +66,9 @@
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-controller="allTableViewController as tableView" disabled="!tableView.hasItems(tabCtrl, 'all')" active="tabCtrl.state.all">
+            <tab ng-controller="allTableViewController as tableView" disabled="!tableView.hasItems(app, 'all')" active="app.tabs.view.state">
                 <tab-heading>
-                    All
+                    {{ app.tabs.view.name }}
                     <span class="fa-stack fa-lg available-items">
                         <i class="fa fa-stack-1x fa-square-o available-items-dot"></i>
                         <i class="fa-stack-1x available-items-text" ng-bind="tableView.approvalTableData.length"></i>
@@ -79,7 +79,7 @@
         </tabset>
     </div>
 
-    <div ng-controller="dataViewController as dataView">
+    <div ng-controller="dataViewController as dataView" ng-show="app.showData" class="view-wrap">
         <div ng-include="'dataview.html'"></div>
     </div>
 

@@ -16,14 +16,14 @@ function datasetViewDirective() {
     // dimension=bw8KHXzxd9i:NLV6dy7BE2O        - Funding Agency COG : USAID CO
 
 
-    function loadDataSetReport(details, ds, element) {
+    function loadDataSetReport(details, ds, element, scope) {
         var dataSetReportUrl = '../dhis-web-reporting/generateDataSetReport.action';
         var params = {
             ds: ds.id,
             pe: details.period,
             ou: details.orgUnit,
-            dimension: 'BOyWrF33hiR:BnjwQmbgK1b',
-            cog: 'BnjwQmbgK1b'
+            dimension: details.currentSelection[0].category + ':' + _.pluck(details.currentSelection, 'id').join(';'),
+//            cog: 'BnjwQmbgK1b'
         };
         var urlParams = _.map(params, function (value, key) {
             return [key, value].join('=');
@@ -32,6 +32,9 @@ function datasetViewDirective() {
         var reportUrl = [dataSetReportUrl, urlParams].join('?');
 
         jQuery.get(reportUrl).success(function (data) {
+            scope.$apply(function () {
+                scope.details.loaded += 1;
+            });
             var reportElement = jQuery('<div class="dataset-view"></div>').append(data);
 
             var h3Elements = reportElement.find('h3');
@@ -111,17 +114,12 @@ function datasetViewDirective() {
         restrict: 'E',
         replace: true,
         templateUrl: 'datasets/datasetsview.html',
-        scope: {
-            details: '='
-        },
+        scope: {},
         link: function (scope, element) {
-            scope.$watch(function () {
-                return scope.details;
-            }, function (newVal, oldVal) {
-                if (newVal !== oldVal) {
-                    scope.checkValues();
-                }
-            }, true);
+            scope.$on('DATAVIEW.update', function (event, details) {
+                scope.details = details;
+                scope.checkValues();
+            });
 
             scope.checkValues = function () {
                 var details = scope.details;
@@ -129,8 +127,8 @@ function datasetViewDirective() {
                 if (details.orgUnit &&
                     details.period &&
                     details.dataSets &&
-                    details.cog &&
-                    details.cogs) {
+                    details.currentSelection &&
+                    details.actions) {
 
                     //Move this out
                     jQuery('.dataset-view-wrap').html('');
@@ -139,14 +137,12 @@ function datasetViewDirective() {
 
                     addLinksToReports(details.dataSets, element);
 
+                    scope.details.loaded = 0;
                     details.dataSets.forEach(function (item) {
-                        loadDataSetReport(scope.details, item, element);
+                        loadDataSetReport(scope.details, item, element, scope);
                     });
                 }
             };
-
-            //Call the checkOnce for the initial loading
-            scope.checkValues();
         }
     };
 }

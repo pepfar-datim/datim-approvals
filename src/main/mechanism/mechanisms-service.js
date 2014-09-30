@@ -3,8 +3,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     var AGENCY_LEVEL = 3;
     var PARTNER_LEVEL = 4;
 
-    //var period;
+    var period;
+    var dataSetIds = [];
     var categories = [];
+
     var deferred = $q.defer();
 
     var statuses = {
@@ -14,18 +16,31 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
     var mechanisms = [];
 
-//    Object.defineProperty(this, 'period', {
-//        set: function (value) {
-//            if (!angular.isString(value)) {
-//                $log.error('Mechanism Service: Period should be a string');
-//                return;
-//            }
-//            period = value;
-//        },
-//        get: function () {
-//            return period;
-//        }
-//    });
+    Object.defineProperty(this, 'period', {
+        set: function (value) {
+            if (!angular.isString(value)) {
+                $log.error('Mechanism Service: Period should be a string');
+                return;
+            }
+            period = value;
+        },
+        get: function () {
+            return period;
+        }
+    });
+
+    Object.defineProperty(this, 'dataSetIds', {
+        set: function (value) {
+            if (!angular.isArray(value)) {
+                $log.error('Mechanism Service: DataSets should be a string');
+                return;
+            }
+            dataSetIds = value;
+        },
+        get: function () {
+            return dataSetIds;
+        }
+    });
 
     Object.defineProperty(this, 'categories', {
         set: function (value) {
@@ -126,8 +141,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     this.filterMechanisms = function (mechanismsStatuses, parsedData) {
+        mechanisms = [];
         _.each(mechanismsStatuses, function (mechanismStatus) {
-            console.log(mechanismsStatuses);
             var mechanism =  _.find(parsedData, { catComboId: mechanismStatus.id });
             if (!mechanism) {
                 return;
@@ -149,7 +164,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                 mechanism.mayAccept = true;
                 actions.push('Accept');
             }
-            mechanism.actions = actions.join(', ')
+            mechanism.actions = actions.join(', ');
+            mechanism.level = mechanismStatus.dataApprovalLevel.level;
             mechanisms.push(mechanism);
         });
     };
@@ -179,7 +195,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     this.getStatuses = function () {
-        return d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/dataApproval.json').getList().then(function (data) {
+        return d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/dataApproval.json').getList({
+            period: period,
+            ds: dataSetIds
+        }).then(function (data) {
             return data.getDataOnly();
         });
     };

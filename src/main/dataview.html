@@ -1,14 +1,17 @@
 <div class="dataset-view">
+    <div ng-show="details.loaded < details.dataSets.length">
+        <progressbar type="success" max="100" value="(100 / details.dataSets.length) * details.loaded">Loading Reports: {{(100 / details.dataSets.length) * details.loaded}}%</progressbar>
+    </div>
     <div class="action-buttons">
         <div class="btn-group">
-            <button class="btn btn-default">Accept</button><button class="btn btn-default">UnAccept</button>
+            <button ng-show="dataView.details.actions.accept.length > 0" class="btn btn-default">Accept</button><button ng-show="dataView.details.actions.unaccept.length > 0" class="btn btn-default">UnAccept</button>
         </div>&nbsp;&nbsp;
         <div class="btn-group">
-            <button class="btn btn-default">Submit</button><button class="btn btn-default">Unubmit</button>
+            <button ng-show="dataView.details.actions.approve.length > 0" class="btn btn-default">Submit</button><button ng-show="dataView.details.actions.unapprove.length > 0" class="btn btn-default">Unubmit</button>
         </div>
         <div class="btn-group place-right">
-            <button class="btn btn-default" nav-click="/">Back</button>
+            <button class="btn btn-default" ng-click="app.showData = false">Back</button>
         </div>
     </div>
-    <dataset-view details="dataView.details"></dataset-view>
+    <dataset-view></dataset-view>
 </div>

@@ -1,25 +1,178 @@
-function appController(periodService, $scope, currentUser, mechanismsService) {
-    var controller = this;
+function appController(periodService, $scope, currentUser, mechanismsService, approvalLevelsService, $q) {
+    var self = this;
 
-    this.hasAllDetails = function () {
-        if ($scope.details.period
-            && ($scope.currentSelection.length > 0
-            && $scope.details.dataSets
-            && $scope.details.orgUnit)) {
+    this.hasTableDetails = function () {
+        if (mechanismsService.categories.length > 0 &&
+            mechanismsService.dataSetIds.length > 0 &&
+            angular.isString(mechanismsService.period)) {
             return true;
         }
         return false;
     };
 
+    var loaded = false;
+    this.getTableData = function () {
+        if (!loaded && self.hasTableDetails()) {
+            mechanismsService.getMechanisms().then(function (mechanisms) {
+                $scope.$broadcast('MECHANISMS.updated', mechanisms);
+            });
+        }
+    };
+
+    this.hasAllDetails = function () {
+        if ($scope.details.period
+            && ($scope.details.currentSelection.length > 0
+            && $scope.details.dataSets
+            && $scope.details.orgUnit
+            && this.getActiveTab())) {
+            return true;
+        }
+        return false;
+    };
+
+    this.updateDataView = function () {
+        function generateActions() {
+            var actions = {
+                approve: [],
+                unapprove: [],
+                accept: [],
+                unaccept: []
+            };
+            _.each($scope.details.currentSelection, function (mechanism) {
+                if (mechanism.mayApprove) { actions.approve.push(mechanism.id) }
+                if (mechanism.mayUnapprove) { actions.unapprove.push(mechanism.id) }
+                if (mechanism.mayAccept) { actions.accept.push(mechanism.id) }
+                if (mechanism.mayUnaccept) { actions.unaccept.push(mechanism.id) }
+            });
+
+            return actions;
+        }
+        console.log(this.getActiveTab());
+        if (this.getActiveTab().name === 'View') {
+            $scope.details.actions = {};
+        } else {
+            $scope.details.actions = generateActions();
+        }
+
+        if (this.hasAllDetails()) {
+            $scope.$broadcast('DATAVIEW.update', $scope.details);
+            this.showData = true;
+        }
+    };
+
+    this.tabs = {
+        accept: {
+            access: false,
+            name: 'Accept',
+            state: false,
+            action: []
+        },
+        submit: {
+            access: false,
+            name: 'Submit',
+            state: false,
+            action: []
+        },
+        unsubmit: {
+            access: false,
+            name: 'Unsubmit',
+            state: false,
+            action: []
+        },
+        view: {
+            access: true,
+            name: 'View',
+            state: false,
+            action: ['view']
+        }
+    };
+
+    this.state = {};
+
+    this.showData = false;
+
+    this.setActive = function (tabName, isActive) {
+        var active = _.filter(this.state, function (item) {
+            if (item === true) {
+                return true;
+            }
+            return false;
+        });
+
+        if (active.length === 0) {
+            _.each(this.state, function (item) {
+                if (item !== tabName) {
+                    item = false;
+                }
+            });
+            this.state[tabName] = isActive;
+        }
+    };
+
+    this.getActiveTab = function () {
+        return _.find(this.tabs, { state: true } );
+    };
+
+    self.approvalLevel = {};
+
+    currentUser.permissions.then(function (permissions) {
+        permissions = _(permissions);
+
+        if (permissions.contains('ALL')) {
+            self.tabs.accept.access = true;
+            self.tabs.accept.name = 'Accept/Return';
+            self.tabs.accept.action = ['accept', 'unapprove'];
+            self.tabs.submit.access = true;
+            self.tabs.submit.name = 'Submit/Unaccept';
+            self.tabs.submit.action = ['approve', 'unaccept'];
+            self.tabs.unsubmit.access = true;
+            self.tabs.unsubmit.name = 'Unsubmit';
+            self.tabs.unsubmit.action = ['unapprove'];
+            return;
+        }
+
+        if (permissions.contains('F_ACCEPT_DATA_LOWER_LEVELS')) {
+            if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
+                //All permissions
+                self.tabs.accept.access = true;
+                self.tabs.accept.name = 'Accept/Return';
+                self.tabs.accept.action = ['accept', 'unapprove'];
+                self.tabs.submit.access = true;
+                self.tabs.submit.name = 'Submit/Unaccept';
+                self.tabs.submit.action = ['approve', 'unaccept'];
+                self.tabs.unsubmit.access = true;
+                self.tabs.unsubmit.name = 'Unsubmit';
+                self.tabs.unsubmit.action = ['unapprove'];
+            } else {
+                //Only accept lower levels
+                self.tabs.accept.access = true;
+                self.tabs.accept.name = 'Accept/Return';
+                self.tabs.accept.action = ['accept', 'unapprove'];
+                self.tabs.submit.access = true;
+                self.tabs.submit.name = 'Unaccept';
+                self.tabs.submit.action = ['unaccept'];
+            }
+        } else {
+            if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
+                //Only approve
+                self.tabs.submit.access = true;
+                self.tabs.submit.name = 'Submit';
+                self.tabs.submit.action = ['approve'];
+                self.tabs.unsubmit.access = true;
+                self.tabs.unsubmit.name = 'Unsubmit';
+                self.tabs.unsubmit.action = ['unapprove'];
+            } else {
+                //Only view
+            }
+        }
+    });
+
     $scope.details = {
         orgUnit: undefined,
         period: undefined,
         dataSets: undefined,
-        cog: '1dsff22',
-        cogs: '1dsff22'
+        currentSelection: [],
     };
-
-    $scope.currentSelection = [];
 
     //Get the users org unit off the user
     currentUser.then(function () {
@@ -33,7 +186,24 @@ function appController(periodService, $scope, currentUser, mechanismsService) {
         }
 
         $scope.details.orgUnit = orgUnit.id;
-        controller.title = orgUnit.name + ' - Data approval'; //TODO: Add COGS
+        self.title = orgUnit.name + ' - Data approval'; //TODO: Add COGS
+    });
+
+    //TODO: Replace this with the real call
+    var stuff = $q.defer();
+    currentUser.approvalLevel = stuff.promise;
+    stuff.resolve({ level: 1 });
+
+    var userApprovalLevelPromise = currentUser.approvalLevel.then(function (approvalLevel) {
+        self.approvalLevel.level = approvalLevel.level;
+    });
+
+    $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (result) {
+        if (self.approvalLevel.level === result[1].length) {
+            self.tabs.accept.access = false;
+            self.tabs.submit.access = true;
+            self.tabs.submit.name = 'Pending';
+        }
     });
 
     //When the dataset group is changed update the filter types and the datasets
@@ -41,14 +211,16 @@ function appController(periodService, $scope, currentUser, mechanismsService) {
         periodService.filterPeriodTypes(dataSets.getPeriodTypes());
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
+        mechanismsService.dataSetIds = dataSets.getIds()
 
-        mechanismsService.getMechanisms().then(function (mechanisms) {
-            $scope.$broadcast('MECHANISMS.updated', mechanisms);
-        });
+        if (self.hasTableDetails) {
+            self.showData = false;
+            self.getTableData();
+        }
     });
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
-        $scope.currentSelection = selection;
+        $scope.details.currentSelection = selection;
     });
 
     $scope.$watch(function () {
@@ -57,6 +229,17 @@ function appController(periodService, $scope, currentUser, mechanismsService) {
         if (newVal !== oldVal) {
             $scope.details.period = newVal.iso;
             mechanismsService.period = $scope.details.period;
+        }
+    });
+
+    $scope.$watch(function () {
+       return mechanismsService.period;
+    }, function (newVal, oldVal) {
+        if (newVal !== oldVal) {
+            if (self.hasTableDetails) {
+                self.showData = false;
+                self.getTableData();
+            }
         }
     });
 
@@ -90,18 +273,10 @@ function tableViewController(mechanismsService, $scope) {
 
     this.approvalTableDataSource = [];
 
-    this.hasItems = function (tabCtrl, tabName) {
-        tabCtrl.setActive(tabName, !!this.approvalTableData.length);
+    this.hasItems = function (appCtrl, tabName) {
+        appCtrl.setActive(tabName, !!this.approvalTableData.length);
 
         return !!this.approvalTableData.length;
-    };
-
-    this.mechanismHasActions = function (mechanism, actions) {
-        var result = false;
-        _.each(actions, function (action) {
-            result = result || _.contains(mechanism.actions, action);
-        });
-        return result;
     };
 
     this.actionsToFilterOn = [];
@@ -110,16 +285,20 @@ function tableViewController(mechanismsService, $scope) {
         _.map(this.actionsToFilterOn, function (filter) {
            filters[filter] = true;
         });
-        console.log(filters);
         return _.filter(data, filters);
     };
 }
 
-function recievedTableViewController($scope, $controller) {
+function acceptTableViewController($scope, $controller) {
     $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
-    this.actionsToFilterOn = ['mayAccept'];
-    this.approvalTableData = this.filterData(this.approvalTableDataSource);
+    this.actionsToFilterOn = ['mayAccept', 'mayUnapprove'];
+    this.approvalTableData = this.filterData(_.filter(this.approvalTableDataSource, function (item) {
+        if (item.level > self.approvalLevel.level) {
+            return true;
+        }
+        return false;
+    }));
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
@@ -164,34 +343,11 @@ function allTableViewController($scope, $controller) {
     }).bind(this));
 }
 
-function tabController() {
-    this.state = {};
-
-    this.setActive = function (tabName, isActive) {
-        var active = _.filter(this.state, function (item) {
-            if (item === true) {
-                return true;
-            }
-            return false;
-        });
-
-        if (active.length === 0) {
-            _.each(this.state, function (item) {
-                if (item !== tabName) {
-                    item = false;
-                }
-            });
-            this.state[tabName] = isActive;
-        }
-    };
-}
-
-angular.module('PEPFAR.approvals', ['d2', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead']);
+angular.module('PEPFAR.approvals', ['d2', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead', 'ui.bootstrap.progressbar']);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('dataViewController', dataViewController);
-angular.module('PEPFAR.approvals').controller('tabController', tabController);
 angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
-angular.module('PEPFAR.approvals').controller('recievedTableViewController', recievedTableViewController);
+angular.module('PEPFAR.approvals').controller('acceptTableViewController', acceptTableViewController);
 angular.module('PEPFAR.approvals').controller('acceptedTableViewController', acceptedTableViewController);
 angular.module('PEPFAR.approvals').controller('submittedTableViewController', submittedTableViewController);
 angular.module('PEPFAR.approvals').controller('allTableViewController', allTableViewController);
