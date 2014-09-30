@@ -131,6 +131,11 @@ describe('Mechanisms service', function () {
             it('should add the approval level to the mechanism', function () {
                 expect(dataResult[0].level).toBe(2);
             });
+
+            it('should add the status to the mechanism', function () {
+                expect(dataResult[0].status).toBe('Accepted by Global');
+                expect(dataResult[1].status).toBe('Submitted by Country');
+            });
         });
     });
 

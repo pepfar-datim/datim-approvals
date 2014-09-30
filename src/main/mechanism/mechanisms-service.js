@@ -132,7 +132,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         return $q.all([this.getData(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
             var parsedData = parseData(data[0], data[1].getCategoryOptionGroupSetIdsForLevels());
 
-            self.filterMechanisms(data[2], parsedData);
+            self.filterMechanisms(data[2], parsedData, data[1]);
 
             return mechanisms;
         }, function (err) {
@@ -140,14 +140,16 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         });
     };
 
-    this.filterMechanisms = function (mechanismsStatuses, parsedData) {
+    this.filterMechanisms = function (mechanismsStatuses, parsedData, approvalLevels) {
         mechanisms = [];
         _.each(mechanismsStatuses, function (mechanismStatus) {
-            var mechanism =  _.find(parsedData, { catComboId: mechanismStatus.id });
-            if (!mechanism) {
-                return;
-            }
             var actions = [];
+            var status = [];
+            var approvalLevel = _.find(approvalLevels, { id: mechanismStatus.dataApprovalLevel.id });
+            var mechanism =  _.find(parsedData, { catComboId: mechanismStatus.id });
+
+            if (!mechanism) { return; }
+
             if (mechanismStatus.mayApprove === true) {
                 mechanism.mayApprove = true;
                 actions.push('Submit');
@@ -164,6 +166,18 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                 mechanism.mayAccept = true;
                 actions.push('Accept');
             }
+
+            if (mechanismStatus.accepted === true) {
+                status.push('Accepted');
+            } else {
+                status.push('Submitted');
+            }
+
+            if (approvalLevel) {
+                status.push(approvalLevel.levelName);
+            }
+
+            mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
             mechanism.level = mechanismStatus.dataApprovalLevel.level;
             mechanisms.push(mechanism);
