@@ -1,64 +1,10 @@
 function appController(periodService, $scope, currentUser, mechanismsService, approvalLevelsService, $q) {
     var self = this;
-
-    this.hasTableDetails = function () {
-        if (mechanismsService.categories.length > 0 &&
-            mechanismsService.dataSetIds.length > 0 &&
-            angular.isString(mechanismsService.period)) {
-            return true;
-        }
-        return false;
-    };
-
     var loaded = false;
-    this.getTableData = function () {
-        if (!loaded && self.hasTableDetails()) {
-            mechanismsService.getMechanisms().then(function (mechanisms) {
-                $scope.$broadcast('MECHANISMS.updated', mechanisms);
-            });
-        }
-    };
 
-    this.hasAllDetails = function () {
-        if ($scope.details.period
-            && ($scope.details.currentSelection.length > 0
-            && $scope.details.dataSets
-            && $scope.details.orgUnit
-            && this.getActiveTab())) {
-            return true;
-        }
-        return false;
-    };
-
-    this.updateDataView = function () {
-        function generateActions() {
-            var actions = {
-                approve: [],
-                unapprove: [],
-                accept: [],
-                unaccept: []
-            };
-            _.each($scope.details.currentSelection, function (mechanism) {
-                if (mechanism.mayApprove) { actions.approve.push(mechanism.id) }
-                if (mechanism.mayUnapprove) { actions.unapprove.push(mechanism.id) }
-                if (mechanism.mayAccept) { actions.accept.push(mechanism.id) }
-                if (mechanism.mayUnaccept) { actions.unaccept.push(mechanism.id) }
-            });
-
-            return actions;
-        }
-        if (this.getActiveTab().name === 'View') {
-            $scope.details.actions = {};
-        } else {
-            $scope.details.actions = generateActions();
-        }
-
-        if (this.hasAllDetails()) {
-            $scope.$broadcast('DATAVIEW.update', $scope.details);
-            this.showData = true;
-        }
-    };
-
+    this.actionItems = 0;
+    this.state = {};
+    this.showData = false;
     this.tabs = {
         accept: {
             access: false,
@@ -86,9 +32,69 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
         }
     };
 
-    this.state = {};
+    this.hasTableDetails = function () {
+        if (mechanismsService.categories.length > 0 &&
+            mechanismsService.dataSetIds.length > 0 &&
+            angular.isString(mechanismsService.period)) {
+            return true;
+        }
+        return false;
+    };
 
-    this.showData = false;
+    this.getTableData = function () {
+        if (!loaded && self.hasTableDetails()) {
+            this.actionItems = 0;
+            mechanismsService.getMechanisms().then(function (mechanisms) {
+                _.each(mechanisms, function (mechanism) {
+                    if (mechanism.mayApprove || mechanism.mayAccept) {
+                        this.actionItems += 1;
+                    }
+                }, self);
+
+                $scope.$broadcast('MECHANISMS.updated', mechanisms);
+            });
+        }
+    };
+
+    this.hasAllDetails = function () {
+        if ($scope.details.period
+            && ($scope.details.currentSelection.length > 0
+            && $scope.details.dataSets
+            && $scope.details.orgUnit
+            && this.getActiveTab())) {
+            return true;
+        }
+        return false;
+    };
+
+    this.updateDataView = function () {
+        function generateActions() {
+            var actions = {
+                approve: [],
+                unapprove: [],
+                accept: [],
+                unaccept: []
+            };
+            _.each($scope.details.currentSelection, function (mechanism) {
+                if (mechanism.mayApprove === true) { actions.approve.push(mechanism.id) }
+                if (mechanism.mayUnapprove === true) { actions.unapprove.push(mechanism.id) }
+                if (mechanism.mayAccept === true) { actions.accept.push(mechanism.id) }
+                if (mechanism.mayUnaccept === true) { actions.unaccept.push(mechanism.id) }
+            });
+
+            return actions;
+        }
+        if (this.getActiveTab().name === 'View') {
+            $scope.details.actions = {};
+        } else {
+            $scope.details.actions = generateActions();
+        }
+
+        if (this.hasAllDetails()) {
+            $scope.$broadcast('DATAVIEW.update', $scope.details);
+            this.showData = true;
+        }
+    };
 
     this.setActive = function (tabName, isActive) {
         var active = _.filter(this.state, function (item) {

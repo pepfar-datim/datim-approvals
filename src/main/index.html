@@ -15,7 +15,9 @@
     <header-bar></header-bar>
 
     <div class="info-wrap">
-        <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-bind="app.status"></span></span>
+        <div>
+            <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-bind="app.actionItems + ' mechanism' + (app.actionItems > 1 ? 's' : '') + ' require action'"></span></span>
+        </div>
     </div>
 
     <div class="dropdown-controls">
