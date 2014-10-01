@@ -47,7 +47,6 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
 
             return actions;
         }
-        console.log(this.getActiveTab());
         if (this.getActiveTab().name === 'View') {
             $scope.details.actions = {};
         } else {
@@ -114,6 +113,7 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
     };
 
     this.deSelect = function () {
+        $scope.details.currentSelection = [];
         $scope.$broadcast('RECORDTABLE.selection.clear');
     };
 
@@ -217,6 +217,8 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
         mechanismsService.categories = dataSets.getCategoryIds();
         mechanismsService.dataSetIds = dataSets.getIds()
 
+        $scope.details.currentSelection = [];
+
         if (self.hasTableDetails) {
             self.showData = false;
             self.getTableData();
@@ -259,6 +261,33 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
 
 function dataViewController($scope) {
     this.details = $scope.details;
+
+    this.getMechanismsByIds = function (ids) {
+        var ids = _(ids);
+        return _.filter(this.details.currentSelection, function (mechanism) {
+            return ids.contains(mechanism.id);
+        });
+    }
+
+    this.submit = function (ids) {
+        console.log('Submit');
+        console.log(this.getMechanismsByIds(ids));
+    };
+
+    this.accept = function (ids) {
+        console.log('Accept');
+        console.log(this.getMechanismsByIds(ids));
+    };
+
+    this.unapprove = function (ids) {
+        console.log('Unapprove');
+        console.log(this.getMechanismsByIds(ids));
+    };
+
+    this.unaccept = function (ids) {
+        console.log('Unaccept');
+        console.log(this.getMechanismsByIds(ids));
+    };
 }
 
 function tableViewController(mechanismsService, $scope) {

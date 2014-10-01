@@ -1,4 +1,5 @@
 function datasetViewDirective() {
+    var dataSetReportWrapSelector = '.dataset-report-wrap';
     //http://localhost:8080/dhis/dhis-web-reporting/generateDataSetReport.action
     //?ds=cIGsv0OBVi8&pe=201409&ou=HfVjCurKxh2&dimension=BOyWrF33hiR%3ABnjwQmbgK1b&cog=BnjwQmbgK1b
 
@@ -25,7 +26,7 @@ function datasetViewDirective() {
             dimension: details.currentSelection[0].category + ':' + _.pluck(details.currentSelection, 'id').join(';'),
 //            cog: 'BnjwQmbgK1b'
         };
-        var urlParams = _.map(params, function (value, key) {
+        var urlParams = _.map(params,function (value, key) {
             return [key, value].join('=');
         }).join('&');
 
@@ -71,32 +72,33 @@ function datasetViewDirective() {
             reportElement.find('[style*="background"]').css('background', '').addClass('dataset-view-highlight');
             reportElement.find('[style*="color"]').css('color', '');
 
-            element.append(reportElement);
+            scope.reportView[ds.id].content = reportElement;
+            scope.updateCurrentViewIfNeeded(ds);
         });
     }
 
-    function addLinksToReports(dataSets, element) {
-        var linkElement = jQuery('<div class="data-set-report-links"><ul></ul></div>');
-        var ulElement = linkElement.children('ul');
-
-        _.each(dataSets, function (dataSet) {
-            var linkElement = jQuery('<li><i class="fa fa-file"></i> ' + dataSet.name + '</li>');
-
-            linkElement.on('click', function (event) {
-                var element = jQuery('#' + dataSet.id);
-                var position;
-
-                if(element.length <= 0) { return; }
-                position = element.position();
-
-                window.scrollTo(0, position.top);
-            });
-
-            ulElement.append(linkElement);
-        });
-
-        element.prepend(linkElement);
-    }
+//    function addLinksToReports(dataSets, element) {
+//        var linkElement = jQuery('<div class="data-set-report-links"><ul></ul></div>');
+//        var ulElement = linkElement.children('ul');
+//
+//        _.each(dataSets, function (dataSet) {
+//            var linkElement = jQuery('<li><i class="fa fa-file"></i> ' + dataSet.name + '</li>');
+//
+//            linkElement.on('click', function (event) {
+//                var element = jQuery('#' + dataSet.id);
+//                var position;
+//
+//                if(element.length <= 0) { return; }
+//                position = element.position();
+//
+//                window.scrollTo(0, position.top);
+//            });
+//
+//            ulElement.append(linkElement);
+//        });
+//
+//        element.prepend(linkElement);
+//    }
 
     //TODO: Take this into it's own directive (could be usable for reuse
     function addBackToTop() {
@@ -116,6 +118,15 @@ function datasetViewDirective() {
         templateUrl: 'datasets/datasetsview.html',
         scope: {},
         link: function (scope, element) {
+            scope.reportView = {
+                actions: {
+                    approve: { count: 0 },
+                    unapprove: { count: 0 },
+                    accept: { count: 0 },
+                    unaccept: { count: 0 }
+                }
+            };
+
             scope.$on('DATAVIEW.update', function (event, details) {
                 scope.details = details;
                 scope.checkValues();
@@ -130,19 +141,78 @@ function datasetViewDirective() {
                     details.currentSelection &&
                     details.actions) {
 
-                    //Move this out
-                    jQuery('.dataset-view-wrap').html('');
-
-                    addBackToTop();
-
-                    addLinksToReports(details.dataSets, element);
-
-                    scope.details.loaded = 0;
-                    details.dataSets.forEach(function (item) {
-                        loadDataSetReport(scope.details, item, element, scope);
-                    });
+                    scope.loadReports();
                 }
             };
+
+            scope.loadReports = function () {
+                var details = scope.details;
+
+                //Move this out
+                jQuery(dataSetReportWrapSelector).html('');
+
+                addBackToTop();
+
+                scope.details.loaded = 0;
+                scope.reportView.currentDataSet = details.dataSets[0];
+                details.dataSets.forEach(function (item) {
+                    loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
+                    scope.reportView[item.id] = {};
+                    scope.reportView[item.id].content = angular.element('<div class="report-loading-message"><i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span></div>');
+                });
+
+                //Add the first element
+                element.find(dataSetReportWrapSelector).append(scope.reportView[details.dataSets[0].id].content);
+            };
+
+            scope.onChange = function ($event, $item) {
+                try {
+                    if (scope.reportView[$item.id].content) {
+                        if (element.find(dataSetReportWrapSelector).children().length > 0) {
+                            element.find(dataSetReportWrapSelector).children().replaceWith(scope.reportView[$item.id].content);
+                        } else {
+                            element.find(dataSetReportWrapSelector).append(scope.reportView[$item.id].content);
+                        }
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            };
+
+            scope.updateCurrentViewIfNeeded = function (dataSet) {
+                if (scope.reportView.currentDataSet &&
+                    scope.reportView.currentDataSet.id === dataSet.id) {
+                    scope.onChange({}, dataSet);
+                }
+            };
+
+// TODO: Reconsider if we want to use this "Drag scroll"
+//            (function ($) {
+//                var clicked = false
+//                var clickX;
+//                var wrapSelector = dataSetReportWrapSelector;
+//
+//                function enableScroll(e) {
+//                    $(wrapSelector).scrollLeft($(wrapSelector).scrollLeft() + ((clickX - e.pageX) / 2))
+//                }
+//
+//
+//                $(wrapSelector).on({
+//                    'mousemove': function(e) {
+//                        clicked && enableScroll(e);
+//                    },
+//                    'mousedown': function(e) {
+//                        clicked = true;
+//                        clickX = e.pageX;
+//                        $(wrapSelector).toggleClass('noselect');
+//                    },
+//                    'mouseup': function() {
+//                        clicked = false;
+//                        $(wrapSelector).toggleClass('noselect');
+//                    }
+//                });
+//            })(jQuery);
+
         }
     };
 }

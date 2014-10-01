@@ -9,10 +9,13 @@
 
 body
   padding-top: 70px
-  padding-right: 5%
-  padding-left: 5%
-  max-width: 1105px
-  margin: 0 auto
+
+  & > div.info-wrap, & > div.dropdown-controls, & > div.table-tab-wrap
+    padding-right: 5%
+    padding-left: 5%
+    max-width: 1105px
+    margin: 0 auto
+    margin-bottom: 30px
 
 .dropdown-controls
   .dataset-group-selector-wrap
@@ -27,9 +30,6 @@ body
 .dataset-group-selector
   div
     width: 99.5%
-
-.dataset-group-selector-wrap
-  margin-bottom: 15px
 
 //Kuler color codes
 //  276696
@@ -126,7 +126,6 @@ tr:nth-child(odd)
   font-size: 2.5em
   font-weight: 100
   margin-top: 0
-  margin-bottom: 30px
 
   .info-button
     color: #ECF0F1
@@ -216,10 +215,6 @@ tr:nth-child(odd)
   border-radius: 5px
   cursor: pointer
 
-.action-buttons
-  margin-bottom: 30px
-  position: relative
-
 .place-right
   position: absolute
   right: 0
@@ -263,12 +258,12 @@ tr:nth-child(odd)
   border-bottom: 1px solid #ccc
   border-radius: 0 0 4px 4px
 
-.period-selector
-  margin-bottom: 30px
-
 .nav-tabs
   li
     cursor: pointer
 
     &:active
       cursor: inherit
+
+.table-tab-wrap .action-buttons
+  margin-bottom: 30px
