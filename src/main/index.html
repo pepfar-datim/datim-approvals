@@ -72,8 +72,8 @@
                 <div ng-include="'tableview.html'"></div>
             </tab>
             <tab ng-show="app.tabs.view.access"
-                 ng-controller="allTableViewController as tableView"
-                 disabled="!tableView.hasItems(app, 'all')"
+                 ng-controller="viewTableViewController as tableView"
+                 disabled="!tableView.hasItems(app, 'view')"
                  active="app.tabs.view.state"
                  deselect="app.deSelect()">
                 <tab-heading>
