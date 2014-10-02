@@ -16,7 +16,7 @@
 
     <div class="info-wrap">
         <div>
-            <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-bind="app.getStatus()"></span></span>
+            <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-show="app.actionItems" ng-bind="app.actionItems" class="badge available-actions-dot"></span><span ng-bind="app.getStatus()"></span></span>
         </div>
     </div>
 
@@ -44,11 +44,8 @@
                  active="app.tabs.accept.state"
                  deselect="app.deSelect()">
                 <tab-heading>
-                    {{ app.tabs.accept.name }}
-                    <span class="fa-stack fa-lg available-actions">
-                        <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
-                        <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
-                    </span>
+                    <span ng-bind="app.tabs.accept.name"></span>
+                    <span class="badge available-actions-dot" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
@@ -58,11 +55,8 @@
                  active="app.tabs.submit.state"
                  deselect="app.deSelect()">
                 <tab-heading>
-                    {{ app.tabs.submit.name }}
-                    <span class="fa-stack fa-lg available-actions">
-                        <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
-                        <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
-                    </span>
+                    <span ng-bind="app.tabs.submit.name"></span>
+                    <span class="badge available-actions-dot" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
@@ -72,11 +66,8 @@
                  active="app.tabs.unsubmit.state"
                  deselect="app.deSelect()">
                 <tab-heading>
-                    {{ app.tabs.unsubmit.name }}
-                    <span class="fa-stack fa-lg available-actions">
-                        <i class="fa fa-stack-1x fa-square available-actions-dot"></i>
-                        <i class="fa-stack-1x available-actions-text" ng-bind="tableView.approvalTableData.length"></i>
-                    </span>
+                    <span ng-bind="app.tabs.unsubmit.name"></span>
+                    <span class="badge available-items-dot" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
@@ -86,11 +77,8 @@
                  active="app.tabs.view.state"
                  deselect="app.deSelect()">
                 <tab-heading>
-                    {{ app.tabs.view.name }}
-                    <span class="fa-stack fa-lg available-items">
-                        <i class="fa fa-stack-1x fa-square-o available-items-dot"></i>
-                        <i class="fa-stack-1x available-items-text" ng-bind="tableView.approvalTableData.length"></i>
-                    </span>
+                    <span ng-bind="app.tabs.view.name"></span>
+                    <span class="badge available-items-dot" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>

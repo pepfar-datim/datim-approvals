@@ -64,7 +64,7 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
         if (this.actionItems === 0) {
             this.status = 'Done! (No actions required)';
         } else {
-            this.status = this.actionItems + ' mechanism' + (this.actionItems !== 1 ? 's' : '') + ' require action';
+            this.status = ' mechanism' + (this.actionItems !== 1 ? 's' : '') + ' require' + (this.actionItems === 1 ? 's' : '') + ' action';
         }
     };
 
@@ -341,10 +341,17 @@ function tableViewController(mechanismsService, $scope) {
     this.actionsToFilterOn = [];
     this.filterData = function (data) {
         var filters = {};
+        var result = [];
+
         _.map(this.actionsToFilterOn, function (filter) {
            filters[filter] = true;
         });
-        return _.filter(data, filters);
+
+        _.each(filters, function (filter) {
+            result.concat(_.where(data, filter));
+        });
+
+        return result;
     };
 }
 
