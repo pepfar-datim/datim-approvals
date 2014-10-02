@@ -117,7 +117,6 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
     };
 
     this.setActive = function (tabName, isActive) {
-        console.log(this.state);
         var active = _.filter(this.state, function (item) {
             if (item === true ) {
                 return true;
@@ -223,7 +222,7 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
     //TODO: Replace this with the real call
     var stuff = $q.defer();
     currentUser.approvalLevel = stuff.promise;
-    stuff.resolve({ level: 4 });
+    stuff.resolve({ level: 1 });
 
     var userApprovalLevelPromise = currentUser.approvalLevel.then(function (approvalLevel) {
         $scope.approvalLevel.level = approvalLevel.level;
@@ -371,6 +370,7 @@ function acceptTableViewController($scope, $controller) {
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
+        this.hasActionItems = !!_.filter(this.approvalTableData, { mayAccept: true }).length;
     }).bind(this));
 }
 
@@ -382,6 +382,7 @@ function acceptedTableViewController($scope, $controller) {
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
+        this.hasActionItems = !!_.filter(this.approvalTableData, { mayApprove: true }).length;
     }).bind(this));
 }
 

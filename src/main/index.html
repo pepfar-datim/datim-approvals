@@ -45,7 +45,7 @@
                  deselect="app.deSelect()">
                 <tab-heading>
                     <span ng-bind="app.tabs.accept.name"></span>
-                    <span class="badge available-actions-dot" ng-bind="tableView.approvalTableData.length"></span>
+                    <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
@@ -56,7 +56,7 @@
                  deselect="app.deSelect()">
                 <tab-heading>
                     <span ng-bind="app.tabs.submit.name"></span>
-                    <span class="badge available-actions-dot" ng-bind="tableView.approvalTableData.length"></span>
+                    <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
