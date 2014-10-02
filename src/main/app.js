@@ -42,19 +42,37 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
     };
 
     this.getTableData = function () {
-        if (!loaded && self.hasTableDetails()) {
-            this.actionItems = 0;
+        if (self.hasTableDetails()) {
+            this.status = 'Loading...';
+
             mechanismsService.getMechanisms().then(function (mechanisms) {
+                self.actionItems = 0;
                 _.each(mechanisms, function (mechanism) {
                     if (mechanism.mayApprove || mechanism.mayAccept) {
-                        this.actionItems += 1;
+                        self.actionItems += 1;
                     }
-                }, self);
+                });
+
+                self.setStatus();
 
                 $scope.$broadcast('MECHANISMS.updated', mechanisms);
             });
         }
     };
+
+    this.setStatus = function () {
+        if (this.actionItems === 0) {
+            this.status = 'Done! (No actions required)';
+        } else {
+            this.status = this.actionItems + ' mechanism' + (this.actionItems !== 1 ? 's' : '') + ' require action';
+        }
+    };
+
+    this.getStatus = function () {
+        if (this.status) {
+            return this.status;
+        }
+    }
 
     this.hasAllDetails = function () {
         if ($scope.details.period
@@ -225,7 +243,9 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
 
         $scope.details.currentSelection = [];
 
-        if (self.hasTableDetails) {
+        //TODO: Since it's pepfar we might not have to request the mechanism again when the
+        //category changes, as they only use one category
+        if (self.hasTableDetails()) {
             self.showData = false;
             self.getTableData();
         }
@@ -248,7 +268,7 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
        return mechanismsService.period;
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
-            if (self.hasTableDetails) {
+            if (self.hasTableDetails()) {
                 self.showData = false;
                 self.getTableData();
             }

@@ -16,7 +16,7 @@
 
     <div class="info-wrap">
         <div>
-            <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-bind="app.actionItems + ' mechanism' + (app.actionItems > 1 ? 's' : '') + ' require action'"></span></span>
+            <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix">status</span><span ng-bind="app.getStatus()"></span></span>
         </div>
     </div>
 
