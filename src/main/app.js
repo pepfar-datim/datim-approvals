@@ -222,9 +222,10 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
     //TODO: Replace this with the real call
     var stuff = $q.defer();
     currentUser.approvalLevel = stuff.promise;
-    stuff.resolve({ level: 1 });
+    stuff.resolve({ level: 1, id: 'aypLtfWShE5' });
 
     var userApprovalLevelPromise = currentUser.approvalLevel.then(function (approvalLevel) {
+        $scope.details.approvalLevel = approvalLevel;
         $scope.approvalLevel.level = approvalLevel.level;
     });
 
@@ -287,37 +288,6 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
             $scope.details.orgUnit = newVal;
         }
     });
-}
-
-function dataViewController($scope) {
-    this.details = $scope.details;
-
-    this.getMechanismsByIds = function (ids) {
-        var ids = _(ids);
-        return _.filter(this.details.currentSelection, function (mechanism) {
-            return ids.contains(mechanism.id);
-        });
-    }
-
-    this.submit = function (ids) {
-        console.log('Submit');
-        console.log(this.getMechanismsByIds(ids));
-    };
-
-    this.accept = function (ids) {
-        console.log('Accept');
-        console.log(this.getMechanismsByIds(ids));
-    };
-
-    this.unapprove = function (ids) {
-        console.log('Unapprove');
-        console.log(this.getMechanismsByIds(ids));
-    };
-
-    this.unaccept = function (ids) {
-        console.log('Unaccept');
-        console.log(this.getMechanismsByIds(ids));
-    };
 }
 
 function tableViewController(mechanismsService, $scope) {
@@ -422,7 +392,6 @@ function viewTableViewController($scope, $controller) {
 
 angular.module('PEPFAR.approvals', ['d2', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead', 'ui.bootstrap.progressbar']);
 angular.module('PEPFAR.approvals').controller('appController', appController);
-angular.module('PEPFAR.approvals').controller('dataViewController', dataViewController);
 angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
 angular.module('PEPFAR.approvals').controller('acceptTableViewController', acceptTableViewController);
 angular.module('PEPFAR.approvals').controller('acceptedTableViewController', acceptedTableViewController);
