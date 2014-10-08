@@ -1,7 +1,7 @@
 <div class="dataset-view">
     <div class="dataset-view-controls">
-        <div ng-show="details.loaded < details.dataSets.length">
-            <progressbar type="success" max="100" value="(100 / details.dataSets.length) * details.loaded">Loading Reports: {{(100 / details.dataSets.length) * details.loaded}}%</progressbar>
+        <div ng-show="details.loaded < details.dataSetsFilteredByMechanisms.length">
+            <progressbar type="success" max="100" value="(100 / details.dataSetsFilteredByMechanisms.length) * details.loaded">Loading Reports: {{(100 / details.dataSetsFilteredByMechanisms.length) * details.loaded}}%</progressbar>
         </div>
         <div class="action-buttons">
             <div class="btn-group">

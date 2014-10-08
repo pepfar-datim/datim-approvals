@@ -1,6 +1,6 @@
 function dataViewController($scope, approvalsService) {
+    this.filteredDataSets = [];
     this.details = $scope.details;
-
     this.getMechanismsByIds = function (ids) {
         var ids = _(ids);
         return _.filter(this.details.currentSelection, function (mechanism) {

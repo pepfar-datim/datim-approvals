@@ -145,8 +145,28 @@ function datasetViewDirective() {
                 }
             };
 
+            //For each dataset
+
+
             scope.loadReports = function () {
                 var details = scope.details;
+                scope.details.dataSetsFilteredByMechanisms = _.filter(details.dataSets, function (dataSet) {
+                    var result = false;
+                    var categoryOptionComboIds;
+
+                    if (!dataSet.categoryCombo || !angular.isArray(dataSet.categoryCombo.categoryOptionCombos)) {
+                        return false;
+                    }
+
+                    categoryOptionComboIds = _.pluck(dataSet.categoryCombo.categoryOptionCombos, 'id');
+
+                    _.each(scope.details.currentSelection, function (mechanism) {
+                        if (_.contains(categoryOptionComboIds, mechanism.catComboId)) {
+                            result = true;
+                        }
+                    });
+                    return result;
+                });
 
                 //Move this out
                 jQuery(dataSetReportWrapSelector).html('');
@@ -154,15 +174,15 @@ function datasetViewDirective() {
                 addBackToTop();
 
                 scope.details.loaded = 0;
-                scope.reportView.currentDataSet = details.dataSets[0];
-                details.dataSets.forEach(function (item) {
+                scope.reportView.currentDataSet = scope.details.dataSetsFilteredByMechanisms[0];
+                scope.details.dataSetsFilteredByMechanisms.forEach(function (item) {
                     loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
                     scope.reportView[item.id] = {};
                     scope.reportView[item.id].content = angular.element('<div class="report-loading-message"><i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span></div>');
                 });
 
                 //Add the first element
-                element.find(dataSetReportWrapSelector).append(scope.reportView[details.dataSets[0].id].content);
+                element.find(dataSetReportWrapSelector).append(scope.reportView[scope.details.dataSetsFilteredByMechanisms[0].id].content);
             };
 
             scope.onChange = function ($event, $item) {
