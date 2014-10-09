@@ -60,18 +60,29 @@ function dataViewController($scope, approvalsService) {
         var mechanisms = this.getMechanismsByIds(ids);
 
         if (this.isParamsComplete()) {
-            angular.forEach(mechanisms, function (mechanism) {
-                var approvalParams = angular.copy(params);
-                approvalParams.co = mechanism.id;
+            var approvalParams = angular.copy(params);
 
+            approvalParams.co = _.pluck(mechanisms, 'id');
+
+            if (approvalParams.co.length > 0) {
                 approvalsService.approve(approvalParams);
-            }, this);
+            }
         }
     };
 
     this.accept = function (ids) {
-        console.log('Accept');
-        console.log(this.getMechanismsByIds(ids));
+        var params = this.getParamsForMechanism();
+        var mechanisms = this.getMechanismsByIds(ids);
+
+        if (this.isParamsComplete()) {
+            var approvalParams = angular.copy(params);
+
+            approvalParams.co = _.pluck(mechanisms, 'id');
+
+            if (approvalParams.co.length > 0) {
+                approvalsService.accept(approvalParams);
+            }
+        }
     };
 
     this.unapprove = function (ids) {
@@ -79,18 +90,29 @@ function dataViewController($scope, approvalsService) {
         var mechanisms = this.getMechanismsByIds(ids);
 
         if (this.isParamsComplete()) {
-            angular.forEach(mechanisms, function (mechanism) {
-                var approvalParams = angular.copy(params);
-                approvalParams.co = mechanism.id;
+            var approvalParams = angular.copy(params);
 
-                approvalsService.unapprove(approvalParams);
-            }, this);
+            approvalParams.co = _.pluck(mechanisms, 'id');
+
+            if (approvalParams.co.length > 0) {
+                approvalsService.approve(approvalParams);
+            }
         }
     };
 
     this.unaccept = function (ids) {
-        console.log('Unaccept');
-        console.log(this.getMechanismsByIds(ids));
+        var params = this.getParamsForMechanism();
+        var mechanisms = this.getMechanismsByIds(ids);
+
+        if (this.isParamsComplete()) {
+            var approvalParams = angular.copy(params);
+
+            approvalParams.co = _.pluck(mechanisms, 'id');
+
+            if (approvalParams.co.length > 0) {
+                approvalsService.unaccept(approvalParams);
+            }
+        }
     };
 }
 

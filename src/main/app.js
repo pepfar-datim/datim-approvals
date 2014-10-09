@@ -52,6 +52,16 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
                         if (mechanism.mayApprove || mechanism.mayAccept) {
                             self.actionItems += 1;
                         }
+
+                        /**
+                         * Hack to display the dataset names for mechanisms that have the name default
+                         */
+                        if (mechanism.mechanism === 'default') {
+                            var dataSetNames = _.pluck(_.filter($scope.details.dataSets, function (dataSet) {
+                                return !!_.find(dataSet.categoryCombo.categoryOptionCombos, { id: mechanism.catComboId });
+                            }), 'name');
+                            mechanism.mechanism = dataSetNames.join(', ');
+                        }
                     });
 
                     self.setStatus();

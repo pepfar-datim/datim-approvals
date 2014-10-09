@@ -255,7 +255,7 @@ describe('Dataview Controller', function () {
                     ds: ['1', '2'],
                     pe: '2014',
                     al: 'd2fd34eee',
-                    co: 'a'
+                    co: ['a']
                 };
 
                 controller.submit(['a']);
@@ -274,20 +274,13 @@ describe('Dataview Controller', function () {
                     pe: '2014',
                     ds: ['1', '2'],
                     al: 'd2fd34eee',
-                    co: 'a'
-                };
-                var expectedArgumentsMechanism2 = {
-                    pe: '2014',
-                    ds: ['1', '2'],
-                    al: 'd2fd34eee',
-                    co: '2'
+                    co: ['a', '2']
                 };
 
                 controller.submit(['a', '2']);
 
-                expect(approvalServiceMock.approve).toHaveCallCount(2);
+                expect(approvalServiceMock.approve).toHaveCallCount(1);
                 expect(approvalServiceMock.approve).toHaveBeenCalledWith(expectedArgumentsMechanismA);
-                expect(approvalServiceMock.approve).toHaveBeenCalledWith(expectedArgumentsMechanism2);
             });
         });
     });
