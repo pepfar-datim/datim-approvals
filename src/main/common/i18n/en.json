@@ -1,0 +1,11 @@
+{
+    "mechanism": "Mechanism",
+    "agency": "Agency",
+    "actions": "Actions",
+    "country": "Country",
+    "partner": "Partner",
+    "accept_return": "Accept/Return",
+    "submit_unaccept": "Submit/Unaccept",
+    "unsubmit": "Unsubmit",
+    "view": "View"
+}

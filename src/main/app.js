@@ -433,7 +433,7 @@ function viewTableViewController($scope, $controller) {
     }).bind(this));
 }
 
-angular.module('PEPFAR.approvals', ['d2', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead', 'ui.bootstrap.progressbar']);
+angular.module('PEPFAR.approvals', ['d2', 'd2-translate', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead', 'ui.bootstrap.progressbar']);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
 angular.module('PEPFAR.approvals').controller('acceptTableViewController', acceptTableViewController);

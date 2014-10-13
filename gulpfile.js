@@ -110,6 +110,12 @@ gulp.task('html', function () {
     ));
 });
 
+gulp.task('i18n', function () {
+    gulp.src('**/i18n/**/*.json', { base: './src/main/' }).pipe(gulp.dest(
+        build_directory
+    ));
+});
+
 gulp.task('dependencies', function () {
     var path = require('canonical-path');
     var _ = require('lodash');
@@ -175,7 +181,7 @@ gulp.task('dependencies', function () {
 });
 
 gulp.task('build', function () {
-    runSequence('clean', 'js', 'sass', 'html', 'dependencies');
+    runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'i18n');
 });
 
 gulp.task('deploy', function () {
