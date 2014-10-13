@@ -191,6 +191,6 @@ gulp.task('default', function () {
 
 gulp.task('copy-fake-api', function () {
     gulp.src([
-        'fake-api/**/*.json'
+        'fake-api/**/*'
     ]).pipe(gulp.dest(dhis_directory + 'fake-api/'));
 });

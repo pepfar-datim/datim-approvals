@@ -65,7 +65,11 @@ function dataViewController($scope, approvalsService) {
             approvalParams.co = _.pluck(mechanisms, 'id');
 
             if (approvalParams.co.length > 0) {
-                approvalsService.approve(approvalParams);
+                approvalsService.approve(approvalParams).then(function () {
+                    $scope.$emit('APP.submit.success', { action: 'approve', mechanisms: mechanisms } );
+                }, function (message) {
+                    $scope.$emit('APP.submit.error', message.statusText);
+                });
             }
         }
     };
@@ -80,7 +84,11 @@ function dataViewController($scope, approvalsService) {
             approvalParams.co = _.pluck(mechanisms, 'id');
 
             if (approvalParams.co.length > 0) {
-                approvalsService.accept(approvalParams);
+                approvalsService.accept(approvalParams).then(function () {
+                    $scope.$emit('APP.submit.success', { action: 'accept', mechanisms: mechanisms } );
+                }, function (message) {
+                    $scope.$emit('APP.submit.error', message.statusText);
+                });
             }
         }
     };
@@ -95,7 +103,11 @@ function dataViewController($scope, approvalsService) {
             approvalParams.co = _.pluck(mechanisms, 'id');
 
             if (approvalParams.co.length > 0) {
-                approvalsService.approve(approvalParams);
+                approvalsService.unapprove(approvalParams).then(function () {
+                    $scope.$emit('APP.submit.success', { action: 'unapprove', mechanisms: mechanisms } );
+                }, function (message) {
+                    $scope.$emit('APP.submit.error', message.statusText);
+                });;
             }
         }
     };
@@ -110,7 +122,11 @@ function dataViewController($scope, approvalsService) {
             approvalParams.co = _.pluck(mechanisms, 'id');
 
             if (approvalParams.co.length > 0) {
-                approvalsService.unaccept(approvalParams);
+                approvalsService.unaccept(approvalParams).then(function () {
+                    $scope.$emit('APP.submit.success', { action: 'unaccept', mechanisms: mechanisms } );
+                }, function (message) {
+                    $scope.$emit('APP.submit.error', message.statusText);
+                });;
             }
         }
     };

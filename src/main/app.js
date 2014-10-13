@@ -1,4 +1,5 @@
-function appController(periodService, $scope, currentUser, mechanismsService, approvalLevelsService, $q) {
+function appController(periodService, $scope, currentUser, mechanismsService,
+                       approvalLevelsService, $q, toastr) {
     var self = this;
     var loaded = false;
 
@@ -263,11 +264,43 @@ function appController(periodService, $scope, currentUser, mechanismsService, ap
         if (self.hasTableDetails()) {
             self.showData = false;
             self.getTableData();
+            self.deSelect();
         }
     });
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
         $scope.details.currentSelection = selection;
+    });
+
+    $scope.$on('APP.submit.success', function (event, mechanisms) {
+        var successMessage = [mechanisms.action[0].toUpperCase(),
+                              mechanisms.action.substr(1),
+                              ' successful for ',
+                              mechanisms.mechanisms.length,
+                              ' mechanism(s)'];
+        if (mechanisms.mechanisms.length < 10) {
+            //FIXME: Html in controller :( Bad practice
+            successMessage.push('<ul>');
+            angular.forEach(mechanisms.mechanisms, function (mechanism) {
+                successMessage.push('<li>' + mechanism.mechanism + '</li>');
+            });
+            successMessage.push('</ul>');
+        }
+        toastr.success(successMessage.join(''));
+        if (self.hasTableDetails()) {
+            self.showData = false;
+            self.getTableData();
+            self.deSelect();
+        }
+    });
+
+    $scope.$on('APP.submit.error', function (event, message) {
+        toastr.error(message);
+        if (self.hasTableDetails()) {
+            self.showData = false;
+            self.getTableData();
+            self.deSelect();
+        }
     });
 
     $scope.$watch(function () {

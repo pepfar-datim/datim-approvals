@@ -31,40 +31,42 @@ function approvalsService($q, d2Api) {
         if (approvalStatus === true) {
             // First parameter is undefined because we do not post a body but
             // the data is in the query params in the second parameter.
-            return d2Api.dataApprovals.post(approvalData);
+            return d2Api.getEndPoint('dataApprovals/approve').post(approvalData);
         }
-        return $q.reject(approvalStatus);
+        return $q.reject({statusText: approvalStatus});
     };
 
     this.unapprove = function (approvalData) {
         var approvalStatus = checkApprovalData(approvalData);
 
         if (approvalStatus === true) {
-            return d2Api.dataApprovals.post(approvalData);
+            return d2Api.getEndPoint('dataApprovals/unapprove').post(approvalData);
         }
-        return $q.reject(approvalStatus);
+        return $q.reject({statusText: approvalStatus});
     }
 
     this.accept = function (approvalData) {
         var approvalStatus = checkApprovalData(approvalData);
 
         if (approvalStatus === true) {
-            return d2Api.getEndPoint('dataApprovals/acceptances').post(approvalData);
+            return d2Api.getEndPoint('dataApprovals/accept').post(approvalData);
         }
-        return $q.reject(approvalStatus);
+        return $q.reject({statusText: approvalStatus});
     }
 
     this.unaccept = function (approvalData) {
         var approvalStatus = checkApprovalData(approvalData);
 
         if (approvalStatus === true) {
-            return d2Api.getEndPoint('dataApprovals/acceptances').post(approvalData);
+            return d2Api.getEndPoint('dataApprovals/unaccept').post(approvalData);
         }
-        return $q.reject(approvalStatus);
+        return $q.reject({statusText: approvalStatus});
     }
 
-    d2Api.addEndPoint('dataApprovals');
-    d2Api.addEndPoint('dataApprovals/acceptances');
+    d2Api.addEndPoint('dataApprovals/approve');
+    d2Api.addEndPoint('dataApprovals/unapprove');
+    d2Api.addEndPoint('dataApprovals/accept');
+    d2Api.addEndPoint('dataApprovals/unaccept');
 }
 
 angular.module('PEPFAR.approvals').service('approvalsService', approvalsService);

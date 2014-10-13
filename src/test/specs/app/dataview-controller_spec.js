@@ -3,12 +3,17 @@ describe('Dataview Controller', function () {
     var scope;
     var approvalServiceMock;
 
+    var promiseMock;
+
     beforeEach(inject(function ($rootScope, $controller) {
         scope = $rootScope.$new();
         scope.details = {};
 
+        promiseMock = jasmine.createSpy();
+        promiseMock.andReturn({ then: jasmine.createSpy() });
+
         approvalServiceMock = {
-            approve: jasmine.createSpy()
+            approve: promiseMock
         };
 
         controller = $controller('dataViewController', {
