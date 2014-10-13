@@ -86,14 +86,17 @@ function datasetViewDirective() {
             reportElement.find('div#userInfo').remove();
 
             //Remove empty p element
-            reportElement.find('div.cde p:last-child').remove();
+            //reportElement.find('div.cde p:last-child').remove();
 
             //Remove the share form
             reportElement.find('div#shareForm').remove();
 
+            //Remove the comment boxes for EA forms
+            reportElement.find('.ea-comment').parentsUntil('div').remove();
+
             //Remove the background and color inline styles and add a class to the items that had a background
-            reportElement.find('[style*="background"]').css('background', '').addClass('dataset-view-highlight');
-            reportElement.find('[style*="color"]').css('color', '');
+            //reportElement.find('[style*="background"]').css('background', '').addClass('dataset-view-highlight');
+            //reportElement.find('[style*="color"]').css('color', '');
 
             scope.reportView[ds.id].content = reportElement;
             scope.updateCurrentViewIfNeeded(ds);
