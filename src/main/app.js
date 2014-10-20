@@ -32,6 +32,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             action: ['view']
         }
     };
+    this.currentUser = {}
 
     this.hasTableDetails = function () {
         if (mechanismsService.categories.length > 0 &&
@@ -215,6 +216,22 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         currentSelection: [],
     };
 
+    this.updateTitle = function () {
+        var title = [];
+
+        if ($scope.approvalLevel && $scope.approvalLevel.categoryOptionGroupSet && $scope.approvalLevel.categoryOptionGroupSet.name) {
+            title.push($scope.approvalLevel.categoryOptionGroupSet.name);
+        }
+
+        if (self.currentUser.orgUnit && self.currentUser.orgUnit.name) {
+            title.push(self.currentUser.orgUnit.name);
+        }
+
+        title.push('Data approval');
+
+        self.title = title.join(' - ');
+    }
+
     //Get the users org unit off the user
     currentUser.then(function () {
         var orgUnit;
@@ -227,17 +244,22 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
 
         $scope.details.orgUnit = orgUnit.id;
-        self.title = orgUnit.name + ' - Data approval'; //TODO: Add COGS
+        self.currentUser.orgUnit = orgUnit;
+
+        self.updateTitle();
     });
 
     //TODO: Replace this with the real call
     var stuff = $q.defer();
     currentUser.approvalLevel = stuff.promise;
-    stuff.resolve({ level: 1, id: 'aypLtfWShE5' });
+    stuff.resolve({ level: 1, id: 'aypLtfWShE5', categoryOptionGroupSet: { name: 'Implementing partner' }});
 
     var userApprovalLevelPromise = currentUser.approvalLevel.then(function (approvalLevel) {
         $scope.details.approvalLevel = approvalLevel;
-        $scope.approvalLevel.level = approvalLevel.level;
+        $scope.approvalLevel = approvalLevel;
+        if ($scope.approvalLevel.categoryOptionGroupSet) {
+            self.updateTitle();
+        }
     });
 
     $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (result) {
