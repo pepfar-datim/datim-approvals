@@ -1,6 +1,6 @@
 {
     "version": "0.12",
-    "name": "PEPFAR approvals",
+    "name": "PEPFAR Approvals",
     "description": "Approvals app for PEPFAR",
     "icons": {
         "48": "img/icons/dataapproval.png"
@@ -8,7 +8,7 @@
     "developer":{
         "url": "http://www.dhis2.org",
         "name": "Mark Polak",
-        "company": "HISP",
+        "company": "DHIS2 Core Team",
         "email": "markpo@ifi.uio.no"
     },
     "launch_path": "index.html",
