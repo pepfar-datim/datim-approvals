@@ -12,7 +12,7 @@
     <link href="css/app.css" rel="stylesheet" type="text/css" />
 </head>
 <body ng-controller="appController as app">
-    <header-bar logo="{{app.headerBar.logo}}" title="{{app.headerBar.title}}" link="{{app.headerBar.link}}"></header-bar>
+    <header-bar logo="app.headerBar.logo" title="app.headerBar.title" link="app.headerBar.link"></header-bar>
 
     <div class="info-wrap">
         <div>
@@ -133,6 +133,12 @@
                 if (!dhis2Root) {
                     console.error('Error trying to get the dhis2 url from the manifest');
                 }
+
+                //set api location
+                angular.module('PEPFAR.approvals').config(function ($provide, d2ApiProvider) {
+                    $provide.constant('API_ENDPOINT', dhis2Root + '/api');
+                    d2ApiProvider.setBaseUrl(dhis2Root + '/api');
+                });
 
                 //Load all the required scripts and then launch the angular app
                 loadScript(function (){
