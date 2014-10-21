@@ -5,9 +5,11 @@
     "country": "Country",
     "partner": "Partner",
     "status": "status",
+    "Submit": "Submit",
     "Accept": "Accept",
     "Accept/Return": "Accept/Return",
     "Submit/Unaccept": "Submit/Unaccept",
     "Unsubmit": "Unsubmit",
-    "View": "View"
+    "View": "View",
+    "Search in": "Search in"
 }

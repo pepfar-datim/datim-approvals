@@ -199,8 +199,8 @@ gulp.task('build', function () {
 gulp.task('deploy', function () {
     gulp.src([
         'build/**/*'
-    ]).pipe(gulp.dest(dhis_directory));
-})
+    ]).pipe(gulp.dest('/usr/local/apache-tomcat-8.0.5/webapps/dhis/apps/approvals'));
+});
 
 gulp.task('default', function () {
     rimraf(dhis_directory, function () {});

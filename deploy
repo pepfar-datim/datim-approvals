@@ -20,5 +20,9 @@ if [[ $1 == 'dev' ]] ; then
 fi
 
 gulp build
+
+#Overwrite the webapp with the fake one for faster testing
+cp src/main/_manifest.webapp build/manifest.webapp
+
 gulp deploy
 gulp copy-fake-api

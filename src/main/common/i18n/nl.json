@@ -1,0 +1,15 @@
+{
+    "mechanism": "Mechanisme",
+    "agency": "Agentschap",
+    "actions": "Acties",
+    "country": "Land",
+    "partner": "Partner",
+    "status": "Status",
+    "Submit": "Versturen",
+    "Accept": "Accepteren",
+    "Accept/Return": "Accepteren/Retourneren",
+    "Submit/Unaccept": "Versturen/De-accepteren",
+    "Unsubmit": "De-versturen",
+    "View": "Bekijken",
+    "Search in": "Zoeken in"
+}
