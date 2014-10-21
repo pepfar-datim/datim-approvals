@@ -1,4 +1,4 @@
-function datasetViewDirective(AppManifest) {
+function datasetViewDirective(AppManifest, $translate) {
     var dataSetReportWrapSelector = '.dataset-report-wrap';
 
     function loadDataSetReport(details, ds, element, scope) {
@@ -88,8 +88,8 @@ function datasetViewDirective(AppManifest) {
     }
 
     //TODO: Take this into it's own directive (could be usable for reuse
-    function addBackToTop() {
-        var backToTop = jQuery('<div class="back-to-top"><i class="fa fa-angle-double-up"></i> Back to top</div>');
+    function addBackToTop(translation) {
+        var backToTop = jQuery('<div class="back-to-top"><i class="fa fa-angle-double-up"></i><span>&nbsp;' + translation + '</span></div>');
 
         backToTop.on('click', function () {
             window.scrollTo(0, 0);
@@ -155,7 +155,9 @@ function datasetViewDirective(AppManifest) {
                 //Move this out
                 jQuery(dataSetReportWrapSelector).html('');
 
-                addBackToTop();
+                $translate('Back to top').then(function (translation) {
+                    addBackToTop(translation);
+                });
 
                 scope.details.loaded = 0;
                 scope.reportView.currentDataSet = scope.details.dataSetsFilteredByMechanisms[0];

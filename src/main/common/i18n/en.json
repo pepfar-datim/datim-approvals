@@ -4,12 +4,21 @@
     "actions": "Actions",
     "country": "Country",
     "partner": "Partner",
-    "status": "status",
+    "status": "Status",
     "Submit": "Submit",
     "Accept": "Accept",
     "Accept/Return": "Accept/Return",
     "Submit/Unaccept": "Submit/Unaccept",
     "Unsubmit": "Unsubmit",
+    "Unaccept": "Unaccept",
     "View": "View",
-    "Search in": "Search in"
+    "Search in": "Search in",
+    "Loading...": "Loading...",
+    "Data approval": "Data approval",
+    "mechanisms require action": "mechanisms require action",
+    "mechanism requires action": "mechanism requires action",
+    "Back": "Back",
+    "View/Act on":"View/Act on",
+    "mechanism(s)":"mechanism(s)",
+    "Back to top": "Back to top"
 }

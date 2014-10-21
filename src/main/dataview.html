@@ -6,17 +6,17 @@
         <div class="action-buttons">
             <div class="btn-group">
                 <button ng-click="dataView.submit(dataView.details.actions.approve)" ng-if="dataView.details.actions.approve.length > 0" class="btn btn-primary"
-                        ng-bind="'Submit ' + dataView.details.actions.approve.length + ' mechanism' + (dataView.details.actions.approve.length > 1 ? 's' : '')">Submit</button>
+                        ng-bind="dataView.getActionTextFor('approve')">Submit</button>
                 <button ng-click="dataView.accept(dataView.details.actions.accept)" ng-if="dataView.details.actions.accept.length > 0" class="btn btn-primary"
-                        ng-bind="'Accept ' + dataView.details.actions.accept.length + ' mechanism' + (dataView.details.actions.accept.length > 1 ? 's' : '')">Accept</button>
+                        ng-bind="'dataView.getActionTextFor('accept')">Accept</button>
                 <button ng-click="dataView.unapprove(dataView.details.actions.unapprove)" ng-if="dataView.details.actions.unapprove.length > 0" class="btn btn-default"
-                        ng-bind="'Unubmit ' + dataView.details.actions.unapprove.length + ' mechanism' + (dataView.details.actions.unapprove.length > 1 ? 's' : '')">Unubmit</button>
+                        ng-bind="dataView.getActionTextFor('unapprove')">Unubmit</button>
                 <button ng-click="dataView.unaccept(dataView.details.actions.unaccept)" ng-if="dataView.details.actions.unaccept.length > 0" class="btn btn-default"
-                        ng-bind="'UnAccept ' + dataView.details.actions.unaccept.length + ' mechanism' + (dataView.details.actions.unaccept.length > 1 ? 's' : '')">UnAccept</button>
+                        ng-bind="dataView.getActionTextFor('unaccept')">Unaccept</button>
 
             </div>
             <div class="btn-group place-right">
-                <button class="btn btn-default" ng-click="app.showData = false">Back</button>
+                <button class="btn btn-default" ng-click="app.showData = false" translate>Back</button>
             </div>
         </div>
     </div>

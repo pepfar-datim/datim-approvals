@@ -1,5 +1,5 @@
 function appController(periodService, $scope, currentUser, mechanismsService,
-                       approvalLevelsService, $q, toastr, AppManifest, systemSettings) {
+                       approvalLevelsService, $q, toastr, AppManifest, systemSettings, $translate) {
     var self = this;
     var loaded = false;
 
@@ -34,6 +34,11 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     };
     this.currentUser = {};
 
+    this.text = {};
+    $translate(['View/Act on', 'mechanism(s)']).then(function (translations) {
+        self.text.viewAct = [translations['View/Act on'], 0, translations['mechanism(s)']].join(' ');
+    });
+
     this.headerBar = {
         logo: AppManifest.activities.dhis.href + '/dhis-web-commons/css/light_blue/logo_banner.png',
         title: systemSettings.applicationTitle,
@@ -51,7 +56,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     this.getTableData = function () {
         if (self.hasTableDetails()) {
-            this.status = 'Loading...';
+            $translate('Loading...').then(function (translation) {
+                self.status = translation;
+            });
 
             $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function () {
                 mechanismsService.getMechanisms().then(function (mechanisms) {
@@ -82,9 +89,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     this.setStatus = function () {
         if (this.actionItems === 0) {
-            this.status = 'Done! (No actions required)';
+            $translate('Done! (No actions required)').then(function (translations) {
+                self.status = translations;
+            });
         } else {
-            this.status = ' mechanism' + (this.actionItems !== 1 ? 's' : '') + ' require' + (this.actionItems === 1 ? 's' : '') + ' action';
+            $translate(this.actionItems > 1 ? 'mechanisms require action' : 'mechanism requires action').then(function (translation) {
+                self.status = ' ' + translation;
+            });
         }
     };
 
@@ -233,7 +244,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             title.push(self.currentUser.orgUnit.name);
         }
 
-        title.push('Data approval');
+        title.push($translate.instant('Data approval'));
 
         self.title = title.join(' - ');
     }
@@ -294,10 +305,18 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             self.getTableData();
             self.deSelect();
         }
+
+        self.text.viewAct = [$translate.instant('View/Act on'),
+            $scope.details.currentSelection.length,
+            $translate.instant('mechanism(s)')].join(' ');
     });
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
         $scope.details.currentSelection = selection;
+
+        self.text.viewAct = [$translate.instant('View/Act on'),
+                             $scope.details.currentSelection.length,
+                             $translate.instant('mechanism(s)')].join(' ');
     });
 
     $scope.$on('APP.submit.success', function (event, mechanisms) {
@@ -338,6 +357,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             $scope.details.period = newVal.iso;
             mechanismsService.period = $scope.details.period;
         }
+
+        //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
+        $scope.details.currentSelection = [];
+        self.text.viewAct = [$translate.instant('View/Act on'),
+            $scope.details.currentSelection.length,
+            $translate.instant('mechanism(s)')].join(' ');
     });
 
     $scope.$watch(function () {

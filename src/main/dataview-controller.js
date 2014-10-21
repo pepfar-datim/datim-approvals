@@ -1,4 +1,4 @@
-function dataViewController($scope, approvalsService) {
+function dataViewController($scope, approvalsService, $translate) {
     this.filteredDataSets = [];
     this.details = $scope.details;
     this.getMechanismsByIds = function (ids) {
@@ -7,6 +7,18 @@ function dataViewController($scope, approvalsService) {
             return ids.contains(mechanism.id);
         });
     };
+
+    this.getActionTextFor = function(type) {
+        var translations;
+
+        function ucFirst(value) {
+            return value.replace(/^./, function (value) { return value.toUpperCase(); });
+        }
+
+        if (this.details.actions && this.details.actions[type]) {
+            return $translate.instant(ucFirst(type) + ' {{count}} mechanism(s)', { count: this.details.actions[type].length });
+        }
+    }
 
     this.getPeriod = function () {
         return this.details.period;
