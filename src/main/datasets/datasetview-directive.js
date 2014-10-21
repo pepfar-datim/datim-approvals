@@ -1,24 +1,8 @@
-function datasetViewDirective() {
+function datasetViewDirective(AppManifest) {
     var dataSetReportWrapSelector = '.dataset-report-wrap';
-    //http://localhost:8080/dhis/dhis-web-reporting/generateDataSetReport.action
-    //?ds=cIGsv0OBVi8&pe=201409&ou=HfVjCurKxh2&dimension=BOyWrF33hiR%3ABnjwQmbgK1b&cog=BnjwQmbgK1b
-
-    //http://localhost:8080/dhis/dhis-web-reporting/generateDataSetReport.action
-    //?ds=Zqg76KonUx1
-    // &
-    // pe=2014&ou=HfVjCurKxh2
-    // &
-    // selectedUnitOnly=false
-    // &
-    // dimension=SH885jaRe0o:LPeJEUjotaB        - Funding Mechanism C : 1000 - Apple USAID Mechanism CO
-    // &
-    // dimension=BOyWrF33hiR:CSPJnuxBAnz        - Implementing Partner COG : University of Washington CO
-    // &
-    // dimension=bw8KHXzxd9i:NLV6dy7BE2O        - Funding Agency COG : USAID CO
-
 
     function loadDataSetReport(details, ds, element, scope) {
-        var dataSetReportUrl = '../dhis-web-reporting/generateDataSetReport.action';
+        var dataSetReportUrl = AppManifest.activities.dhis.href + '/dhis-web-reporting/generateDataSetReport.action';
         var params = {
             ds: ds.id,
             pe: details.period,
@@ -102,29 +86,6 @@ function datasetViewDirective() {
             scope.updateCurrentViewIfNeeded(ds);
         });
     }
-
-//    function addLinksToReports(dataSets, element) {
-//        var linkElement = jQuery('<div class="data-set-report-links"><ul></ul></div>');
-//        var ulElement = linkElement.children('ul');
-//
-//        _.each(dataSets, function (dataSet) {
-//            var linkElement = jQuery('<li><i class="fa fa-file"></i> ' + dataSet.name + '</li>');
-//
-//            linkElement.on('click', function (event) {
-//                var element = jQuery('#' + dataSet.id);
-//                var position;
-//
-//                if(element.length <= 0) { return; }
-//                position = element.position();
-//
-//                window.scrollTo(0, position.top);
-//            });
-//
-//            ulElement.append(linkElement);
-//        });
-//
-//        element.prepend(linkElement);
-//    }
 
     //TODO: Take this into it's own directive (could be usable for reuse
     function addBackToTop() {
@@ -228,34 +189,6 @@ function datasetViewDirective() {
                     scope.onChange({}, dataSet);
                 }
             };
-
-// TODO: Reconsider if we want to use this "Drag scroll"
-//            (function ($) {
-//                var clicked = false
-//                var clickX;
-//                var wrapSelector = dataSetReportWrapSelector;
-//
-//                function enableScroll(e) {
-//                    $(wrapSelector).scrollLeft($(wrapSelector).scrollLeft() + ((clickX - e.pageX) / 2))
-//                }
-//
-//
-//                $(wrapSelector).on({
-//                    'mousemove': function(e) {
-//                        clicked && enableScroll(e);
-//                    },
-//                    'mousedown': function(e) {
-//                        clicked = true;
-//                        clickX = e.pageX;
-//                        $(wrapSelector).toggleClass('noselect');
-//                    },
-//                    'mouseup': function() {
-//                        clicked = false;
-//                        $(wrapSelector).toggleClass('noselect');
-//                    }
-//                });
-//            })(jQuery);
-
         }
     };
 }

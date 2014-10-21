@@ -1,5 +1,5 @@
 function appController(periodService, $scope, currentUser, mechanismsService,
-                       approvalLevelsService, $q, toastr) {
+                       approvalLevelsService, $q, toastr, AppManifest, systemSettings) {
     var self = this;
     var loaded = false;
 
@@ -32,7 +32,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             action: ['view']
         }
     };
-    this.currentUser = {}
+    this.currentUser = {};
+
+    this.headerBar = {
+        logo: AppManifest.activities.dhis.href + '/dhis-web-commons/css/light_blue/logo_banner.png',
+        title: systemSettings.applicationTitle,
+        link: AppManifest.activities.dhis.href
+    };
 
     this.hasTableDetails = function () {
         if (mechanismsService.categories.length > 0 &&

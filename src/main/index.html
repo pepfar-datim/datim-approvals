@@ -12,7 +12,7 @@
     <link href="css/app.css" rel="stylesheet" type="text/css" />
 </head>
 <body ng-controller="appController as app">
-    <header-bar></header-bar>
+    <header-bar logo="{{app.headerBar.logo}}" title="{{app.headerBar.title}}" link="{{app.headerBar.link}}"></header-bar>
 
     <div class="info-wrap">
         <div>
@@ -136,7 +136,15 @@
 
                 //Load all the required scripts and then launch the angular app
                 loadScript(function (){
-                    angular.bootstrap(document, ['PEPFAR.approvals']);
+                    angular.module('PEPFAR.approvals').factory('AppManifest', function () {
+                        return manifest;
+                    });
+                    jQuery.get(dhis2Root + '/api/systemSettings.json').success(function (systemSettings) {
+                        angular.module('PEPFAR.approvals').factory('systemSettings', function () {
+                            return systemSettings;
+                        });
+                        angular.bootstrap(document, ['PEPFAR.approvals']);
+                    });
                 });
 
                 //Load the jquery ui stylesheet for the forms
