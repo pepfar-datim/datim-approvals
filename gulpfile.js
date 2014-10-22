@@ -190,7 +190,18 @@ gulp.task('dependencies', function () {
        return regex.test(fileName);
     });
 
+    var nonjsFiles = _.filter(depFiles, function (fileName) {
+        var regex = /^.+\.js$/;
+
+        return !regex.test(fileName);
+    });
+
     gulp.src(jsFiles).pipe(concat('vendor.js')).pipe(uglify()).pipe(gulp.dest([
+        build_directory,
+        'vendor'
+    ].join('/')));
+
+    gulp.src(nonjsFiles).pipe(gulp.dest([
         build_directory,
         'vendor'
     ].join('/')));
