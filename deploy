@@ -16,7 +16,7 @@ if [[ $1 == 'dev' ]] ; then
 
   bower install
 
-  cp -r ../apps/d2/dev/* src/vendor/d2js/dist
+  cp -r ../apps/d2/dist/* src/vendor/d2js/dist
 fi
 
 gulp build

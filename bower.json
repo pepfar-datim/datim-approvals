@@ -9,7 +9,6 @@
     "font-awesome": "4.1.x",
     "angular": "~1.2.*",
     "angular-route": "~1.2.*",
-    "angular-animate": "~1.2.*",
     "d2js": "/Work/UIO/dhis/apps/d2/.git",
     "restangular": "~1.4.0",
     "angular-bootstrap": "~0.11.0",

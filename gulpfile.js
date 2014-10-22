@@ -82,6 +82,7 @@ gulp.task('jscs', function () {
 
 gulp.task('js', /*['lint', 'jscs'],*/ function () {
     var concat = require('gulp-concat');
+    var uglify = require('gulp-uglify');
 
     return gulp.src('src/main/**/*.js')
         .pipe(ngAnnotate({
@@ -91,21 +92,27 @@ gulp.task('js', /*['lint', 'jscs'],*/ function () {
             stats: true
         }))
         .pipe(concat('app.js'))
+        .pipe(uglify())
         .pipe(gulp.dest(
             [build_directory, 'js'].join('/')
         ));
 });
 
 gulp.task('sass', function () {
+    var minifyCSS = require('gulp-minify-css');
+
     return gulp.src('src/main/app.sass')
         .pipe(sass())
+        .pipe(minifyCSS())
         .pipe(gulp.dest(
             [build_directory, 'css'].join('/')
         ));
 });
 
 gulp.task('html', function () {
-    gulp.src('src/main/**/*.html').pipe(gulp.dest(
+    var minifyHTML = require('gulp-minify-html');
+
+    gulp.src('src/main/**/*.html').pipe(minifyHTML({ empty: true, quotes: true })).pipe(gulp.dest(
         build_directory
     ));
 });
@@ -132,6 +139,7 @@ gulp.task('dependencies', function () {
     var path = require('canonical-path');
     var _ = require('lodash');
     var concat = require('gulp-concat');
+    var uglify = require('gulp-uglify');
 
     function get_main_script(dependency) {
         var bower_directory = 'src/vendor';
@@ -170,16 +178,22 @@ gulp.task('dependencies', function () {
 
     var dependencies = require(path.resolve('bower.json')).dependencies;
 
-    _.map(dependencies, function (version, dependency) {
-        var dependencies = get_main_script(dependency);
+    var depFiles = []
+    _.forEach(dependencies, function (version, dependency) {
         if (dependency === 'd2js') return;
-
-        gulp.src(dependencies).pipe(gulp.dest([
-            build_directory,
-            'vendor',
-            dependency
-        ].join('/')));
+        depFiles = depFiles.concat(get_main_script(dependency));
     });
+
+    var jsFiles = _.filter(depFiles, function (fileName) {
+       var regex = /^.+\.js$/;
+
+       return regex.test(fileName);
+    });
+
+    gulp.src(jsFiles).pipe(concat('vendor.js')).pipe(uglify()).pipe(gulp.dest([
+        build_directory,
+        'vendor'
+    ].join('/')));
 
     //TODO: fix this
     // Redo d2js seperately
@@ -192,8 +206,54 @@ gulp.task('dependencies', function () {
     ].join('/')));
 });
 
+gulp.task('vendor', function (cb) {
+    var concat = require('gulp-concat');
+    var uglify = require('gulp-uglify');
+
+    var stuff = gulp.src([
+            'src/vendor/jquery/**/jquery.js',
+            'src/vendor/lodash/**/lodash.compat.js',
+
+            'src/vendor/angular/angular.js',
+            'src/vendor/angular*/**/ui-bootstrap-tpls.js',
+            'src/vendor/angular*/**/select.js',
+            'src/vendor/angular*/**/angular-translate.js',
+
+            'src/vendor/restangular/**/restangular.js'
+        ])
+        .pipe(concat('vendor.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest(
+            [build_directory, 'vendor'].join('/')
+    ));
+
+    gulp.src([
+        'src/vendor/toastr/**/toastr.js',
+        'src/vendor/d2js/js/**/*'
+    ])
+    .pipe(uglify())
+    .pipe(gulp.dest(
+        [build_directory, 'vendor'].join('/')
+    ));
+
+    gulp.src([
+            'src/vendor/toastr/**/toastr.css',
+            'src/vendor/d2js/**/d2.css',
+            'src/vendor/d2js/**/*.html'
+        ])
+        .pipe(gulp.dest(
+            [build_directory, 'vendor'].join('/')
+        ));
+
+    return stuff;
+});
+
 gulp.task('build', function () {
     runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'i18n', 'images', 'manifest');
+});
+
+gulp.task('build-prod', function () {
+    runSequence('clean', 'js', 'sass', 'html', 'vendor', 'i18n', 'images', 'manifest', 'package');
 });
 
 gulp.task('deploy', function () {
@@ -211,4 +271,10 @@ gulp.task('copy-fake-api', function () {
     gulp.src([
         'fake-api/**/*'
     ]).pipe(gulp.dest(dhis_directory + 'fake-api/'));
+});
+
+gulp.task('package', function () {
+    gulp.src('build/**/*', { base: './build/' })
+        .pipe(zip('approvals.zip', { compress: false }))
+        .pipe(gulp.dest('.'));
 });

@@ -8,7 +8,7 @@
                 <button ng-click="dataView.submit(dataView.details.actions.approve)" ng-if="dataView.details.actions.approve.length > 0" class="btn btn-primary"
                         ng-bind="dataView.getActionTextFor('approve')">Submit</button>
                 <button ng-click="dataView.accept(dataView.details.actions.accept)" ng-if="dataView.details.actions.accept.length > 0" class="btn btn-primary"
-                        ng-bind="'dataView.getActionTextFor('accept')">Accept</button>
+                        ng-bind="dataView.getActionTextFor('accept')">Accept</button>
                 <button ng-click="dataView.unapprove(dataView.details.actions.unapprove)" ng-if="dataView.details.actions.unapprove.length > 0" class="btn btn-default"
                         ng-bind="dataView.getActionTextFor('unapprove')">Unubmit</button>
                 <button ng-click="dataView.unaccept(dataView.details.actions.unaccept)" ng-if="dataView.details.actions.unaccept.length > 0" class="btn btn-default"

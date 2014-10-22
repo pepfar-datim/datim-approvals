@@ -89,13 +89,16 @@
         <div ng-include="'dataview.html'"></div>
     </div>
 
-    <script src="vendor/jquery/jquery.js"></script>
-    <script src="vendor/lodash/lodash.compat.js"></script>
-    <script src="vendor/angular/angular.js"></script>
-    <script src="vendor/angular-translate/angular-translate.js"></script>
-    <script src="vendor/restangular/restangular.js"></script>
-    <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="vendor/angular-ui-select/select.js"></script>
+    <script src="vendor/vendor.js"></script>
+
+    <!--<script src="vendor/jquery/jquery.js"></script>-->
+    <!--<script src="vendor/lodash/lodash.compat.js"></script>-->
+    <!--<script src="vendor/angular/angular.js"></script>-->
+    <!--<script src="vendor/angular-translate/angular-translate.js"></script>-->
+    <!--<script src="vendor/restangular/restangular.js"></script>-->
+    <!--<script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>-->
+    <!--<script src="vendor/angular-ui-select/select.js"></script>-->
+
     <script src="vendor/toastr/toastr.js"></script>
     <script src="vendor/d2js/js/d2.js"></script>
     <script src="js/app.js"></script>
@@ -103,6 +106,7 @@
     <!-- Scripts and stylesheet loader based on the location set in the manifest -->
     <script>
         (function (jQuery) {
+            //TODO: Improve this script loader and bootstrapper
             var dhis2Root;
 
             var dhis2CoreScripts = [
@@ -115,6 +119,10 @@
                 '/dhis-web-commons/javascripts/dhis2/dhis2.menu.js',
                 '/dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js'
             ];
+
+            $.ajaxSetup({
+                cache: true
+            });
 
             function loadScript(callBack) {
                 var script;
@@ -141,25 +149,38 @@
                 dhis2.settings = dhis2.settings || {};
                 dhis2.settings.baseUrl = dhis2Root;
 
-                //set api location
-                angular.module('PEPFAR.approvals').config(function ($provide, d2ApiProvider, $translateProvider) {
-                    $provide.constant('API_ENDPOINT', dhis2Root + '/api');
-                    d2ApiProvider.setBaseUrl(dhis2Root + '/api');
-                    $translateProvider.use('nl');
-                    $translateProvider.preferredLanguage('nl');
-                });
-
                 //Load all the required scripts and then launch the angular app
                 loadScript(function (){
                     angular.module('PEPFAR.approvals').factory('AppManifest', function () {
                         return manifest;
                     });
                     jQuery.get(dhis2Root + '/api/systemSettings.json').success(function (systemSettings) {
+                        function configureApp(language) {
+                            angular.module('PEPFAR.approvals').config(function ($provide, d2ApiProvider, $translateProvider) {
+                                $provide.constant('API_ENDPOINT', dhis2Root + '/api');
+                                d2ApiProvider.setBaseUrl(dhis2Root + '/api');
+                                $translateProvider.use(language);
+                                $translateProvider.preferredLanguage(language);
+                            });
+                        }
+
                         angular.module('PEPFAR.approvals').factory('systemSettings', function () {
                             return systemSettings;
                         });
-                        angular.bootstrap(document, ['PEPFAR.approvals']);
+
+                        jQuery.ajax({ url: dhis2Root + '/api/userSettings/keyUiLocale/', contentType: 'text/plain', method: 'GET', dataType: 'text' }).success(function (uiLocale) {
+                            configureApp(uiLocale);
+
+                            angular.bootstrap(document, ['PEPFAR.approvals']);
+                        }).fail(function () {
+                            console.warn('Failed to load uiLocale from userSettings: defaulting to english');
+                            configureApp('en');
+
+                            angular.bootstrap(document, ['PEPFAR.approvals']);
+                        });
                     });
+
+
                 });
 
                 //Load the jquery ui stylesheet for the forms
