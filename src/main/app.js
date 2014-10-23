@@ -190,7 +190,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             return;
         }
 
-        if (permissions.contains('NOT_F_ACCEPT_DATA_LOWER_LEVELS')) {
+        if (permissions.contains('F_ACCEPT_DATA_LOWER_LEVELS')) {
             if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
                 //All permissions
                 self.tabs.accept.access = true;
