@@ -6,20 +6,16 @@ function approvalsService($q, d2Api) {
             return 'The parameters for approvals are missing';
         }
 
-        if (!angular.isString(approvalData.pe) || approvalData.pe.length === 0) {
+        if (!angular.isArray(approvalData.pe) || approvalData.pe.length === 0) {
             return 'Period parameter (pe) is missing or empty';
-        }
-
-        if (!angular.isString(approvalData.al) || approvalData.al.length === 0) {
-            return 'Approval level parameter (al) is missing or empty';
         }
 
         if (!angular.isArray(approvalData.ds) || approvalData.ds.length === 0) {
             return 'Dataset id parameter (ds) is missing or empty';
         }
 
-        if (!angular.isArray(approvalData.co) || approvalData.co.length === 0) {
-            return 'Category option parameter is missing or empty';
+        if (!angular.isArray(approvalData.coc) || approvalData.coc.length === 0) {
+            return 'Category option combo parameter is missing or empty';
         }
 
         return true;

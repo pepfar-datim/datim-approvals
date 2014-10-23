@@ -48,10 +48,6 @@ function dataViewController($scope, approvalsService, $translate) {
             params.ds = this.getDataSetIds();
         }
 
-        if (angular.isString(this.getApprovalLevelId()) && this.getApprovalLevelId().length > 0) {
-            params.al = this.getApprovalLevelId();
-        }
-
         return params;
     };
 
@@ -60,7 +56,6 @@ function dataViewController($scope, approvalsService, $translate) {
 
         if (angular.isObject(params) &&
             angular.isString(params.pe) && params.pe.length > 0 &&
-            angular.isString(params.al) && params.al.length > 0 &&
             angular.isArray(params.ds) && params.ds.length > 0) {
             return true;
         }
@@ -74,9 +69,10 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             var approvalParams = angular.copy(params);
 
-            approvalParams.co = _.pluck(mechanisms, 'id');
+            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
+            approvalParams.pe = [approvalParams.pe];
 
-            if (approvalParams.co.length > 0) {
+            if (approvalParams.coc.length > 0) {
                 approvalsService.approve(approvalParams).then(function () {
                     $scope.$emit('APP.submit.success', { action: 'approve', mechanisms: mechanisms } );
                 }, function (message) {
@@ -93,9 +89,10 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             var approvalParams = angular.copy(params);
 
-            approvalParams.co = _.pluck(mechanisms, 'id');
+            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
+            approvalParams.pe = [approvalParams.pe];
 
-            if (approvalParams.co.length > 0) {
+            if (approvalParams.coc.length > 0) {
                 approvalsService.accept(approvalParams).then(function () {
                     $scope.$emit('APP.submit.success', { action: 'accept', mechanisms: mechanisms } );
                 }, function (message) {
@@ -112,14 +109,15 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             var approvalParams = angular.copy(params);
 
-            approvalParams.co = _.pluck(mechanisms, 'id');
+            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
+            approvalParams.pe = [approvalParams.pe];
 
-            if (approvalParams.co.length > 0) {
+            if (approvalParams.coc.length > 0) {
                 approvalsService.unapprove(approvalParams).then(function () {
                     $scope.$emit('APP.submit.success', { action: 'unapprove', mechanisms: mechanisms } );
                 }, function (message) {
                     $scope.$emit('APP.submit.error', message.statusText);
-                });;
+                });
             }
         }
     };
@@ -131,14 +129,15 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             var approvalParams = angular.copy(params);
 
-            approvalParams.co = _.pluck(mechanisms, 'id');
+            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
+            approvalParams.pe = [approvalParams.pe];
 
-            if (approvalParams.co.length > 0) {
+            if (approvalParams.coc.length > 0) {
                 approvalsService.unaccept(approvalParams).then(function () {
                     $scope.$emit('APP.submit.success', { action: 'unaccept', mechanisms: mechanisms } );
                 }, function (message) {
                     $scope.$emit('APP.submit.error', message.statusText);
-                });;
+                });
             }
         }
     };

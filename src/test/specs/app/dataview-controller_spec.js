@@ -131,18 +131,6 @@ describe('Dataview Controller', function () {
             expect(controller.isParamsComplete()).toBe(false);
         });
 
-        it('should return false when the approval level is an empty string', function () {
-            scope.details.approvalLevel = '';
-
-            expect(controller.isParamsComplete()).toBe(false);
-        });
-
-        it('should return false when approval level is not a string', function () {
-            scope.details.approvalLevel = [ {}, {} ];
-
-            expect(controller.isParamsComplete()).toBe(false);
-        });
-
         it('should return false when period is not a string', function () {
             scope.details.period = [ {}, {} ];
 
@@ -174,14 +162,6 @@ describe('Dataview Controller', function () {
             ];
 
             expect(controller.getParamsForMechanism()).toEqual({ ds: [ '1', '2'] });
-        });
-
-        it('should add the approval level when it is available', function () {
-            scope.details.approvalLevel = {
-                id: 'd2fd34eee'
-            };
-
-            expect(controller.getParamsForMechanism()).toEqual({ al: 'd2fd34eee'})
         });
     });
 
@@ -223,14 +203,6 @@ describe('Dataview Controller', function () {
             expect(controller.getDataSetIds).toHaveBeenCalled();
         });
 
-        it('should call getApprovalLevelId', function () {
-            spyOn(controller, 'getApprovalLevelId');
-
-            controller.submit();
-
-            expect(controller.getApprovalLevelId).toHaveBeenCalled();
-        });
-
         it('should ask to check the data', function () {
             spyOn(controller, 'isParamsComplete');
 
@@ -250,21 +222,20 @@ describe('Dataview Controller', function () {
                     id: 'd2fd34eee'
                 };
                 scope.details.currentSelection = [
-                    { id: "a", name: "Mechanism1" },
-                    { id: "2", name: "Mechanism1" },
-                    { id: "myId", name: "Mechanism1"}
+                    { id: "aa", catComboId: "a", name: "Mechanism1" },
+                    { id: "22", catComboId: "2", name: "Mechanism1" },
+                    { id: "myIdmyId", catComboId: "myId", name: "Mechanism1"}
                 ];
             });
 
             it('should ask the approvalsService to approve', function () {
                 var expectedArguments = {
                     ds: ['1', '2'],
-                    pe: '2014',
-                    al: 'd2fd34eee',
-                    co: ['a']
+                    pe: ['2014'],
+                    coc: ['a']
                 };
 
-                controller.submit(['a']);
+                controller.submit(['aa']);
 
                 expect(approvalServiceMock.approve).toHaveBeenCalledWith(expectedArguments);
             });
@@ -275,15 +246,14 @@ describe('Dataview Controller', function () {
                 expect(approvalServiceMock.approve).not.toHaveBeenCalled();
             });
 
-            it('should call the approvalService to approve twice when multiple mechanisms exist', function () {
+            it('should not call the approvalService to approve twice when multiple mechanisms exist', function () {
                 var expectedArgumentsMechanismA = {
-                    pe: '2014',
+                    pe: ['2014'],
                     ds: ['1', '2'],
-                    al: 'd2fd34eee',
-                    co: ['a', '2']
+                    coc: ['a', '2']
                 };
 
-                controller.submit(['a', '2']);
+                controller.submit(['aa', '22']);
 
                 expect(approvalServiceMock.approve).toHaveCallCount(1);
                 expect(approvalServiceMock.approve).toHaveBeenCalledWith(expectedArgumentsMechanismA);

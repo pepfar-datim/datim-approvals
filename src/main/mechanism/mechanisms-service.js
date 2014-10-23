@@ -84,7 +84,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                         status: '',
                         actions: '',
                         category: category.id,
-                        catComboId: categoryOption.categoryOptionCombos[0].id
+                        catComboId: categoryOption.categoryOptionCombos[0].id //FIXME: Hacked for pepfar to always be the first
                     };
                     return mechanism;
                 });
@@ -148,8 +148,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             var approvalLevel;
             var mechanism =  _.find(parsedData, { catComboId: mechanismStatus.id });
 
-            if (mechanismStatus.dataApprovalLevel && mechanismStatus.dataApprovalLevel.id) {
-                approvalLevel = _.find(approvalLevels, { id: mechanismStatus.dataApprovalLevel.id });
+            if (mechanismStatus.level && mechanismStatus.level.id) {
+                approvalLevel = _.find(approvalLevels, { id: mechanismStatus.level.id });
             }
 
             if (!mechanism) { return; }
@@ -191,7 +191,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
-            mechanism.level = mechanismStatus.dataApprovalLevel.level;
+            mechanism.level = mechanismStatus.level.level;
             mechanisms.push(mechanism);
         });
     };

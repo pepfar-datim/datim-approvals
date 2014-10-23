@@ -49,32 +49,25 @@ describe('Approvals Service', function () {
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
-        it('should reject the promise when the approval level is missing', function () {
-            approvalsService.approve({ pe: '2014' }).catch(catchCallback);
-            $rootScope.$apply();
-
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Approval level parameter (al) is missing or empty' });
-        });
-
         it('should reject the promise when the datasets are missing', function () {
-            approvalsService.approve({ pe: '2014', al: 'd3234ss' }).catch(catchCallback);
+            approvalsService.approve({ pe: ['2014'], al: 'd3234ss' }).catch(catchCallback);
             $rootScope.$apply();
 
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
-            approvalsService.approve({ pe: '2014', al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
+            approvalsService.approve({ pe: ['2014'], al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option parameter is missing or empty' });
+            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataApprovals/approve',
-                { pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] }).respond(200);
+                { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
-            approvalsService.approve({ pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] });
+            approvalsService.approve({ pe: ['2014'],  ds: ['1', '2'], coc: ['d234453'] });
 
             $httpBackend.flush();
         });
@@ -99,32 +92,25 @@ describe('Approvals Service', function () {
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
-        it('should reject the promise when the approval level is missing', function () {
-            approvalsService.unapprove({ pe: '2014' }).catch(catchCallback);
-            $rootScope.$apply();
-
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Approval level parameter (al) is missing or empty' });
-        });
-
         it('should reject the promise when the datasets are missing', function () {
-            approvalsService.unapprove({ pe: '2014', al: 'd3234ss' }).catch(catchCallback);
+            approvalsService.unapprove({ pe: ['2014'], al: 'd3234ss' }).catch(catchCallback);
             $rootScope.$apply();
 
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
-            approvalsService.unapprove({ pe: '2014', al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
+            approvalsService.unapprove({ pe: ['2014'], al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option parameter is missing or empty' });
+            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataApprovals/unapprove',
-                { pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] }).respond(200);
+                { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
-            approvalsService.unapprove({ pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] });
+            approvalsService.unapprove({ pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] });
 
             $httpBackend.flush();
         });
@@ -149,32 +135,25 @@ describe('Approvals Service', function () {
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
-        it('should reject the promise when the approval level is missing', function () {
-            approvalsService.accept({ pe: '2014' }).catch(catchCallback);
-            $rootScope.$apply();
-
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Approval level parameter (al) is missing or empty' });
-        });
-
         it('should reject the promise when the datasets are missing', function () {
-            approvalsService.accept({ pe: '2014', al: 'd3234ss' }).catch(catchCallback);
+            approvalsService.accept({ pe: ['2014'], al: 'd3234ss' }).catch(catchCallback);
             $rootScope.$apply();
 
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
-            approvalsService.accept({ pe: '2014', al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
+            approvalsService.accept({ pe: ['2014'], al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option parameter is missing or empty' });
+            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataApprovals/accept',
-                { pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] }).respond(200);
+                { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
-            approvalsService.accept({ pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] });
+            approvalsService.accept({ pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] });
 
             $httpBackend.flush();
         });
@@ -199,32 +178,25 @@ describe('Approvals Service', function () {
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
-        it('should reject the promise when the approval level is missing', function () {
-            approvalsService.unaccept({ pe: '2014' }).catch(catchCallback);
-            $rootScope.$apply();
-
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Approval level parameter (al) is missing or empty' });
-        });
-
         it('should reject the promise when the datasets are missing', function () {
-            approvalsService.unaccept({ pe: '2014', al: 'd3234ss' }).catch(catchCallback);
+            approvalsService.unaccept({ pe: ['2014'], al: 'd3234ss' }).catch(catchCallback);
             $rootScope.$apply();
 
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
-            approvalsService.unaccept({ pe: '2014', al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
+            approvalsService.unaccept({ pe: ['2014'], al: 'd3234ss', ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option parameter is missing or empty' });
+            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataApprovals/unaccept',
-                { pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] }).respond(200);
+                { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
-            approvalsService.unaccept({ pe: '2014', al: 'd3234ss', ds: ['1', '2'], co: ['d234453'] });
+            approvalsService.unaccept({ pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] });
 
             $httpBackend.flush();
         });

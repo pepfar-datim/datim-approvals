@@ -357,15 +357,13 @@
     library.cocApprovalStatus = [
         {
             "id": "qS0ABIH66TS",
-            "dataApprovalLevel": {
+            "level": {
                 "id": "aypLtfWShE5",
                 "level": 2
             },
 
-            "period": "2014",
-            "organisationUnit": {
-                "id": "ybg3MO3hcf4"
-            },
+            "pe": "2014",
+            "ou": "ybg3MO3hcf4",
             "accepted": true,
             "mayApprove": true,
             "mayUnapprove": false,
@@ -375,15 +373,13 @@
         },
         {
             "id": "Oae8B8z5H5Y",
-            "dataApprovalLevel": {
+            "level": {
                 "id": "JNpaWdWCyDN",
                 "level": 2
             },
 
-            "period": "2014",
-            "organisationUnit": {
-                "id": "ybg3MO3hcf4"
-            },
+            "pe": "2014",
+            "ou": "ybg3MO3hcf4",
             "accepted": false,
             "mayApprove": false,
             "mayUnapprove": true,
@@ -393,15 +389,12 @@
         },
         {
             "id": "RrjmU53u2Ls",
-            "dataApprovalLevel": {
+            "level": {
                 "id": "vqWNeqjozr9",
                 "level": 1
             },
-
-            "period": "2014",
-            "organisationUnit": {
-                "id": "ybg3MO3hcf4"
-            },
+            "pe": "2014",
+            "ou": "ybg3MO3hcf4",
             "accepted": false,
             "mayApprove": false,
             "mayUnapprove": true,
@@ -411,12 +404,9 @@
         },
         {
             "id": "qofeYTu7w0R",
-            "dataApprovalLevel": {},
-
-            "period": "2014",
-            "organisationUnit": {
-                "id": "ybg3MO3hcf4"
-            },
+            "level": {},
+            "pe": "2014",
+            "ou": "ybg3MO3hcf4",
             "accepted": true,
             "mayApprove": false,
             "mayUnapprove": false,
