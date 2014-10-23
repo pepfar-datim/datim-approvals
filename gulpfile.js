@@ -19,11 +19,15 @@ var files = [
     'src/test/matchers/*.js',
     'src/test/fixtures/*.js',
     'src/test/mocks/*.js',
-    'src/test/specs/**/*.js',
 
     //App files
     'src/main/**/*.js',
-    'src/main/**/*.html'
+    'src/main/**/*.html',
+
+    //App mocks
+    'src/test/mocks/pepfar/*.js',
+
+    'src/test/specs/**/*.js'
 ];
 
 //General requires

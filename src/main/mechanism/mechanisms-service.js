@@ -222,7 +222,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
     this.getStatuses = function () {
         return d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/dataApproval.json').getList({
-            period: period,
+            pe: period,
             ds: dataSetIds
         }).then(function (data) {
             return data.getDataOnly();

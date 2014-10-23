@@ -5,6 +5,7 @@ describe('Dataview Controller', function () {
 
     var promiseMock;
 
+    beforeEach(module('d2-translate'));
     beforeEach(inject(function ($rootScope, $controller) {
         scope = $rootScope.$new();
         scope.details = {};
