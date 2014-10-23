@@ -1,7 +1,6 @@
 function appController(periodService, $scope, currentUser, mechanismsService,
-                       approvalLevelsService, $q, toastr, AppManifest, systemSettings, $translate) {
+                       approvalLevelsService, $q, toastr, AppManifest, systemSettings, $translate, d2Api) {
     var self = this;
-    var loaded = false;
 
     this.actionItems = 0;
     this.state = {};
@@ -32,12 +31,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             action: ['view']
         }
     };
-    this.currentUser = {};
 
+    this.currentUser = {};
     this.text = {};
-    $translate(['View/Act on', 'mechanism(s)']).then(function (translations) {
-        self.text.viewAct = [translations['View/Act on'], 0, translations['mechanism(s)']].join(' ');
-    });
 
     this.headerBar = {
         logo: AppManifest.activities.dhis.href + '/dhis-web-commons/css/light_blue/logo_banner.png',
@@ -174,6 +170,10 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     $scope.approvalLevel = {};
 
+    $translate(['View/Act on', 'mechanism(s)']).then(function (translations) {
+        self.text.viewAct = [translations['View/Act on'], 0, translations['mechanism(s)']].join(' ');
+    });
+
     currentUser.permissions.then(function (permissions) {
         permissions = _(permissions);
 
@@ -267,11 +267,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     });
 
     //TODO: Replace this with the real call
-    var stuff = $q.defer();
-    currentUser.approvalLevel = stuff.promise;
-    stuff.resolve({ level: 1, id: 'aypLtfWShE5', categoryOptionGroupSet: { name: 'Implementing partner' }});
-
-    var userApprovalLevelPromise = currentUser.approvalLevel.then(function (approvalLevel) {
+    d2Api.addEndPoint('../dhis-web-pepfar-approvals/fake-api/currentUserApprovalLevel.json', true);
+    var userApprovalLevelPromise = d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/currentUserApprovalLevel.json').get();
+    userApprovalLevelPromise.then(function (approvalLevel) {
         $scope.details.approvalLevel = approvalLevel;
         $scope.approvalLevel = approvalLevel;
         if ($scope.approvalLevel.categoryOptionGroupSet) {
