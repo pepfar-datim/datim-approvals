@@ -21,5 +21,6 @@
     "Back": "Back",
     "View/Act on":"View/Act on",
     "mechanism(s)":"mechanism(s)",
-    "Back to top": "Back to top"
+    "Back to top": "Back to top",
+    "The selection contains mechanisms for which you do not have view permissions.": "The selection contains mechanisms for which you do not have view permissions."
 }

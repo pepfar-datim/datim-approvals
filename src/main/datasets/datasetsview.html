@@ -1,4 +1,8 @@
 <div class="dataset-view-wrap">
+    <div ng-show="hasUnreadableMechanisms" class="well data-message warning" translate>
+        The selection contains mechanisms for which you do not have view permissions.
+    </div>
+
     <div class="data-selector">
         <ui-select ng-model="reportView.currentDataSet" on-select="onChange($item, $model)">
             <ui-select-match placeholder="Select a dataset">{{$select.selected.name}}</ui-select-match>

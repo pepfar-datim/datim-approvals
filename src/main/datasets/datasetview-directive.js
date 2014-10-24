@@ -132,6 +132,7 @@ function datasetViewDirective(AppManifest, $translate) {
                 }
             };
 
+            scope.hasUnreadableMechanisms = 0;
             scope.loadReports = function () {
                 var details = scope.details;
                 scope.details.dataSetsFilteredByMechanisms = _.filter(details.dataSets, function (dataSet) {
@@ -145,6 +146,10 @@ function datasetViewDirective(AppManifest, $translate) {
                     categoryOptionComboIds = _.pluck(dataSet.categoryCombo.categoryOptionCombos, 'id');
 
                     _.each(scope.details.currentSelection, function (mechanism) {
+                        if (mechanism.mayReadData === false) {
+                            scope.hasUnreadableMechanisms += 1;
+                        }
+
                         if (_.contains(categoryOptionComboIds, mechanism.catComboId)) {
                             result = true;
                         }
