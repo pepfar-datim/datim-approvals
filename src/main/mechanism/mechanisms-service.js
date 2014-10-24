@@ -79,8 +79,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                         id: categoryOption.id,
                         mechanism: categoryOption.name,
                         country: getCountryFromCategoryOption(categoryOption),
-                        agency: getAgencyFromCategoryOption(categoryOption.groups || [], agencyCOGSId),
-                        partner: getPartnerFromCategoryOption(categoryOption.groups || [], parterCOGSId),
+                        agency: getAgencyFromCategoryOption(categoryOption.categoryOptionGroups || [], agencyCOGSId),
+                        partner: getPartnerFromCategoryOption(categoryOption.categoryOptionGroups || [], parterCOGSId),
                         status: '',
                         actions: '',
                         category: category.id,
@@ -191,7 +191,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
-            mechanism.level = mechanismStatus.level.level;
+            mechanism.level = mechanismStatus.level && mechanismStatus.level.level || undefined ;
             mechanisms.push(mechanism);
         });
     };
@@ -200,11 +200,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         var deferred = $q.defer();
         var params = {
             paging: false,
-//            pe: period,
             filter: _.map(categories, function (category) {
                 return 'id:eq:' + category;
             }),
-            fields: 'id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],groups[id,name,categoryOptionGroupSet[id]]'
+            fields: 'id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]'
         };
 
         if (this.areParamsCorrect(params)) {
@@ -221,7 +220,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     this.getStatuses = function () {
-        return d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/dataApproval.json').getList({
+        return d2Api.getEndPoint('dataApprovals/categoryOptionCombos').getList({
             pe: period,
             ds: dataSetIds
         }).then(function (data) {
@@ -230,10 +229,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     this.areParamsCorrect = function (params) {
-//        if (!params.pe || (params.pe.length <= 0)) {
-//            $log.error('Mechanism Service: Period should set when trying to request mechanisms');
-//            return false;
-//        }
         if (params.filter.length <= 0) {
             $log.error('Mechanism Service: Categories should set when trying to request mechanisms');
             return false;
@@ -242,7 +237,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     d2Api.addEndPoint('categories');
-    d2Api.addEndPoint('../dhis-web-pepfar-approvals/fake-api/dataApproval.json');
+    d2Api.addEndPoint('dataApprovals/categoryOptionCombos');
 }
 
 angular.module('PEPFAR.approvals').service('mechanismsService', mechanismsService);

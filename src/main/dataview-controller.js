@@ -62,22 +62,35 @@ function dataViewController($scope, approvalsService, $translate) {
         return false;
     };
 
+    function getActionCallBackFor(actionName) {
+        return function () {
+            $scope.$emit('APP.submit.success', { action: actionName, mechanisms: mechanisms } );
+        }
+    }
+
+    function actionErrorCallBack(message) {
+            $scope.$emit('APP.submit.error', message.statusText);
+    }
+
+    function prepareApprovalServiceParams(params, mechanisms) {
+        var approvalParams = angular.copy(params);
+
+        approvalParams.coc = _.pluck(mechanisms, 'catComboId');
+        approvalParams.pe = [approvalParams.pe];
+
+        return approvalParams;
+    }
+
     this.submit = function (ids) {
         var params = this.getParamsForMechanism();
         var mechanisms = this.getMechanismsByIds(ids);
+        var approvalParams;
 
         if (this.isParamsComplete()) {
-            var approvalParams = angular.copy(params);
-
-            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
-            approvalParams.pe = [approvalParams.pe];
+            approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.coc.length > 0) {
-                approvalsService.approve(approvalParams).then(function () {
-                    $scope.$emit('APP.submit.success', { action: 'approve', mechanisms: mechanisms } );
-                }, function (message) {
-                    $scope.$emit('APP.submit.error', message.statusText);
-                });
+                approvalsService.approve(approvalParams).then(getActionCallBackFor('approve'), actionErrorCallBack);
             }
         }
     };
@@ -85,19 +98,13 @@ function dataViewController($scope, approvalsService, $translate) {
     this.accept = function (ids) {
         var params = this.getParamsForMechanism();
         var mechanisms = this.getMechanismsByIds(ids);
+        var approvalParams;
 
         if (this.isParamsComplete()) {
-            var approvalParams = angular.copy(params);
-
-            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
-            approvalParams.pe = [approvalParams.pe];
+            approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.coc.length > 0) {
-                approvalsService.accept(approvalParams).then(function () {
-                    $scope.$emit('APP.submit.success', { action: 'accept', mechanisms: mechanisms } );
-                }, function (message) {
-                    $scope.$emit('APP.submit.error', message.statusText);
-                });
+                approvalsService.accept(approvalParams).then(getActionCallBackFor('accept'), actionErrorCallBack);
             }
         }
     };
@@ -105,19 +112,13 @@ function dataViewController($scope, approvalsService, $translate) {
     this.unapprove = function (ids) {
         var params = this.getParamsForMechanism();
         var mechanisms = this.getMechanismsByIds(ids);
+        var approvalParams;
 
         if (this.isParamsComplete()) {
-            var approvalParams = angular.copy(params);
-
-            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
-            approvalParams.pe = [approvalParams.pe];
+            approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.coc.length > 0) {
-                approvalsService.unapprove(approvalParams).then(function () {
-                    $scope.$emit('APP.submit.success', { action: 'unapprove', mechanisms: mechanisms } );
-                }, function (message) {
-                    $scope.$emit('APP.submit.error', message.statusText);
-                });
+                approvalsService.unapprove(approvalParams).then(getActionCallBackFor('unapprove'), actionErrorCallBack);
             }
         }
     };
@@ -125,19 +126,13 @@ function dataViewController($scope, approvalsService, $translate) {
     this.unaccept = function (ids) {
         var params = this.getParamsForMechanism();
         var mechanisms = this.getMechanismsByIds(ids);
+        var approvalParams;
 
         if (this.isParamsComplete()) {
-            var approvalParams = angular.copy(params);
-
-            approvalParams.coc = _.pluck(mechanisms, 'catComboId');
-            approvalParams.pe = [approvalParams.pe];
+            approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.coc.length > 0) {
-                approvalsService.unaccept(approvalParams).then(function () {
-                    $scope.$emit('APP.submit.success', { action: 'unaccept', mechanisms: mechanisms } );
-                }, function (message) {
-                    $scope.$emit('APP.submit.error', message.statusText);
-                });
+                approvalsService.unaccept(approvalParams).then(getActionCallBackFor('unaccept'), actionErrorCallBack);
             }
         }
     };

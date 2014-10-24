@@ -4,7 +4,7 @@ describe('Mechanisms service', function () {
     var $log;
     var apiUrlWithCorrectParameters = ['/dhis/api/categories?',
         'fields=id,name,categoryOptions%5Bid,name,organisationUnits%5Bid,name%5D,',
-        'categoryOptionCombos%5Bid,name%5D,groups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D&',
+        'categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D&',
         'filter=id:eq:dsetId1&filter=id:eq:dsetId2&filter=id:eq:dsetId3',
         '&paging=false'].join('');
 
@@ -148,20 +148,6 @@ describe('Mechanisms service', function () {
         });
     });
 
-//    describe('period property', function () {
-//        it('should set the period on the service', function () {
-//            mechanismsService.period = '2014';
-//
-//            expect(mechanismsService.period).toEqual('2014');
-//        });
-//
-//        it('should log an error when the given value is not a string', function () {
-//            mechanismsService.period = [];
-//
-//            expect($log.error.logs).toContain(['Mechanism Service: Period should be a string']);
-//        });
-//    });
-
     describe('categories property', function () {
         it('should be set to an empty array', function () {
             expect(mechanismsService.categories).toEqual([]);
@@ -181,10 +167,12 @@ describe('Mechanisms service', function () {
     });
 
     describe('getStatuses', function () {
-
         beforeEach(function () {
-            $httpBackend.expectGET('/dhis/api/../dhis-web-pepfar-approvals/fake-api/dataApproval.json')
+            $httpBackend.expectGET('/dhis/api/dataApprovals/categoryOptionCombos?ds=a&ds=b&pe=2014Oct')
                 .respond(200, fixtures.get('cocApprovalStatus'));
+
+            mechanismsService.period = '2014Oct';
+            mechanismsService.dataSetIds = ['a', 'b'];
         });
 
         it('should request statuses from the API', function () {

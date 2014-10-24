@@ -2,6 +2,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                        approvalLevelsService, $q, toastr, AppManifest, systemSettings, $translate, d2Api) {
     var self = this;
 
+    this.loading = true;
     this.actionItems = 0;
     this.state = {};
     this.showData = false;
@@ -56,11 +57,17 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 self.status = translation;
             });
 
-            $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function () {
+            self.loading = true;
+
+            $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (data) {
                 mechanismsService.getMechanisms().then(function (mechanisms) {
                     self.actionItems = 0;
                     _.each(mechanisms, function (mechanism) {
-                        if (mechanism.mayApprove || mechanism.mayAccept) {
+                        if (mechanism.mayApprove && mechanism.level == data[0].level) {
+                            self.actionItems += 1;
+                        }
+
+                        if (mechanism.mayAccept && mechanism.level == (data[0].level - 1)) {
                             self.actionItems += 1;
                         }
 
@@ -78,6 +85,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                     self.setStatus();
 
                     $scope.$broadcast('MECHANISMS.updated', mechanisms);
+                    self.loading = false;
                 });
             });
         }
@@ -270,8 +278,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     d2Api.addEndPoint('../dhis-web-pepfar-approvals/fake-api/currentUserApprovalLevel.json', true);
     var userApprovalLevelPromise = d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/currentUserApprovalLevel.json').get();
     userApprovalLevelPromise.then(function (approvalLevel) {
-        $scope.details.approvalLevel = approvalLevel;
-        $scope.approvalLevel = approvalLevel;
+        $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel;
         if ($scope.approvalLevel.categoryOptionGroupSet) {
             self.updateTitle();
         }
@@ -446,7 +453,7 @@ function acceptedTableViewController($scope, $controller) {
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-        this.hasActionItems = !!_.filter(this.approvalTableData, { mayApprove: true }).length;
+        this.hasActionItems = !!_.filter(this.approvalTableData, { mayApprove: true, level: $scope.approvalLevel.level }).length;
     }).bind(this));
 }
 

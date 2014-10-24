@@ -1,6 +1,5 @@
 <div class="dataset-view-wrap">
     <div class="data-selector">
-        <!--<select ng-change="onChange()" ng-options="datasetGroup for datasetGroup in dataset.groups" ng-model="dataset.selectedDataSetGroup"></select>-->
         <ui-select ng-model="reportView.currentDataSet" on-select="onChange($item, $model)">
             <ui-select-match placeholder="Select a dataset">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="dataset in details.dataSetsFilteredByMechanisms | filter: $select.search">
