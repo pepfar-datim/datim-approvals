@@ -154,24 +154,24 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
             if (!mechanism) { return; }
 
-            if (mechanismStatus.mayApprove === true) {
+            if (mechanismStatus.permissions.mayApprove === true) {
                 mechanism.mayApprove = true;
                 actions.push('Submit');
             }
-            if (mechanismStatus.mayUnapprove === true) {
+            if (mechanismStatus.permissions.mayUnapprove === true) {
                 mechanism.mayUnapprove = true;
                 actions.push('Unsubmit');
             }
-            if (mechanismStatus.mayUnaccept === true) {
+            if (mechanismStatus.permissions.mayUnaccept === true) {
                 mechanism.mayUnaccept = true;
                 actions.push('Unaccept');
             }
-            if (mechanismStatus.mayAccept === true) {
+            if (mechanismStatus.permissions.mayAccept === true) {
                 mechanism.mayAccept = true;
                 actions.push('Accept');
             }
 
-            if (mechanismStatus.mayReadData === true) {
+            if (mechanismStatus.permissions.mayReadData === true) {
                 mechanism.mayReadData = true;
             } else {
                 mechanism.mayReadData = false;

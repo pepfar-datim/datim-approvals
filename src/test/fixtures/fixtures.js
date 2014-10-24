@@ -365,11 +365,13 @@
             "pe": "2014",
             "ou": "ybg3MO3hcf4",
             "accepted": true,
-            "mayApprove": true,
-            "mayUnapprove": false,
-            "mayUnaccept": true,
-            "mayAccept": false,
-            "mayReadData": true
+            "permissions": {
+                "mayApprove": true,
+                "mayUnapprove": false,
+                "mayUnaccept": true,
+                "mayAccept": false,
+                "mayReadData": true
+            }
         },
         {
             "id": "Oae8B8z5H5Y",
@@ -381,11 +383,13 @@
             "pe": "2014",
             "ou": "ybg3MO3hcf4",
             "accepted": false,
-            "mayApprove": false,
-            "mayUnapprove": true,
-            "mayUnaccept": false,
-            "mayAccept": true,
-            "mayReadData": true
+            "permissions": {
+                "mayApprove": false,
+                "mayUnapprove": true,
+                "mayUnaccept": false,
+                "mayAccept": true,
+                "mayReadData": true
+            }
         },
         {
             "id": "RrjmU53u2Ls",
@@ -396,11 +400,13 @@
             "pe": "2014",
             "ou": "ybg3MO3hcf4",
             "accepted": false,
-            "mayApprove": false,
-            "mayUnapprove": true,
-            "mayUnaccept": false,
-            "mayAccept": false,
-            "mayReadData": true
+            "permissions": {
+                "mayApprove": false,
+                "mayUnapprove": true,
+                "mayUnaccept": false,
+                "mayAccept": false,
+                "mayReadData": true
+            }
         },
         {
             "id": "qofeYTu7w0R",
@@ -408,11 +414,13 @@
             "pe": "2014",
             "ou": "ybg3MO3hcf4",
             "accepted": true,
-            "mayApprove": false,
-            "mayUnapprove": false,
-            "mayUnaccept": false,
-            "mayAccept": false,
-            "mayReadData": false
+            "permissions": {
+                "mayApprove": false,
+                "mayUnapprove": false,
+                "mayUnaccept": false,
+                "mayAccept": false,
+                "mayReadData": false
+            }
         }
     ];
 
