@@ -6,10 +6,11 @@
     "partner": "Partner",
     "status": "Status",
     "Submit": "Submit",
+    "Approve": "Submit",
     "Accept": "Accept",
     "Accept/Return": "Accept/Return",
     "Submit/Unaccept": "Submit/Unaccept",
-    "Unsubmit": "Unsubmit",
+    "Unapprove": "Unsubmit",
     "Unaccept": "Unaccept",
     "View": "View",
     "Search in": "Search in",
@@ -22,6 +23,12 @@
     "View/Act on":"View/Act on",
     "mechanism(s)":"mechanism(s)",
     "Back to top": "Back to top",
+    "mechanisms": "mechanisms",
+    "Approve {{count}} mechanism(s)": "Approve {{count}} mechanism(s)",
+    "Unapprove {{count}} mechanism(s)": "Unapprove {{count}} mechanism(s)",
+    "Accept {{count}} mechanism(s)": "Accept {{count}} mechanism(s)",
+    "Unaccept {{count}} mechanism(s)": "Unaccept {{count}} mechanism(s)",
     "The selection contains mechanisms for which you do not have view permissions.": "The selection contains mechanisms for which you do not have view permissions.",
-    "No actions required": "No actions required"
+    "No actions required": "No actions required",
+    "No data available": "No data available or no results matching your search criteria"
 }

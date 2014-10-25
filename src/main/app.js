@@ -175,6 +175,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     this.deSelect = function () {
         $scope.details.currentSelection = [];
+        this.updateViewButton();
         $scope.$broadcast('RECORDTABLE.selection.clear');
     };
 
@@ -259,6 +260,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         self.title = title.join(' - ');
     }
 
+    this.updateViewButton = function () {
+        this.text.viewAct = [$translate.instant('View/Act on'),
+            $scope.details.currentSelection.length,
+            $translate.instant('mechanism(s)')].join(' ');
+    }
+
     //Get the users org unit off the user
     currentUser.then(function () {
         var orgUnit;
@@ -313,17 +320,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             self.deSelect();
         }
 
-        self.text.viewAct = [$translate.instant('View/Act on'),
-            $scope.details.currentSelection.length,
-            $translate.instant('mechanism(s)')].join(' ');
+        self.updateViewButton();
     });
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
         $scope.details.currentSelection = selection;
 
-        self.text.viewAct = [$translate.instant('View/Act on'),
-                             $scope.details.currentSelection.length,
-                             $translate.instant('mechanism(s)')].join(' ');
+        self.updateViewButton();
     });
 
     $scope.$on('APP.submit.success', function (event, mechanisms) {
@@ -367,9 +370,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
         $scope.details.currentSelection = [];
-        self.text.viewAct = [$translate.instant('View/Act on'),
-            $scope.details.currentSelection.length,
-            $translate.instant('mechanism(s)')].join(' ');
+        self.updateViewButton();
     });
 
     $scope.$watch(function () {
