@@ -96,7 +96,7 @@ gulp.task('js', /*['lint', 'jscs'],*/ function () {
             stats: true
         }))
         .pipe(concat('app.js'))
-        .pipe(uglify())
+//        .pipe(uglify())
         .pipe(gulp.dest(
             [build_directory, 'js'].join('/')
         ));
@@ -200,10 +200,13 @@ gulp.task('dependencies', function () {
         return !regex.test(fileName);
     });
 
-    gulp.src(jsFiles).pipe(concat('vendor.js')).pipe(uglify()).pipe(gulp.dest([
-        build_directory,
-        'vendor'
-    ].join('/')));
+    gulp.src(jsFiles)
+        .pipe(concat('vendor.js'))
+        //.pipe(uglify())
+        .pipe(gulp.dest([
+            build_directory,
+            'vendor'
+        ].join('/')));
 
     gulp.src(nonjsFiles).pipe(gulp.dest([
         build_directory,

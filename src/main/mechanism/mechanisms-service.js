@@ -16,6 +16,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
     var mechanisms = [];
 
+    var categoryOptionComboCache = {};
+    // categoryCombos/bjDvmb4bfuf.json?fields=id,categoryOptionCombos[id]
+    d2Api.addEndPoint('categoryCombos');
+
     Object.defineProperty(this, 'period', {
         set: function (value) {
             if (!angular.isString(value)) {
@@ -129,7 +133,31 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             return '';
         }
 
-        return $q.all([this.getData(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
+        function getCategoriesAndReplaceDefaults() {
+            var deferred = $q.defer();
+
+            self.getData().then(function (data) {
+                _.each(data, function (category) {
+                    _.each(self.dataSets, function (dataSet) {
+                        if (dataSet.categoryCombo.name === 'default' &&
+                            dataSet.categoryCombo.categories[0].id === category.id) {
+                            _.each(category.categoryOptions, function (mechanism) {
+                                if (mechanism.name === 'default') {
+                                    mechanism.name = dataSet.name;
+                                }
+                            });
+                        }
+                    });
+                });
+                deferred.resolve(data);
+            }, function () {
+                deferred.reject('Error loading category data');
+            });
+
+            return deferred.promise;
+        }
+
+        return $q.all([getCategoriesAndReplaceDefaults(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
             var parsedData = parseData(data[0], data[1].getCategoryOptionGroupSetIdsForLevels());
 
             self.filterMechanisms(data[2], parsedData, data[1]);

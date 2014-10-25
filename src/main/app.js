@@ -72,16 +72,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                         if (mechanism.mayAccept && (mechanism.level === (currentUserApprovalLevel.level - 1))) {
                             self.actionItems += 1;
                         }
-
-                        /**
-                         * Hack to display the dataset names for mechanisms that have the name default
-                         */
-                        if (mechanism.mechanism === 'default') {
-                            var dataSetNames = _.pluck(_.filter($scope.details.dataSets, function (dataSet) {
-                                return !!_.find(dataSet.categoryCombo.categoryOptionCombos, { id: mechanism.catComboId });
-                            }), 'name');
-                            mechanism.mechanism = dataSetNames.join(', ');
-                        }
                     });
 
                     self.setStatus();
@@ -308,7 +298,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         periodService.filterPeriodTypes(dataSets.getPeriodTypes());
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
-        mechanismsService.dataSetIds = dataSets.getIds()
+        mechanismsService.dataSetIds = dataSets.getIds();
+        mechanismsService.dataSets = dataSets.get();
 
         $scope.details.currentSelection = [];
 
