@@ -230,9 +230,9 @@ describe('Dataview Controller', function () {
 
             it('should ask the approvalsService to approve', function () {
                 var expectedArguments = {
-                    ds: ['1', '2'],
-                    pe: ['2014'],
-                    coc: ['a']
+                    dataSets: [{id: '1'}, {id:'2'}],
+                    periods: [{id: '2014'}],
+                    categoryOptionCombos: [{id: 'a'}]
                 };
 
                 controller.submit(['aa']);
@@ -248,9 +248,9 @@ describe('Dataview Controller', function () {
 
             it('should not call the approvalService to approve twice when multiple mechanisms exist', function () {
                 var expectedArgumentsMechanismA = {
-                    pe: ['2014'],
-                    ds: ['1', '2'],
-                    coc: ['a', '2']
+                    dataSets: [{id: '1'}, {id:'2'}],
+                    periods: [{id: '2014'}],
+                    categoryOptionCombos: [{id: 'a'}, {id: '2'}]
                 };
 
                 controller.submit(['aa', '22']);

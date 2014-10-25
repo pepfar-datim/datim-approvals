@@ -73,10 +73,19 @@ function dataViewController($scope, approvalsService, $translate) {
     }
 
     function prepareApprovalServiceParams(params, mechanisms) {
-        var approvalParams = angular.copy(params);
+        var approvalParams = {};
 
-        approvalParams.coc = _.pluck(mechanisms, 'catComboId');
-        approvalParams.pe = [approvalParams.pe];
+        approvalParams.categoryOptionCombos = _.map(mechanisms, function (mechanism) {
+            return {
+                id: mechanism.catComboId
+            };
+        });
+        approvalParams.periods = [{ id: params.pe }];
+        approvalParams.dataSets = _.map(params.ds, function (dataSetId) {
+            return {
+                id: dataSetId
+            };
+        });
 
         return approvalParams;
     }
@@ -89,7 +98,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.coc.length > 0) {
+            if (approvalParams.categoryOptionCombos.length > 0) {
                 approvalsService.approve(approvalParams).then(getActionCallBackFor('approve'), actionErrorCallBack);
             }
         }
@@ -103,7 +112,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.coc.length > 0) {
+            if (approvalParams.categoryOptionCombos.length > 0) {
                 approvalsService.accept(approvalParams).then(getActionCallBackFor('accept'), actionErrorCallBack);
             }
         }
@@ -117,7 +126,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.coc.length > 0) {
+            if (approvalParams.categoryOptionCombos.length > 0) {
                 approvalsService.unapprove(approvalParams).then(getActionCallBackFor('unapprove'), actionErrorCallBack);
             }
         }
@@ -131,7 +140,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.coc.length > 0) {
+            if (approvalParams.categoryOptionCombos.length > 0) {
                 approvalsService.unaccept(approvalParams).then(getActionCallBackFor('unaccept'), actionErrorCallBack);
             }
         }
