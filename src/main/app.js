@@ -275,10 +275,11 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     });
 
     //TODO: Replace this with the real call
-    d2Api.addEndPoint('../dhis-web-pepfar-approvals/fake-api/currentUserApprovalLevel.json', true);
-    var userApprovalLevelPromise = d2Api.getEndPoint('../dhis-web-pepfar-approvals/fake-api/currentUserApprovalLevel.json').get();
+    d2Api.addEndPoint('me/dataApprovalLevels', true);
+    var userApprovalLevelPromise = d2Api.getEndPoint('me/dataApprovalLevels').get();
     userApprovalLevelPromise.then(function (approvalLevel) {
-        $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel;
+        $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel[0];
+        console.log($scope.approvalLevel);
         if ($scope.approvalLevel.categoryOptionGroupSet) {
             self.updateTitle();
         }

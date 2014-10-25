@@ -24,10 +24,10 @@ describe('Approvals Service', function () {
     });
 
     it('should add dataApprovals endPoint to the api service', inject(function (d2Api) {
-        expect(d2Api.getEndPoint('dataApprovals/accept')).toBeAnObject();
-        expect(d2Api.getEndPoint('dataApprovals/unaccept')).toBeAnObject();
-        expect(d2Api.getEndPoint('dataApprovals/approve')).toBeAnObject();
-        expect(d2Api.getEndPoint('dataApprovals/unapprove')).toBeAnObject();
+        expect(d2Api.getEndPoint('dataAcceptances/acceptances')).toBeAnObject();
+        expect(d2Api.getEndPoint('dataAcceptances/unacceptances')).toBeAnObject();
+        expect(d2Api.getEndPoint('dataApprovals/approvals')).toBeAnObject();
+        expect(d2Api.getEndPoint('dataApprovals/unapprovals')).toBeAnObject();
     }));
 
     describe('approve', function () {
@@ -64,7 +64,7 @@ describe('Approvals Service', function () {
         });
 
         it('should do a post request when the data is completed', function () {
-            $httpBackend.expectPOST('/dhis/api/dataApprovals/approve',
+            $httpBackend.expectPOST('/dhis/api/dataApprovals/approvals',
                 { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
             approvalsService.approve({ pe: ['2014'],  ds: ['1', '2'], coc: ['d234453'] });
@@ -107,7 +107,7 @@ describe('Approvals Service', function () {
         });
 
         it('should do a post request when the data is completed', function () {
-            $httpBackend.expectPOST('/dhis/api/dataApprovals/unapprove',
+            $httpBackend.expectPOST('/dhis/api/dataApprovals/unapprovals',
                 { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
             approvalsService.unapprove({ pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] });
@@ -150,7 +150,7 @@ describe('Approvals Service', function () {
         });
 
         it('should do a post request when the data is completed', function () {
-            $httpBackend.expectPOST('/dhis/api/dataApprovals/accept',
+            $httpBackend.expectPOST('/dhis/api/dataAcceptances/acceptances',
                 { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
             approvalsService.accept({ pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] });
@@ -193,7 +193,7 @@ describe('Approvals Service', function () {
         });
 
         it('should do a post request when the data is completed', function () {
-            $httpBackend.expectPOST('/dhis/api/dataApprovals/unaccept',
+            $httpBackend.expectPOST('/dhis/api/dataAcceptances/unacceptances',
                 { pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] }).respond(200);
 
             approvalsService.unaccept({ pe: ['2014'], ds: ['1', '2'], coc: ['d234453'] });
