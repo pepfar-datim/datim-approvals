@@ -32,16 +32,18 @@ function dataSetGroupService(d2Api, $q, periodService) {
                 var categoryComboIds = {};
 
                 _.each(filteredGroup.dataSets, function (dataSet) {
-                    if (categoryComboIds[dataSet.categoryCombo.id]) {
-                        categoryComboIds[dataSet.categoryCombo.id].push(dataSet);
-                    } else {
-                        categoryComboIds[dataSet.categoryCombo.id] = [dataSet];
+                    if (dataSet.categoryCombo) {
+                        if (categoryComboIds[dataSet.categoryCombo.id]) {
+                            categoryComboIds[dataSet.categoryCombo.id].push(dataSet);
+                        } else {
+                            categoryComboIds[dataSet.categoryCombo.id] = [dataSet];
+                        }
                     }
                 });
 
                     _.each(categoryComboIds, function (dataSets, catCombo) {
                         d2Api.categoryCombos.get(catCombo,
-                            {fields: 'id,categoryOptionCombos[id]'}).then(function (categoryCombo) {
+                            {fields: 'id,categoryOptionCombos[id,name]'}).then(function (categoryCombo) {
                                 _.each(dataSets, function (dataSet) {
                                     dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
                                 });
