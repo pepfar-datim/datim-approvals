@@ -28,6 +28,27 @@ function dataSetGroupService(d2Api, $q, periodService) {
                 paging: 'false'
             }).then(function (dataSets) {
                 filteredGroup.dataSets = dataSets.getDataOnly();
+
+                var categoryComboIds = {};
+
+                _.each(filteredGroup.dataSets, function (dataSet) {
+                    if (categoryComboIds[dataSet.categoryCombo.id]) {
+                        categoryComboIds[dataSet.categoryCombo.id].push(dataSet);
+                    } else {
+                        categoryComboIds[dataSet.categoryCombo.id] = [dataSet];
+                    }
+                });
+
+                    _.each(categoryComboIds, function (dataSets, catCombo) {
+                        d2Api.categoryCombos.get(catCombo,
+                            {fields: 'id,categoryOptionCombos[id]'}).then(function (categoryCombo) {
+                                _.each(dataSets, function (dataSet) {
+                                    dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
+                                });
+                            });
+                    });
+
+
                 return filteredGroup;
             }));
         });
@@ -64,6 +85,9 @@ function dataSetGroupService(d2Api, $q, periodService) {
     // Configure the api endpoints we use
     d2Api.addEndPoint('systemSettings');
     d2Api.addEndPoint('dataSets');
+
+    //Add combo endpoint for MER Hack
+    d2Api.addEndPoint('categoryCombos');
 
     // Load the dataSetGroups that are available from system settings
     d2Api.systemSettings.get('keyApprovalDataSetGroups').then(function (resultDataSetGroups) {

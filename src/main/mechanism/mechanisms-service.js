@@ -6,7 +6,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     var period;
     var dataSetIds = [];
     var categories = [];
-
     var deferred = $q.defer();
 
     var statuses = {
@@ -15,10 +14,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     var mechanisms = [];
-
-    var categoryOptionComboCache = {};
-    // categoryCombos/bjDvmb4bfuf.json?fields=id,categoryOptionCombos[id]
-    d2Api.addEndPoint('categoryCombos');
 
     Object.defineProperty(this, 'period', {
         set: function (value) {
@@ -144,6 +139,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                             _.each(category.categoryOptions, function (mechanism) {
                                 if (mechanism.name === 'default') {
                                     mechanism.name = dataSet.name;
+                                    mechanism.hasDefaultCategory = true;
                                 }
                             });
                         }
