@@ -61,13 +61,15 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
             $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (data) {
                 mechanismsService.getMechanisms().then(function (mechanisms) {
+                    var currentUserApprovalLevel = data[0][0];
+
                     self.actionItems = 0;
                     _.each(mechanisms, function (mechanism) {
-                        if (mechanism.mayApprove && mechanism.level == data[0].level) {
+                        if (mechanism.mayApprove && (mechanism.level === currentUserApprovalLevel.level)) {
                             self.actionItems += 1;
                         }
 
-                        if (mechanism.mayAccept && mechanism.level == (data[0].level - 1)) {
+                        if (mechanism.mayAccept && (mechanism.level === (currentUserApprovalLevel.level - 1))) {
                             self.actionItems += 1;
                         }
 
@@ -93,7 +95,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     this.setStatus = function () {
         if (this.actionItems === 0) {
-            $translate('Done! (No actions required)').then(function (translations) {
+            $translate('No actions required').then(function (translations) {
                 self.status = translations;
             });
         } else {
@@ -279,7 +281,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     var userApprovalLevelPromise = d2Api.getEndPoint('me/dataApprovalLevels').get();
     userApprovalLevelPromise.then(function (approvalLevel) {
         $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel[0];
-        console.log($scope.approvalLevel);
         if ($scope.approvalLevel.categoryOptionGroupSet) {
             self.updateTitle();
         }
@@ -442,7 +443,7 @@ function acceptTableViewController($scope, $controller) {
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-        this.hasActionItems = !!_.filter(this.approvalTableData, { mayAccept: true }).length;
+        this.hasActionItems = !!_.filter(this.approvalTableData, { mayAccept: true, level: ($scope.approvalLevel.level - 1) }).length;
     }).bind(this));
 }
 

@@ -28,5 +28,6 @@
     "Unapprove {{count}} mechanism(s)": "{{count}} mechanisme(n) de-voorleggen",
     "Accept {{count}} mechanism(s)": "{{count}} mechanisme(n) accepteren",
     "Unaccept {{count}} mechanism(s)": "{{count}} mechanisme(n) de-accepteren",
-    "The selection contains mechanisms for which you do not have view permissions.": "De selectie bevat mechanismen waarvoor u geen rechten hebt om ze te bekijken."
+    "The selection contains mechanisms for which you do not have view permissions.": "De selectie bevat mechanismen waarvoor u geen rechten hebt om ze te bekijken.",
+    "No actions required": "Geen acties vereist"
 }
