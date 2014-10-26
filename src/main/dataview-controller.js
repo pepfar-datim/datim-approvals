@@ -1,4 +1,6 @@
 function dataViewController($scope, approvalsService, $translate) {
+    var self = this;
+
     this.filteredDataSets = [];
     this.details = $scope.details;
     this.getMechanismsByIds = function (ids) {
@@ -7,6 +9,8 @@ function dataViewController($scope, approvalsService, $translate) {
             return ids.contains(mechanism.id);
         });
     };
+
+    this.isLocked = false;
 
     this.getActionTextFor = function(type) {
         var translations;
@@ -64,12 +68,15 @@ function dataViewController($scope, approvalsService, $translate) {
 
     function getActionCallBackFor(actionName, mechanisms) {
         return function () {
+            self.isLocked = false;
             $scope.$emit('APP.submit.success', { action: actionName, mechanisms: mechanisms } );
         }
     }
 
     function actionErrorCallBack(message) {
         var resultMessage;
+
+        self.isLocked = false;
 
         if (!/<[a-z][\s\S]*>/.test(message.data) && angular.isString(message.data)) {
             resultMessage = message.data;
@@ -100,6 +107,8 @@ function dataViewController($scope, approvalsService, $translate) {
         var mechanisms = this.getMechanismsByIds(ids);
         var approvalParams;
 
+        this.isLocked = true;
+
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
@@ -113,6 +122,8 @@ function dataViewController($scope, approvalsService, $translate) {
         var params = this.getParamsForMechanism();
         var mechanisms = this.getMechanismsByIds(ids);
         var approvalParams;
+
+        this.isLocked = true;
 
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
@@ -128,6 +139,8 @@ function dataViewController($scope, approvalsService, $translate) {
         var mechanisms = this.getMechanismsByIds(ids);
         var approvalParams;
 
+        this.isLocked = true;
+
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
@@ -141,6 +154,8 @@ function dataViewController($scope, approvalsService, $translate) {
         var params = this.getParamsForMechanism();
         var mechanisms = this.getMechanismsByIds(ids);
         var approvalParams;
+
+        this.isLocked = true;
 
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
