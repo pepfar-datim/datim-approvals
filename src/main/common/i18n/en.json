@@ -30,5 +30,19 @@
     "Unaccept {{count}} mechanism(s)": "Unaccept {{count}} mechanism(s)",
     "The selection contains mechanisms for which you do not have view permissions.": "The selection contains mechanisms for which you do not have view permissions.",
     "No actions required": "No actions required",
-    "No data available": "No data available or no results matching your search criteria"
+    "No data available": "No data available or no results matching your search criteria",
+
+    "org.hisp.dhis.dataapproval.exceptions.DataMayNotBeAcceptedException": "Data for one or more of the mechanisms may not be accepted",
+    "org.hisp.dhis.dataapproval.exceptions.DataMayNotBeApprovedException": "Data for one or more of the mechanisms may not be approved",
+    "org.hisp.dhis.dataapproval.exceptions.DataMayNotBeUnacceptedException": "Data for one or more of the mechanisms may not be unaccepted",
+    "org.hisp.dhis.dataapproval.exceptions.DataMayNotBeUnapprovedException": "Data for one or more of the mechanisms may not be unapproved",
+    "org.hisp.dhis.dataapproval.exceptions.DataSetNotMarkedForApprovalException": "One or more datasets are not marked for approval",
+    "org.hisp.dhis.dataapproval.exceptions.NoAttributeOptionsFoundInGroupsException": "No attribute option found in groups",
+    "org.hisp.dhis.dataapproval.exceptions.PeriodShorterThanDataSetPeriodException": "Provided period is shorter than the dataset period",
+    "org.hisp.dhis.dataapproval.exceptions.UserCannotAccessApprovalLevelException": "You can not access the required approval level on this user account",
+    "org.hisp.dhis.dataapproval.exceptions.UserCannotApproveAttributeComboException": "You can not approve the attribute combo",
+    "org.hisp.dhis.dataapproval.exceptions.UserMayNotAcceptDataException": "You can not accept data on this user account",
+    "org.hisp.dhis.dataapproval.exceptions.UserMayNotApproveDataException": "You can not approve data on this user account",
+    "org.hisp.dhis.dataapproval.exceptions.UserMayNotUnacceptDataException": "You can not unaccept data on this user account",
+    "org.hisp.dhis.dataapproval.exceptions.UserMayNotUnapproveDataException": "You can not unapprove dats on this user account"
 }

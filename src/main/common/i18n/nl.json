@@ -30,5 +30,7 @@
     "Unaccept {{count}} mechanism(s)": "{{count}} mechanisme(n) de-accepteren",
     "The selection contains mechanisms for which you do not have view permissions.": "De selectie bevat mechanismen waarvoor u geen rechten hebt om ze te bekijken.",
     "No actions required": "Geen acties vereist",
-    "No data available": "Geen data beschikbaar of geen data dat aan uw zoek criteria voldoet"
+    "No data available": "Geen data beschikbaar of geen data dat aan uw zoek criteria voldoet",
+    "org.hisp.dhis.dataapproval.exceptions.DataMayNotBeApprovedException": "Data mag niet voorgelegd worden",
+    "org.hisp.dhis.dataapproval.exceptions.DataSetNotMarkedForApprovalException": "Dataset is niet gemarkeerd om voorgelegd te worden"
 }

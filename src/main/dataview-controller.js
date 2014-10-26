@@ -69,7 +69,15 @@ function dataViewController($scope, approvalsService, $translate) {
     }
 
     function actionErrorCallBack(message) {
-            $scope.$emit('APP.submit.error', message.statusText);
+        var resultMessage;
+
+        if (!/<[a-z][\s\S]*>/.test(message.data) && angular.isString(message.data)) {
+            resultMessage = message.data;
+        } else {
+            resultMessage = (message.status ? message.status + ': ' : '') + message.statusText;
+        }
+
+        $scope.$emit('APP.submit.error', $translate.instant(resultMessage));
     }
 
     function prepareApprovalServiceParams(params, mechanisms) {
