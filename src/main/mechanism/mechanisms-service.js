@@ -176,7 +176,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             var actions = [];
             var status = [];
             var approvalLevel;
-            var mechanism =  _.find(parsedData, { catComboId: mechanismStatus.id });
+            var mechanism =  angular.copy(_.find(parsedData, { catComboId: mechanismStatus.id }));
 
             if (mechanismStatus.level && mechanismStatus.level.id) {
                 approvalLevel = _.find(approvalLevels, { id: mechanismStatus.level.id });
