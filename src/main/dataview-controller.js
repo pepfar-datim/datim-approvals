@@ -75,17 +75,14 @@ function dataViewController($scope, approvalsService, $translate) {
     function prepareApprovalServiceParams(params, mechanisms) {
         var approvalParams = {};
 
-        approvalParams.categoryOptionCombos = _.map(mechanisms, function (mechanism) {
+        approvalParams.approvals = _.map(mechanisms, function (mechanism) {
             return {
-                id: mechanism.catComboId
+                aoc: mechanism.catComboId,
+                ou: mechanism.organisationUnit
             };
         });
-        approvalParams.periods = [{ id: params.pe }];
-        approvalParams.dataSets = _.map(params.ds, function (dataSetId) {
-            return {
-                id: dataSetId
-            };
-        });
+        approvalParams.pe = [ params.pe ];
+        approvalParams.ds = params.ds;
 
         return approvalParams;
     }
@@ -98,7 +95,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.categoryOptionCombos.length > 0) {
+            if (approvalParams.approvals.length > 0) {
                 approvalsService.approve(approvalParams).then(getActionCallBackFor('approve', mechanisms), actionErrorCallBack);
             }
         }
@@ -112,7 +109,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.categoryOptionCombos.length > 0) {
+            if (approvalParams.approvals.length > 0) {
                 approvalsService.accept(approvalParams).then(getActionCallBackFor('accept', mechanisms), actionErrorCallBack);
             }
         }
@@ -126,7 +123,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.categoryOptionCombos.length > 0) {
+            if (approvalParams.approvals.length > 0) {
                 approvalsService.unapprove(approvalParams).then(getActionCallBackFor('unapprove', mechanisms), actionErrorCallBack);
             }
         }

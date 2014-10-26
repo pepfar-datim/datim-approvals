@@ -222,17 +222,17 @@ describe('Dataview Controller', function () {
                     id: 'd2fd34eee'
                 };
                 scope.details.currentSelection = [
-                    { id: "aa", catComboId: "a", name: "Mechanism1" },
-                    { id: "22", catComboId: "2", name: "Mechanism1" },
-                    { id: "myIdmyId", catComboId: "myId", name: "Mechanism1"}
+                    { id: "aa", catComboId: "a", name: "Mechanism1", organisationUnit: 'ou1' },
+                    { id: "22", catComboId: "2", name: "Mechanism1",  organisationUnit: 'ou1' },
+                    { id: "myIdmyId", catComboId: "myId", name: "Mechanism1",  organisationUnit: 'ou2'}
                 ];
             });
 
             it('should ask the approvalsService to approve', function () {
                 var expectedArguments = {
-                    dataSets: [{id: '1'}, {id:'2'}],
-                    periods: [{id: '2014'}],
-                    categoryOptionCombos: [{id: 'a'}]
+                    ds: ['1', '2'],
+                    pe: ['2014'],
+                    approvals: [{aoc: 'a', ou: 'ou1'}]
                 };
 
                 controller.submit(['aa']);
@@ -248,9 +248,9 @@ describe('Dataview Controller', function () {
 
             it('should not call the approvalService to approve twice when multiple mechanisms exist', function () {
                 var expectedArgumentsMechanismA = {
-                    dataSets: [{id: '1'}, {id:'2'}],
-                    periods: [{id: '2014'}],
-                    categoryOptionCombos: [{id: 'a'}, {id: '2'}]
+                    ds: ['1', '2'],
+                    pe: ['2014'],
+                    approvals: [{aoc: 'a', ou: 'ou1'}, {aoc: '2', ou: 'ou1'}]
                 };
 
                 controller.submit(['aa', '22']);

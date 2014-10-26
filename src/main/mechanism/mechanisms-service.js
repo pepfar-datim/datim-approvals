@@ -215,6 +215,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
+            mechanism.organisationUnit = mechanismStatus.ou;
             mechanism.level = mechanismStatus.level && mechanismStatus.level.level || undefined ;
             mechanisms.push(mechanism);
         });
