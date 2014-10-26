@@ -16,6 +16,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     var mechanisms = [];
 
     var orgUnitCache = {};
+    var categoryCache = {};
 
     Object.defineProperty(this, 'period', {
         set: function (value) {
@@ -137,6 +138,12 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         function getCategoriesAndReplaceDefaults() {
             var deferred = $q.defer();
 
+            //Load categories from cache
+            if (categoryCache[categories.join('_')]) {
+                deferred.resolve(categoryCache[categories.join('_')]);
+                return deferred.promise;
+            }
+
             self.getData().then(function (data) {
                 _.each(data, function (category) {
                     _.each(self.dataSets, function (dataSet) {
@@ -151,6 +158,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                         }
                     });
                 });
+                categoryCache[categories.join('_')] = data;
                 deferred.resolve(data);
             }, function () {
                 deferred.reject('Error loading category data');
