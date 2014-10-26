@@ -25,7 +25,6 @@
                         ng-disabled="dataView.isLocked"
                         class="btn btn-default"
                         ng-bind="dataView.getActionTextFor('unaccept')">Unaccept</button>
-
             </div>
             <div class="btn-group place-right">
                 <button class="btn btn-default" ng-click="app.showData = false" translate>Back</button>
@@ -33,4 +32,9 @@
         </div>
     </div>
     <dataset-view></dataset-view>
+    <div class="wait-while-processing" ng-show="dataView.isLocked">
+        <div class="waiting-message">
+            <i class="fa fa-circle-o-notch fa-spin"></i><span translate>Please wait while processing your request...</span>
+        </div>
+    </div>
 </div>
