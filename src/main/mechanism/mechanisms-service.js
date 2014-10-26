@@ -15,6 +15,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
 
     var mechanisms = [];
 
+    var orgUnitCache = {};
+
     Object.defineProperty(this, 'period', {
         set: function (value) {
             if (!angular.isString(value)) {
@@ -93,6 +95,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         }
 
         function getCountryFromCategoryOption(categoryOption) {
+            if (categoryOption.organisationUnits[0]) {
+                orgUnitCache[categoryOption.organisationUnits[0].id] = categoryOption.organisationUnits[0].name;
+            }
+
             return categoryOption.organisationUnits[0] ? categoryOption.organisationUnits[0].name : ''
         }
 
@@ -165,6 +171,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     this.filterMechanisms = function (mechanismsStatuses, parsedData, approvalLevels) {
+        console.log(orgUnitCache);
         mechanisms = [];
         _.each(mechanismsStatuses, function (mechanismStatus) {
             var actions = [];
@@ -216,6 +223,13 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
             mechanism.organisationUnit = mechanismStatus.ou;
+
+            if (mechanism.country === '') {
+                if (orgUnitCache[mechanismStatus.ou]) {
+                    mechanism.country = orgUnitCache[mechanismStatus.ou];
+                }
+            }
+
             mechanism.level = mechanismStatus.level && mechanismStatus.level.level || undefined ;
             mechanisms.push(mechanism);
         });
