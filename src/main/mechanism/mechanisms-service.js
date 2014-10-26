@@ -171,7 +171,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     };
 
     this.filterMechanisms = function (mechanismsStatuses, parsedData, approvalLevels) {
-        console.log(orgUnitCache);
         mechanisms = [];
         _.each(mechanismsStatuses, function (mechanismStatus) {
             var actions = [];
