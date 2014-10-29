@@ -295,7 +295,27 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     //When the dataset group is changed update the filter types and the datasets
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
-        periodService.filterPeriodTypes(dataSets.getPeriodTypes());
+        function equalArrays(left, right) {
+            var result = true;
+
+            if (left.length !== right.length) {
+                return false;
+            }
+
+            left.forEach(function (item, index) {
+                result = (item === right[index]) && true;
+            });
+            return result;
+        }
+
+        function differentPeriodSets(periodsLeft, periodsRight) {
+            return !equalArrays(periodsLeft, periodsRight);
+        }
+
+        if (differentPeriodSets(periodService.getPeriodTypesForDataSet(dataSets.getPeriodTypes()), periodService.getPeriodTypes())) {
+            periodService.filterPeriodTypes(dataSets.getPeriodTypes());
+        }
+
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
         mechanismsService.dataSetIds = dataSets.getIds();

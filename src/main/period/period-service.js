@@ -128,11 +128,15 @@ function periodService(d2Api) {
 
     };
 
-    this.filterPeriodTypes = function (dataSetPeriodTypes) {
+    this.getPeriodTypesForDataSet = function (dataSetPeriodTypes) {
         var firstPeriodIndex = _(periodBaseList).findLastIndex(function (periodType) {
             return _(dataSetPeriodTypes).contains(periodType);
         });
-        periodTypes = _.rest(periodBaseList, firstPeriodIndex);
+        return _.rest(periodBaseList, firstPeriodIndex);
+    };
+
+    this.filterPeriodTypes = function (dataSetPeriodTypes) {
+        periodTypes = this.getPeriodTypesForDataSet(dataSetPeriodTypes);
         return periodTypes;
     };
 
