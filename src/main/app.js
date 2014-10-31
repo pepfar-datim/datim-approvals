@@ -1,5 +1,7 @@
 function appController(periodService, $scope, currentUser, mechanismsService,
-                       approvalLevelsService, $q, toastr, AppManifest, systemSettings, $translate, d2Api) {
+                       approvalLevelsService, $q, toastr, AppManifest,
+                       systemSettings, $translate, d2Api,
+                       organisationunitsService) {
     var self = this;
 
     this.loading = true;
@@ -45,6 +47,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     this.hasTableDetails = function () {
         if (mechanismsService.categories.length > 0 &&
             mechanismsService.dataSetIds.length > 0 &&
+            mechanismsService.organisationUnit && mechanismsService.organisationUnit !== '' &&
             angular.isString(mechanismsService.period)) {
             return true;
         }
@@ -231,7 +234,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         orgUnit: undefined,
         period: undefined,
         dataSets: undefined,
-        currentSelection: [],
+        currentSelection: []
     };
 
     this.updateTitle = function () {
@@ -270,10 +273,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         $scope.details.orgUnit = orgUnit.id;
         self.currentUser.orgUnit = orgUnit;
 
+        organisationunitsService.currentOrganisationUnit = orgUnit;
+        console.log(orgUnit);
+
         self.updateTitle();
     });
 
-    //TODO: Replace this with the real call
     d2Api.addEndPoint('me/dataApprovalLevels', true);
     var userApprovalLevelPromise = d2Api.getEndPoint('me/dataApprovalLevels').get();
     userApprovalLevelPromise.then(function (approvalLevel) {
@@ -281,6 +286,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         if ($scope.approvalLevel.categoryOptionGroupSet) {
             self.updateTitle();
         }
+        organisationunitsService.currentOrganisationUnit.level = $scope.approvalLevel.level;
     });
 
     $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (result) {
@@ -320,6 +326,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         mechanismsService.categories = dataSets.getCategoryIds();
         mechanismsService.dataSetIds = dataSets.getIds();
         mechanismsService.dataSets = dataSets.get();
+        mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
 
         $scope.details.currentSelection = [];
 
@@ -401,6 +408,19 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
             $scope.details.orgUnit = newVal;
+        }
+    });
+
+    $scope.$watch(function () {
+        return organisationunitsService.currentOrganisationUnit;
+    }, function (newVal, oldVal) {
+        if (newVal === oldVal) { return; }
+        mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        console.log('Setting orgunit:', $scope.details.orgUnit);
+        if (self.hasTableDetails()) {
+            console.log('updating');
+            self.showData = false;
+            self.getTableData();
         }
     });
 }

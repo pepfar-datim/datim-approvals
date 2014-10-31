@@ -162,17 +162,36 @@ describe('Mechanisms service', function () {
         it('should log an error when the given value is not an array', function () {
             mechanismsService.categories = '';
 
-            expect($log.error.logs).toContain(['Mechanism Service: Period should be a string']);
+            expect($log.error.logs).toContain(['Mechanism Service: Categories should be an array']);
+        });
+    });
+
+    describe('organisation units property', function () {
+        it('should set to an empty string', function () {
+            expect(mechanismsService.organisationUnit).toEqual('');
+        });
+
+        it('should set the given orgunit id onto the service', function () {
+            mechanismsService.organisationUnit = 'asd11sss';
+
+            expect(mechanismsService.organisationUnit).toEqual('asd11sss');
+        });
+
+        it('should log an error when a value that is not a string is given', function () {
+            mechanismsService.organisationUnit = [];
+
+            expect($log.error.logs).toContain(['Mechanism Service: OrganisationUnit should be a string']);
         });
     });
 
     describe('getStatuses', function () {
         beforeEach(function () {
-            $httpBackend.expectGET('/dhis/api/dataApprovals/categoryOptionCombos?ds=a&ds=b&pe=2014Oct')
+            $httpBackend.expectGET('/dhis/api/dataApprovals/categoryOptionCombos?ds=a&ds=b&ou=ybg3MO3hcf4&pe=2014Oct')
                 .respond(200, fixtures.get('cocApprovalStatus'));
 
             mechanismsService.period = '2014Oct';
             mechanismsService.dataSetIds = ['a', 'b'];
+            mechanismsService.organisationUnit = 'ybg3MO3hcf4';
         });
 
         it('should request statuses from the API', function () {

@@ -6,6 +6,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     var period;
     var dataSetIds = [];
     var categories = [];
+    var organisationUnit = '';
+
     var deferred = $q.defer();
 
     var statuses = {
@@ -47,13 +49,26 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     Object.defineProperty(this, 'categories', {
         set: function (value) {
             if (!angular.isArray(value)) {
-                $log.error('Mechanism Service: Period should be a string');
+                $log.error('Mechanism Service: Categories should be an array');
                 return;
             }
             categories = value;
         },
         get: function () {
             return categories;
+        }
+    });
+
+    Object.defineProperty(this, 'organisationUnit', {
+        set: function (value) {
+            if (!angular.isString(value)) {
+                $log.error('Mechanism Service: OrganisationUnit should be a string');
+                return;
+            }
+            organisationUnit = value;
+        },
+        get: function () {
+            return organisationUnit;
         }
     });
 
@@ -268,7 +283,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     this.getStatuses = function () {
         return d2Api.getEndPoint('dataApprovals/categoryOptionCombos').getList({
             pe: period,
-            ds: dataSetIds
+            ds: dataSetIds,
+            ou: organisationUnit
         }).then(function (data) {
             return data.getDataOnly();
         });
