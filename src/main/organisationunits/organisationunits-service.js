@@ -1,11 +1,13 @@
 function organisationunitsService(d2Api) {
     this.currentOrganisationUnit = {};
 
-    this.requestOrganisationUnitsForLevel = function (orgUnitLevel) {
-        return d2Api.organisationUnits.getList({
+    this.requestOrganisationUnitsForLevel = function (orgUnitId, orgUnitLevel) {
+        return d2Api.organisationUnits.get(orgUnitId, {
             fields: 'id,name',
-            filter: 'level:eq:' + orgUnitLevel,
+            level: orgUnitLevel,
             paging: 'false'
+        }).then(function (organisationUnitData) {
+            return organisationUnitData.organisationUnits;
         });
     };
 

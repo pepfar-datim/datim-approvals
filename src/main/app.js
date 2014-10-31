@@ -274,7 +274,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         self.currentUser.orgUnit = orgUnit;
 
         organisationunitsService.currentOrganisationUnit = orgUnit;
-        console.log(orgUnit);
 
         self.updateTitle();
     });
@@ -415,10 +414,10 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         return organisationunitsService.currentOrganisationUnit;
     }, function (newVal, oldVal) {
         if (newVal === oldVal) { return; }
+
         mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
-        console.log('Setting orgunit:', $scope.details.orgUnit);
+
         if (self.hasTableDetails()) {
-            console.log('updating');
             self.showData = false;
             self.getTableData();
         }

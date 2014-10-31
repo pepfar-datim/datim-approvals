@@ -21,7 +21,11 @@ describe('Organisationunits service', function () {
         beforeEach(inject(function (_$httpBackend_) {
             $httpBackend = _$httpBackend_;
 
-            $httpBackend.expectGET('/dhis/api/organisationUnits?fields=id,name&filter=level:eq:3&paging=false').respond(200, fixtures.get('organisationUnitsForLevelThree'));
+            service.currentOrganisationUnit = {
+                id: 'ybg3MO3hcf4'
+            };
+
+            $httpBackend.expectGET('/dhis/api/organisationUnits/ybg3MO3hcf4?fields=id,name&level=3&paging=false').respond(200, fixtures.get('organisationUnitsForLevelThree'));
         }));
 
         afterEach(function () {
@@ -30,14 +34,14 @@ describe('Organisationunits service', function () {
         });
 
         it('should call the organisation units endpoint', function () {
-            service.requestOrganisationUnitsForLevel(3);
+            service.requestOrganisationUnitsForLevel('ybg3MO3hcf4', 3);
             $httpBackend.flush();
         });
 
         it('should pass an array to the promise then', function () {
             var organisationUnits = undefined;
 
-            service.requestOrganisationUnitsForLevel(3).then(function (results) {
+            service.requestOrganisationUnitsForLevel('ybg3MO3hcf4', 3).then(function (results) {
                 organisationUnits = results;
             });
             $httpBackend.flush();

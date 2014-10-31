@@ -16,19 +16,16 @@ function organisationunitSelectorDirective(organisationunitsService) {
             }, function (newVal, oldVal) {
                 var levelToGet;
 
-                if (newVal === oldVal) return;
+                if (newVal === oldVal) { return; }
+
                 if (organisationunitsService.currentOrganisationUnit && organisationunitsService.currentOrganisationUnit.level) {
                     levelToGet = organisationunitsService.currentOrganisationUnit.level + 1;
 
-                    //TODO: PEPFAR Hack to circumvent the global regions
-                    if (organisationunitsService.currentOrganisationUnit.level == 1) {
-                        levelToGet += 1;
-                    } else {
-                        return;
-                    }
+                    //TODO: PEPFAR Hack to only display this option for global users
+                    if (organisationunitsService.currentOrganisationUnit.level != 1) { return; }
 
-                    organisationunitsService.requestOrganisationUnitsForLevel(levelToGet).then(function (dataList) {
-                        scope.organisationUnit.organisationUnits = dataList.getDataOnly();
+                    organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet).then(function (dataList) {
+                        scope.organisationUnit.organisationUnits = dataList
                     });
                 }
             }, true);

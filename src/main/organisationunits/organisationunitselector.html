@@ -5,7 +5,7 @@
             ng-model="organisationUnit.selected"
             on-select="changeOrganisationUnit($item)">
         <ui-select-match placeholder="Filter mechanisms by organisation unit">{{$select.selected.name}}</ui-select-match>
-        <ui-select-choices repeat="organisationUnit.name as organisationUnit in organisationUnit.organisationUnits">
+        <ui-select-choices repeat="organisationUnit.name as organisationUnit in organisationUnit.organisationUnits | filter: $select.search">
             <div>{{organisationUnit.name}}</div>
         </ui-select-choices>
     </ui-select>
