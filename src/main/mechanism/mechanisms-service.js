@@ -252,7 +252,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                 }
             }
 
-            mechanism.level = mechanismStatus.level && mechanismStatus.level.level || undefined ;
+            mechanism.level = mechanismStatus.level && parseInt(mechanismStatus.level.level, 10) || undefined ;
             mechanisms.push(mechanism);
         });
     };
