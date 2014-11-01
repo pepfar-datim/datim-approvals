@@ -98,6 +98,7 @@ function dataViewController($scope, approvalsService, $translate) {
         });
         approvalParams.pe = [ params.pe ];
         approvalParams.ds = params.ds;
+        approvalParams.ou = $scope.details.orgUnit;
 
         return approvalParams;
     }

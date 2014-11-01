@@ -25,7 +25,13 @@ function organisationunitSelectorDirective(organisationunitsService) {
                     if (organisationunitsService.currentOrganisationUnit.level != 1) { return; }
 
                     organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet).then(function (dataList) {
-                        scope.organisationUnit.organisationUnits = dataList
+                        var thisOrgUnit = {
+                            id: organisationunitsService.currentOrganisationUnit.id,
+                            name: organisationunitsService.currentOrganisationUnit.name
+                        };
+                        dataList = _.sortBy(dataList, 'name');
+                        scope.organisationUnit.organisationUnits = [thisOrgUnit].concat(dataList);
+                        scope.organisationUnit.selected = scope.organisationUnit.organisationUnits[0];
                     });
                 }
             }, true);

@@ -63,11 +63,18 @@ describe('Approvals Service', function () {
             expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
+        it('should reject the promise when the org unit is missing', function () {
+            approvalsService.approve({ pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] }).catch(catchCallback);
+            $rootScope.$apply();
+
+            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Organisation unit (ou) is missing or empty' });
+        });
+
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataApprovals/approvals',
-                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] }).respond(200);
+                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf'  }).respond(200);
 
-            approvalsService.approve({ pe: [ '2014' ],  ds: ['1', '2'], approvals: [{id:'d234453'}] });
+            approvalsService.approve({ pe: [ '2014' ],  ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf'  });
 
             $httpBackend.flush();
         });
@@ -108,9 +115,9 @@ describe('Approvals Service', function () {
 
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataApprovals/unapprovals',
-                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] }).respond(200);
+                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf'  }).respond(200);
 
-            approvalsService.unapprove({ pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] });
+            approvalsService.unapprove({ pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf' });
 
             $httpBackend.flush();
         });
@@ -151,9 +158,9 @@ describe('Approvals Service', function () {
 
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataAcceptances/acceptances',
-                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] }).respond(200);
+                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf'  }).respond(200);
 
-            approvalsService.accept({ pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] });
+            approvalsService.accept({ pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf'  });
 
             $httpBackend.flush();
         });
@@ -194,9 +201,9 @@ describe('Approvals Service', function () {
 
         it('should do a post request when the data is completed', function () {
             $httpBackend.expectPOST('/dhis/api/dataAcceptances/unacceptances',
-                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] }).respond(200);
+                { pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf'  }).respond(200);
 
-            approvalsService.unaccept({ pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}] });
+            approvalsService.unaccept({ pe: [ '2014' ], ds: ['1', '2'], approvals: [{id:'d234453'}], ou: 'dffdf'  });
 
             $httpBackend.flush();
         });

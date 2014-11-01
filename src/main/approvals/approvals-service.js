@@ -18,6 +18,10 @@ function approvalsService($q, d2Api) {
             return 'Category option combo parameter is missing or empty';
         }
 
+        if (!angular.isString(approvalData.ou) || approvalData.ou.length === 0) {
+            return 'Organisation unit (ou) is missing or empty';
+        }
+
         return true;
     }
 

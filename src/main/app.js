@@ -416,6 +416,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         if (newVal === oldVal) { return; }
 
         mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        $scope.details.orgUnit = mechanismsService.organisationUnit;
 
         if (self.hasTableDetails()) {
             self.showData = false;

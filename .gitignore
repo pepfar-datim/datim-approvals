@@ -17,5 +17,5 @@ coverage
 __my_notes__
 fake-api
 
-approvals.zip
+*.zip
 src/main/_manifest.webapp
