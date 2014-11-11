@@ -52,7 +52,7 @@
                  ng-controller="acceptTableViewController as tableView"
                  disabled="!tableView.hasItems(app, 'accept')"
                  active="app.tabs.accept.state"
-                 deselect="app.deSelect()">
+                 deselect="app.deSelect('accept')">
                 <tab-heading>
                     <span ng-bind="app.tabs.accept.name | translate"></span>
                     <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
@@ -63,7 +63,7 @@
                  ng-controller="acceptedTableViewController as tableView"
                  disabled="!tableView.hasItems(app, 'submit')"
                  active="app.tabs.submit.state"
-                 deselect="app.deSelect()">
+                 deselect="app.deSelect('submit')">
                 <tab-heading>
                     <span ng-bind="app.tabs.submit.name | translate" ></span>
                     <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
@@ -74,7 +74,7 @@
                  ng-controller="submittedTableViewController as tableView"
                  disabled="!tableView.hasItems(app, 'unsubmit')"
                  active="app.tabs.unsubmit.state"
-                 deselect="app.deSelect()">
+                 deselect="app.deSelect('unsubmit')">
                 <tab-heading>
                     <span ng-bind="app.tabs.unsubmit.name | translate "></span>
                     <span class="badge available-items-dot" ng-bind="tableView.approvalTableData.length"></span>
@@ -85,7 +85,7 @@
                  ng-controller="viewTableViewController as tableView"
                  disabled="!tableView.hasItems(app, 'view')"
                  active="app.tabs.view.state"
-                 deselect="app.deSelect()">
+                 deselect="app.deSelect('view')">
                 <tab-heading>
                     <span ng-bind="app.tabs.view.name | translate"></span>
                     <span class="badge available-items-dot" ng-bind="tableView.approvalTableData.length"></span>

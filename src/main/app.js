@@ -166,7 +166,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         return _.find(this.tabs, { state: true } );
     };
 
-    this.deSelect = function () {
+    this.deSelect = function (tabName) {
+        this.tabs[tabName].state = false;
         $scope.details.currentSelection = [];
         this.updateViewButton();
         $scope.$broadcast('RECORDTABLE.selection.clear');
@@ -254,7 +255,14 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     }
 
     this.updateViewButton = function () {
-        this.text.viewAct = [$translate.instant('View/Act on'),
+        var actionText = 'View/Act';
+        var activeTab =  _.find(this.tabs, {state: true});
+
+        if (activeTab && activeTab.name) {
+            actionText = $translate.instant(activeTab.name);
+        }
+
+        this.text.viewAct = [$translate.instant(actionText),
             $scope.details.currentSelection.length,
             $translate.instant('mechanism(s)')].join(' ');
     }
