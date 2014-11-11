@@ -167,7 +167,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     };
 
     this.deSelect = function (tabName) {
-        this.tabs[tabName].state = false;
+        if (this.tabs[tabName]) {
+            this.tabs[tabName].state = false;
+        }
         $scope.details.currentSelection = [];
         this.updateViewButton();
         $scope.$broadcast('RECORDTABLE.selection.clear');
