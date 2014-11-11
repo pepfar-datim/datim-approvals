@@ -96,7 +96,7 @@ gulp.task('js', /*['lint', 'jscs'],*/ function () {
             stats: true
         }))
         .pipe(concat('app.js'))
-//        .pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest(
             [build_directory, 'js'].join('/')
         ));
@@ -202,7 +202,7 @@ gulp.task('dependencies', function () {
 
     gulp.src(jsFiles)
         .pipe(concat('vendor.js'))
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest([
             build_directory,
             'vendor'
