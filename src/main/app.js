@@ -88,7 +88,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     this.setStatus = function () {
         if (this.actionItems === 0) {
-            $translate('No actions required').then(function (translations) {
+            $translate('No action required').then(function (translations) {
                 self.status = translations;
             });
         } else {

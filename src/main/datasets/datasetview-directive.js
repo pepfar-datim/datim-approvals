@@ -160,7 +160,7 @@ function datasetViewDirective(AppManifest, $translate) {
                 //Move this out
                 jQuery(dataSetReportWrapSelector).html('');
 
-                $translate('Back to top').then(function (translation) {
+                $translate('Go to top').then(function (translation) {
                     addBackToTop(translation);
                 });
 
