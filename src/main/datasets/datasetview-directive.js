@@ -33,13 +33,7 @@ function datasetViewDirective(AppManifest, $translate) {
             params.dimension = COsForReport[0].category + ':' + _.pluck(COsForReport, 'id').join(';');
         }
 
-        var urlParams = _.map(params,function (value, key) {
-            return [key, value].join('=');
-        }).join('&');
-
-        var reportUrl = [dataSetReportUrl, urlParams].join('?');
-
-        jQuery.get(reportUrl).success(function (data) {
+        jQuery.post(dataSetReportUrl, params).success(function (data) {
             scope.$apply(function () {
                 scope.details.loaded += 1;
             });
