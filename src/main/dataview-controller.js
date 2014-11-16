@@ -114,7 +114,7 @@ function dataViewController($scope, approvalsService, $translate) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.approvals.length > 0) {
-                approvalsService.approve(approvalParams).then(getActionCallBackFor('approve', mechanisms), actionErrorCallBack);
+                approvalsService.approve(approvalParams).then(getActionCallBackFor('submit', mechanisms), actionErrorCallBack);
             }
         }
     };
@@ -146,7 +146,7 @@ function dataViewController($scope, approvalsService, $translate) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.approvals.length > 0) {
-                approvalsService.unapprove(approvalParams).then(getActionCallBackFor('unapprove', mechanisms), actionErrorCallBack);
+                approvalsService.unapprove(approvalParams).then(getActionCallBackFor('unsubmit', mechanisms), actionErrorCallBack);
             }
         }
     };
