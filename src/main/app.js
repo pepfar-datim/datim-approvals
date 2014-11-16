@@ -304,7 +304,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             self.tabs.accept.state = false;
             self.tabs.submit.access = true;
             self.tabs.submit.state = true;
-            self.tabs.submit.name = 'Pending';
+            self.tabs.submit.name = 'Submit';
         }
     });
 
@@ -370,7 +370,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             });
             successMessage.push('</ul>');
         }
-        toastr.success(successMessage.join(''));
+        toastr.success(successMessage.join(''), undefined, {timeOut: 2500, extendedTimeOut: 2500});
         if (self.hasTableDetails()) {
             self.showData = false;
             self.getTableData();

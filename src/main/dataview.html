@@ -1,10 +1,7 @@
 <div class="dataset-view">
     <div class="dataset-view-controls">
-        <div ng-show="details.loaded < details.dataSetsFilteredByMechanisms.length">
-            <progressbar type="success" max="100" value="(100 / details.dataSetsFilteredByMechanisms.length) * details.loaded">Loading Reports: {{ (100 / details.dataSetsFilteredByMechanisms.length) * details.loaded  | number : 0 }}%</progressbar>
-        </div>
         <div class="action-buttons">
-            <div class="btn-group">
+            <div class="btn-group pad-right">
                 <button ng-click="dataView.submit(dataView.details.actions.approve)"
                         ng-if="dataView.details.actions.approve.length > 0"
                         ng-disabled="dataView.isLocked"
@@ -25,6 +22,9 @@
                         ng-disabled="dataView.isLocked"
                         class="btn btn-default"
                         ng-bind="dataView.getActionTextFor('unaccept')">Unaccept</button>
+            </div>
+            <div ng-show="details.loaded < details.dataSetsFilteredByMechanisms.length" class="dataview-loading">
+                <progressbar type="success" max="100" value="(100 / details.dataSetsFilteredByMechanisms.length) * details.loaded">Loading Reports: {{ (100 / details.dataSetsFilteredByMechanisms.length) * details.loaded  | number : 0 }}%</progressbar>
             </div>
             <div class="btn-group place-right">
                 <button class="btn btn-default" ng-click="app.showData = false" translate>Back</button>

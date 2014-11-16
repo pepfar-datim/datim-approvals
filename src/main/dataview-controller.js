@@ -161,7 +161,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
 
-            if (approvalParams.categoryOptionCombos.length > 0) {
+            if (approvalParams.approvals.length > 0) {
                 approvalsService.unaccept(approvalParams).then(getActionCallBackFor('unaccept', mechanisms), actionErrorCallBack);
             }
         }
