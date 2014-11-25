@@ -223,14 +223,6 @@
                 {
                     "id": "l32yP94G7HL",
                     "name": "5433 - JH...",
-                    "organisationUnits": [
-                        {
-                            "id": "DRsCDEy0KDX",
-                            "name": "Kenya",
-                            "created": "2013-06-10T00:34:22.000+0000",
-                            "lastUpdated": "2014-09-18T11:03:00.174+0000"
-                        }
-                    ],
                     categoryOptionCombos: [
                         {
                             id: "tJoZs2lVXFc",
@@ -297,12 +289,6 @@
                             "name": "Malawi",
                             "created": "2013-06-10T00:34:22.000+0000",
                             "lastUpdated": "2014-09-18T11:03:00.174+0000"
-                        }
-                    ],
-                    categoryOptionCombos: [
-                        {
-                            id: "gJWUyJhnVBo",
-                            name: "(1233 - Mal...)"
                         }
                     ],
                     groups: [
@@ -410,6 +396,20 @@
         },
         {
             "id": "qofeYTu7w0R",
+            "level": {},
+            "pe": "2014",
+            "ou": "ybg3MO3hcf4",
+            "accepted": true,
+            "permissions": {
+                "mayApprove": false,
+                "mayUnapprove": false,
+                "mayUnaccept": false,
+                "mayAccept": false,
+                "mayReadData": false
+            }
+        },
+        {
+            "id": "tJoZs2lVXFc",
             "level": {},
             "pe": "2014",
             "ou": "ybg3MO3hcf4",

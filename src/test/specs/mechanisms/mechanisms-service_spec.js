@@ -145,6 +145,10 @@ describe('Mechanisms service', function () {
                 expect(dataResult[0].mayReadData).toBe(true);
                 expect(dataResult[3].mayReadData).toBe(false);
             });
+
+            it('should not return mechanisms without categoryOptionCombos', function () {
+
+            });
         });
     });
 

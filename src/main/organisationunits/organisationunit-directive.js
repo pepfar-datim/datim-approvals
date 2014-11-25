@@ -24,15 +24,16 @@ function organisationunitSelectorDirective(organisationunitsService) {
                     //TODO: PEPFAR Hack to only display this option for global users
                     if (organisationunitsService.currentOrganisationUnit.level != 1) { return; }
 
-                    organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet).then(function (dataList) {
-                        var thisOrgUnit = {
-                            id: organisationunitsService.currentOrganisationUnit.id,
-                            name: organisationunitsService.currentOrganisationUnit.name
-                        };
-                        dataList = _.sortBy(dataList, 'name');
-                        scope.organisationUnit.organisationUnits = [thisOrgUnit].concat(dataList);
-                        scope.organisationUnit.selected = scope.organisationUnit.organisationUnits[0];
-                    });
+                    organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet)
+                        .then(function (dataList) {
+                            var thisOrgUnit = {
+                                id: organisationunitsService.currentOrganisationUnit.id,
+                                name: organisationunitsService.currentOrganisationUnit.name
+                            };
+                            dataList = _.sortBy(dataList, 'name');
+                            scope.organisationUnit.organisationUnits = [thisOrgUnit].concat(dataList);
+                            scope.organisationUnit.selected = scope.organisationUnit.organisationUnits[0];
+                        });
                 }
             }, true);
 

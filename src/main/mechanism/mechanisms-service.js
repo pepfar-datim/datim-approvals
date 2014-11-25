@@ -91,7 +91,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             }).cogsId;
 
             data = _(categories).map(function (category) {
-                return _.map(category.categoryOptions, function (categoryOption) {
+                return _.map(filterCategoryOptions(category.categoryOptions), function (categoryOption) {
                     var mechanism = {
                         id: categoryOption.id,
                         mechanism: categoryOption.name,
@@ -108,6 +108,33 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             }).flatten();
 
             return data.__wrapped__;
+        }
+
+        function filterCategoryOptions(categoryOptions) {
+            var filteredCategoryOptions;
+            filteredCategoryOptions = filterCategoryOptionsWithCategoryOptionCombo(categoryOptions);
+            filteredCategoryOptions = filterOrganisationUnits(filteredCategoryOptions);
+            return filteredCategoryOptions;
+        }
+
+        function filterCategoryOptionsWithCategoryOptionCombo(categoryOptions) {
+            return _.filter(categoryOptions, function (categoryOption) {
+                if (angular.isArray(categoryOption.categoryOptionCombos) &&
+                    categoryOption.categoryOptionCombos.length > 0) {
+                    return true;
+                }
+                return false;
+            });
+        }
+
+        function filterOrganisationUnits(categoryOptions) {
+            return categoryOptions.filter(function (categoryOption) {
+                if (angular.isArray(categoryOption.organisationUnits) &&
+                    categoryOption.organisationUnits.length > 0) {
+                    return true;
+                }
+                return false;
+            });
         }
 
         function getCountryFromCategoryOption(categoryOption) {
@@ -233,10 +260,14 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             if (approvalLevel) {
                 if (mechanismStatus.accepted === true) {
                     status.push('Accepted');
+                    if (mechanismStatus.level && mechanismStatus.level.level) {
+                        approvalLevel = _.find(approvalLevels, { level: (parseInt(mechanismStatus.level.level) - 1) });
+                        status.push(approvalLevel.levelName);
+                    }
                 } else {
                     status.push('Submitted');
+                    status.push(approvalLevel.levelName);
                 }
-                status.push(approvalLevel.levelName);
             } else {
                 status.push('Pending');
             }
