@@ -63,12 +63,12 @@ gulp.task('clean', function(cb){
 
 //Run the tests in the test directory
 gulp.task('test', function () {
-    gulp.src(files).pipe(run_karma());
+    return gulp.src(files).pipe(run_karma());
 });
 
 //Run a watch on karma to rerun tests when the files change
 gulp.task('watch', function() {
-    gulp.src(files).pipe(run_karma(true));
+    return gulp.src(files).pipe(run_karma(true));
 });
 
 //Run jshint on the code in src/main
@@ -116,25 +116,25 @@ gulp.task('sass', function () {
 gulp.task('html', function () {
     var minifyHTML = require('gulp-minify-html');
 
-    gulp.src('src/main/**/*.html').pipe(minifyHTML({ empty: true, quotes: true })).pipe(gulp.dest(
+    return gulp.src('src/main/**/*.html').pipe(minifyHTML({ empty: true, quotes: true })).pipe(gulp.dest(
         build_directory
     ));
 });
 
 gulp.task('i18n', function () {
-    gulp.src('**/i18n/**/*.json', { base: './src/main/' }).pipe(gulp.dest(
+    return gulp.src('**/i18n/**/*.json', { base: './src/main/' }).pipe(gulp.dest(
         build_directory
     ));
 });
 
 gulp.task('images', function () {
-    gulp.src('**/icons/**/*', { base: './src/main/' }).pipe(gulp.dest(
+    return gulp.src('**/icons/**/*', { base: './src/main/' }).pipe(gulp.dest(
         build_directory
     ));
 });
 
 gulp.task('manifest', function () {
-    gulp.src('**/*.webapp', { base: './src/main/' }).pipe(gulp.dest(
+    return gulp.src('**/*.webapp', { base: './src/main/' }).pipe(gulp.dest(
         build_directory
     ));
 });
@@ -215,7 +215,7 @@ gulp.task('dependencies', function () {
 
     //TODO: fix this
     // Redo d2js seperately
-    gulp.src([
+    return gulp.src([
         'src/vendor/d2js/dist/**/*'
     ]).pipe(gulp.dest([
         build_directory,
@@ -275,24 +275,24 @@ gulp.task('build-prod', function () {
 });
 
 gulp.task('deploy', function () {
-    gulp.src([
+    return gulp.src([
         'build/**/*'
     ]).pipe(gulp.dest('/usr/local/apache-tomcat-8.0.5/webapps/dhis/apps/approvals'));
 });
 
 gulp.task('default', function () {
     rimraf(dhis_directory, function () {});
-    runSequence('build', 'deploy');
+    return runSequence('build', 'deploy');
 });
 
 gulp.task('copy-fake-api', function () {
-    gulp.src([
+    return gulp.src([
         'fake-api/**/*'
     ]).pipe(gulp.dest(dhis_directory + 'fake-api/'));
 });
 
 gulp.task('package', function () {
-    gulp.src('build/**/*', { base: './build/' })
+    return gulp.src('build/**/*', { base: './build/' })
         .pipe(zip('approvals.zip', { compress: false }))
         .pipe(gulp.dest('.'));
 });
