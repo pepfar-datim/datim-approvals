@@ -41,13 +41,13 @@ function dataSetGroupService(d2Api, $q, periodService) {
                     }
                 });
 
-                    _.each(categoryComboIds, function (dataSets, catCombo) {
-                        d2Api.categoryCombos.get(catCombo,
-                            {fields: 'id,categoryOptionCombos[id,name]'}).then(function (categoryCombo) {
-                                _.each(dataSets, function (dataSet) {
-                                    dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
-                                });
+                _.each(categoryComboIds, function (dataSets, catCombo) {
+                    d2Api.categoryCombos.withHttpConfig({cache: true}).get(catCombo,
+                        {fields: 'id,categoryOptionCombos[id,name]'}).then(function (categoryCombo) {
+                            _.each(dataSets, function (dataSet) {
+                                dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
                             });
+                        });
                     });
 
 
