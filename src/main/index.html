@@ -42,8 +42,10 @@
 
     <div ng-show="!app.showData && !app.loading" class="table-tab-wrap ng-hide">
         <div class="action-buttons">
-            <div class="btn-group">
-                <button class="btn btn-default" ng-disabled="!app.hasAllDetails()" ng-click="app.updateDataView()" ng-bind="app.text.viewAct"></button>
+            <div>
+                <button class="btn btn-primary" ng-disabled="!app.hasAllDetails()" ng-click="app.updateDataView()">Proceed</button>
+                <span class="info info-side" ng-show="!app.hasAllDetails()"><i class="fa fa-lg fa-comment"></i><span translate>Please select mechanisms before proceeding</span></span>
+                <span class="info info-side" ng-show="app.hasAllDetails()"><i class="fa fa-lg fa-comment"></i><span translate>Click proceed to view the data and perform actions</span></span>
             </div>
         </div>
 

@@ -1,7 +1,10 @@
 <div class="dataset-view">
     <div class="dataset-view-controls">
+        <div class="dataset-view-info">
+            <span class="info"><i class="fa fa-lg fa-comment"></i><span translate>Please review data before taking action</span></span>
+        </div>
         <div class="action-buttons">
-            <div class="btn-group pad-right">
+            <div class="pad-right">
                 <button ng-click="dataView.submit(dataView.details.actions.approve)"
                         ng-if="dataView.details.actions.approve.length > 0"
                         ng-disabled="dataView.isLocked"
@@ -15,12 +18,12 @@
                 <button ng-click="dataView.unapprove(dataView.details.actions.unapprove)"
                         ng-if="dataView.details.actions.unapprove.length > 0"
                         ng-disabled="dataView.isLocked"
-                        class="btn btn-default"
+                        class="btn btn-primary"
                         ng-bind="dataView.getActionTextFor('unapprove')">Unubmit</button>
                 <button ng-click="dataView.unaccept(dataView.details.actions.unaccept)"
                         ng-if="dataView.details.actions.unaccept.length > 0"
                         ng-disabled="dataView.isLocked"
-                        class="btn btn-default"
+                        class="btn btn-primary"
                         ng-bind="dataView.getActionTextFor('unaccept')">Unaccept</button>
             </div>
             <div ng-show="details.loaded < details.dataSetsFilteredByMechanisms.length" class="dataview-loading">

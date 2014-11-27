@@ -65,14 +65,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (data) {
                 mechanismsService.getMechanisms().then(function (mechanisms) {
                     var currentUserApprovalLevel = data[0][0];
-
                     self.actionItems = 0;
                     _.each(mechanisms, function (mechanism) {
-                        if (mechanism.mayApprove && (mechanism.level === currentUserApprovalLevel.level)) {
+                        if (mechanism.mayApprove && (mechanism.level === parseInt(currentUserApprovalLevel.level, 10) + 1)) {
                             self.actionItems += 1;
                         }
 
-                        if (mechanism.mayAccept && (mechanism.level === (currentUserApprovalLevel.level - 1))) {
+                        if (mechanism.mayAccept && (mechanism.level === (parseInt(currentUserApprovalLevel.level, 10) + 1))) {
                             self.actionItems += 1;
                         }
                     });
@@ -370,7 +369,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             });
             successMessage.push('</ul>');
         }
-        toastr.success(successMessage.join(''), undefined, {timeOut: 2500, extendedTimeOut: 2500});
+        toastr.success(successMessage.join(''), undefined, {timeOut: 4000, extendedTimeOut: 2500});
         if (self.hasTableDetails()) {
             self.showData = false;
             self.getTableData();
@@ -485,7 +484,7 @@ function acceptTableViewController($scope, $controller) {
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-        this.hasActionItems = !!_.filter(this.approvalTableData, { mayAccept: true, level: ($scope.approvalLevel.level - 1) }).length;
+        this.hasActionItems = !!_.filter(this.approvalTableData, { mayAccept: true, level: ($scope.approvalLevel.level + 1) }).length;
     }).bind(this));
 }
 
@@ -497,7 +496,7 @@ function acceptedTableViewController($scope, $controller) {
 
     $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-        this.hasActionItems = !!_.filter(this.approvalTableData, { mayApprove: true, level: $scope.approvalLevel.level }).length;
+        this.hasActionItems = !!_.filter(this.approvalTableData, { mayApprove: true, level: $scope.approvalLevel.level + 1 }).length;
     }).bind(this));
 }
 
