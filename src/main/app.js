@@ -11,19 +11,19 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     this.tabs = {
         accept: {
             access: false,
-            name: 'Accept',
+            name: ['Accept'],
             state: false,
             action: []
         },
         submit: {
             access: false,
-            name: 'Submit',
+            name: ['Submit'],
             state: false,
             action: []
         },
         unsubmit: {
             access: false,
-            name: 'Unsubmit',
+            name: ['Unsubmit'],
             state: false,
             action: []
         },
@@ -185,13 +185,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         if (permissions.contains('ALL')) {
             self.tabs.accept.access = true;
-            self.tabs.accept.name = 'Accept/Return';
+            self.tabs.accept.name = ['Accept', 'Return'];
             self.tabs.accept.action = ['accept', 'unapprove'];
             self.tabs.submit.access = true;
-            self.tabs.submit.name = 'Submit/Unaccept';
+            self.tabs.submit.name = ['Submit', 'Unaccept'];
             self.tabs.submit.action = ['approve', 'unaccept'];
             self.tabs.unsubmit.access = true;
-            self.tabs.unsubmit.name = 'Unsubmit';
+            self.tabs.unsubmit.name = ['Unsubmit'];
             self.tabs.unsubmit.action = ['unapprove'];
             return;
         }
@@ -200,31 +200,31 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
                 //All permissions
                 self.tabs.accept.access = true;
-                self.tabs.accept.name = 'Accept/Return';
+                self.tabs.accept.name = ['Accept', 'Return'];
                 self.tabs.accept.action = ['accept', 'unapprove'];
                 self.tabs.submit.access = true;
-                self.tabs.submit.name = 'Submit/Unaccept';
+                self.tabs.submit.name = ['Submit', 'Unaccept'];
                 self.tabs.submit.action = ['approve', 'unaccept'];
                 self.tabs.unsubmit.access = true;
-                self.tabs.unsubmit.name = 'Unsubmit';
+                self.tabs.unsubmit.name = ['Unsubmit'];
                 self.tabs.unsubmit.action = ['unapprove'];
             } else {
                 //Only accept lower levels
                 self.tabs.accept.access = true;
-                self.tabs.accept.name = 'Accept/Return';
+                self.tabs.accept.name = ['Accept', 'Return'];
                 self.tabs.accept.action = ['accept', 'unapprove'];
                 self.tabs.submit.access = true;
-                self.tabs.submit.name = 'Unaccept';
+                self.tabs.submit.name = ['Unaccept'];
                 self.tabs.submit.action = ['unaccept'];
             }
         } else {
             if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
                 //Only approve
                 self.tabs.submit.access = true;
-                self.tabs.submit.name = 'Submit';
+                self.tabs.submit.name = ['Submit'];
                 self.tabs.submit.action = ['approve'];
                 self.tabs.unsubmit.access = true;
-                self.tabs.unsubmit.name = 'Unsubmit';
+                self.tabs.unsubmit.name = ['Unsubmit'];
                 self.tabs.unsubmit.action = ['unapprove'];
             } else {
                 //Only view
@@ -259,8 +259,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         var actionText = 'View/Act';
         var activeTab =  _.find(this.tabs, {state: true});
 
-        if (activeTab && activeTab.name) {
-            actionText = $translate.instant(activeTab.name);
+        if (activeTab) {
+            if (Array.isArray(activeTab.name)) {
+                actionText = $translate.instant(activeTab.name.join(' or '));
+            }
+            if (angular.isString(activeTab.name)) {
+                actionText = $translate.instant(activeTab.name);
+            }
         }
 
         this.text.viewAct = [$translate.instant(actionText),

@@ -50,35 +50,47 @@
         </div>
 
         <tabset justified="true">
-            <tab ng-show="app.tabs.accept.access"
+            <tab ng-show="app.tabs.accept.access && tableView.hasItems(app, 'accept')"
                  ng-controller="acceptTableViewController as tableView"
                  disabled="!tableView.hasItems(app, 'accept')"
                  active="app.tabs.accept.state"
                  deselect="app.deSelect('accept')">
                 <tab-heading>
-                    <span ng-bind="app.tabs.accept.name | translate"></span>
+                    <span class="action-name" ng-repeat="action in app.tabs.accept.name" ng-class="action">
+                        <span class="action-or" ng-if="$index > 0" translate>or</span>
+                        <span ng-bind="action | translate"></span>
+                        <i class="fa fa-arrow-down" ng-show="action == 'Return'"></i>
+                    </span>
                     <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-show="app.tabs.submit.access"
+            <tab ng-show="app.tabs.submit.access && tableView.hasItems(app, 'submit')"
                  ng-controller="acceptedTableViewController as tableView"
                  disabled="!tableView.hasItems(app, 'submit')"
                  active="app.tabs.submit.state"
                  deselect="app.deSelect('submit')">
                 <tab-heading>
-                    <span ng-bind="app.tabs.submit.name | translate" ></span>
+                    <span class="action-name" ng-repeat="action in app.tabs.submit.name" ng-class="action">
+                        <span class="action-or" ng-if="$index > 0" translate>or</span>
+                        <span ng-bind="action | translate"></span>
+                        <i class="fa fa-arrow-up" ng-show="action == 'Submit'"></i>
+                    </span>
                     <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
             </tab>
-            <tab ng-show="app.tabs.unsubmit.access"
+            <tab ng-show="app.tabs.unsubmit.access && tableView.hasItems(app, 'unsubmit')"
                  ng-controller="submittedTableViewController as tableView"
                  disabled="!tableView.hasItems(app, 'unsubmit')"
                  active="app.tabs.unsubmit.state"
                  deselect="app.deSelect('unsubmit')">
                 <tab-heading>
-                    <span ng-bind="app.tabs.unsubmit.name | translate "></span>
+                    <span class="action-name" ng-repeat="action in app.tabs.unsubmit.name" ng-class="action">
+                        <span class="action-or" ng-if="$index > 0" translate>or</span>
+                        <span ng-bind="action | translate"></span>
+                        <i class="fa fa-arrow-down" ng-show="action == 'Unsubmit'"></i>
+                    </span>
                     <span class="badge available-items-dot" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
@@ -90,6 +102,7 @@
                  deselect="app.deSelect('view')">
                 <tab-heading>
                     <span ng-bind="app.tabs.view.name | translate"></span>
+                    <span class="action-or" ng-if="$index > 0" translate>or</span>
                     <span class="badge available-items-dot" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
                 <div ng-include="'tableview.html'"></div>
