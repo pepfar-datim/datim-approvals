@@ -65,16 +65,26 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (data) {
                 mechanismsService.getMechanisms().then(function (mechanisms) {
                     var currentUserApprovalLevel = data[0][0];
-                    self.actionItems = 0;
+                    var actionMechanisms = [];
+
                     _.each(mechanisms, function (mechanism) {
                         if (mechanism.mayApprove && (mechanism.level === parseInt(currentUserApprovalLevel.level, 10) + 1)) {
-                            self.actionItems += 1;
+                            actionMechanisms.push(mechanism.id);
                         }
 
                         if (mechanism.mayAccept && (mechanism.level === (parseInt(currentUserApprovalLevel.level, 10) + 1))) {
-                            self.actionItems += 1;
+                            actionMechanisms.push(mechanism.id);
                         }
                     });
+
+                    actionMechanisms = actionMechanisms.reduce(function (actionMechanisms, mechanismId) {
+                        if (actionMechanisms.indexOf(mechanismId) === -1) {
+                            actionMechanisms.push(mechanismId);
+                        }
+                        return actionMechanisms;
+                    }, []);
+
+                    self.actionItems = actionMechanisms.length;
 
                     self.setStatus();
 
