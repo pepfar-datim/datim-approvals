@@ -3,6 +3,14 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                        systemSettings, $translate, d2Api,
                        organisationunitsService) {
     var self = this;
+    var vm = this;
+
+    vm.infoBox = {
+        isShowing: false,
+        showBox: function () {
+            this.isShowing = !this.isShowing;
+        }
+    };
 
     this.loading = true;
     this.actionItems = 0;
@@ -54,6 +62,19 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         return false;
     };
 
+    function setInfoBoxLevels(currentUserApprovalLevel, approvalLevels) {
+        //TODO: Move this to translate
+        var levelNames = [
+            'Global',
+            'Country',
+            'Funding Agency',
+            'Implementing Partner'
+        ];
+
+        vm.infoBox.levelAbove = levelNames[currentUserApprovalLevel.level - 2];
+        vm.infoBox.levelBelow = levelNames[currentUserApprovalLevel.level];
+    }
+
     this.getTableData = function () {
         if (self.hasTableDetails()) {
             $translate('Loading...').then(function (translation) {
@@ -66,6 +87,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 mechanismsService.getMechanisms().then(function (mechanisms) {
                     var currentUserApprovalLevel = data[0][0];
                     var actionMechanisms = [];
+
+                    setInfoBoxLevels(currentUserApprovalLevel, data[0]);
 
                     _.each(mechanisms, function (mechanism) {
                         if (mechanism.mayApprove && (mechanism.level === parseInt(currentUserApprovalLevel.level, 10) + 1)) {

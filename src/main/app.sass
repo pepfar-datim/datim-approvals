@@ -386,6 +386,20 @@ tr:nth-child(odd).selected
   &:before, &:after
     content: " "
 
+.help-text-box
+  -webkit-transition: all linear 300ms
+  transition: all linear 300ms
+  opacity: 1
+  line-height: 1.5em
+
+  &.ng-hide
+    line-height: 0
+    opacity: 0
+
+  .action-name
+    color: #276696
+    padding-right: 1em
+
 @media (min-width: 768px)
   .nav-tabs.nav-justified > li
     width: 22%

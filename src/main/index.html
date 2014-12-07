@@ -39,14 +39,21 @@
     <div ng-show="app.loading" class="table-tab-wrap">
         <div class="report-loading-message"><i class="fa fa-circle-o-notch fa-spin"></i>&nbsp;<span translate>Loading mechanisms please wait...</span></div>
     </div>
-
     <div ng-show="!app.showData && !app.loading" class="table-tab-wrap ng-hide">
         <div class="action-buttons">
             <div>
                 <button class="btn btn-primary" ng-disabled="!app.hasAllDetails()" ng-click="app.updateDataView()">Proceed</button>
                 <span class="info info-side" ng-show="!app.hasAllDetails()"><i class="fa fa-lg fa-comment"></i><span translate>Please select mechanisms before proceeding</span></span>
                 <span class="info info-side" ng-show="app.hasAllDetails()"><i class="fa fa-lg fa-comment"></i><span translate>Click proceed to view the data and perform actions</span></span>
+                <button class="info-box-button btn btn-default" ng-click="app.infoBox.showBox()"><i class="fa fa-question-circle"></i></button>
             </div>
+        </div>
+
+        <div class="well help-text-box ng-hide" ng-show="(app.infoBox.levelAbove || app.infoBox.levelBelow) && app.infoBox.isShowing">
+            <div class="row" ng-show="app.infoBox.levelBelow"><span class="col-sm-2 action-name">Accept:</span><span class="col-sm-10">Accepts and locks data from further modification by level {{app.infoBox.levelBelow}}.</span></div>
+            <div class="row" ng-show="app.infoBox.levelBelow"><span class="col-sm-2 action-name">Return submission:</span><span class="col-sm-10">Returns the submission back to level {{app.infoBox.levelBelow}}.</span></div>
+            <div class="row" ng-show="app.infoBox.levelAbove"><span class="col-sm-2 action-name">Submit:</span><span class="col-sm-10">Submits data to level {{app.infoBox.levelAbove}}.</span></div>
+            <div class="row" ng-show="app.infoBox.levelAbove"><span class="col-sm-2 action-name">Recall submission:</span><span class="col-sm-10">Takes the submission back from level {{app.infoBox.levelAbove}}.</span></div>
         </div>
 
         <tabset justified="true">
