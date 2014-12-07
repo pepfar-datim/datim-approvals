@@ -125,7 +125,7 @@ describe('Mechanisms service', function () {
             });
 
             it('should return the correct data', function () {
-                expect(dataResult[0].actions).toBe('Submit, Unaccept')
+                expect(dataResult[0].actions).toBe('Submit')
             });
 
             it('should add the approval level to the mechanism', function () {

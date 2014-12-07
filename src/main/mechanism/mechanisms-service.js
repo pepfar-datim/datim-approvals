@@ -240,11 +240,12 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             }
             if (mechanismStatus.permissions.mayUnapprove === true) {
                 mechanism.mayUnapprove = true;
-                actions.push('Unsubmit');
+                actions.push('Recall submission');
             }
             if (mechanismStatus.permissions.mayUnaccept === true) {
-                mechanism.mayUnaccept = true;
-                actions.push('Unaccept');
+                mechanism.mayUnaccept = false; //Since 0.1.8 Unaccept is not allowed anymore
+                //mechanism.mayUnaccept = true;
+                //actions.push('Unaccept');
             }
             if (mechanismStatus.permissions.mayAccept === true) {
                 mechanism.mayAccept = true;

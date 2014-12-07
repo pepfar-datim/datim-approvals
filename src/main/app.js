@@ -23,7 +23,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         },
         unsubmit: {
             access: false,
-            name: ['Unsubmit'],
+            name: ['Recall submission'],
             state: false,
             action: []
         },
@@ -195,13 +195,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         if (permissions.contains('ALL')) {
             self.tabs.accept.access = true;
-            self.tabs.accept.name = ['Accept', 'Return'];
+            self.tabs.accept.name = ['Accept'];
             self.tabs.accept.action = ['accept', 'unapprove'];
             self.tabs.submit.access = true;
-            self.tabs.submit.name = ['Submit', 'Unaccept'];
-            self.tabs.submit.action = ['approve', 'unaccept'];
+            self.tabs.submit.name = ['Submit', 'Return submission'];
+            self.tabs.submit.action = ['approve'];
             self.tabs.unsubmit.access = true;
-            self.tabs.unsubmit.name = ['Unsubmit'];
+            self.tabs.unsubmit.name = ['Recall submission'];
             self.tabs.unsubmit.action = ['unapprove'];
             return;
         }
@@ -210,20 +210,20 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
                 //All permissions
                 self.tabs.accept.access = true;
-                self.tabs.accept.name = ['Accept', 'Return'];
+                self.tabs.accept.name = ['Accept'];
                 self.tabs.accept.action = ['accept', 'unapprove'];
                 self.tabs.submit.access = true;
-                self.tabs.submit.name = ['Submit', 'Unaccept'];
-                self.tabs.submit.action = ['approve', 'unaccept'];
+                self.tabs.submit.name = ['Submit', 'Return submission'];
+                self.tabs.submit.action = ['approve'];
                 self.tabs.unsubmit.access = true;
-                self.tabs.unsubmit.name = ['Unsubmit'];
+                self.tabs.unsubmit.name = ['Recall submission'];
                 self.tabs.unsubmit.action = ['unapprove'];
             } else {
                 //Only accept lower levels
                 self.tabs.accept.access = true;
-                self.tabs.accept.name = ['Accept', 'Return'];
+                self.tabs.accept.name = ['Accept', 'Return submission'];
                 self.tabs.accept.action = ['accept', 'unapprove'];
-                self.tabs.submit.access = true;
+                self.tabs.submit.access = false;
                 self.tabs.submit.name = ['Unaccept'];
                 self.tabs.submit.action = ['unaccept'];
             }
@@ -234,7 +234,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 self.tabs.submit.name = ['Submit'];
                 self.tabs.submit.action = ['approve'];
                 self.tabs.unsubmit.access = true;
-                self.tabs.unsubmit.name = ['Unsubmit'];
+                self.tabs.unsubmit.name = ['Recall submission'];
                 self.tabs.unsubmit.action = ['unapprove'];
             } else {
                 //Only view
@@ -312,13 +312,14 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         organisationunitsService.currentOrganisationUnit.level = $scope.approvalLevel.level;
     });
 
+    //TODO: This might be confusing as this is changing the tabs in a different place.
     $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (result) {
         if ($scope.approvalLevel.level === result[1].length) {
             self.tabs.accept.access = false;
             self.tabs.accept.state = false;
             self.tabs.submit.access = true;
             self.tabs.submit.state = true;
-            self.tabs.submit.name = 'Submit';
+            self.tabs.submit.name = ['Submit'];
         }
     });
 

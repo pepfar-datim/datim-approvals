@@ -387,6 +387,14 @@ tr:nth-child(odd).selected
     content: " "
 
 @media (min-width: 768px)
+  .nav-tabs.nav-justified > li
+    width: 22%
+    display: inline-block
+
   .nav-tabs.nav-justified > li > a
     border: 1px solid #DDD
     border-radius: 4px 4px 0 0
+    font-size: 0.9em
+
+  .nav-tabs.nav-justified > li:nth-child(2)
+    width: 34%

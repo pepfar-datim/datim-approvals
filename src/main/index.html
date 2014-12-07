@@ -59,7 +59,6 @@
                     <span class="action-name" ng-repeat="action in app.tabs.accept.name" ng-class="action">
                         <span class="action-or" ng-if="$index > 0" translate>or</span>
                         <span ng-bind="action | translate"></span>
-                        <i class="fa fa-arrow-down" ng-show="action == 'Return'"></i>
                     </span>
                     <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>
@@ -74,6 +73,7 @@
                     <span class="action-name" ng-repeat="action in app.tabs.submit.name" ng-class="action">
                         <span class="action-or" ng-if="$index > 0" translate>or</span>
                         <span ng-bind="action | translate"></span>
+                        <i class="fa fa-arrow-down" ng-show="action == 'Return submission'"></i>
                         <i class="fa fa-arrow-up" ng-show="action == 'Submit'"></i>
                     </span>
                     <span class="badge available-items-dot" ng-class="{'available-actions-dot': tableView.hasActionItems}" ng-bind="tableView.approvalTableData.length"></span>
@@ -89,7 +89,7 @@
                     <span class="action-name" ng-repeat="action in app.tabs.unsubmit.name" ng-class="action">
                         <span class="action-or" ng-if="$index > 0" translate>or</span>
                         <span ng-bind="action | translate"></span>
-                        <i class="fa fa-arrow-down" ng-show="action == 'Unsubmit'"></i>
+                        <i class="fa fa-arrow-down" ng-show="action == 'Recall submission'"></i>
                     </span>
                     <span class="badge available-items-dot" ng-bind="tableView.approvalTableData.length"></span>
                 </tab-heading>

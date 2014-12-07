@@ -13,10 +13,18 @@ function dataViewController($scope, approvalsService, $translate) {
     this.isLocked = false;
 
     this.getActionTextFor = function(type) {
-        var translations;
-
         function ucFirst(value) {
             return value.replace(/^./, function (value) { return value.toUpperCase(); });
+        }
+
+        if (type === 'unapprove') {
+            var isReturn = (this.details.currentSelection || []).reduce(function (isReturn, mechanism) {
+                return (isReturn && mechanism.mayApprove && mechanism.mayUnapprove);
+            }, true);
+
+            if (isReturn) {
+                return $translate.instant('Return submission for {{count}} mechanism(s)', { count: this.details.actions[type].length });
+            }
         }
 
         if (this.details.actions && this.details.actions[type]) {
