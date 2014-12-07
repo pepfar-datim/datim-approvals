@@ -50,10 +50,10 @@
         </div>
 
         <div class="well help-text-box ng-hide" ng-show="(app.infoBox.levelAbove || app.infoBox.levelBelow) && app.infoBox.isShowing">
-            <div class="row" ng-show="app.infoBox.levelBelow"><span class="col-sm-2 action-name">Accept:</span><span class="col-sm-10">Accepts and locks data from further modification by level {{app.infoBox.levelBelow}}.</span></div>
-            <div class="row" ng-show="app.infoBox.levelBelow"><span class="col-sm-2 action-name">Return submission:</span><span class="col-sm-10">Returns the submission back to level {{app.infoBox.levelBelow}}.</span></div>
-            <div class="row" ng-show="app.infoBox.levelAbove"><span class="col-sm-2 action-name">Submit:</span><span class="col-sm-10">Submits data to level {{app.infoBox.levelAbove}}.</span></div>
-            <div class="row" ng-show="app.infoBox.levelAbove"><span class="col-sm-2 action-name">Recall submission:</span><span class="col-sm-10">Takes the submission back from level {{app.infoBox.levelAbove}}.</span></div>
+            <div class="row" ng-show="app.infoBox.levelBelow"><span class="col-sm-2 action-name">Accept:</span><span class="col-sm-10">Accepts and locks data from further modification by {{app.infoBox.levelBelow}} level.</span></div>
+            <div class="row" ng-show="app.infoBox.levelBelow"><span class="col-sm-2 action-name">Return submission:</span><span class="col-sm-10">Returns the submission back to {{app.infoBox.levelBelow}} level.</span></div>
+            <div class="row" ng-show="app.infoBox.levelAbove"><span class="col-sm-2 action-name">Submit:</span><span class="col-sm-10">Submits data to {{app.infoBox.levelAbove}} level.</span></div>
+            <div class="row" ng-show="app.infoBox.levelAbove"><span class="col-sm-2 action-name">Recall submission:</span><span class="col-sm-10">Takes the submission back from {{app.infoBox.levelAbove}} level.</span></div>
         </div>
 
         <tabset justified="true">
