@@ -219,7 +219,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         if (permissions.contains('ALL')) {
             self.tabs.accept.access = true;
             self.tabs.accept.name = ['Accept'];
-            self.tabs.accept.action = ['accept', 'unapprove'];
+            self.tabs.accept.action = ['accept'];
             self.tabs.submit.access = true;
             self.tabs.submit.name = ['Submit', 'Return submission'];
             self.tabs.submit.action = ['approve'];
@@ -234,7 +234,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 //All permissions
                 self.tabs.accept.access = true;
                 self.tabs.accept.name = ['Accept'];
-                self.tabs.accept.action = ['accept', 'unapprove'];
+                self.tabs.accept.action = ['accept'];
                 self.tabs.submit.access = true;
                 self.tabs.submit.name = ['Submit', 'Return submission'];
                 self.tabs.submit.action = ['approve'];
@@ -245,7 +245,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 //Only accept lower levels
                 self.tabs.accept.access = true;
                 self.tabs.accept.name = ['Accept', 'Return submission'];
-                self.tabs.accept.action = ['accept', 'unapprove'];
+                self.tabs.accept.action = ['accept'];
                 self.tabs.submit.access = false;
                 self.tabs.submit.name = ['Unaccept'];
                 self.tabs.submit.action = ['unaccept'];
@@ -512,7 +512,7 @@ function acceptTableViewController($scope, $controller) {
     $.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     var filterBelowUserLevel = (function (item) {
-        if ($scope.approvalLevel && item.level > $scope.approvalLevel.level && item.mayUnapprove === true) {
+        if ($scope.approvalLevel && item.level > $scope.approvalLevel.level && item.mayAccept === true) {
             return true;
         }
         return false;
