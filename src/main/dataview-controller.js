@@ -19,7 +19,7 @@ function dataViewController($scope, approvalsService, $translate) {
 
         if (type === 'unapprove') {
             var isReturn = (this.details.currentSelection || []).reduce(function (isReturn, mechanism) {
-                return (isReturn && mechanism.mayApprove && mechanism.mayUnapprove);
+                return (isReturn && /Return submission/.test(mechanism.actions));
             }, true);
 
             if (isReturn) {
@@ -30,7 +30,7 @@ function dataViewController($scope, approvalsService, $translate) {
         if (this.details.actions && this.details.actions[type]) {
             return $translate.instant(ucFirst(type) + ' {{count}} mechanism(s)', { count: this.details.actions[type].length });
         }
-    }
+    };
 
     this.getPeriod = function () {
         return this.details.period;
