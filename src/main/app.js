@@ -319,8 +319,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         $scope.details.orgUnit = orgUnit.id;
         self.currentUser.orgUnit = orgUnit;
 
-        window.console.log(orgUnit);
-
         organisationunitsService.currentOrganisationUnit = orgUnit;
 
         self.updateTitle();
