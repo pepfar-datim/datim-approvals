@@ -134,14 +134,15 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         if (this.status) {
             return this.status;
         }
-    }
+    };
 
     this.hasAllDetails = function () {
-        if ($scope.details.period
-            && ($scope.details.currentSelection.length > 0
-            && $scope.details.dataSets
-            && $scope.details.orgUnit
-            && this.getActiveTab())) {
+        if ($scope.details.period  &&
+            ($scope.details.currentSelection.length > 0 &&
+            $scope.details.dataSets &&
+            $scope.details.orgUnit &&
+            this.getActiveTab())) {
+
             return true;
         }
         return false;
@@ -259,8 +260,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 self.tabs.unsubmit.access = true;
                 self.tabs.unsubmit.name = ['Recall submission'];
                 self.tabs.unsubmit.action = ['unapprove'];
-            } else {
-                //Only view
             }
         }
     });
@@ -286,7 +285,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         title.push($translate.instant('Data approval'));
 
         self.title = title.join(' - ');
-    }
+    };
 
     this.updateViewButton = function () {
         var actionText = 'View/Act';
@@ -304,7 +303,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         this.text.viewAct = [$translate.instant(actionText),
             $scope.details.currentSelection.length,
             $translate.instant('mechanism(s)')].join(' ');
-    }
+    };
 
     //Get the users org unit off the user
     currentUser.then(function () {
@@ -319,6 +318,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         $scope.details.orgUnit = orgUnit.id;
         self.currentUser.orgUnit = orgUnit;
+
+        window.console.log(orgUnit);
 
         organisationunitsService.currentOrganisationUnit = orgUnit;
 
@@ -373,12 +374,15 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         mechanismsService.categories = dataSets.getCategoryIds();
         mechanismsService.dataSetIds = dataSets.getIds();
         mechanismsService.dataSets = dataSets.get();
-        mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+
+        //TODO: Perhaps we need to resolve this promise so the orgUnit is always accessible?
+        if (angular.isString(organisationunitsService.currentOrganisationUnit.id)) {
+            mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        }
 
         $scope.details.currentSelection = [];
 
-        //TODO: Since it's pepfar we might not have to request the mechanism again when the
-        //category changes, as they only use one category
+        //TODO: Since it's pepfar we might not have to request the mechanism again when the category changes, as they only use one category
         if (self.hasTableDetails()) {
             self.showData = false;
             self.getTableData();

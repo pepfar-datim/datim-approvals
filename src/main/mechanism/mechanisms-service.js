@@ -142,7 +142,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
                 orgUnitCache[categoryOption.organisationUnits[0].id] = categoryOption.organisationUnits[0].name;
             }
 
-            return categoryOption.organisationUnits[0] ? categoryOption.organisationUnits[0].name : ''
+            return categoryOption.organisationUnits[0] ? categoryOption.organisationUnits[0].name : '';
         }
 
         function getPartnerFromCategoryOption(categoryOptionGroups, parterCOGSId) {
@@ -215,24 +215,26 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             self.filterMechanisms(data[2], parsedData, data[1]);
 
             return mechanisms;
-        }, function (err) {
+        }, function () {
             $log.error('Mechanism Service: Unable to parse the mechanisms');
         });
     };
 
     this.filterMechanisms = function (mechanismsStatuses, parsedData, approvalLevels) {
         mechanisms = [];
+
+        //TODO: Refactor this function
         _.each(mechanismsStatuses, function (mechanismStatus) {
             var actions = [];
             var status = [];
             var approvalLevel;
             var mechanism =  angular.copy(_.find(parsedData, { catComboId: mechanismStatus.id }));
 
+            if (!mechanism) { return; }
+
             if (mechanismStatus.level && mechanismStatus.level.id) {
                 approvalLevel = _.find(approvalLevels, { id: mechanismStatus.level.id });
             }
-
-            if (!mechanism) { return; }
 
             if (mechanismStatus.permissions.mayApprove === true) {
                 mechanism.mayApprove = true;
