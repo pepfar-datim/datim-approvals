@@ -18,11 +18,15 @@ function organisationunitSelectorDirective(organisationunitsService) {
 
                 if (newVal === oldVal) { return; }
 
-                if (organisationunitsService.currentOrganisationUnit && organisationunitsService.currentOrganisationUnit.level) {
+                if (organisationunitsService.currentOrganisationUnit && organisationunitsService.currentOrganisationUnit.level &&
+                    organisationunitsService.currentOrganisationUnit.id) {
                     levelToGet = organisationunitsService.currentOrganisationUnit.level + 1;
 
                     //TODO: PEPFAR Hack to only display this option for global users
-                    if (organisationunitsService.currentOrganisationUnit.level != 1) { return; }
+                    if (organisationunitsService.currentOrganisationUnit.level !== 1) { return; }
+
+                    window.console.log('Getting org units for:');
+                    window.console.log(organisationunitsService.currentOrganisationUnit);
 
                     organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet)
                         .then(function (dataList) {
@@ -39,7 +43,7 @@ function organisationunitSelectorDirective(organisationunitsService) {
 
             scope.changeOrganisationUnit = function ($item) {
                 organisationunitsService.currentOrganisationUnit = $item;
-            }
+            };
         }
     }
 }

@@ -305,15 +305,24 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             $translate.instant('mechanism(s)')].join(' ');
     };
 
+    d2Api.addEndPoint('me/dataApprovalLevels', true);
+    var userApprovalLevelPromise = d2Api
+        .getEndPoint('me/dataApprovalLevels')
+        .get();
+
     //Get the users org unit off the user
     currentUser.then(function () {
         var orgUnit;
 
-        if (currentUser.valueFor('dataViewOrganisationUnits') &&
-            currentUser.valueFor('dataViewOrganisationUnits')[0]) {
+        if (Array.isArray(currentUser.valueFor('dataViewOrganisationUnits')) &&
+            currentUser.valueFor('dataViewOrganisationUnits').length >= 1) {
             orgUnit = currentUser.valueFor('dataViewOrganisationUnits')[0];
         } else {
-            orgUnit = currentUser.valueFor('organisationUnits')[0];
+            if (currentUser.valueFor('organisationUnits').length >= 1) {
+                orgUnit = currentUser.valueFor('organisationUnits')[0];
+            } else {
+                window.console && window.console.error && window.console.error('No orgunit found for the current user');
+            }
         }
 
         $scope.details.orgUnit = orgUnit.id;
@@ -322,16 +331,14 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         organisationunitsService.currentOrganisationUnit = orgUnit;
 
         self.updateTitle();
-    });
 
-    d2Api.addEndPoint('me/dataApprovalLevels', true);
-    var userApprovalLevelPromise = d2Api.getEndPoint('me/dataApprovalLevels').get();
-    userApprovalLevelPromise.then(function (approvalLevel) {
-        $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel[0];
-        if ($scope.approvalLevel.categoryOptionGroupSet) {
-            self.updateTitle();
-        }
-        organisationunitsService.currentOrganisationUnit.level = $scope.approvalLevel.level;
+        userApprovalLevelPromise.then(function (approvalLevel) {
+            $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel[0];
+            if ($scope.approvalLevel.categoryOptionGroupSet) {
+                self.updateTitle();
+            }
+            organisationunitsService.currentOrganisationUnit.level = $scope.approvalLevel.level;
+        });
     });
 
     //TODO: This might be confusing as this is changing the tabs in a different place.
