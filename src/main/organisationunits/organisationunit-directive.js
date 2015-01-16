@@ -25,9 +25,6 @@ function organisationunitSelectorDirective(organisationunitsService) {
                     //TODO: PEPFAR Hack to only display this option for global users
                     if (organisationunitsService.currentOrganisationUnit.level !== 1) { return; }
 
-                    window.console.log('Getting org units for:');
-                    window.console.log(organisationunitsService.currentOrganisationUnit);
-
                     organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet)
                         .then(function (dataList) {
                             var thisOrgUnit = {
