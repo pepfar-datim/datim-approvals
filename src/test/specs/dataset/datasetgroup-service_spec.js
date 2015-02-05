@@ -8,17 +8,30 @@ describe('Datasetgroup service', function () {
     var periodService = {
         filterPeriodTypes: jasmine.createSpy()
     };
+    var errorHandlerMock;
+    
+    var systemSettingRequest;
 
     beforeEach(module('d2-rest'));
-    beforeEach(module('PEPFAR.approvals', {
-        periodService: periodService
+    beforeEach(module('PEPFAR.approvals', function ($provide) {
+        $provide.factory('periodService', function () {
+            return periodService;
+        });
+        $provide.factory('errorHandler', function () {
+           return {
+               error: jasmine.createSpy('errorHandler.error'),
+               warning: jasmine.createSpy('errorHandler.warning')
+           };
+        });
     }));
-    beforeEach(inject(function (_$httpBackend_, dataSetGroupService) {
+    beforeEach(inject(function (_$httpBackend_, dataSetGroupService, errorHandler) {
+        errorHandlerMock = errorHandler;
+
         $httpBackend = _$httpBackend_;
         service = dataSetGroupService;
 
-        $httpBackend.whenGET('/dhis/api/systemSettings/keyApprovalDataSetGroups')
-            .respond(200, fixtures.get('dataSetGroups'));
+        systemSettingRequest = $httpBackend.whenGET('/dhis/api/systemSettings/keyApprovalDataSetGroups');
+        systemSettingRequest.respond(200, fixtures.get('dataSetGroups'));
         $httpBackend.whenGET(merUrl)
             .respond(200, { dataSets: [
                 { name : 'DSD: DS 1', shortName : 'DSD: DS 1', id : 'iP8irTNtByO' }
@@ -158,5 +171,21 @@ describe('Datasetgroup service', function () {
         $httpBackend.flush();
 
         expect(periodService.filterPeriodTypes).toHaveBeenCalled();
+    });
+
+    it('should call the errorHandler when the dataset groups are not set up correctly', function () {
+        systemSettingRequest.respond(200, '');
+
+        $httpBackend.flush();
+
+        expect(errorHandlerMock.error).toHaveBeenCalledWith('Dataset groups not defined in systemsettings (key: keyApprovalDataSetGroups), see the deployment manual on how to configure the app.', true);
+    });
+
+    it('should warn the user when no dataset groups can not be found but the setting is defined as an array', function () {
+        systemSettingRequest.respond(200, '[]');
+
+        $httpBackend.flush();
+
+        expect(errorHandlerMock.warning).toHaveBeenCalledWith('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
     });
 });

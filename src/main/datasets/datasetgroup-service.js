@@ -1,4 +1,4 @@
-function dataSetGroupService(d2Api, $q, periodService) {
+function dataSetGroupService(d2Api, $q, periodService, errorHandler) {
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
@@ -56,7 +56,7 @@ function dataSetGroupService(d2Api, $q, periodService) {
         });
 
         $q.all(dataSetGroupsPromises).then(function (datasetGroups) {
-            var initialDataSets;
+            var initialDataSets = dataSetGroupFactory()([]);
 
             _.forEach(datasetGroups, function (filteredGroup) {
                 if (filteredGroup.dataSets.length > 0) {
@@ -69,8 +69,12 @@ function dataSetGroupService(d2Api, $q, periodService) {
             });
 
             //TODO: this code is a bit confusing?
-            initialDataSets = dataSetGroupFactory()(dataSetGroups[dataSetGroupNames[0]].dataSets);
-            periodService.filterPeriodTypes(initialDataSets.getPeriodTypes());
+            if (dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]]) {
+                initialDataSets = dataSetGroupFactory()(dataSetGroups[dataSetGroupNames[0]].dataSets);
+                periodService.filterPeriodTypes(initialDataSets.getPeriodTypes());
+            } else {
+                errorHandler.warning('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
+            }
         });
     };
 
@@ -92,9 +96,16 @@ function dataSetGroupService(d2Api, $q, periodService) {
     d2Api.addEndPoint('categoryCombos');
 
     // Load the dataSetGroups that are available from system settings
-    d2Api.systemSettings.get('keyApprovalDataSetGroups').then(function (resultDataSetGroups) {
-        service.filterDataSetsForUser(resultDataSetGroups);
-    });
+    d2Api.systemSettings.get('keyApprovalDataSetGroups')
+        .then(function (resultDataSetGroups) {
+            if (!Array.isArray(resultDataSetGroups)) {
+                return $q.reject('Dataset groups not defined in systemsettings (key: keyApprovalDataSetGroups), see the deployment manual on how to configure the app.');
+            }
+            service.filterDataSetsForUser(resultDataSetGroups);
+        })
+        .catch(function (e) {
+            errorHandler.error(e, true);
+        });
 }
 
 function dataSetGroupFactory() {

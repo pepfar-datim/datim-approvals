@@ -425,6 +425,10 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
     });
 
+    $scope.$on('APP.errorhandler.error', function () {
+        self.loading = false;
+    });
+
     $scope.$on('APP.submit.error', function (event, message) {
         toastr.error(message);
         if (self.hasTableDetails()) {

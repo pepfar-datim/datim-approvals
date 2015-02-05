@@ -96,7 +96,7 @@ gulp.task('js', /*['lint', 'jscs'],*/ function () {
             stats: true
         }))
         .pipe(concat('app.js'))
-        .pipe(uglify())
+        //.pipe(uglify())
         .pipe(gulp.dest(
             [build_directory, 'js'].join('/')
         ));
@@ -266,12 +266,12 @@ gulp.task('vendor', function (cb) {
     return stuff;
 });
 
-gulp.task('build', function () {
-    runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'i18n', 'images', 'manifest');
+gulp.task('build', function (cb) {
+    runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'i18n', 'images', 'manifest', cb);
 });
 
 gulp.task('build-prod', function () {
-    runSequence('clean', 'js', 'sass', 'html', 'vendor', 'i18n', 'images', 'manifest', 'package');
+    runSequence('build', 'package');
 });
 
 gulp.task('deploy', function () {
