@@ -10,13 +10,7 @@ if [[ $1 == 'true' ]] ; then
 fi
 
 if [[ $1 == 'dev' ]] ; then
-  #Remove d2js
-  rm -r src/vendor/d2js/
-  rm -r build/vendor/d2js/
-
-  bower install
-
-  cp -r ../apps/d2/dist/* src/vendor/d2js/dist
+  cp -r ../apps/d2js/dist/* src/vendor/d2js/dist
 fi
 
 gulp build

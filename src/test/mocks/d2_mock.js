@@ -4,4 +4,4 @@ angular.module('d2', []);
 
 angular.module('d2-translate').service('$translate', function () {});
 
-angular.module('d2Menu', []);
+angular.module('d2HeaderBar', []);

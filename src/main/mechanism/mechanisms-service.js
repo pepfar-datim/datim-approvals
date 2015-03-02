@@ -322,9 +322,12 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         return d2Api.getEndPoint('dataApprovals/categoryOptionCombos').getList({
             pe: period,
             ds: dataSetIds,
-            ou: organisationUnit
+            ou: organisationUnit === 'global' ? undefined : organisationUnit //Don't pass the org unit id when the org unit is global
         }).then(function (data) {
             return data.getDataOnly();
+        }).catch(function (e) {
+            $log.error('Failed to get statuses');
+            $q.reject(e);
         });
     };
 

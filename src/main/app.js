@@ -382,7 +382,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         //TODO: Perhaps we need to resolve this promise so the orgUnit is always accessible?
         if (angular.isString(organisationunitsService.currentOrganisationUnit.id)) {
-            mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+
+            if (organisationunitsService.currentOrganisationUnit.name === 'Global') {
+                mechanismsService.organisationUnit = 'global';
+            } else {
+                mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+            }
         }
 
         $scope.details.currentSelection = [];
@@ -476,7 +481,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     }, function (newVal, oldVal) {
         if (newVal === oldVal) { return; }
 
-        mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        if (organisationunitsService.currentOrganisationUnit.name === 'Global') {
+            mechanismsService.organisationUnit = 'global';
+        } else {
+            mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        }
+
         $scope.details.orgUnit = mechanismsService.organisationUnit;
 
         if (self.hasTableDetails()) {
