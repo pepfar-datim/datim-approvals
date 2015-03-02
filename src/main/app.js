@@ -1,7 +1,7 @@
 function appController(periodService, $scope, currentUser, mechanismsService,
                        approvalLevelsService, $q, toastr, AppManifest,
                        systemSettings, $translate, d2Api,
-                       organisationunitsService) {
+                       organisationunitsService, $log) {
     var self = this;
     var vm = this;
 
@@ -399,10 +399,20 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     function setOrganisationUnit() {
         if (organisationunitsService.currentOrganisationUnit.name === 'Global') {
-            mechanismsService.organisationUnit = 'global';
+            if (!$scope.globalUser) {
+                $scope.globalUser = {
+                    isGlobalUser: true,
+                    globalOUId: organisationunitsService.currentOrganisationUnit.id
+                };
+                $log.info('User is concidered a global user');
+                $log.info($scope.globalUser);
+            }
+            mechanismsService.isGlobal = true;
         } else {
-            mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+            mechanismsService.isGlobal = false;
         }
+
+        mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
     }
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {

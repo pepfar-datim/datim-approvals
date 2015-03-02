@@ -186,12 +186,6 @@ describe('Mechanisms service', function () {
 
             expect($log.error.logs).toContain(['Mechanism Service: OrganisationUnit should be a string']);
         });
-
-        it('should accept an empty orgunit', function () {
-            mechanismsService.organisationUnit = 'global';
-
-            expect($log.error.logs).not.toContain(['Mechanism Service: OrganisationUnit should be a string']);
-        });
     });
 
     describe('getStatuses', function () {
@@ -227,7 +221,7 @@ describe('Mechanisms service', function () {
             $httpBackend.expectGET('/dhis/api/dataApprovals/categoryOptionCombos?ds=a&ds=b&pe=2014Oct')
                 .respond(200, fixtures.get('cocApprovalStatus'));
 
-            mechanismsService.organisationUnit = 'global';
+            mechanismsService.isGlobal = true;
 
             mechanismsService.getStatuses();
             $httpBackend.flush();

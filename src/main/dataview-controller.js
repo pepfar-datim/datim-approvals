@@ -1,4 +1,4 @@
-function dataViewController($scope, approvalsService, $translate) {
+function dataViewController($scope, approvalsService, $translate, $log) {
     var self = this;
 
     this.filteredDataSets = [];
@@ -111,6 +111,13 @@ function dataViewController($scope, approvalsService, $translate) {
         return approvalParams;
     }
 
+    function replaceOuWithGlobalOu(approvalParams) {
+        if ($scope.globalUser && $scope.globalUser.isGlobalUser && $scope.globalUser.globalOUId) {
+            $log.info('Replace the ou with the global ou (ou ou: ' + approvalParams.ou + ', new ou: ' + $scope.globalUser.globalOUId);
+            approvalParams.ou = $scope.globalUser.globalOUId;
+        }
+    }
+
     this.submit = function (ids) {
         var params = this.getParamsForMechanism();
         var mechanisms = this.getMechanismsByIds(ids);
@@ -119,7 +126,9 @@ function dataViewController($scope, approvalsService, $translate) {
         this.isLocked = true;
 
         if (this.isParamsComplete()) {
-            approvalParams= prepareApprovalServiceParams(params, mechanisms);
+            approvalParams = prepareApprovalServiceParams(params, mechanisms);
+
+            replaceOuWithGlobalOu(approvalParams);
 
             if (approvalParams.approvals.length > 0) {
                 approvalsService.approve(approvalParams).then(getActionCallBackFor('submit', mechanisms), actionErrorCallBack);
@@ -152,6 +161,8 @@ function dataViewController($scope, approvalsService, $translate) {
 
         if (this.isParamsComplete()) {
             approvalParams= prepareApprovalServiceParams(params, mechanisms);
+
+            replaceOuWithGlobalOu(approvalParams);
 
             if (approvalParams.approvals.length > 0) {
                 approvalsService.unapprove(approvalParams).then(getActionCallBackFor('unsubmit', mechanisms), actionErrorCallBack);

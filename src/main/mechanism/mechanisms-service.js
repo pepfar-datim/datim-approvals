@@ -20,6 +20,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     var orgUnitCache = {};
     var categoryCache = {};
 
+    this.isGlobal = false;
+
     Object.defineProperty(this, 'period', {
         set: function (value) {
             if (!angular.isString(value)) {
@@ -322,7 +324,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         return d2Api.getEndPoint('dataApprovals/categoryOptionCombos').getList({
             pe: period,
             ds: dataSetIds,
-            ou: organisationUnit === 'global' ? undefined : organisationUnit //Don't pass the org unit id when the org unit is global
+            ou: self.isGlobal ? undefined : organisationUnit //Don't pass the org unit id when the org unit is global
         }).then(function (data) {
             return data.getDataOnly();
         }).catch(function (e) {
