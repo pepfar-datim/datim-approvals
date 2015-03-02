@@ -382,12 +382,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         //TODO: Perhaps we need to resolve this promise so the orgUnit is always accessible?
         if (angular.isString(organisationunitsService.currentOrganisationUnit.id)) {
-
-            if (organisationunitsService.currentOrganisationUnit.name === 'Global') {
-                mechanismsService.organisationUnit = 'global';
-            } else {
-                mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
-            }
+            setOrganisationUnit();
         }
 
         $scope.details.currentSelection = [];
@@ -401,6 +396,14 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         self.updateViewButton();
     });
+
+    function setOrganisationUnit() {
+        if (organisationunitsService.currentOrganisationUnit.name === 'Global') {
+            mechanismsService.organisationUnit = 'global';
+        } else {
+            mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        }
+    }
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
         $scope.details.currentSelection = selection;
@@ -481,11 +484,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     }, function (newVal, oldVal) {
         if (newVal === oldVal) { return; }
 
-        if (organisationunitsService.currentOrganisationUnit.name === 'Global') {
-            mechanismsService.organisationUnit = 'global';
-        } else {
-            mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
-        }
+        setOrganisationUnit();
 
         $scope.details.orgUnit = mechanismsService.organisationUnit;
 
