@@ -43,7 +43,7 @@ function approvalsService($q, d2Api) {
             return d2Api.getEndPoint('dataApprovals/unapprovals').post(approvalData);
         }
         return $q.reject({statusText: approvalStatus});
-    }
+    };
 
     this.accept = function (approvalData) {
         var approvalStatus = checkApprovalData(approvalData);
@@ -52,7 +52,7 @@ function approvalsService($q, d2Api) {
             return d2Api.getEndPoint('dataAcceptances/acceptances').post(approvalData);
         }
         return $q.reject({statusText: approvalStatus});
-    }
+    };
 
     this.unaccept = function (approvalData) {
         var approvalStatus = checkApprovalData(approvalData);
@@ -61,7 +61,7 @@ function approvalsService($q, d2Api) {
             return d2Api.getEndPoint('dataAcceptances/unacceptances').post(approvalData);
         }
         return $q.reject({statusText: approvalStatus});
-    }
+    };
 
     d2Api.addEndPoint('dataApprovals/approvals');
     d2Api.addEndPoint('dataApprovals/unapprovals');
