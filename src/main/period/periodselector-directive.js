@@ -27,7 +27,7 @@ function periodSelectorDirective(periodService) {
                 scope.period.periodsRecentFirst = periodService.getPastPeriodsRecentFirst();
 
                 //Always select the first period when a new type is picked
-                scope.period.selectedPeriod = scope.period.periodsRecentFirst[0];
+                scope.period.selectedPeriod = scope.period.periodsRecentFirst[1];
                 scope.changePeriod(scope.period.selectedPeriod);
             };
 

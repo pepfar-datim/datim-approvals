@@ -87,7 +87,7 @@ function periodService(d2Api) {
     this.prepareCalendar = function () {
         var calendar = $.calendars.instance(service.getCalendarType());
         dhis2.period.generator = new dhis2.period.PeriodGenerator(calendar, this.getDateFormat());
-    }
+    };
 
     this.getDateFormat = function () {
         return dateFormat;
@@ -114,9 +114,13 @@ function periodService(d2Api) {
         if (_(periodTypes).contains(periodType)) {
             currentPeriodType = periodType;
             periods = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
-            generatedPeriods =  dhis2.period.generator.filterFuturePeriodsExceptCurrent(periods);
+            generatedPeriods =  removeFuturePeriodsExceptClosestOne(periods);
         }
     };
+
+    function removeFuturePeriodsExceptClosestOne(periods) {
+        return periods.slice(4);
+    }
 
     this.loadCalendarScript = function (calendarType) {
         jQuery.getScript('../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarType + '.min.js',
