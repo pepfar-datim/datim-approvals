@@ -119,7 +119,7 @@ function periodService(d2Api) {
     };
 
     function removeFuturePeriodsExceptClosestOne(periods) {
-        return periods.slice(4);
+        return periods.slice(5);
     }
 
     this.loadCalendarScript = function (calendarType) {
