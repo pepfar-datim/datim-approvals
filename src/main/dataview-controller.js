@@ -4,9 +4,9 @@ function dataViewController($scope, approvalsService, $translate, $log) {
     this.filteredDataSets = [];
     this.details = $scope.details;
     this.getMechanismsByIds = function (ids) {
-        var ids = _(ids);
+        var idsLodash = _(ids);
         return _.filter(this.details.currentSelection, function (mechanism) {
-            return ids.contains(mechanism.id);
+            return idsLodash.contains(mechanism.id);
         });
     };
 
@@ -78,7 +78,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
         return function () {
             self.isLocked = false;
             $scope.$emit('APP.submit.success', { action: actionName, mechanisms: mechanisms } );
-        }
+        };
     }
 
     function actionErrorCallBack(message) {

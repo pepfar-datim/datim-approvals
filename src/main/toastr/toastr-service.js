@@ -3,7 +3,7 @@ angular.module('PEPFAR.approvals').factory('toastr', function () {
 
     if (window.toastr) {
         toastrOptions = window.toastr.options;
-        toastrOptions.positionClass = "toast-top-right";
+        toastrOptions.positionClass = 'toast-top-right';
         toastrOptions.timeOut = 0;
         toastrOptions.extendedTimeOut = 0;
         toastrOptions.closeButton = true;

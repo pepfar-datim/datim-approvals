@@ -1,3 +1,4 @@
+/* global jQuery */
 function datasetViewDirective(AppManifest, $translate) {
     var dataSetReportWrapSelector = '.dataset-report-wrap';
 
@@ -180,7 +181,7 @@ function datasetViewDirective(AppManifest, $translate) {
                         }
                     }
                 } catch (e) {
-                    console.error(e);
+                    window.console.error(e);
                 }
             };
 

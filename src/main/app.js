@@ -1,3 +1,17 @@
+/* global jQuery */
+angular.module('PEPFAR.approvals', ['d2', 'd2-translate', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead', 'ui.bootstrap.progressbar', 'd2HeaderBar']);
+angular.module('PEPFAR.approvals').controller('appController', appController);
+angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
+angular.module('PEPFAR.approvals').controller('acceptTableViewController', acceptTableViewController);
+angular.module('PEPFAR.approvals').controller('acceptedTableViewController', acceptedTableViewController);
+angular.module('PEPFAR.approvals').controller('submittedTableViewController', submittedTableViewController);
+angular.module('PEPFAR.approvals').controller('viewTableViewController', viewTableViewController);
+
+angular.module('PEPFAR.approvals').config(function (uiSelectConfig) {
+    uiSelectConfig.theme = 'bootstrap';
+});
+
+//jshint maxstatements: 41
 function appController(periodService, $scope, currentUser, mechanismsService,
                        approvalLevelsService, $q, toastr, AppManifest,
                        systemSettings, $translate, d2Api,
@@ -62,7 +76,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         return false;
     };
 
-    function setInfoBoxLevels(currentUserApprovalLevel, approvalLevels) {
+    function setInfoBoxLevels(currentUserApprovalLevel) {
         //TODO: Move this to translate
         var levelNames = [
             'Global',
@@ -157,10 +171,10 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 unaccept: []
             };
             _.each($scope.details.currentSelection, function (mechanism) {
-                if (mechanism.mayApprove === true) { actions.approve.push(mechanism.id) }
-                if (mechanism.mayUnapprove === true) { actions.unapprove.push(mechanism.id) }
-                if (mechanism.mayAccept === true) { actions.accept.push(mechanism.id) }
-                if (mechanism.mayUnaccept === true) { actions.unaccept.push(mechanism.id) }
+                if (mechanism.mayApprove === true) { actions.approve.push(mechanism.id); }
+                if (mechanism.mayUnapprove === true) { actions.unapprove.push(mechanism.id); }
+                if (mechanism.mayAccept === true) { actions.accept.push(mechanism.id); }
+                if (mechanism.mayUnaccept === true) { actions.unaccept.push(mechanism.id); }
             });
 
             return actions;
@@ -214,7 +228,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         self.text.viewAct = [translations['View/Act on'], 0, translations['mechanism(s)']].join(' ');
     });
 
-    currentUser.permissions.then(function (permissions) {
+    currentUser.permissions.then(function (permissions) { //jshint maxcomplexity:7
         permissions = _(permissions);
 
         if (permissions.contains('ALL')) {
@@ -321,7 +335,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             if (currentUser.valueFor('organisationUnits').length >= 1) {
                 orgUnit = currentUser.valueFor('organisationUnits')[0];
             } else {
-                window.console && window.console.error && window.console.error('No orgunit found for the current user');
+                if (window.console && window.console.error) {
+                    window.console.error('No orgunit found for the current user');
+                }
             }
         }
 
@@ -481,8 +497,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     });
 
     $scope.$watch(function () {
-        if (currentUser.organisationUnits)
+        if (currentUser.organisationUnits) {
             return currentUser.organisationUnits[0].id;
+        }
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
             $scope.details.orgUnit = newVal;
@@ -505,7 +522,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     });
 }
 
-function tableViewController(mechanismsService, $scope) {
+function tableViewController() {
     this.approvalTableConfig = {
         columns: [
             { name: 'mechanism', sortable: true, searchable: true },
@@ -541,7 +558,7 @@ function tableViewController(mechanismsService, $scope) {
 }
 
 function acceptTableViewController($scope, $controller) {
-    $.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     var filterBelowUserLevel = (function (item) {
         if ($scope.approvalLevel && item.level > $scope.approvalLevel.level && item.mayAccept === true) {
@@ -560,7 +577,7 @@ function acceptTableViewController($scope, $controller) {
 }
 
 function acceptedTableViewController($scope, $controller) {
-    $.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     this.actionsToFilterOn = [{ mayApprove: true }, { mayUnaccept: true }];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
@@ -572,7 +589,7 @@ function acceptedTableViewController($scope, $controller) {
 }
 
 function submittedTableViewController($scope, $controller) {
-    $.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     var filterOnLevel = (function (item) {
         if ($scope.approvalLevel && item.level === $scope.approvalLevel.level && item.mayUnapprove === true) {
@@ -590,7 +607,7 @@ function submittedTableViewController($scope, $controller) {
 }
 
 function viewTableViewController($scope, $controller) {
-    $.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
 
     //The filter always returns true.
     this.filterData = function (data) {
@@ -604,15 +621,3 @@ function viewTableViewController($scope, $controller) {
         this.approvalTableData = this.filterData(mechanisms);
     }).bind(this));
 }
-
-angular.module('PEPFAR.approvals', ['d2', 'd2-translate', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead', 'ui.bootstrap.progressbar', 'd2HeaderBar']);
-angular.module('PEPFAR.approvals').controller('appController', appController);
-angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
-angular.module('PEPFAR.approvals').controller('acceptTableViewController', acceptTableViewController);
-angular.module('PEPFAR.approvals').controller('acceptedTableViewController', acceptedTableViewController);
-angular.module('PEPFAR.approvals').controller('submittedTableViewController', submittedTableViewController);
-angular.module('PEPFAR.approvals').controller('viewTableViewController', viewTableViewController);
-
-angular.module('PEPFAR.approvals').config(function (uiSelectConfig) {
-    uiSelectConfig.theme = 'bootstrap';
-});

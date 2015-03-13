@@ -8,13 +8,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
     var categories = [];
     var organisationUnit = '';
 
-    var deferred = $q.defer();
-
-    var statuses = {
-        'accepted': 'Accepted',
-        'submitted': 'Submitted'
-    };
-
     var mechanisms = [];
 
     var orgUnitCache = {};
@@ -226,6 +219,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         mechanisms = [];
 
         //TODO: Refactor this function
+        //jshint maxcomplexity:16, maxstatements:41
         _.each(mechanismsStatuses, function (mechanismStatus) {
             var actions = [];
             var status = [];
@@ -296,6 +290,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
             mechanisms.push(mechanism);
         });
     };
+    //jshint maxcomplexity:6, maxstatements:30
 
     this.getData = function () {
         var deferred = $q.defer();

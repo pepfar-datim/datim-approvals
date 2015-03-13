@@ -42,7 +42,7 @@ function organisationunitSelectorDirective(organisationunitsService) {
                 organisationunitsService.currentOrganisationUnit = $item;
             };
         }
-    }
+    };
 }
 
 angular.module('PEPFAR.approvals').directive('organisationunitSelector', organisationunitSelectorDirective);

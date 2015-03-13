@@ -43,7 +43,7 @@ function approvalLevelsService($q, d2Api) {
                     };
                 }
             });
-        }
+        };
         return approvalLevels;
     });
 }

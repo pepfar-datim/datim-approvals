@@ -40,7 +40,7 @@ function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory)
                 scope.dataset.selectedDataSetGroup = $item;
             };
         }
-    }
+    };
 }
 
 angular.module('PEPFAR.approvals').directive('datasetGroupSelector', dataSetGroupSelectorDirective);
