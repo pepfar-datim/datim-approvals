@@ -1,45 +1,5 @@
-/**
- * The following is period code taken from the core to give me an idea
- * of how to implement this.
- *
- * TODO: We should be able to remove this soon.
- */
-
-//var periods = dhis2.period.generator.generateReversedPeriods('Monthly', 0);
-//periods = dhis2.period.generator.filterFuturePeriodsExceptCurrent( periods );
-
-//// calendar
-//(function() {
-//    var dhis2PeriodUrl = '../dhis-web-commons/javascripts/dhis2/dhis2.period.js',
-//        defaultCalendarId = 'gregorian',
-//        calendarIdMap = {'iso8601': defaultCalendarId},
-//        calendarId = calendarIdMap[init.systemInfo.calendar] || init.systemInfo.calendar || defaultCalendarId,
-//        calendarIds = ['coptic', 'ethiopian', 'islamic', 'julian', 'nepali', 'thai'],
-//        calendarScriptUrl,
-//        createGenerator;
-//
-//    // calendar
-//    createGenerator = function() {
-//        init.calendar = $.calendars.instance(calendarId);
-//        init.periodGenerator = new dhis2.period.PeriodGenerator(init.calendar, init.systemInfo.dateFormat);
-//    };
-//
-//    if (Ext.Array.contains(calendarIds, calendarId)) {
-//        calendarScriptUrl = '../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarId + '.min.js';
-//
-//        Ext.Loader.injectScriptElement(calendarScriptUrl, function() {
-//            Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
-//        });
-//    }
-//    else {
-//        Ext.Loader.injectScriptElement(dhis2PeriodUrl, createGenerator);
-//    }
-//}());
-
-//var periods = dhis2.period.generator.generateReversedPeriods('Monthly', 0);
-//periods = dhis2.period.generator.filterFuturePeriodsExceptCurrent( periods );
-
-//console.log(periods);
+/* global jQuery, dhis2 */
+angular.module('PEPFAR.approvals').service('periodService', periodService);
 
 //FIXME: the service is not consistent with getters and setters
 function periodService(d2Api) {
@@ -51,17 +11,17 @@ function periodService(d2Api) {
     var calendarType;
     var dateFormat = 'yyyy-mm-dd';
     var periodTypes = [
-        "Daily",
-        "Weekly",
-        "Monthly",
-        "BiMonthly",
-        "Quarterly",
-        "SixMonthly",
-        "SixMonthlyApril",
-        "Yearly",
-        "FinancialApril",
-        "FinancialJuly",
-        "FinancialOct"
+        'Daily',
+        'Weekly',
+        'Monthly',
+        'BiMonthly',
+        'Quarterly',
+        'SixMonthly',
+        'SixMonthlyApril',
+        'Yearly',
+        'FinancialApril',
+        'FinancialJuly',
+        'FinancialOct'
     ];
     var periodBaseList = periodTypes;
 
@@ -85,7 +45,7 @@ function periodService(d2Api) {
     });
 
     this.prepareCalendar = function () {
-        var calendar = $.calendars.instance(service.getCalendarType());
+        var calendar = jQuery.calendars.instance(service.getCalendarType());
         dhis2.period.generator = new dhis2.period.PeriodGenerator(calendar, this.getDateFormat());
     };
 
@@ -114,7 +74,23 @@ function periodService(d2Api) {
         if (_(periodTypes).contains(periodType)) {
             currentPeriodType = periodType;
             periods = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
-            generatedPeriods =  removeFuturePeriodsExceptClosestOne(periods);
+
+            //Only show One year ahead and the previous years
+            if (/^Yearly|Financial/.test(currentPeriodType)) {
+                generatedPeriods = removeFuturePeriodsExceptClosestOne(periods);
+                return;
+            }
+
+            //Show this years and last years quarters
+            if (/^Quarterly|SixMonthly/.test(currentPeriodType)) {
+                var thisYear = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
+                var lastYear = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -1);
+                generatedPeriods = thisYear.concat(lastYear);
+                return;
+            }
+
+            //For other periods like month/day etc. show only the default generated
+            generatedPeriods = periods;
         }
     };
 
@@ -160,5 +136,3 @@ function periodService(d2Api) {
         }
     });
 }
-
-angular.module('PEPFAR.approvals').service('periodService', periodService);

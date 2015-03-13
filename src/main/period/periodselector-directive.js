@@ -4,7 +4,7 @@ function periodSelectorDirective(periodService) {
         replace: true,
         scope: true,
         templateUrl: 'period/periodselector.html',
-        link: function (scope, element) {
+        link: function (scope) {
             scope.period = {
                 selectedPeriodType: undefined,
                 selectedPeriod: undefined,
@@ -22,7 +22,7 @@ function periodSelectorDirective(periodService) {
                  }
             });
 
-            scope.changedPeriodType = function ($item, $model) {
+            scope.changedPeriodType = function ($item) {
                 periodService.setPeriodType($item);
                 scope.period.periodsRecentFirst = periodService.getPastPeriodsRecentFirst();
 
@@ -37,7 +37,7 @@ function periodSelectorDirective(periodService) {
                 periodService.period = $item;
             };
         }
-    }
+    };
 }
 
 angular.module('PEPFAR.approvals').directive('periodSelector', periodSelectorDirective);
