@@ -83,16 +83,21 @@ function periodService(d2Api) {
 
             //Show this years and last years quarters
             if (/^Quarterly$/.test(currentPeriodType)) {
+                var futureYear = [];
                 var thisYear = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
 
                 var currentQuarter = dhis2.period.generator.filterFuturePeriodsExceptCurrent(thisYear);
                 thisYear = thisYear.slice((3 - currentQuarter.length >= 0) ? 3 - currentQuarter.length : 0);
 
+                if (currentQuarter.length === 4) {
+                    futureYear = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 1)[3];
+                }
+
                 var oneYearAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -1);
                 var twoYearsAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -2);
                 var threeYearsAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -3);
 
-                generatedPeriods = thisYear.concat(oneYearAgo).concat(twoYearsAgo).concat(threeYearsAgo);
+                generatedPeriods = futureYear.concat(thisYear).concat(oneYearAgo).concat(twoYearsAgo).concat(threeYearsAgo);
                 return;
             }
 
