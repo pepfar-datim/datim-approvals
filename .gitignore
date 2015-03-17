@@ -6,6 +6,7 @@
 node_modules/
 bower_components/
 build/
+build-with-rev/
 
 test/vendor/
 src/vendor/

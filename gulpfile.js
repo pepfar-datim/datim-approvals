@@ -116,9 +116,9 @@ gulp.task('sass', function () {
 gulp.task('html', function () {
     var minifyHTML = require('gulp-minify-html');
 
-    return gulp.src('src/main/**/*.html').pipe(minifyHTML({ empty: true, quotes: true })).pipe(gulp.dest(
-        build_directory
-    ));
+    return gulp.src('src/main/**/*.html')
+        .pipe(minifyHTML({ empty: true, quotes: true }))
+        .pipe(gulp.dest(build_directory));
 });
 
 gulp.task('i18n', function () {
@@ -266,12 +266,34 @@ gulp.task('vendor', function (cb) {
     return stuff;
 });
 
+gulp.task('do-rev-on-build', function () {
+    function doFileCheck(file) {
+        if (/\.html$/.test(file.path) || /\.js$/.test(file.path) || /\.css$/.test(file.path)) {
+            return true;
+        }
+        return false;
+    }
+
+    var rev = require('gulp-rev');
+    var revReplace = require('gulp-rev-replace');
+    var gulpif = require('gulp-if');
+
+    return gulp.src(['build/**/*.*'])
+        .pipe(gulpif('!**/index.html', gulpif('!**/vendor/**', gulpif(doFileCheck, rev()))))
+        .pipe(revReplace())
+        .pipe(gulp.dest('build-with-rev/'));
+});
+
+gulp.task('clean-rev', function(cb){
+    rimraf('./build-with-rev', cb);
+});
+
 gulp.task('build', function (cb) {
     runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'i18n', 'images', 'manifest', cb);
 });
 
-gulp.task('build-prod', function () {
-    runSequence('build', 'package');
+gulp.task('build-prod', function (cb) {
+    runSequence('clean-rev', 'build', 'do-rev-on-build', 'package', cb);
 });
 
 gulp.task('deploy', function () {
@@ -292,7 +314,7 @@ gulp.task('copy-fake-api', function () {
 });
 
 gulp.task('package', function () {
-    return gulp.src('build/**/*', { base: './build/' })
+    return gulp.src('build-with-rev/**/*', { base: './build-with-rev/' })
         .pipe(zip('approvals.zip', { compress: false }))
         .pipe(gulp.dest('.'));
 });
