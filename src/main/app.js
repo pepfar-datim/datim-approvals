@@ -383,13 +383,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             return result;
         }
 
-        function differentPeriodSets(periodsLeft, periodsRight) {
-            return !equalArrays(periodsLeft, periodsRight);
-        }
-
-        if (differentPeriodSets(periodService.getPeriodTypesForDataSet(dataSets.getPeriodTypes()), periodService.getPeriodTypes())) {
-            periodService.filterPeriodTypes(dataSets.getPeriodTypes());
-        }
+        periodService.filterPeriodTypes(dataSets.getPeriodTypes());
 
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
@@ -403,10 +397,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         $scope.details.currentSelection = [];
 
-        //TODO: Since it's pepfar we might not have to request the mechanism again when the category changes, as they only use one category
         if (self.hasTableDetails()) {
             self.showData = false;
-            self.getTableData();
             self.deSelect();
         }
 

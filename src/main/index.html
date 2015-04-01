@@ -151,6 +151,8 @@
                 if (dhis2CoreScripts.length > 0) {
                     script = dhis2CoreScripts.shift();
 
+                    console.log('Loading: ' + dhis2Root + script);
+
                     jQuery.getScript(dhis2Root + script, function () {
                         loadScript(callBack);
                     });
@@ -186,20 +188,27 @@
                             });
                         }
 
+                        function bootstrapApp() {
+                            angular.bootstrap(document, ['PEPFAR.approvals']);
+                        }
+
                         angular.module('PEPFAR.approvals').factory('systemSettings', function () {
                             return systemSettings;
                         });
 
-                        jQuery.ajax({ url: dhis2Root + '/api/userSettings/keyUiLocale/', contentType: 'text/plain', method: 'GET', dataType: 'text' }).success(function (uiLocale) {
-                            configureApp(uiLocale);
+                        jQuery.ajax({ url: dhis2Root + '/api/userSettings/keyUiLocale/', contentType: 'text/plain', method: 'GET', dataType: 'text' })
+                                .success(function (uiLocale) {
+                                    configureApp(uiLocale);
+                                    setTimeout(bootstrapApp, 0);
+                                })
+                                .fail(function () {
+                                    console.warn('Failed to load uiLocale from userSettings: defaulting to english');
+                                    configureApp('en');
 
-                            angular.bootstrap(document, ['PEPFAR.approvals']);
-                        }).fail(function () {
-                            console.warn('Failed to load uiLocale from userSettings: defaulting to english');
-                            configureApp('en');
-
-                            angular.bootstrap(document, ['PEPFAR.approvals']);
-                        });
+                                    setTimeout(bootstrapApp, 0);
+                                });
+                    }).fail(function () {
+                       alert('Unable to load System settings');
                     });
 
 

@@ -1,4 +1,4 @@
-function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
+function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) {
     var self = this;
     var AGENCY_LEVEL = 3;
     var PARTNER_LEVEL = 4;
@@ -303,11 +303,28 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService) {
         };
 
         if (this.areParamsCorrect(params)) {
-            d2Api.getEndPoint('categories').getList(params).then(function (data) {
-                deferred.resolve(data.getDataOnly());
-            }, function () {
-                deferred.reject('Request for categories failed');
-            });
+            var filters = [
+                'paging=false',
+                params.filter.map(function (filterText) {
+                    return 'filter=' + filterText;
+                }).join('&'),
+                'fields=' + params.fields
+            ];
+
+            jQuery.ajax({
+                url: [AppManifest.activities.dhis.href, 'api', 'categories.json'].join('/') + '?' + filters.join('&'),
+                method: 'GET'
+            })
+            .then(function (data) {
+                    console.log('Loaded categories using jquery');
+                    if (data && data.categories && data.categories.length) {
+                        deferred.resolve(data.categories);
+                    } else {
+                        console.log('No categories found');
+                    }
+                }, function () {
+                    deferred.reject('Request for categories failed');
+                });
         } else {
             deferred.reject('Not all required params are set');
         }
