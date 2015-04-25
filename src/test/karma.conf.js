@@ -1,7 +1,7 @@
 module.exports = function( config ) {
     config.set({
         basePath: '../../src/main',
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'sinon'],
 
         preprocessors: {
             '../main/**/*.html': 'html2js',

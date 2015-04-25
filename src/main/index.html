@@ -16,7 +16,16 @@
 
     <div class="info-wrap">
         <div>
-            <h1 ng-bind="app.title">Data approval</h1><span class="status"><span class="prefix" translate>status</span><span ng-show="app.actionItems" ng-bind="app.actionItems" class="badge available-actions-dot"></span><span ng-bind="app.getStatus()"></span></span>
+            <h1 ng-bind="app.title">Data approval</h1>
+            <span class="status">
+                <span class="prefix" translate>status</span>
+                <span ng-show="app.actionItems"
+                      ng-bind="app.actionItems"
+                      class="badge available-actions-dot">
+                </span>
+                <span ng-bind="app.getStatus()"></span>
+            </span>
+            <analytics-status></analytics-status>
         </div>
     </div>
 
