@@ -11,7 +11,11 @@ describe('Mechanisms service', function () {
     var categoriesFromApi = fixtures.get('categories');
 
     beforeEach(module('d2-rest'));
-    beforeEach(module('PEPFAR.approvals'));
+    beforeEach(module('PEPFAR.approvals', function ($provide) {
+        $provide.factory('AppManifest', function () {
+            return {activities: {dhis: '/'}};
+        });
+    }));
 
     beforeEach(inject(function (_mechanismsService_, _$httpBackend_, _$log_) {
         mechanismsService = _mechanismsService_;
