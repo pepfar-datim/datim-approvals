@@ -10,7 +10,6 @@ function approvalsService($q, d2Api) {
             hasValidPeriod(approvalData);
             hasValidDataSet(approvalData);
             hasValidCategoryOptionCombo(approvalData);
-            hasValidOrganisationUnit(approvalData);
         } catch (errorMessage) {
             return errorMessage;
         }
@@ -33,12 +32,6 @@ function approvalsService($q, d2Api) {
     function hasValidCategoryOptionCombo(approvalData) {
         if (!angular.isArray(approvalData.approvals) || approvalData.approvals.length === 0) {
             throw 'Category option combo parameter is missing or empty';
-        }
-    }
-
-    function hasValidOrganisationUnit(approvalData) {
-        if (!angular.isString(approvalData.ou) || approvalData.ou.length === 0) {
-            throw 'Organisation unit (ou) is missing or empty';
         }
     }
 

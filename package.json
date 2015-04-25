@@ -27,8 +27,10 @@
     "karma-jasmine": "^0.1.5",
     "karma-ng-html2js-preprocessor": "^0.1.0",
     "karma-phantomjs-launcher": "^0.1.4",
+    "karma-sinon": "^1.0.4",
     "lodash": "^2.4.1",
     "rimraf": "^2.2.8",
-    "run-sequence": "^0.3.6"
+    "run-sequence": "^0.3.6",
+    "sinon": "^1.14.1"
   }
 }
