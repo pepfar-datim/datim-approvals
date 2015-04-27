@@ -1,4 +1,4 @@
-function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) {
+function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppManifest) {
     var self = this;
     var AGENCY_LEVEL = 3;
     var PARTNER_LEVEL = 4;
@@ -14,6 +14,23 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
     var categoryCache = {};
 
     this.isGlobal = false;
+
+    /**
+     * Does an ajax GET request using jquery
+     *
+     * @param {String} url Url to request from
+     * @param {Object} queryParams Query params that should be added to the url.
+     * @returns {Promise}
+     */
+    function request(url, queryParams) {
+        return $http.get([AppManifest.activities.dhis.href, url].join('/') + '?' + queryParams.join('&'))
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (response) {
+                return $q.reject(response.statusText);
+            });
+    }
 
     Object.defineProperty(this, 'period', {
         set: function (value) {
@@ -183,25 +200,38 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
 
             self.getData().then(function (data) {
                 _.each(data, function (category) {
-                    _.each(self.dataSets, function (dataSet) {
-                        if (dataSet.categoryCombo.name === 'default' &&
-                            dataSet.categoryCombo.categories[0].id === category.id) {
-                            _.each(category.categoryOptions, function (mechanism) {
-                                if (mechanism.name === 'default') {
-                                    mechanism.name = dataSet.name;
-                                    mechanism.hasDefaultCategory = true;
-                                }
-                            });
-                        }
-                    });
+                    _.each(self.dataSets, replaceMechanismNameWithDataSetNameForDefaultCategoryComboNameDefault);
                 });
                 categoryCache[categories.join('_')] = data;
                 deferred.resolve(data);
+
+                function replaceMechanismNameWithDataSetNameForDefaultCategoryComboNameDefault(dataSet) {
+                    if (dataSet.categoryCombo.name === 'default' && dataSet.categoryCombo.categories[0].id === category.id) {
+                        _.each(category.categoryOptions, function (mechanism) {
+                            if (mechanism.name === 'default') {
+                                mechanism.name = dataSet.name;
+                                mechanism.hasDefaultCategory = true;
+                            }
+                        });
+                    }
+                }
+
             }, function () {
                 deferred.reject('Error loading category data');
             });
 
             return deferred.promise;
+
+            function getCategoryData(categoryId) {
+                var categoryOptionCombosUrl = ['api', 'categoryOptions.json'].join('/') + '?' + filters.join('&');
+                var queryParams = [
+                        'paging=false',
+                        'filter=categories.id:eq:' + categoryId,
+                        'fields=id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]'
+                    ];
+
+                return request(categoryOptionComboUrl, queryParams);
+            }
         }
 
         return $q.all([getCategoriesAndReplaceDefaults(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
@@ -303,6 +333,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
         };
 
         if (this.areParamsCorrect(params)) {
+            var categoriesUrl = ['api', 'categories.json'].join('/');
             var filters = [
                 'paging=false',
                 params.filter.map(function (filterText) {
@@ -311,25 +342,21 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
                 'fields=' + params.fields
             ];
 
-            jQuery.ajax({
-                url: [AppManifest.activities.dhis.href, 'api', 'categories.json'].join('/') + '?' + filters.join('&'),
-                method: 'GET'
-            })
-            .then(function (data) {
-                    console.log('Loaded categories using jquery');
+            return request(categoriesUrl, filters)
+                .then(function (data) {
+                    console.log('Loaded categories using $http');
+
                     if (data && data.categories && data.categories.length) {
-                        deferred.resolve(data.categories);
-                    } else {
-                        console.log('No categories found');
+                        console.log('Loaded categories using $http');
+                        return data.categories;
                     }
-                }, function () {
-                    deferred.reject('Request for categories failed');
+                })
+                .catch(function () {
+                    return $q.reject('Request for categories failed');
                 });
         } else {
-            deferred.reject('Not all required params are set');
+            return $q.reject('Not all required params are set');
         }
-
-        return deferred.promise;
     };
 
     this.getStatuses = function () {

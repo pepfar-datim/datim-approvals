@@ -4,33 +4,33 @@ describe('Mechanisms service', function () {
     var $rootScope;
     var $log;
     var server;
-    var apiUrlWithCorrectParameters = ['/dhis/api/categories?',
-        'fields=id,name,categoryOptions%5Bid,name,organisationUnits%5Bid,name%5D,',
-        'categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D&',
-        'filter=id:eq:dsetId1&filter=id:eq:dsetId2&filter=id:eq:dsetId3',
-        '&paging=false'].join('');
+    var apiUrlWithCorrectParameters = ['/dhis/api/categories.json?',
+        [
+            'paging=false',
+            'filter=id:eq:dsetId1',
+            'filter=id:eq:dsetId2',
+            'filter=id:eq:dsetId3',
+            'fields=id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]'
+        ].join('&')
+    ].join('');
+
 
     var categoriesFromApi = fixtures.get('categories');
 
     beforeEach(module('d2-rest'));
     beforeEach(module('PEPFAR.approvals', function ($provide) {
         $provide.factory('AppManifest', function () {
-           return {activities: {dhis: '/'}};
+           return {activities: {dhis: {href: '/dhis'}}};
         });
     }));
 
     beforeEach(inject(function (_mechanismsService_, _$httpBackend_, _$log_, _$rootScope_) {
-        server = window.sinon.fakeServer.create();
-        server.respondWith('GET', apiUrlWithCorrectParameters, [
-            404,
-            { "Content-Type": "application/json" },
-            'Error'
-        ]);
-
         mechanismsService = _mechanismsService_;
         $httpBackend = _$httpBackend_;
         $rootScope = _$rootScope_;
         $log = _$log_;
+
+
 
         //TODO: If we mock the approvalLevelsService we will not have to do the http call
         $httpBackend.expectGET('/dhis/api/organisationUnitLevels?fields=level,displayName&paging=false')
@@ -57,27 +57,55 @@ describe('Mechanisms service', function () {
         });
 
         it('should add the parameters to the url', function () {
+            $httpBackend.expectGET(apiUrlWithCorrectParameters)
+                .respond(400, categoriesFromApi);
+
             mechanismsService.period = '2014';
             mechanismsService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
 
             mechanismsService.getData();
 
-            server.respond();
+            $httpBackend.flush();
         });
 
 
         it('should reject when the request fails', function () {
             var catchSpy = jasmine.createSpy();
 
+            $httpBackend.expectGET(apiUrlWithCorrectParameters)
+                .respond(400, categoriesFromApi);
 
             mechanismsService.period = '2014';
             mechanismsService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
 
-            mechanismsService.getData().catch(catchSpy);
-            server.respond();
-            $rootScope.$apply();
+            mechanismsService
+                .getData()
+                .catch(catchSpy);
+
+            $httpBackend.flush();
 
             expect(catchSpy).toHaveBeenCalled();
+        });
+
+        it('should resolve with the correct values', function () {
+            var categories;
+
+            $httpBackend.expectGET(apiUrlWithCorrectParameters)
+                .respond(200, categoriesFromApi);
+
+            mechanismsService.period = '2014';
+            mechanismsService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
+
+            mechanismsService
+                .getData()
+                .then(function (data) {
+                    console.log(data);
+                    categories = data;
+                });
+
+            $httpBackend.flush();
+
+            console.log(categories);
         });
     });
 
