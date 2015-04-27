@@ -99,13 +99,14 @@ describe('Mechanisms service', function () {
             mechanismsService
                 .getData()
                 .then(function (data) {
-                    console.log(data);
                     categories = data;
                 });
 
             $httpBackend.flush();
 
-            console.log(categories);
+            expect(categories.length).toEqual(2);
+            expect(categories[0].id).toEqual('SH885jaRe0o');
+            expect(categories[1].id).toEqual('GLevLNI9wkl');
         });
     });
 

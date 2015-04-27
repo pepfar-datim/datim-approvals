@@ -323,7 +323,7 @@ function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppMan
     //jshint maxcomplexity:6, maxstatements:30
 
     this.getData = function () {
-        var deferred = $q.defer();
+        var categoriesUrl = ['api', 'categories.json'].join('/');
         var params = {
             paging: false,
             filter: _.map(categories, function (category) {
@@ -333,7 +333,6 @@ function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppMan
         };
 
         if (this.areParamsCorrect(params)) {
-            var categoriesUrl = ['api', 'categories.json'].join('/');
             var filters = [
                 'paging=false',
                 params.filter.map(function (filterText) {
@@ -350,6 +349,7 @@ function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppMan
                         console.log('Loaded categories using $http');
                         return data.categories;
                     }
+                    return [];
                 })
                 .catch(function () {
                     return $q.reject('Request for categories failed');
