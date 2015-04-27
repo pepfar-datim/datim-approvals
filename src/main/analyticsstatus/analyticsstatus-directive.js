@@ -1,6 +1,7 @@
 angular.module('PEPFAR.approvals').directive('analyticsStatus', analyticsStatusDirective);
 
 function analyticsStatusDirective() {
+    var UPDATE_INTERVAL = 60000;
     return {
         restrict: 'E',
         scope: true,
@@ -33,10 +34,10 @@ function analyticsStatusDirective() {
                 })
                 .catch(function (message) {
                     analyticsUpdateInterval = message;
-                    $timeout(getStatusUpdate, 30000);
+                    $timeout(getStatusUpdate, UPDATE_INTERVAL);
                 })
                 .finally(function () {
-                    $timeout(getStatusUpdate, 30000);
+                    $timeout(getStatusUpdate, UPDATE_INTERVAL);
                 });
         }
 

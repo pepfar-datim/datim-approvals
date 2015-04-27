@@ -36,7 +36,7 @@ describe('Analytis status directive', function () {
         analyticsStatus.getIntervalSinceLastAnalyticsTableSuccess
             .andReturn($q.when('0 h, 36 m, 11 s'));
 
-        $timeout.flush(30000);
+        $timeout.flush(60000);
 
         expect(element[0].textContent).toEqual('Data was updated 0 h, 36 m, 11 s ago');
     }));
@@ -47,7 +47,7 @@ describe('Analytis status directive', function () {
         analyticsStatus.getIntervalSinceLastAnalyticsTableSuccess
             .andReturn($q.reject('Unable to find last updated time'));
 
-        $timeout.flush(30000);
+        $timeout.flush(60000);
 
         expect(element[0].textContent).toEqual('Unable to find last updated time');
     }));
