@@ -1,4 +1,4 @@
-function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppManifest) {
+function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, categoriesService) {
     var self = this;
     var AGENCY_LEVEL = 3;
     var PARTNER_LEVEL = 4;
@@ -14,23 +14,6 @@ function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppMan
     var categoryCache = {};
 
     this.isGlobal = false;
-
-    /**
-     * Does an ajax GET request using jquery
-     *
-     * @param {String} url Url to request from
-     * @param {Object} queryParams Query params that should be added to the url.
-     * @returns {Promise}
-     */
-    function request(url, queryParams) {
-        return $http.get([AppManifest.activities.dhis.href, url].join('/') + '?' + queryParams.join('&'))
-            .then(function (response) {
-                return response.data;
-            })
-            .catch(function (response) {
-                return $q.reject(response.statusText);
-            });
-    }
 
     Object.defineProperty(this, 'period', {
         set: function (value) {
@@ -221,17 +204,6 @@ function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppMan
             });
 
             return deferred.promise;
-
-            function getCategoryData(categoryId) {
-                var categoryOptionCombosUrl = ['api', 'categoryOptions.json'].join('/') + '?' + filters.join('&');
-                var queryParams = [
-                        'paging=false',
-                        'filter=categories.id:eq:' + categoryId,
-                        'fields=id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]'
-                    ];
-
-                return request(categoryOptionComboUrl, queryParams);
-            }
         }
 
         return $q.all([getCategoriesAndReplaceDefaults(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
@@ -323,40 +295,7 @@ function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppMan
     //jshint maxcomplexity:6, maxstatements:30
 
     this.getData = function () {
-        var categoriesUrl = ['api', 'categories.json'].join('/');
-        var params = {
-            paging: false,
-            filter: _.map(categories, function (category) {
-                return 'id:eq:' + category;
-            }),
-            fields: 'id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]'
-        };
-
-        if (this.areParamsCorrect(params)) {
-            var filters = [
-                'paging=false',
-                params.filter.map(function (filterText) {
-                    return 'filter=' + filterText;
-                }).join('&'),
-                'fields=' + params.fields
-            ];
-
-            return request(categoriesUrl, filters)
-                .then(function (data) {
-                    console.log('Loaded categories using $http');
-
-                    if (data && data.categories && data.categories.length) {
-                        console.log('Loaded categories using $http');
-                        return data.categories;
-                    }
-                    return [];
-                })
-                .catch(function () {
-                    return $q.reject('Request for categories failed');
-                });
-        } else {
-            return $q.reject('Not all required params are set');
-        }
+        return categoriesService.getCategories(categories);
     };
 
     this.getStatuses = function () {
@@ -372,16 +311,94 @@ function mechanismsService(d2Api, $log, $q, $http, approvalLevelsService, AppMan
         });
     };
 
-    this.areParamsCorrect = function (params) {
-        if (params.filter.length <= 0) {
-            $log.error('Mechanism Service: Categories should set when trying to request mechanisms');
-            return false;
-        }
-        return true;
-    };
-
     d2Api.addEndPoint('categories');
     d2Api.addEndPoint('dataApprovals/categoryOptionCombos');
 }
 
 angular.module('PEPFAR.approvals').service('mechanismsService', mechanismsService);
+
+/**********************************************************************************/
+angular.module('PEPFAR.approvals').factory('categoriesService', categoriesService);
+function categoriesService(request, $q, $log) {
+    return {
+        getCategories: getCategories
+    };
+
+    function getCategories(categoryIds) {
+        var categoriesUrl = ['api', 'categories.json'].join('/');
+        var fields = 'fields=id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]';
+        var filters = _.map(categoryIds, function (category) {
+            return 'id:eq:' + category;
+        });
+        var queryParams;
+
+        if (!areParamsCorrect(filters)) {
+            return $q.reject('Not all required params are set');
+        }
+
+        queryParams = filters = ['paging=false', createFilterQueryParamFrom(filters), fields];
+
+        return request(categoriesUrl, queryParams)
+            .then(extractCategories)
+            .catch(function () {
+                return $q.reject('Request for categories failed');
+            });
+    }
+
+    function extractCategories(data) {
+        if (data && data.categories && data.categories.length) {
+            $log.log('Loaded categories using $http');
+            return data.categories;
+        }
+        return [];
+    }
+
+    function createFilterQueryParamFrom(filters) {
+        return filters.map(function (filterText) {
+            return 'filter=' + filterText;
+        }).join('&');
+    }
+
+    function areParamsCorrect(filters) {
+        if (filters.length <= 0) {
+            $log.error('Categories Service (getCategories): Ids should be provided when trying to request mechanisms');
+            return false;
+        }
+        return true;
+    };
+
+    function getCategoryData(categoryId) {
+        var categoryOptionCombosUrl = ['api', 'categoryOptions.json'].join('/') + '?' + filters.join('&');
+        var queryParams = [
+            'paging=false',
+            'filter=categories.id:eq:' + categoryId,
+            'fields=id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]'
+        ];
+
+        return request(categoryOptionComboUrl, queryParams);
+    }
+}
+
+/**********************************************************************************/
+angular.module('PEPFAR.approvals').factory('request', requestProvider);
+function requestProvider($http, $q, AppManifest) {
+
+    return request;
+
+    /**
+     * Does an ajax GET request using jquery
+     *
+     * @param {String} url Url to request from
+     * @param {Object} queryParams Query params that should be added to the url.
+     * @returns {Promise}
+     */
+    function request(url, queryParams) {
+        return $http.get([AppManifest.activities.dhis.href, url].join('/') + '?' + queryParams.join('&'))
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (response) {
+                return $q.reject(response.statusText);
+            });
+    }
+}

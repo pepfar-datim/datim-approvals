@@ -30,8 +30,6 @@ describe('Mechanisms service', function () {
         $rootScope = _$rootScope_;
         $log = _$log_;
 
-
-
         //TODO: If we mock the approvalLevelsService we will not have to do the http call
         $httpBackend.expectGET('/dhis/api/organisationUnitLevels?fields=level,displayName&paging=false')
             .respond(200, fixtures.get('orgUnitLevels'));
