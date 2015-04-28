@@ -1,0 +1,114 @@
+/* Set default settings for d2 directives */
+.d2, .breadcrumbs, .intro-list, .header-bar, .details-box {
+  box-sizing: border-box; }
+
+/* d2 directive style imports */
+/* Message colors */
+.breadcrumbs .crumb {
+  display: inline-block;
+  height: 30px;
+  margin-right: 10px;
+  cursor: pointer; }
+.breadcrumbs .crumb.last {
+  color: #276696; }
+.breadcrumbs .crumb-separator {
+  margin-left: 10px;
+  color: #276696; }
+
+.intro-list ul, .intro-list li {
+  list-style: none; }
+.intro-list ul {
+  width: 100%; }
+.intro-list li {
+  width: 33.3%;
+  display: inline-block; }
+
+/* Message colors */
+.header-bar {
+  background-color: #276696;
+  height: 44px;
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 0 3px #222222; }
+  .header-bar a.title-link {
+    position: absolute;
+    top: 11px;
+    left: 55px; }
+  .header-bar img.header-logo {
+    cursor: pointer;
+    top: 2px;
+    position: relative;
+    vertical-align: initial; }
+  .header-bar span.header-text {
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+    position: relative;
+    left: 50px; }
+
+/* Message colors */
+.details-box .details-box-header {
+  font-weight: bold;
+  color: #276696; }
+.details-box .details-box-content {
+  color: black;
+  margin-bottom: 10px; }
+
+.closable {
+  position: relative; }
+
+.closable-button {
+  color: #276696;
+  cursor: pointer;
+  font-size: 1.5em;
+  position: absolute;
+  top: -0.4em;
+  right: -0.4em; }
+
+/* Style utilities */
+/* Message colors */
+.callout {
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #eeeeee;
+  border-left-width: 5px;
+  border-radius: 3px; }
+
+.callout h4 {
+  margin: 0;
+  padding: 0;
+  margin-bottom: 5px; }
+
+.callout p:last-child {
+  margin-bottom: 0; }
+
+.callout code,
+.callout .highlight {
+  background-color: white; }
+
+.callout-danger {
+  background-color: #fcf2f2;
+  border-color: #dfb5b4; }
+
+.callout-warning {
+  background-color: #fefbed;
+  border-color: #f1e7bc; }
+
+.callout-info {
+  background-color: #f0f7fd;
+  border-color: #d0e3f0; }
+
+.callout-info h4 {
+  color: #5bc0de; }
+
+.callout-warning h4 {
+  color: #f0ad4e; }
+
+.callout-danger h4 {
+  color: #d9534f; }
+
+/*# sourceMappingURL=d2.css.map */
