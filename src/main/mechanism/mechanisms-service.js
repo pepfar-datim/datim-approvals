@@ -392,7 +392,7 @@ function categoriesService(request, $q, $log) {
             return false;
         }
         return true;
-    };
+    }
 }
 
 /**********************************************************************************/

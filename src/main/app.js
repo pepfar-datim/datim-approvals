@@ -384,19 +384,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     //When the dataset group is changed update the filter types and the datasets
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
-        function equalArrays(left, right) {
-            var result = true;
-
-            if (left.length !== right.length) {
-                return false;
-            }
-
-            left.forEach(function (item, index) {
-                result = (item === right[index]) && true;
-            });
-            return result;
-        }
-
         periodService.filterPeriodTypes(dataSets.getPeriodTypes());
 
         $scope.details.dataSets = dataSets.get();
@@ -566,20 +553,20 @@ function tableViewController() {
 function acceptTableViewController($scope, $controller) {
     jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
 
-    var filterBelowUserLevel = (function (item) {
+    var filterBelowUserLevel = function (item) {
         if ($scope.approvalLevel && item.level > $scope.approvalLevel.level && item.mayAccept === true) {
             return true;
         }
         return false;
-    }).bind(this);
+    }.bind(this);
 
     this.actionsToFilterOn = [{ mayAccept: true }, filterBelowUserLevel];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
-    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+    $scope.$on('MECHANISMS.updated', function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
         this.hasActionItems = !!_.filter(this.approvalTableData, { mayAccept: true, level: ($scope.approvalLevel.level + 1) }).length;
-    }).bind(this));
+    }.bind(this));
 }
 
 function acceptedTableViewController($scope, $controller) {
@@ -588,28 +575,28 @@ function acceptedTableViewController($scope, $controller) {
     this.actionsToFilterOn = [{ mayApprove: true }, { mayUnaccept: true }];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
-    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+    $scope.$on('MECHANISMS.updated', function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
         this.hasActionItems = !!_.filter(this.approvalTableData, { mayApprove: true, level: $scope.approvalLevel.level + 1 }).length;
-    }).bind(this));
+    }.bind(this));
 }
 
 function submittedTableViewController($scope, $controller) {
     jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
 
-    var filterOnLevel = (function (item) {
+    var filterOnLevel = function (item) {
         if ($scope.approvalLevel && item.level === $scope.approvalLevel.level && item.mayUnapprove === true) {
             return true;
         }
         return false;
-    }).bind(this);
+    }.bind(this);
 
     this.actionsToFilterOn = [filterOnLevel];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
-    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+    $scope.$on('MECHANISMS.updated', function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-    }).bind(this));
+    }.bind(this));
 }
 
 function viewTableViewController($scope, $controller) {
@@ -623,7 +610,7 @@ function viewTableViewController($scope, $controller) {
     };
     this.approvalTableData = this.filterData();
 
-    $scope.$on('MECHANISMS.updated', (function (event, mechanisms) {
+    $scope.$on('MECHANISMS.updated', function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-    }).bind(this));
+    }.bind(this));
 }
