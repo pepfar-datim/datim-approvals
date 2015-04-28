@@ -35,7 +35,8 @@
     "run-sequence": "^0.3.6"
   },
   "scripts": {
-    "test": "gulp test"
+    "test": "gulp test",
+    "validate": "gulp git:pre-commit"
   },
-  "pre-commit": ["test"]
+  "pre-commit": ["validate"]
 }
