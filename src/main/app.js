@@ -22,7 +22,7 @@ angular.module('PEPFAR.approvals')
         uiSelectConfig.theme = 'bootstrap';
     })
     .config(function(httpRequestInterceptorCacheBusterProvider){
-        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*\.html$/],true);
+        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*\.html.*/]);
     });
 
 //jshint maxstatements: 41
