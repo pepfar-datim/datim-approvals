@@ -21,7 +21,7 @@ angular.module('PEPFAR.approvals')
     .config(function (uiSelectConfig) {
         uiSelectConfig.theme = 'bootstrap';
     })
-    .config(function(httpRequestInterceptorCacheBusterProvider){
+    .config(function (httpRequestInterceptorCacheBusterProvider) {
         httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*\.html.*/]);
     });
 
@@ -165,7 +165,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     };
 
     this.hasAllDetails = function () {
-        if ($scope.details.period  &&
+        if ($scope.details.period &&
             ($scope.details.currentSelection.length > 0 &&
             $scope.details.dataSets &&
             $scope.details.orgUnit &&
@@ -185,14 +185,23 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 unaccept: []
             };
             _.each($scope.details.currentSelection, function (mechanism) {
-                if (mechanism.mayApprove === true) { actions.approve.push(mechanism.id); }
-                if (mechanism.mayUnapprove === true) { actions.unapprove.push(mechanism.id); }
-                if (mechanism.mayAccept === true) { actions.accept.push(mechanism.id); }
-                if (mechanism.mayUnaccept === true) { actions.unaccept.push(mechanism.id); }
+                if (mechanism.mayApprove === true) {
+                    actions.approve.push(mechanism.id);
+                }
+                if (mechanism.mayUnapprove === true) {
+                    actions.unapprove.push(mechanism.id);
+                }
+                if (mechanism.mayAccept === true) {
+                    actions.accept.push(mechanism.id);
+                }
+                if (mechanism.mayUnaccept === true) {
+                    actions.unaccept.push(mechanism.id);
+                }
             });
 
             return actions;
         }
+
         if (this.getActiveTab().name === 'View') {
             $scope.details.actions = {};
         } else {
@@ -207,7 +216,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     this.setActive = function (tabName, isActive) {
         var active = _.filter(this.state, function (item) {
-            if (item === true ) {
+            if (item === true) {
                 return true;
             }
             return false;
@@ -224,7 +233,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     };
 
     this.getActiveTab = function () {
-        return _.find(this.tabs, { state: true } );
+        return _.find(this.tabs, {state: true});
     };
 
     this.deSelect = function (tabName) {
@@ -317,7 +326,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     this.updateViewButton = function () {
         var actionText = 'View/Act';
-        var activeTab =  _.find(this.tabs, {state: true});
+        var activeTab = _.find(this.tabs, {state: true});
 
         if (activeTab) {
             if (Array.isArray(activeTab.name)) {
@@ -328,9 +337,11 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             }
         }
 
-        this.text.viewAct = [$translate.instant(actionText),
+        this.text.viewAct = [
+            $translate.instant(actionText),
             $scope.details.currentSelection.length,
-            $translate.instant('mechanism(s)')].join(' ');
+            $translate.instant('mechanism(s)')
+        ].join(' ');
     };
 
     d2Api.addEndPoint('me/dataApprovalLevels', true);
@@ -431,11 +442,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     });
 
     $scope.$on('APP.submit.success', function (event, mechanisms) {
-        var successMessage = [mechanisms.action[0].toUpperCase(),
-                              mechanisms.action.substr(1),
-                              ' successful for ',
-                              mechanisms.mechanisms.length,
-                              ' mechanism(s)'];
+        var successMessage = [
+            mechanisms.action[0].toUpperCase(),
+            mechanisms.action.substr(1),
+            ' successful for ',
+            mechanisms.mechanisms.length,
+            ' mechanism(s)'
+        ];
         if (mechanisms.mechanisms.length < 10) {
             //FIXME: Html in controller :( Bad practice
             successMessage.push('<ul>');
@@ -479,7 +492,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     });
 
     $scope.$watch(function () {
-       return mechanismsService.period;
+        return mechanismsService.period;
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
             if (self.hasTableDetails()) {
@@ -502,7 +515,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     $scope.$watch(function () {
         return organisationunitsService.currentOrganisationUnit;
     }, function (newVal, oldVal) {
-        if (newVal === oldVal) { return; }
+        if (newVal === oldVal) {
+            return;
+        }
 
         setOrganisationUnit();
 
@@ -518,12 +533,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 function tableViewController() {
     this.approvalTableConfig = {
         columns: [
-            { name: 'mechanism', sortable: true, searchable: true },
-            { name: 'country', sortable: true, searchable: true },
-            { name: 'agency', sortable: true, searchable: true },
-            { name: 'partner', sortable: true, searchable: true },
-            { name: 'status', sortable: true, searchable: true },
-            { name: 'actions', sortable: true, searchable: true }
+            {name: 'mechanism', sortable: true, searchable: true},
+            {name: 'country', sortable: true, searchable: true},
+            {name: 'agency', sortable: true, searchable: true},
+            {name: 'partner', sortable: true, searchable: true},
+            {name: 'status', sortable: true, searchable: true},
+            {name: 'actions', sortable: true, searchable: true}
         ],
         select: true,
         headerInputClass: 'form-control'
@@ -551,7 +566,7 @@ function tableViewController() {
 }
 
 function acceptTableViewController($scope, $controller) {
-    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', {$scope: $scope}));
 
     var filterBelowUserLevel = function (item) {
         if ($scope.approvalLevel && item.level > $scope.approvalLevel.level && item.mayAccept === true) {
@@ -560,29 +575,35 @@ function acceptTableViewController($scope, $controller) {
         return false;
     }.bind(this);
 
-    this.actionsToFilterOn = [{ mayAccept: true }, filterBelowUserLevel];
+    this.actionsToFilterOn = [{mayAccept: true}, filterBelowUserLevel];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
     $scope.$on('MECHANISMS.updated', function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-        this.hasActionItems = !!_.filter(this.approvalTableData, { mayAccept: true, level: ($scope.approvalLevel.level + 1) }).length;
+        this.hasActionItems = !!_.filter(this.approvalTableData, {
+            mayAccept: true,
+            level: ($scope.approvalLevel.level + 1)
+        }).length;
     }.bind(this));
 }
 
 function acceptedTableViewController($scope, $controller) {
-    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', {$scope: $scope}));
 
-    this.actionsToFilterOn = [{ mayApprove: true }, { mayUnaccept: true }];
+    this.actionsToFilterOn = [{mayApprove: true}, {mayUnaccept: true}];
     this.approvalTableData = this.filterData(this.approvalTableDataSource);
 
     $scope.$on('MECHANISMS.updated', function (event, mechanisms) {
         this.approvalTableData = this.filterData(mechanisms);
-        this.hasActionItems = !!_.filter(this.approvalTableData, { mayApprove: true, level: $scope.approvalLevel.level + 1 }).length;
+        this.hasActionItems = !!_.filter(this.approvalTableData, {
+            mayApprove: true,
+            level: $scope.approvalLevel.level + 1
+        }).length;
     }.bind(this));
 }
 
 function submittedTableViewController($scope, $controller) {
-    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', {$scope: $scope}));
 
     var filterOnLevel = function (item) {
         if ($scope.approvalLevel && item.level === $scope.approvalLevel.level && item.mayUnapprove === true) {
@@ -600,7 +621,7 @@ function submittedTableViewController($scope, $controller) {
 }
 
 function viewTableViewController($scope, $controller) {
-    jQuery.extend(this, $controller('tableViewController', { $scope: $scope }));
+    jQuery.extend(this, $controller('tableViewController', {$scope: $scope}));
 
     //The filter always returns true.
     this.filterData = function (data) {

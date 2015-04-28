@@ -313,7 +313,7 @@ gulp.task('git:pre-commit', function (cb) {
         process.exit(1);
     });
 
-    runSequence('test', 'lint', /*'jscs',*/ cb);
+    runSequence('test', 'lint', 'jscs', cb);
 });
 
 gulp.task('copy-fake-api', function () {

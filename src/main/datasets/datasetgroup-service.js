@@ -49,12 +49,11 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
                     }
 
                     categoryComboCache[catCombo].then(function (categoryCombo) {
-                            _.each(dataSets, function (dataSet) {
-                                dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
-                            });
+                        _.each(dataSets, function (dataSet) {
+                            dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
                         });
                     });
-
+                });
 
                 return filteredGroup;
             }));

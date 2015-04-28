@@ -93,7 +93,6 @@ function datasetViewDirective(AppManifest, $translate) {
         jQuery('.view-wrap').append(backToTop);
     }
 
-
     return {
         restrict: 'E',
         replace: true,
@@ -102,10 +101,10 @@ function datasetViewDirective(AppManifest, $translate) {
         link: function (scope, element) {
             scope.reportView = {
                 actions: {
-                    approve: { count: 0 },
-                    unapprove: { count: 0 },
-                    accept: { count: 0 },
-                    unaccept: { count: 0 }
+                    approve: {count: 0},
+                    unapprove: {count: 0},
+                    accept: {count: 0},
+                    unaccept: {count: 0}
                 }
             };
 
@@ -164,7 +163,10 @@ function datasetViewDirective(AppManifest, $translate) {
                 scope.details.dataSetsFilteredByMechanisms.forEach(function (item) {
                     loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
                     scope.reportView[item.id] = {};
-                    scope.reportView[item.id].content = angular.element('<div class="report-loading-message"><i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span></div>');
+                    scope.reportView[item.id].content = angular.element(
+                        '<div class="report-loading-message">' +
+                            '<i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span>' +
+                        '</div>');
                 });
 
                 //Add the first element

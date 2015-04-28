@@ -12,9 +12,11 @@ function dataViewController($scope, approvalsService, $translate, $log) {
 
     this.isLocked = false;
 
-    this.getActionTextFor = function(type) {
+    this.getActionTextFor = function (type) {
         function ucFirst(value) {
-            return value.replace(/^./, function (value) { return value.toUpperCase(); });
+            return value.replace(/^./, function (value) {
+                return value.toUpperCase();
+            });
         }
 
         if (type === 'unapprove') {
@@ -23,12 +25,12 @@ function dataViewController($scope, approvalsService, $translate, $log) {
             }, true);
 
             if (isReturn) {
-                return $translate.instant('Return submission for {{count}} mechanism(s)', { count: this.details.actions[type].length });
+                return $translate.instant('Return submission for {{count}} mechanism(s)', {count: this.details.actions[type].length});
             }
         }
 
         if (this.details.actions && this.details.actions[type]) {
-            return $translate.instant(ucFirst(type) + ' {{count}} mechanism(s)', { count: this.details.actions[type].length });
+            return $translate.instant(ucFirst(type) + ' {{count}} mechanism(s)', {count: this.details.actions[type].length});
         }
     };
 
@@ -77,7 +79,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
     function getActionCallBackFor(actionName, mechanisms) {
         return function () {
             self.isLocked = false;
-            $scope.$emit('APP.submit.success', { action: actionName, mechanisms: mechanisms } );
+            $scope.$emit('APP.submit.success', {action: actionName, mechanisms: mechanisms});
         };
     }
 
@@ -104,7 +106,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
                 ou: mechanism.organisationUnit
             };
         });
-        approvalParams.pe = [ params.pe ];
+        approvalParams.pe = [params.pe];
         approvalParams.ds = params.ds;
         approvalParams.ou = $scope.details.orgUnit;
 
@@ -144,7 +146,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
         this.isLocked = true;
 
         if (this.isParamsComplete()) {
-            approvalParams= prepareApprovalServiceParams(params, mechanisms);
+            approvalParams = prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.approvals.length > 0) {
                 approvalsService.accept(approvalParams).then(getActionCallBackFor('accept', mechanisms), actionErrorCallBack);
@@ -160,7 +162,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
         this.isLocked = true;
 
         if (this.isParamsComplete()) {
-            approvalParams= prepareApprovalServiceParams(params, mechanisms);
+            approvalParams = prepareApprovalServiceParams(params, mechanisms);
 
             replaceOuWithGlobalOu(approvalParams);
 
@@ -178,7 +180,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
         this.isLocked = true;
 
         if (this.isParamsComplete()) {
-            approvalParams= prepareApprovalServiceParams(params, mechanisms);
+            approvalParams = prepareApprovalServiceParams(params, mechanisms);
 
             if (approvalParams.approvals.length > 0) {
                 approvalsService.unaccept(approvalParams).then(getActionCallBackFor('unaccept', mechanisms), actionErrorCallBack);

@@ -102,7 +102,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
                 });
             }).flatten();
 
-            return data.__wrapped__;
+            return data.value();
         }
 
         function filterCategoryOptions(categoryOptions) {
@@ -226,12 +226,14 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
             var actions = [];
             var status = [];
             var approvalLevel;
-            var mechanism =  angular.copy(_.find(parsedData, { catComboId: mechanismStatus.id }));
+            var mechanism = angular.copy(_.find(parsedData, {catComboId: mechanismStatus.id}));
 
-            if (!mechanism) { return; }
+            if (!mechanism) {
+                return;
+            }
 
             if (mechanismStatus.level && mechanismStatus.level.id) {
-                approvalLevel = _.find(approvalLevels, { id: mechanismStatus.level.id });
+                approvalLevel = _.find(approvalLevels, {id: mechanismStatus.level.id});
             }
 
             if (mechanismStatus.permissions.mayApprove === true) {
@@ -266,7 +268,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
                 if (mechanismStatus.accepted === true) {
                     status.push('Accepted');
                     if (mechanismStatus.level && mechanismStatus.level.level) {
-                        approvalLevel = _.find(approvalLevels, { level: (parseInt(mechanismStatus.level.level) - 1) });
+                        approvalLevel = _.find(approvalLevels, {level: (parseInt(mechanismStatus.level.level) - 1)});
                         status.push(approvalLevel.levelName);
                     }
                 } else {
@@ -276,7 +278,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
             } else {
                 status.push('Pending');
             }
-
 
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
@@ -288,7 +289,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
                 }
             }
 
-            mechanism.level = mechanismStatus.level && parseInt(mechanismStatus.level.level, 10) || undefined ;
+            mechanism.level = mechanismStatus.level && parseInt(mechanismStatus.level.level, 10) || undefined;
             mechanisms.push(mechanism);
         });
     };
