@@ -17,9 +17,13 @@ angular.module('PEPFAR.approvals').controller('acceptedTableViewController', acc
 angular.module('PEPFAR.approvals').controller('submittedTableViewController', submittedTableViewController);
 angular.module('PEPFAR.approvals').controller('viewTableViewController', viewTableViewController);
 
-angular.module('PEPFAR.approvals').config(function (uiSelectConfig) {
-    uiSelectConfig.theme = 'bootstrap';
-});
+angular.module('PEPFAR.approvals')
+    .config(function (uiSelectConfig) {
+        uiSelectConfig.theme = 'bootstrap';
+    })
+    .config(function(httpRequestInterceptorCacheBusterProvider){
+        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*\.html$/],true);
+    });
 
 //jshint maxstatements: 41
 function appController(periodService, $scope, currentUser, mechanismsService,
