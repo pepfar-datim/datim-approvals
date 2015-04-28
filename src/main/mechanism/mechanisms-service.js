@@ -165,7 +165,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
                 }
                 return false;
             });
-            console.log(agency);
 
             if (agency) {
                 return agency.name;

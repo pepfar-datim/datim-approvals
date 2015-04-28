@@ -16,8 +16,8 @@ function datasetViewDirective(AppManifest, $translate) {
         //If the dataset has a category(or multiple, in this case one) get the currentSelection items that have that category
         //If the dataset has the category default don't add the dimension
         var datasetCOCNames = _.pluck(ds.categoryCombo.categoryOptionCombos, 'name');
-        var datasetCOCIds;
         var hasDefaultCOC = _.contains(datasetCOCNames, '(default)');
+        var datasetCOCIds;
 
         var COsForReport;
         if (!hasDefaultCOC) {
@@ -29,7 +29,7 @@ function datasetViewDirective(AppManifest, $translate) {
                 }
                 return false;
             });
-            // TODO: This picks the fist category and assumes that all the other COs have the same category
+            // TODO: This picks the first category and assumes that all the other COs have the same category
             // which might not be true
             params.dimension = COsForReport[0].category + ':' + _.pluck(COsForReport, 'id').join(';');
         }

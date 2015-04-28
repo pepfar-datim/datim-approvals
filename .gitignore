@@ -10,6 +10,7 @@ node_modules/
 bower_components/
 build/
 build-with-rev/
+approvals-release/
 
 test/vendor/
 src/vendor/*
