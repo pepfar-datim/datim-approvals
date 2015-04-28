@@ -1,5 +1,15 @@
 /* global jQuery */
-angular.module('PEPFAR.approvals', ['d2', 'd2-translate', 'ui.select', 'ui.bootstrap.tabs', 'd2-typeahead', 'ui.bootstrap.typeahead', 'ui.bootstrap.progressbar', 'd2HeaderBar']);
+angular.module('PEPFAR.approvals', [
+    'd2',
+    'd2-translate',
+    'ui.select',
+    'ui.bootstrap.tabs',
+    'd2-typeahead',
+    'ui.bootstrap.typeahead',
+    'ui.bootstrap.progressbar',
+    'd2HeaderBar',
+    'ngCacheBuster'
+]);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
 angular.module('PEPFAR.approvals').controller('acceptTableViewController', acceptTableViewController);
@@ -7,9 +17,13 @@ angular.module('PEPFAR.approvals').controller('acceptedTableViewController', acc
 angular.module('PEPFAR.approvals').controller('submittedTableViewController', submittedTableViewController);
 angular.module('PEPFAR.approvals').controller('viewTableViewController', viewTableViewController);
 
-angular.module('PEPFAR.approvals').config(function (uiSelectConfig) {
-    uiSelectConfig.theme = 'bootstrap';
-});
+angular.module('PEPFAR.approvals')
+    .config(function (uiSelectConfig) {
+        uiSelectConfig.theme = 'bootstrap';
+    })
+    .config(function(httpRequestInterceptorCacheBusterProvider){
+        httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*\.html.*/]);
+    });
 
 //jshint maxstatements: 41
 function appController(periodService, $scope, currentUser, mechanismsService,
