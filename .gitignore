@@ -1,5 +1,6 @@
 *.iml
 .idea
+.coveralls.yml
 
 .coveralls.yml
 
@@ -11,7 +12,8 @@ build/
 build-with-rev/
 
 test/vendor/
-src/vendor/
+src/vendor/*
+!src/vendor/d2js
 
 dev/
 
