@@ -165,6 +165,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
                 }
                 return false;
             });
+            console.log(agency);
 
             if (agency) {
                 return agency.name;
@@ -184,20 +185,20 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
             self.getData().then(function (data) {
                 _.each(data, function (category) {
                     _.each(self.dataSets, replaceMechanismNameWithDataSetNameForDefaultCategoryComboNameDefault);
+
+                    function replaceMechanismNameWithDataSetNameForDefaultCategoryComboNameDefault(dataSet) {
+                        if (dataSet.categoryCombo.name === 'default' && dataSet.categoryCombo.categories[0].id === category.id) {
+                            _.each(category.categoryOptions, function (mechanism) {
+                                if (mechanism.name === 'default') {
+                                    mechanism.name = dataSet.name;
+                                    mechanism.hasDefaultCategory = true;
+                                }
+                            });
+                        }
+                    }
                 });
                 categoryCache[categories.join('_')] = data;
                 deferred.resolve(data);
-
-                function replaceMechanismNameWithDataSetNameForDefaultCategoryComboNameDefault(dataSet) {
-                    if (dataSet.categoryCombo.name === 'default' && dataSet.categoryCombo.categories[0].id === category.id) {
-                        _.each(category.categoryOptions, function (mechanism) {
-                            if (mechanism.name === 'default') {
-                                mechanism.name = dataSet.name;
-                                mechanism.hasDefaultCategory = true;
-                            }
-                        });
-                    }
-                }
 
             }, function () {
                 deferred.reject('Error loading category data');
@@ -326,7 +327,7 @@ function categoriesService(request, $q, $log) {
 
     function getCategories(categoryIds) {
         var categoriesUrl = ['api', 'categories.json'].join('/');
-        var fields = 'fields=id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]';
+        var fields = 'fields=id,name';
         var filters = _.map(categoryIds, function (category) {
             return 'id:eq:' + category;
         });
@@ -338,10 +339,37 @@ function categoriesService(request, $q, $log) {
 
         queryParams = filters = ['paging=false', createFilterQueryParamFrom(filters), fields];
 
-        return request(categoriesUrl, queryParams)
+        var categoryOptionsPromises = categoryIds.map(function (categoryId) {
+            return request('api/categoryOptions', [
+                'paging=false',
+                'filter=categories.id:eq:' + categoryId,
+                'fields=' + encodeURI('id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]')
+            ]).then(function (response) {
+                response.categoryId = categoryId;
+                return response;
+            });
+        });
+
+        var categoriesPromise = request(categoriesUrl, queryParams)
             .then(extractCategories)
             .catch(function () {
                 return $q.reject('Request for categories failed');
+            });
+
+        return $q.all([categoriesPromise].concat(categoryOptionsPromises))
+            .then(function (responses) {
+                var categories = responses.shift();
+                var categoryOptionsForCategories = responses;
+
+                categoryOptionsForCategories.forEach(function (categoryOptions) {
+                    categories.forEach(function (category) {
+                        if (categoryOptions.categoryId === category.id) {
+                            category.categoryOptions = categoryOptions.categoryOptions;
+                        }
+                    });
+                });
+
+                return categories;
             });
     }
 
@@ -366,17 +394,6 @@ function categoriesService(request, $q, $log) {
         }
         return true;
     };
-
-    function getCategoryData(categoryId) {
-        var categoryOptionCombosUrl = ['api', 'categoryOptions.json'].join('/') + '?' + filters.join('&');
-        var queryParams = [
-            'paging=false',
-            'filter=categories.id:eq:' + categoryId,
-            'fields=id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]'
-        ];
-
-        return request(categoryOptionComboUrl, queryParams);
-    }
 }
 
 /**********************************************************************************/

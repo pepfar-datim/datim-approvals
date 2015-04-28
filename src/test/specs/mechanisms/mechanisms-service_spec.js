@@ -7,13 +7,15 @@ describe('Mechanisms service', function () {
     var apiUrlWithCorrectParameters = ['/dhis/api/categories.json?',
         [
             'paging=false',
-            'filter=id:eq:dsetId1',
-            'filter=id:eq:dsetId2',
-            'filter=id:eq:dsetId3',
-            'fields=id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]'
+            'filter=id:eq:SH885jaRe0o',
+            'filter=id:eq:GLevLNI9wkl',
+            'fields=id,name'
+            //'fields=id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]'
         ].join('&')
     ].join('');
 
+    var defaultCategoryUrl =  '/dhis/api/categoryOptions?paging=false&filter=categories.id:eq:GLevLNI9wkl&fields=id,name,organisationUnits%5Bid,name%5D,categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D';
+    var fundingMechanismCategoryUrl = '/dhis/api/categoryOptions?paging=false&filter=categories.id:eq:SH885jaRe0o&fields=id,name,organisationUnits%5Bid,name%5D,categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D';
 
     var categoriesFromApi = fixtures.get('categories');
 
@@ -54,57 +56,68 @@ describe('Mechanisms service', function () {
             mechanismsService.getData();
         });
 
-        it('should add the parameters to the url', function () {
-            $httpBackend.expectGET(apiUrlWithCorrectParameters)
-                .respond(400, categoriesFromApi);
+        describe('requests', function () {
+            var categoriesRequest;
 
-            mechanismsService.period = '2014';
-            mechanismsService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
+            beforeEach(function () {
+                $httpBackend.expectGET(fundingMechanismCategoryUrl)
+                    .respond(200, fixtures.get('fundingMechanismCategory'));
+                $httpBackend.expectGET(defaultCategoryUrl)
+                    .respond(200, fixtures.get('defaultCategory'));
 
-            mechanismsService.getData();
-
-            $httpBackend.flush();
-        });
-
-
-        it('should reject when the request fails', function () {
-            var catchSpy = jasmine.createSpy();
-
-            $httpBackend.expectGET(apiUrlWithCorrectParameters)
-                .respond(400, categoriesFromApi);
-
-            mechanismsService.period = '2014';
-            mechanismsService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
-
-            mechanismsService
-                .getData()
-                .catch(catchSpy);
-
-            $httpBackend.flush();
-
-            expect(catchSpy).toHaveBeenCalled();
-        });
-
-        it('should resolve with the correct values', function () {
-            var categories;
-
-            $httpBackend.expectGET(apiUrlWithCorrectParameters)
-                .respond(200, categoriesFromApi);
-
-            mechanismsService.period = '2014';
-            mechanismsService.categories = ['dsetId1', 'dsetId2', 'dsetId3'];
-
-            mechanismsService
-                .getData()
-                .then(function (data) {
-                    categories = data;
+                categoriesRequest = $httpBackend.expectGET(apiUrlWithCorrectParameters);
+                categoriesRequest.respond(200, {
+                    categories: [
+                        {id: 'SH885jaRe0o', name: 'Funding Mechanism'},
+                        {id: 'GLevLNI9wkl', name: 'default'}
+                    ]
                 });
+            });
 
-            $httpBackend.flush();
+            it('should add the parameters to the url', function () {
+                mechanismsService.period = '2014';
+                mechanismsService.categories = ['SH885jaRe0o', 'GLevLNI9wkl'];
 
-            expect(categories.length).toEqual(2);
-            expect(categories[0].id).toEqual('SH885jaRe0o');
-            expect(categories[1].id).toEqual('GLevLNI9wkl');
+                mechanismsService.getData();
+
+                $httpBackend.flush();
+            });
+
+
+            it('should reject when the request fails', function () {
+                var catchSpy = jasmine.createSpy();
+                categoriesRequest.respond(400, 'Error while loading categories');
+
+                mechanismsService.period = '2014';
+                mechanismsService.categories = ['SH885jaRe0o', 'GLevLNI9wkl'];
+
+                mechanismsService
+                    .getData()
+                    .catch(catchSpy);
+
+                $httpBackend.flush();
+
+                expect(catchSpy).toHaveBeenCalled();
+            });
+
+            it('should resolve with the correct values', function () {
+                var categories;
+
+                mechanismsService.period = '2014';
+                mechanismsService.categories = ['SH885jaRe0o', 'GLevLNI9wkl'];
+
+                mechanismsService
+                    .getData()
+                    .then(function (data) {
+                        categories = data;
+                    });
+
+                $httpBackend.flush();
+
+                expect(categories.length).toEqual(2);
+                expect(categories[0].id).toEqual('SH885jaRe0o');
+                expect(categories[1].id).toEqual('GLevLNI9wkl');
+            });
         });
     });
 
