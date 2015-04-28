@@ -4,15 +4,15 @@ module.exports = function( config ) {
         frameworks: ['jasmine', 'sinon'],
 
         preprocessors: {
-            '../main/**/*.html': 'html2js',
-            '../main/**/*.js': 'coverage'
+            './**/*.html': 'html2js',
+            './**/*.js': 'coverage'
         },
 
         reporters: ['progress', 'coverage'],
 
         coverageReporter: {
             type: 'lcov',
-            dir: '../../../coverage',
+            dir: '../../coverage',
             subdir: function(browser) {
                 // normalization process to keep a consistent browser name accross different OS
                 return browser.toLowerCase().split(/[ /-]/)[0];

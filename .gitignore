@@ -1,6 +1,8 @@
 *.iml
 .idea
 
+.coveralls.yml
+
 .sass-cache
 
 node_modules/
