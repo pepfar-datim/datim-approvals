@@ -221,7 +221,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
         mechanisms = [];
 
         //TODO: Refactor this function
-        //jshint maxcomplexity:16, maxstatements:41
+        //jshint maxcomplexity:16, maxstatements:43
         _.each(mechanismsStatuses, function (mechanismStatus) {
             var actions = [];
             var status = [];
@@ -264,8 +264,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
                 mechanism.mayReadData = false;
             }
 
+            mechanism.accepted = false;
             if (approvalLevel) {
                 if (mechanismStatus.accepted === true) {
+                    mechanism.accepted = true;
                     status.push('Accepted');
                     if (mechanismStatus.level && mechanismStatus.level.level) {
                         approvalLevel = _.find(approvalLevels, {level: (parseInt(mechanismStatus.level.level) - 1)});

@@ -1,6 +1,6 @@
 'use strict';
 
-var dhis_directory = '/usr/local/apache-tomcat-8.0.5/webapps/dhis/dhis-web-pepfar-approvals/';
+var dhis_directory = '/usr/local/apache-tomcat-8.0.5/webapps/dhis/apps/approvals/';
 var build_directory = 'build';
 
 var files = [
@@ -297,13 +297,12 @@ gulp.task('build-prod', function (cb) {
 });
 
 gulp.task('deploy', function () {
-    return gulp.src([
-        'build/**/*'
-    ]).pipe(gulp.dest('/usr/local/apache-tomcat-8.0.5/webapps/dhis/apps/approvals'));
+    return gulp.src(['build-with-rev/**/*'])
+        .pipe(gulp.dest(dhis_directory));
 });
 
 gulp.task('default', function (cb) {
-    rimraf(dhis_directory, function () {});
+    rimraf(dhis_directory, cb);
     runSequence('build', 'deploy', cb);
 });
 

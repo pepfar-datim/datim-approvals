@@ -112,8 +112,17 @@ function dataViewController($scope, approvalsService, $translate, $log) {
         return approvalParams;
 
         function determineOu(mechanism, action) {
-            if (action === 'submit' && mechanism.level === 2 && isGlobal()) {
-                return $scope.globalUser.globalOUId;
+            if (isGlobal()) {
+                //Adjust the mechanisms ou for any actions that happen on the global level
+                if (mechanism.level === 1) {
+                    //Adjust the mechanisms ou for any actions that happen on the global level
+                    $log.info(mechanism, 'is on level 1 therefore we replace the ou with', $scope.globalUser.globalOUId);
+                    return $scope.globalUser.globalOUId;
+                }
+                if (mechanism.level === 2 && mechanism.accepted === true && action === 'submit') {
+                    $log.info(mechanism, 'is about to be submitted from level 2 and is accepted therefore we replace the ou with', $scope.globalUser.globalOUId);
+                    return $scope.globalUser.globalOUId;
+                }
             }
 
             return mechanism.organisationUnit;
@@ -121,15 +130,6 @@ function dataViewController($scope, approvalsService, $translate, $log) {
 
         function isGlobal() {
             return !!($scope.globalUser && $scope.globalUser.isGlobalUser && $scope.globalUser.globalOUId);
-        }
-    }
-
-    function replaceOuWithGlobalOu(approvalParams) {
-        if ($scope.globalUser && $scope.globalUser.isGlobalUser && $scope.globalUser.globalOUId) {
-            $log.info('Replace the ou for each of the mechanisms with the global ou id: ' + $scope.globalUser.globalOUId);
-            approvalParams.approvals.forEach(function (approvalRecord) {
-                approvalRecord.ou = $scope.globalUser.globalOUId;
-            });
         }
     }
 
@@ -142,8 +142,6 @@ function dataViewController($scope, approvalsService, $translate, $log) {
 
         if (this.isParamsComplete()) {
             approvalParams = prepareApprovalServiceParams(params, mechanisms, 'submit');
-
-            replaceOuWithGlobalOu(approvalParams);
 
             if (approvalParams.approvals.length > 0) {
                 approvalsService.approve(approvalParams).then(getActionCallBackFor('submit', mechanisms), actionErrorCallBack);
@@ -176,8 +174,6 @@ function dataViewController($scope, approvalsService, $translate, $log) {
 
         if (this.isParamsComplete()) {
             approvalParams = prepareApprovalServiceParams(params, mechanisms, 'unapprove');
-
-            replaceOuWithGlobalOu(approvalParams);
 
             if (approvalParams.approvals.length > 0) {
                 approvalsService.unapprove(approvalParams).then(getActionCallBackFor('unsubmit', mechanisms), actionErrorCallBack);
