@@ -99,7 +99,6 @@ function dataViewController($scope, approvalsService, $translate, $log) {
         var approvalParams = {};
 
         approvalParams.approvals = _.map(mechanisms, function (mechanism) {
-            console.log(mechanism);
             return {
                 aoc: mechanism.catComboId,
                 ou: determineOu(mechanism, action)

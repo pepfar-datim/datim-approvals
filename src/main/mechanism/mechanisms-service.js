@@ -308,7 +308,8 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
                 params.filter.map(function (filterText) {
                     return 'filter=' + filterText;
                 }).join('&'),
-                'fields=' + params.fields
+                'fields=' + params.fields,
+                'cacheBuster=' + new Date().getTime()
             ];
 
             jQuery.ajax({
