@@ -16,8 +16,8 @@ function datasetViewDirective(AppManifest, $translate) {
         //If the dataset has a category(or multiple, in this case one) get the currentSelection items that have that category
         //If the dataset has the category default don't add the dimension
         var datasetCOCNames = _.pluck(ds.categoryCombo.categoryOptionCombos, 'name');
-        var datasetCOCIds;
         var hasDefaultCOC = _.contains(datasetCOCNames, '(default)');
+        var datasetCOCIds;
 
         var COsForReport;
         if (!hasDefaultCOC) {
@@ -29,7 +29,7 @@ function datasetViewDirective(AppManifest, $translate) {
                 }
                 return false;
             });
-            // TODO: This picks the fist category and assumes that all the other COs have the same category
+            // TODO: This picks the first category and assumes that all the other COs have the same category
             // which might not be true
             params.dimension = COsForReport[0].category + ':' + _.pluck(COsForReport, 'id').join(';');
         }
@@ -93,7 +93,6 @@ function datasetViewDirective(AppManifest, $translate) {
         jQuery('.view-wrap').append(backToTop);
     }
 
-
     return {
         restrict: 'E',
         replace: true,
@@ -102,10 +101,10 @@ function datasetViewDirective(AppManifest, $translate) {
         link: function (scope, element) {
             scope.reportView = {
                 actions: {
-                    approve: { count: 0 },
-                    unapprove: { count: 0 },
-                    accept: { count: 0 },
-                    unaccept: { count: 0 }
+                    approve: {count: 0},
+                    unapprove: {count: 0},
+                    accept: {count: 0},
+                    unaccept: {count: 0}
                 }
             };
 
@@ -164,7 +163,10 @@ function datasetViewDirective(AppManifest, $translate) {
                 scope.details.dataSetsFilteredByMechanisms.forEach(function (item) {
                     loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
                     scope.reportView[item.id] = {};
-                    scope.reportView[item.id].content = angular.element('<div class="report-loading-message"><i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span></div>');
+                    scope.reportView[item.id].content = angular.element(
+                        '<div class="report-loading-message">' +
+                            '<i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span>' +
+                        '</div>');
                 });
 
                 //Add the first element

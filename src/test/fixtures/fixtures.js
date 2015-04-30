@@ -429,6 +429,218 @@
     library['system/info'] =
     {"contextPath":"http://localhost:8080/dhis","userAgent":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/42.0.2311.82 Safari/537.36 OPR/29.0.1795.41 (Edition beta)","calendar":"iso8601","dateFormat":"yyyy-mm-dd","serverDate":"2015-04-25T11:39:39.109+0000","lastAnalyticsTableSuccess":"2015-03-14T23:03:27.809+0000","intervalSinceLastAnalyticsTableSuccess":"996 h, 36 m, 11 s","version":"2.19-SNAPSHOT","revision":"19021","buildTime":"2015-04-25T10:57:02.000+0000","environmentVariable":"DHIS2_HOME","javaVersion":"1.7.0_25","javaVendor":"Oracle Corporation","javaHome":"/Library/Java/JavaVirtualMachines/jdk1.7.0_25.jdk/Contents/Home/jre","javaIoTmpDir":"/usr/local/apache-tomcat-8.0.5/temp","javaOpts":"-Xms512m -Xmx1024m -XX:MaxPermSize=256M","osName":"Mac OS X","osArchitecture":"x86_64","osVersion":"10.9.4","externalDirectory":"/Work/UIO/dhis","databaseInfo":{"type":"PostgreSQL","name":"dedupe","user":"postgres"},"memoryInfo":"Mem Total in JVM: 757 Free in JVM: 484 Max Limit: 989","cpuCores":4,"systemId":"4892b46d-b5dd-4d41-9a8b-2e39d8e445de"};
 
+    library.fundingMechanismCategory = {
+        "categoryOptions": [
+            {
+                "id": "IzVbuMzCCEe",
+                "name": "1234 - How...",
+                "organisationUnits": [
+                    {
+                        "id": "lZsCb6y0KDX",
+                        "name": "Malawi",
+                        "created": "2013-06-10T00:34:22.000+0000",
+                        "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                    }
+                ],
+                categoryOptionCombos: [
+                    {
+                        id: "qS0ABIH66TS",
+                        name: "(1234 - How....)"
+                    }
+                ],
+                groups: [
+                    {
+                        id: "BnjwQmbgK1b",
+                        name: "Partner 1",
+                        categoryOptionGroupSet: {
+                            id: "BOyWrF33hiR"
+                        }
+                    },
+                    {
+                        id: "FPUgmtt8HRi",
+                        name: "Agency 1",
+                        categoryOptionGroupSet: {
+                            id: "bw8KHXzxd9i"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "KlqBLXUUwhW",
+                "name": "9876 - Nat...",
+                "organisationUnits": [
+                    {
+                        "id": "lZsCb6y0KDX",
+                        "name": "Malawi",
+                        "created": "2013-06-10T00:34:22.000+0000",
+                        "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                    }
+                ],
+                categoryOptionCombos: [
+                    {
+                        id: "Oae8B8z5H5Y",
+                        name: "(9876 - Nat...)"
+                    }
+                ],
+                groups: [
+                    {
+                        id: "wxAh2TvsTUj",
+                        name: "Partner 5",
+                        categoryOptionGroupSet: {
+                            id: "BOyWrF33hiR"
+                        }
+                    },
+                    {
+                        id: "FPUgmtt8HRi",
+                        name: "Agency 1",
+                        categoryOptionGroupSet: {
+                            id: "bw8KHXzxd9i"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "F544HMM7tT7",
+                "name": "2342 - Wat..",
+                "organisationUnits": [
+                    {
+                        "id": "RZdCb6y0KRD",
+                        "name": "Rwanda",
+                        "created": "2013-06-10T00:34:22.000+0000",
+                        "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                    }
+                ],
+                categoryOptionCombos: [
+                    {
+                        id: "RrjmU53u2Ls",
+                        name: "(2342 - Wat...)"
+                    }
+                ],
+                groups: [
+                    {
+                        id: "CSPJnuxBAnz",
+                        name: "Partner 4",
+                        categoryOptionGroupSet: {
+                            id: "BOyWrF33hiR"
+                        }
+                    },
+                    {
+                        id: "RGC9tURSc3W",
+                        name: "Agency 3",
+                        categoryOptionGroupSet: {
+                            id: "bw8KHXzxd9i"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "l32yP94G7HL",
+                "name": "5433 - JH...",
+                categoryOptionCombos: [
+                    {
+                        id: "tJoZs2lVXFc",
+                        name: "(5433 - JH...)"
+                    }
+                ],
+                groups: [
+                    {
+                        id: "NLV6dy7BE2O",
+                        name: "Agency 2",
+                        categoryOptionGroupSet: {
+                            id: "bw8KHXzxd9i"
+                        }
+                    },
+                    {
+                        id: "yrIYjIn0aom",
+                        name: "Partner 3",
+                        categoryOptionGroupSet: {
+                            id: "BOyWrF33hiR"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "tQV5xTc2JYj",
+                "name": "7654 - Pre...",
+                "organisationUnits": [
+                    {
+                        "id": "lZsCb6y0KDX",
+                        "name": "Malawi",
+                        "created": "2013-06-10T00:34:22.000+0000",
+                        "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                    }
+                ],
+                categoryOptionCombos: [
+                    {
+                        id: "qofeYTu7w0R",
+                        name: "(7654 - Pre...)"
+                    }
+                ],
+                groups: [
+                    {
+                        id: "vNQlvpUamTo",
+                        name: "Partner 2",
+                        categoryOptionGroupSet: {
+                            id: "BOyWrF33hiR"
+                        }
+                    },
+                    {
+                        id: "NLV6dy7BE2O",
+                        name: "Agency 2",
+                        categoryOptionGroupSet: {
+                            id: "bw8KHXzxd9i"
+                        }
+                    }
+                ]
+            },
+            {
+                "id": "GZIYLG1HWSW",
+                "name": "1233 - Mal...",
+                "organisationUnits": [
+                    {
+                        "id": "lZsCb6y0KDX",
+                        "name": "Malawi",
+                        "created": "2013-06-10T00:34:22.000+0000",
+                        "lastUpdated": "2014-09-18T11:03:00.174+0000"
+                    }
+                ],
+                groups: [
+                    {
+                        id: "iadd8tHFS9C",
+                        name: "Partner 1",
+                        categoryOptionGroupSet: {
+                            id: "BOyWrF33hiR"
+                        }
+                    },
+                    {
+                        id: "FPUgmtt8HRi",
+                        name: "Agency 1",
+                        categoryOptionGroupSet: {
+                            id: "bw8KHXzxd9i"
+                        }
+                    }
+                ]
+            }
+        ]
+    };
+
+    library.defaultCategory = {
+        "categoryOptions": [
+            {
+                "id": "xYerKDKCefk",
+                "name": "default",
+                "organisationUnits": [],
+                categoryOptionCombos: [
+                    {
+                        id: "HllvX50cXC0",
+                        name: "(default)"
+                    }
+                ],
+                groups: [ ]
+            }
+        ]
+    };
+
     function getFixture(key) {
         return library[key];
     }

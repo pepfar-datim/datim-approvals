@@ -15,11 +15,11 @@ function periodSelectorDirective(periodService) {
             scope.$watch(function () {
                 return periodService.getPeriodTypes();
             }, function (newVal, oldVal) {
-                 if (newVal !== oldVal) {
-                     scope.period.periodTypes = periodService.getPeriodTypes();
-                     scope.period.selectedPeriodType = scope.period.periodTypes[0];
-                     scope.changedPeriodType(scope.period.selectedPeriodType);
-                 }
+                if (newVal !== oldVal) {
+                    scope.period.periodTypes = periodService.getPeriodTypes();
+                    scope.period.selectedPeriodType = scope.period.periodTypes[0];
+                    scope.changedPeriodType(scope.period.selectedPeriodType);
+                }
             });
 
             scope.changedPeriodType = function ($item) {
@@ -32,7 +32,9 @@ function periodSelectorDirective(periodService) {
             };
 
             scope.changePeriod = function ($item) {
-                if ($item === undefined) { return; }
+                if ($item === undefined) {
+                    return;
+                }
 
                 periodService.period = $item;
             };

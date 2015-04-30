@@ -35,7 +35,7 @@ function approvalLevelsService($q, d2Api) {
         }, this);
 
         approvalLevels.getCategoryOptionGroupSetIdsForLevels = function () {
-            return _.map(_.filter(approvalLevels,'categoryOptionGroupSet'), function (level) {
+            return _.map(_.filter(approvalLevels, 'categoryOptionGroupSet'), function (level) {
                 if (level.categoryOptionGroupSet) {
                     return {
                         level: level.level,

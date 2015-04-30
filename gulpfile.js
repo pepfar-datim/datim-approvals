@@ -302,9 +302,18 @@ gulp.task('deploy', function () {
     ]).pipe(gulp.dest('/usr/local/apache-tomcat-8.0.5/webapps/dhis/apps/approvals'));
 });
 
-gulp.task('default', function () {
+gulp.task('default', function (cb) {
     rimraf(dhis_directory, function () {});
-    return runSequence('build', 'deploy');
+    runSequence('build', 'deploy', cb);
+});
+
+gulp.task('git:pre-commit', function (cb) {
+    gulp.on('err', function(e){
+        console.log('Pre-commit validate failed');
+        process.exit(1);
+    });
+
+    runSequence('test', 'lint', 'jscs', cb);
 });
 
 gulp.task('copy-fake-api', function () {

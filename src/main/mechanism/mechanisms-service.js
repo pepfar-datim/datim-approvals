@@ -1,4 +1,4 @@
-function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) {
+function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, categoriesService) {
     var self = this;
     var AGENCY_LEVEL = 3;
     var PARTNER_LEVEL = 4;
@@ -102,7 +102,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
                 });
             }).flatten();
 
-            return data.__wrapped__;
+            return data.value();
         }
 
         function filterCategoryOptions(categoryOptions) {
@@ -183,9 +183,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
 
             self.getData().then(function (data) {
                 _.each(data, function (category) {
-                    _.each(self.dataSets, function (dataSet) {
-                        if (dataSet.categoryCombo.name === 'default' &&
-                            dataSet.categoryCombo.categories[0].id === category.id) {
+                    _.each(self.dataSets, replaceMechanismNameWithDataSetNameForDefaultCategoryComboNameDefault);
+
+                    function replaceMechanismNameWithDataSetNameForDefaultCategoryComboNameDefault(dataSet) {
+                        if (dataSet.categoryCombo.name === 'default' && dataSet.categoryCombo.categories[0].id === category.id) {
                             _.each(category.categoryOptions, function (mechanism) {
                                 if (mechanism.name === 'default') {
                                     mechanism.name = dataSet.name;
@@ -193,10 +194,11 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
                                 }
                             });
                         }
-                    });
+                    }
                 });
                 categoryCache[categories.join('_')] = data;
                 deferred.resolve(data);
+
             }, function () {
                 deferred.reject('Error loading category data');
             });
@@ -224,12 +226,14 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
             var actions = [];
             var status = [];
             var approvalLevel;
-            var mechanism =  angular.copy(_.find(parsedData, { catComboId: mechanismStatus.id }));
+            var mechanism = angular.copy(_.find(parsedData, {catComboId: mechanismStatus.id}));
 
-            if (!mechanism) { return; }
+            if (!mechanism) {
+                return;
+            }
 
             if (mechanismStatus.level && mechanismStatus.level.id) {
-                approvalLevel = _.find(approvalLevels, { id: mechanismStatus.level.id });
+                approvalLevel = _.find(approvalLevels, {id: mechanismStatus.level.id});
             }
 
             if (mechanismStatus.permissions.mayApprove === true) {
@@ -264,7 +268,7 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
                 if (mechanismStatus.accepted === true) {
                     status.push('Accepted');
                     if (mechanismStatus.level && mechanismStatus.level.level) {
-                        approvalLevel = _.find(approvalLevels, { level: (parseInt(mechanismStatus.level.level) - 1) });
+                        approvalLevel = _.find(approvalLevels, {level: (parseInt(mechanismStatus.level.level) - 1)});
                         status.push(approvalLevel.levelName);
                     }
                 } else {
@@ -274,7 +278,6 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
             } else {
                 status.push('Pending');
             }
-
 
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
@@ -286,51 +289,14 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
                 }
             }
 
-            mechanism.level = mechanismStatus.level && parseInt(mechanismStatus.level.level, 10) || undefined ;
+            mechanism.level = mechanismStatus.level && parseInt(mechanismStatus.level.level, 10) || undefined;
             mechanisms.push(mechanism);
         });
     };
     //jshint maxcomplexity:6, maxstatements:30
 
     this.getData = function () {
-        var deferred = $q.defer();
-        var params = {
-            paging: false,
-            filter: _.map(categories, function (category) {
-                return 'id:eq:' + category;
-            }),
-            fields: 'id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]'
-        };
-
-        if (this.areParamsCorrect(params)) {
-            var filters = [
-                'paging=false',
-                params.filter.map(function (filterText) {
-                    return 'filter=' + filterText;
-                }).join('&'),
-                'fields=' + params.fields,
-                'cacheBuster=' + new Date().getTime()
-            ];
-
-            jQuery.ajax({
-                url: [AppManifest.activities.dhis.href, 'api', 'categories.json'].join('/') + '?' + filters.join('&'),
-                method: 'GET'
-            })
-            .then(function (data) {
-                    console.log('Loaded categories using jquery');
-                    if (data && data.categories && data.categories.length) {
-                        deferred.resolve(data.categories);
-                    } else {
-                        console.log('No categories found');
-                    }
-                }, function () {
-                    deferred.reject('Request for categories failed');
-                });
-        } else {
-            deferred.reject('Not all required params are set');
-        }
-
-        return deferred.promise;
+        return categoriesService.getCategories(categories);
     };
 
     this.getStatuses = function () {
@@ -346,16 +312,110 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, AppManifest) 
         });
     };
 
-    this.areParamsCorrect = function (params) {
-        if (params.filter.length <= 0) {
-            $log.error('Mechanism Service: Categories should set when trying to request mechanisms');
-            return false;
-        }
-        return true;
-    };
-
     d2Api.addEndPoint('categories');
     d2Api.addEndPoint('dataApprovals/categoryOptionCombos');
 }
 
 angular.module('PEPFAR.approvals').service('mechanismsService', mechanismsService);
+
+/**********************************************************************************/
+angular.module('PEPFAR.approvals').factory('categoriesService', categoriesService);
+function categoriesService(request, $q, $log) {
+    return {
+        getCategories: getCategories
+    };
+
+    function getCategories(categoryIds) {
+        var categoriesUrl = ['api', 'categories.json'].join('/');
+        var fields = 'fields=id,name';
+        var filters = _.map(categoryIds, function (category) {
+            return 'id:eq:' + category;
+        });
+        var queryParams;
+
+        if (!areParamsCorrect(filters)) {
+            return $q.reject('Not all required params are set');
+        }
+
+        queryParams = filters = ['paging=false', createFilterQueryParamFrom(filters), fields];
+
+        var categoryOptionsPromises = categoryIds.map(function (categoryId) {
+            return request('api/categoryOptions', [
+                'paging=false',
+                'filter=categories.id:eq:' + categoryId,
+                'fields=' + encodeURI('id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]')
+            ]).then(function (response) {
+                response.categoryId = categoryId;
+                return response;
+            });
+        });
+
+        var categoriesPromise = request(categoriesUrl, queryParams)
+            .then(extractCategories)
+            .catch(function () {
+                return $q.reject('Request for categories failed');
+            });
+
+        return $q.all([categoriesPromise].concat(categoryOptionsPromises))
+            .then(function (responses) {
+                var categories = responses.shift();
+                var categoryOptionsForCategories = responses;
+
+                categoryOptionsForCategories.forEach(function (categoryOptions) {
+                    categories.forEach(function (category) {
+                        if (categoryOptions.categoryId === category.id) {
+                            category.categoryOptions = categoryOptions.categoryOptions;
+                        }
+                    });
+                });
+
+                return categories;
+            });
+    }
+
+    function extractCategories(data) {
+        if (data && data.categories && data.categories.length) {
+            $log.log('Loaded categories using $http');
+            return data.categories;
+        }
+        return [];
+    }
+
+    function createFilterQueryParamFrom(filters) {
+        return filters.map(function (filterText) {
+            return 'filter=' + filterText;
+        }).join('&');
+    }
+
+    function areParamsCorrect(filters) {
+        if (filters.length <= 0) {
+            $log.error('Categories Service (getCategories): Ids should be provided when trying to request mechanisms');
+            return false;
+        }
+        return true;
+    }
+}
+
+/**********************************************************************************/
+angular.module('PEPFAR.approvals').factory('request', requestProvider);
+function requestProvider($http, $q, AppManifest) {
+
+    return request;
+
+    /**
+     * Does an ajax GET request using jquery
+     *
+     * @param {String} url Url to request from
+     * @param {Object} queryParams Query params that should be added to the url.
+     * @returns {Promise}
+     */
+    function request(url, queryParams) {
+        return $http.get([AppManifest.activities.dhis.href, url].join('/') + '?' + queryParams.join('&'))
+            .then(function (response) {
+                return response.data;
+            })
+            .catch(function (response) {
+                return $q.reject(response.statusText);
+            });
+    }
+}

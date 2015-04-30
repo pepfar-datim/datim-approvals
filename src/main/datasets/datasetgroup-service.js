@@ -1,4 +1,4 @@
-function dataSetGroupService(d2Api, $q, periodService, errorHandler) {
+function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler) {
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
@@ -6,6 +6,8 @@ function dataSetGroupService(d2Api, $q, periodService, errorHandler) {
     this.getGroups = function () {
         return dataSetGroups;
     };
+
+    var categoryComboCache = {};
 
     this.filterDataSetsForUser = function (resultDataSetGroups) {
         var dataSetGroupsPromises = [];
@@ -42,14 +44,16 @@ function dataSetGroupService(d2Api, $q, periodService, errorHandler) {
                 });
 
                 _.each(categoryComboIds, function (dataSets, catCombo) {
-                    d2Api.categoryCombos.withHttpConfig({cache: true}).get(catCombo,
-                        {fields: 'id,categoryOptionCombos[id,name]'}).then(function (categoryCombo) {
-                            _.each(dataSets, function (dataSet) {
-                                dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
-                            });
+                    if (!categoryComboCache[catCombo]) {
+                        categoryComboCache[catCombo] = Restangular.all('categoryCombos').withHttpConfig({cache: true}).get(catCombo, {fields: 'id,categoryOptionCombos[id,name]'});
+                    }
+
+                    categoryComboCache[catCombo].then(function (categoryCombo) {
+                        _.each(dataSets, function (dataSet) {
+                            dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
                         });
                     });
-
+                });
 
                 return filteredGroup;
             }));

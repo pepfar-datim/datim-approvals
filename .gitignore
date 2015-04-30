@@ -2,12 +2,15 @@
 .idea
 .coveralls.yml
 
+.coveralls.yml
+
 .sass-cache
 
 node_modules/
 bower_components/
 build/
 build-with-rev/
+approvals-release/
 
 test/vendor/
 src/vendor/*
