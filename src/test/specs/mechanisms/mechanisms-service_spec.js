@@ -7,8 +7,7 @@ describe('Mechanisms service', function () {
     var apiUrlWithCorrectParameters = ['/dhis/api/categories.json?',
         [
             'paging=false',
-            'filter=id:eq:SH885jaRe0o',
-            'filter=id:eq:GLevLNI9wkl',
+            'filter=id:in:%5BSH885jaRe0o,GLevLNI9wkl%5D',
             'fields=id,name'
             //'fields=id,name,categoryOptions[id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]'
         ].join('&')

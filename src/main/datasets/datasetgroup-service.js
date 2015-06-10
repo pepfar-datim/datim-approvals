@@ -20,9 +20,11 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
             filteredGroup.name = dataSetGroup.name;
             filteredGroup.dataSets = [];
 
-            filters = _.map(dataSetGroup.dataSets, function (dataSetId) {
-                return 'id:eq:' + dataSetId;
-            });
+            filters = [
+                'id:in:[',
+                dataSetGroup.dataSets.join(','),
+                ']'
+            ].join('');
 
             dataSetGroupsPromises.push(d2Api.dataSets.getList({
                 fields: 'name,shortName,id,periodType,categoryCombo[id,name,categories[id]]',

@@ -1,7 +1,7 @@
 describe('Datasetgroup service', function () {
-    var merUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:eq:fx2HjpODE5y&filter=id:eq:xXmmo2so2V8&filter=id:eq:gpJ2TLXI3mY&filter=id:eq:w9BiI08vABw&paging=false';
-    var eaUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:eq:eLRAaV32xH5&filter=id:eq:kLPghhtGPvZ&filter=id:eq:A4ivU53utt2&filter=id:eq:wEKkfO7aAI3&filter=id:eq:JmnzNK18klO&paging=false';
-    var simsUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:eq:nideTeYxXLu&filter=id:eq:J9Yq8jDd3nF&filter=id:eq:iqaWSeKDhS3&filter=id:eq:M059pmNzZYE&paging=false';
+    var merUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5Bfx2HjpODE5y,xXmmo2so2V8,gpJ2TLXI3mY,w9BiI08vABw%5D&paging=false';
+    var eaUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5BeLRAaV32xH5,kLPghhtGPvZ,A4ivU53utt2,wEKkfO7aAI3,JmnzNK18klO%5D&paging=false';
+    var simsUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5BnideTeYxXLu,J9Yq8jDd3nF,iqaWSeKDhS3,M059pmNzZYE%5D&paging=false';
 
     var service;
     var $httpBackend;
@@ -9,7 +9,7 @@ describe('Datasetgroup service', function () {
         filterPeriodTypes: jasmine.createSpy()
     };
     var errorHandlerMock;
-    
+
     var systemSettingRequest;
 
     beforeEach(module('d2-rest'));

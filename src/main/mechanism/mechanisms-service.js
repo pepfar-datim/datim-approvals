@@ -330,29 +330,28 @@ function categoriesService(request, $q, $log) {
     function getCategories(categoryIds) {
         var categoriesUrl = ['api', 'categories.json'].join('/');
         var fields = 'fields=id,name';
-        var filters = _.map(categoryIds, function (category) {
-            return 'id:eq:' + category;
-        });
+        var filters;
         var queryParams;
+        var categoryOptionsPromises;
+        var categoriesPromise;
 
-        if (!areParamsCorrect(filters)) {
+        if (!areParamsCorrect(categoryIds)) {
             return $q.reject('Not all required params are set');
         }
 
-        queryParams = filters = ['paging=false', createFilterQueryParamFrom(filters), fields];
+        filters = [encodeURI(['id:in:[', categoryIds.join(','), ']'].join(''))];
+        queryParams = ['paging=false', createFilterQueryParamFrom(filters), fields];
 
-        var categoryOptionsPromises = categoryIds.map(function (categoryId) {
-            return request('api/categoryOptions', [
-                'paging=false',
-                'filter=categories.id:eq:' + categoryId,
-                'fields=' + encodeURI('id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]')
-            ]).then(function (response) {
-                response.categoryId = categoryId;
-                return response;
+        categoryOptionsPromises = categoryIds
+            .map(function (categoryId) {
+                return requestCategoryOptionsByCategoryId(categoryId)
+                    .then(function (response) {
+                        response.categoryId = categoryId;
+                        return response;
+                    });
             });
-        });
 
-        var categoriesPromise = request(categoriesUrl, queryParams)
+        categoriesPromise = request(categoriesUrl, queryParams)
             .then(extractCategories)
             .catch(function () {
                 return $q.reject('Request for categories failed');
@@ -373,6 +372,14 @@ function categoriesService(request, $q, $log) {
 
                 return categories;
             });
+    }
+
+    function requestCategoryOptionsByCategoryId(categoryId) {
+        return request('api/categoryOptions', [
+            'paging=false',
+            'filter=categories.id:eq:' + categoryId,
+            'fields=' + encodeURI('id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]')
+        ]);
     }
 
     function extractCategories(data) {
@@ -405,7 +412,7 @@ function requestProvider($http, $q, AppManifest) {
     return request;
 
     /**
-     * Does an ajax GET request using jquery
+     * Does an ajax GET request using $http
      *
      * @param {String} url Url to request from
      * @param {Object} queryParams Query params that should be added to the url.
