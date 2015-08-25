@@ -395,7 +395,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     //When the dataset group is changed update the filter types and the datasets
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
-        periodService.filterPeriodTypes(dataSets.getPeriodTypes());
+        var oldPeriods = periodService.getPeriodTypes();
+        var newPeriods = periodService.filterPeriodTypes(dataSets.getPeriodTypes());
 
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
@@ -412,6 +413,11 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         if (self.hasTableDetails()) {
             self.showData = false;
             self.deSelect();
+
+            //When the periodType has not changed, force a reload of the table since the dataset group changed
+            if (oldPeriods.length && newPeriods.length && oldPeriods[0] === newPeriods[0]) {
+                self.getTableData();
+            }
         }
 
         self.updateViewButton();
