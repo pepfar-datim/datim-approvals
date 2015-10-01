@@ -90,7 +90,7 @@ function periodService(d2Api) {
                 thisYear = thisYear.slice((3 - currentQuarter.length >= 0) ? 3 - currentQuarter.length : 0);
 
                 if (currentQuarter.length === 4) {
-                    futureYear = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 1)[3];
+                    futureYear = [dhis2.period.generator.generateReversedPeriods(currentPeriodType, 1)[3]];
                 }
 
                 var oneYearAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -1);
