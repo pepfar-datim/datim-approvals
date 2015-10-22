@@ -160,7 +160,7 @@
                 if (dhis2CoreScripts.length > 0) {
                     script = dhis2CoreScripts.shift();
 
-                    console.log('Loading: ' + dhis2Root + script);
+                    window.console && console.log('Loading: ' + dhis2Root + script);
 
                     jQuery.getScript(dhis2Root + script, function () {
                         loadScript(callBack);
@@ -175,7 +175,7 @@
 
                 dhis2Root = manifest.activities.dhis.href;
                 if (!dhis2Root) {
-                    console.error('Error trying to get the dhis2 url from the manifest');
+                    window.console && console.error('Error trying to get the dhis2 url from the manifest');
                 }
 
                 window.dhis2 = window.dhis2 || {};
@@ -211,7 +211,7 @@
                                     setTimeout(bootstrapApp, 0);
                                 })
                                 .fail(function () {
-                                    console.warn('Failed to load uiLocale from userSettings: defaulting to english');
+                                    window.console &&  console.warn('Failed to load uiLocale from userSettings: defaulting to english');
                                     configureApp('en');
 
                                     setTimeout(bootstrapApp, 0);

@@ -183,7 +183,9 @@ function datasetViewDirective(AppManifest, $translate) {
                         }
                     }
                 } catch (e) {
-                    window.console.error(e);
+                    if (window.console && window.console.error) {
+                        window.console.error(e);
+                    }
                 }
             };
 
