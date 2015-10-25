@@ -379,6 +379,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 self.updateTitle();
             }
             organisationunitsService.currentOrganisationUnit.level = $scope.approvalLevel.level;
+        })
+        .catch(function () {
+            toastr.error('Unable to load your Data Approval Levels. (Please submit a ticket)');
         });
     });
 
@@ -391,6 +394,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             self.tabs.submit.state = true;
             self.tabs.submit.name = ['Submit'];
         }
+    })
+    .catch(function () {
+        toastr.error('Unable to load Data Approval levels, yours or all. (Please submit a ticket)');
     });
 
     //When the dataset group is changed update the filter types and the datasets
