@@ -287,6 +287,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 self.tabs.submit.access = false;
                 self.tabs.submit.name = ['Unaccept'];
                 self.tabs.submit.action = ['unaccept'];
+                self.tabs.unsubmit.access = true;
+                self.tabs.unsubmit.name = ['Return submission'];
+                self.tabs.unsubmit.action = ['unaccept'];
             }
         } else {
             if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
@@ -618,7 +621,14 @@ function submittedTableViewController($scope, $controller) {
     jQuery.extend(this, $controller('tableViewController', {$scope: $scope}));
 
     var filterOnLevel = function (item) {
-        if ($scope.approvalLevel && item.level === $scope.approvalLevel.level && item.mayUnapprove === true) {
+        // User does not have an approval level so, everything is false
+        if (!$scope.approvalLevel) {
+            return false;
+        }
+
+        var onLowerLevelAndAccepted = ((parseInt(item.level, 10) === parseInt($scope.approvalLevel.level, 10) + 1) && item.accepted);
+
+        if (((item.level === $scope.approvalLevel.level) || onLowerLevelAndAccepted)  && item.mayUnapprove === true) {
             return true;
         }
         return false;
