@@ -1,7 +1,7 @@
 function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, categoriesService) {
     var self = this;
-    var AGENCY_LEVEL = 3;
-    var PARTNER_LEVEL = 4;
+    var AGENCY_LEVEL = 4;
+    var PARTNER_LEVEL = 5;
 
     var period;
     var dataSetIds = [];
@@ -207,7 +207,10 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
         }
 
         return $q.all([getCategoriesAndReplaceDefaults(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
-            var parsedData = parseData(data[0], data[1].getCategoryOptionGroupSetIdsForLevels());
+            var categories = data[0];
+            var approvalLevels = data[1];
+
+            var parsedData = parseData(categories, approvalLevels.getCategoryOptionGroupSetIdsForLevels());
 
             self.filterMechanisms(data[2], parsedData, data[1]);
 

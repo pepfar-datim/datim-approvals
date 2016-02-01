@@ -101,6 +101,43 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
     //Add combo endpoint for MER Hack
     d2Api.addEndPoint('categoryCombos');
 
+
+    Restangular.all('dataApprovalWorkflows')
+        .withHttpConfig({cache: true})
+        .getList({
+            fields: 'id,name,displayName,dataApprovalLevels',
+            paging: false,
+        })
+        .then(function (dataApprovalWorkflows) {
+            function pickId(value) {
+                return value.id;
+            }
+
+            var workflowIds = _.map(dataApprovalWorkflows, pickId).join(',');
+
+            return Restangular
+                .all('dataSets')
+                .getList({
+                    fields: 'id,name,displayName,workflow',
+                    filter: 'workflow.id:in:[' + workflowIds + ']',
+                    paging: false
+                })
+                .then(function (dataSets) {
+                    var dataSetsForWorkflow = _.groupBy(dataSets, function (ds) {return ds.workflow.id});
+
+                    return dataApprovalWorkflows
+                        .map(function (workflow) {
+                            workflow.dataSets = dataSetsForWorkflow[workflow.id] || [];
+
+                            return workflow;
+                        });
+                });
+        })
+        .then(function (workflows) {
+            // Workflows including dataSets that belong to those workflows
+            console.log(workflows);
+        });
+
     // Load the dataSetGroups that are available from system settings
     d2Api.systemSettings.get('keyApprovalDataSetGroups')
         .then(function (resultDataSetGroups) {

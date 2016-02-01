@@ -39,7 +39,7 @@ describe('Approval levels Service', function () {
         });
 
         it('should return an array of with approval level objects', function () {
-            expect(approvalLevels.length).toBe(4);
+            expect(approvalLevels.length).toBe(5);
         });
 
         it('should have a getLevelNames function on the result', function () {
@@ -47,14 +47,15 @@ describe('Approval levels Service', function () {
         });
 
         it('should give an array when the level names when calling getLevelNames on the result', function () {
-            expect(approvalLevels.getCategoryOptionGroupSetIdsForLevels()).toEqual([ { level: 3, cogsId: 'bw8KHXzxd9i' }, { level: 4, cogsId: 'BOyWrF33hiR' }]);
+            expect(approvalLevels.getCategoryOptionGroupSetIdsForLevels()).toEqual([ { level: 4, cogsId: 'bw8KHXzxd9i' }, { level: 5, cogsId: 'BOyWrF33hiR' }]);
         });
 
         it('should add the name of the org unit level to the approval level if it is available', function () {
             expect(approvalLevels[0].levelName).toBe('Global');
-            expect(approvalLevels[1].levelName).toBe('Country');
-            expect(approvalLevels[2].levelName).toBe('Funding Agency');
-            expect(approvalLevels[3].levelName).toBe('Implementing Partner');
+            expect(approvalLevels[1].levelName).toBe('Global');
+            expect(approvalLevels[2].levelName).toBe('Country');
+            expect(approvalLevels[3].levelName).toBe('Funding Agency');
+            expect(approvalLevels[4].levelName).toBe('Implementing Partner');
         });
     });
 });
