@@ -3,7 +3,7 @@ function organisationunitsService(d2Api) {
 
     this.requestOrganisationUnitsForLevel = function (orgUnitId, orgUnitLevel) {
         return d2Api.organisationUnits.get(orgUnitId, {
-            fields: 'id,name',
+            fields: 'id,name,displayName',
             level: orgUnitLevel,
             paging: 'false'
         }).then(function (organisationUnitData) {

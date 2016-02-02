@@ -29,9 +29,9 @@ function organisationunitSelectorDirective(organisationunitsService) {
                         .then(function (dataList) {
                             var thisOrgUnit = {
                                 id: organisationunitsService.currentOrganisationUnit.id,
-                                name: organisationunitsService.currentOrganisationUnit.name
+                                name: organisationunitsService.currentOrganisationUnit.displayName
                             };
-                            dataList = _.sortBy(dataList, 'name');
+                            dataList = _.sortBy(dataList, 'displayName');
                             scope.organisationUnit.organisationUnits = [thisOrgUnit].concat(dataList);
                             scope.organisationUnit.selected = scope.organisationUnit.organisationUnits[0];
                         });

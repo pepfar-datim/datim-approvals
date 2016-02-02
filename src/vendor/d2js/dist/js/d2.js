@@ -425,7 +425,9 @@ function currentUser(d2Api, $q) {
     /**
      * Loading of the user profile
      */
-    user = d2Api.currentUser.get();
+    user = d2Api.currentUser.get({
+        fields: 'id,name,displayName,surname,firstName,organisationUnits[id,name,displayName],dataViewOrganisationUnits[id,name,displayName]'
+    });
 
     user = angular.extend(user, {
         valueFor: function (valueKey) {
