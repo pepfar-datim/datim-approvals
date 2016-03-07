@@ -27,3 +27,5 @@ fake-api
 *.zip
 src/main/_manifest.webapp
 src/main/np
+
+install.sh
