@@ -25,7 +25,7 @@ describe('Organisationunits service', function () {
                 id: 'ybg3MO3hcf4'
             };
 
-            $httpBackend.expectGET('/dhis/api/organisationUnits/ybg3MO3hcf4?fields=id,name&level=3&paging=false').respond(200, fixtures.get('organisationUnitsForLevelThree'));
+            $httpBackend.expectGET('/dhis/api/organisationUnits/ybg3MO3hcf4?fields=id,name,displayName&level=3&paging=false').respond(200, fixtures.get('organisationUnitsForLevelThree'));
         }));
 
         afterEach(function () {

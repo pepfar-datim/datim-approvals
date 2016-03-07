@@ -64,7 +64,7 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
                 });
         });
 
-        return Promise.all(categoryCombosForDataSets)
+        return $q.all(categoryCombosForDataSets)
             .then(function () {
                 return data;
             });
@@ -74,7 +74,7 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
         return Restangular
             .all('dataSets')
             .getList({
-                fields: 'name,shortName,id,periodType,workflow,categoryCombo[id,name,categories[id]]',
+                fields: 'name,shortName,id,periodType,workflow[id,periodType],categoryCombo[id,name,categories[id]]',
                 filter: 'workflow.id:in:[' + getWorkFlowIds(dataApprovalWorkflows).join(',') + ']',
                 paging: false
             })
@@ -102,7 +102,6 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
 
     function setWorkflowsOntoService(workflows) {
         // Workflows including dataSets that belong to those workflows
-        console.log(workflows);
         if (!Array.isArray(workflows)) {
             return $q.reject('Could not properly load the Workflows from the api.');
         }
