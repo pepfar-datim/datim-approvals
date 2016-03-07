@@ -7,8 +7,6 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
         return dataSetGroups;
     };
 
-    var categoryComboCache = {};
-
     this.filterDataSetsForUser = function (workflows) {
         function onlyWorkflowsWithDataSets(workflow) {
             return Array.isArray(workflow.dataSets) && workflow.dataSets.length > 0;
@@ -19,8 +17,6 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
 
             return acc;
         }
-
-        var initialDataSets = dataSetGroupFactory()([]);
 
         dataSetGroups = workflows
             .filter(onlyWorkflowsWithDataSets)
@@ -34,87 +30,11 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
             .sort();
 
         if (dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]]) {
-            initialDataSets = dataSetGroupFactory()(dataSetGroups[dataSetGroupNames[0]].dataSets);
-            periodService.filterPeriodTypes(initialDataSets.getPeriodTypes());
+            periodService.filterPeriodTypes([dataSetGroups[dataSetGroupNames[0]].periodType]);
         } else {
             errorHandler.warning('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
         }
     };
-
-    // this.filterDataSetsForUser = function (resultDataSetGroups) {
-        //var dataSetGroupsPromises = [];
-        //
-        //_.forEach(resultDataSetGroups, function (dataSetGroup) {
-        //    var filteredGroup = {};
-        //
-        //    var filters;
-        //
-        //    filteredGroup.name = dataSetGroup.name;
-        //    filteredGroup.dataSets = [];
-        //
-        //    filters = [
-        //        'id:in:[',
-        //        dataSetGroup.dataSets.join(','),
-        //        ']'
-        //    ].join('');
-        //
-        //    dataSetGroupsPromises.push(d2Api.dataSets.getList({
-        //        fields: 'name,shortName,id,periodType,categoryCombo[id,name,categories[id]]',
-        //        filter: filters,
-        //        paging: 'false'
-        //    }).then(function (dataSets) {
-        //        filteredGroup.dataSets = dataSets.getDataOnly();
-        //
-        //        var categoryComboIds = {};
-        //
-        //        _.each(filteredGroup.dataSets, function (dataSet) {
-        //            if (dataSet.categoryCombo) {
-        //                if (categoryComboIds[dataSet.categoryCombo.id]) {
-        //                    categoryComboIds[dataSet.categoryCombo.id].push(dataSet);
-        //                } else {
-        //                    categoryComboIds[dataSet.categoryCombo.id] = [dataSet];
-        //                }
-        //            }
-        //        });
-        //
-        //        _.each(categoryComboIds, function (dataSets, catCombo) {
-        //            if (!categoryComboCache[catCombo]) {
-        //                categoryComboCache[catCombo] = Restangular.all('categoryCombos').withHttpConfig({cache: true}).get(catCombo, {fields: 'id,categoryOptionCombos[id,name]'});
-        //            }
-        //
-        //            categoryComboCache[catCombo].then(function (categoryCombo) {
-        //                _.each(dataSets, function (dataSet) {
-        //                    dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
-        //                });
-        //            });
-        //        });
-        //
-        //        return filteredGroup;
-        //    }));
-        //});
-
-        //$q.all(dataSetGroupsPromises).then(function (datasetGroups) {
-        //    var initialDataSets = dataSetGroupFactory()([]);
-        //
-        //    _.forEach(datasetGroups, function (filteredGroup) {
-        //        if (filteredGroup.dataSets.length > 0) {
-        //            dataSetGroups[filteredGroup.name] = filteredGroup;
-        //        }
-        //
-        //        dataSetGroupNames = _.map(dataSetGroups, function (dataSetGroup, key) {
-        //            return key;
-        //        }).sort();
-        //    });
-        //
-        //    //TODO: this code is a bit confusing?
-        //    if (dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]]) {
-        //        initialDataSets = dataSetGroupFactory()(dataSetGroups[dataSetGroupNames[0]].dataSets);
-        //        periodService.filterPeriodTypes(initialDataSets.getPeriodTypes());
-        //    } else {
-        //        errorHandler.warning('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
-        //    }
-        //});
-    // };
 
     this.getDataSetGroupNames = function () {
         return dataSetGroupNames;
@@ -125,12 +45,6 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
             return dataSetGroups[dataSetGroupName].dataSets;
         }
     };
-
-    // Configure the api endpoints we use
-    d2Api.addEndPoint('dataSets');
-
-    //Add combo endpoint for MER Hack
-    d2Api.addEndPoint('categoryCombos');
 
     function pickId(value) {
         return value.id;
@@ -201,17 +115,6 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
         .then(loadDataSetsForWorkflows)
         .then(matchDataSetsToWorkflows)
         .then(setWorkflowsOntoService);
-
-    //d2Api.systemSettings.get('keyApprovalDataSetGroups')
-    //-        .then(function (resultDataSetGroups) {
-    //    -            if (!Array.isArray(resultDataSetGroups)) {
-    //        -                return $q.reject('Dataset groups not defined in systemsettings (key: keyApprovalDataSetGroups), see the deployment manual on how to configure the app.');
-    //        -            }
-    //    -            service.filterDataSetsForUser(resultDataSetGroups);
-    //    -        })
-    //-        .catch(function (e) {
-    //    -            errorHandler.error(e, true);
-    //    -        });
 }
 
 function dataSetGroupFactory() {

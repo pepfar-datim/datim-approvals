@@ -2,7 +2,7 @@
 angular.module('PEPFAR.approvals').service('periodService', periodService);
 
 //FIXME: the service is not consistent with getters and setters
-function periodService(d2Api) {
+function periodService(Restangular) {
     var service = this;
 
     var currentPeriodType;
@@ -124,6 +124,7 @@ function periodService(d2Api) {
         var firstPeriodIndex = _(periodBaseList).findLastIndex(function (periodType) {
             return _(dataSetPeriodTypes).contains(periodType);
         });
+
         return _.rest(periodBaseList, firstPeriodIndex);
     };
 
@@ -132,19 +133,21 @@ function periodService(d2Api) {
         return periodTypes;
     };
 
-    d2Api.addEndPoint('system/info', true);
-    d2Api.getEndPoint('system/info').get().then(function (info) {
-        dateFormat = info.dateFormat;
+    Restangular
+        .all('system')
+        .get('info')
+        .then(function (info) {
+            dateFormat = info.dateFormat;
 
-        if (info.calendar === 'iso8601') {
-            calendarType = 'gregorian';
-            service.prepareCalendar();
-        } else {
-            calendarType = info.calendar;
+            if (info.calendar === 'iso8601') {
+                calendarType = 'gregorian';
+                service.prepareCalendar();
+            } else {
+                calendarType = info.calendar;
 
-            if (_(calendarTypes).contains(calendarType)) {
-                service.loadCalendarScript(calendarType);
+                if (_(calendarTypes).contains(calendarType)) {
+                    service.loadCalendarScript(calendarType);
+                }
             }
-        }
-    });
+        });
 }
