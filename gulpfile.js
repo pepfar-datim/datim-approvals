@@ -13,6 +13,7 @@ var files = [
     'src/vendor/restangular/dist/restangular.js',
     'src/vendor/angular-bootstrap/ui-bootstrap-tpls.js',
     'src/vendor/angular-ui-select/dist/select.js',
+    'src/vendor/rxjs/dist/rx.all.js',
 
     //Test files
     'src/test/utils/*.js',
@@ -237,7 +238,8 @@ gulp.task('vendor', function (cb) {
             'src/vendor/angular*/**/select.js',
             'src/vendor/angular*/**/angular-translate.js',
 
-            'src/vendor/restangular/**/restangular.js'
+            'src/vendor/restangular/**/restangular.js',
+            'src/vendor/rxjs/dist/rx.all.js'
         ])
         .pipe(concat('vendor.js'))
         .pipe(uglify())
