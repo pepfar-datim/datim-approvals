@@ -14,6 +14,7 @@ var files = [
     'src/vendor/angular-bootstrap/ui-bootstrap-tpls.js',
     'src/vendor/angular-ui-select/dist/select.js',
     'src/vendor/rxjs/dist/rx.all.js',
+    'src/vendor/rx-angular/dist/rx-angular.js',
 
     //Test files
     'src/test/utils/*.js',

@@ -51,7 +51,7 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
     }
 
     function getWorkFlowIds(dataApprovalWorkflows) {
-        return _.map(dataApprovalWorkflows, pickId)
+        return _.map(dataApprovalWorkflows, pickId);
     }
 
     function loadCategoryOptionCombosForDataSets(data) {
@@ -81,10 +81,10 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
             .then(function (dataSets) {
                 return [dataApprovalWorkflows, dataSets];
             })
-            .then(loadCategoryOptionCombosForDataSets)
+            .then(loadCategoryOptionCombosForDataSets);
     }
 
-    function addDataSetsToWorkflow (dataSetsForWorkflow, workflow) {
+    function addDataSetsToWorkflow(dataSetsForWorkflow, workflow) {
         workflow.dataSets = dataSetsForWorkflow[workflow.id] || [];
 
         return workflow;
@@ -94,7 +94,7 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
         var dataApprovalWorkflows = data[0];
         var dataSets = data[1];
 
-        var dataSetsForWorkflow = _.groupBy(dataSets, function (ds) {return ds.workflow.id});
+        var dataSetsForWorkflow = _.groupBy(dataSets, function (ds) {return ds.workflow.id;});
 
         return dataApprovalWorkflows
             .map(addDataSetsToWorkflow.bind(null, dataSetsForWorkflow));
