@@ -1,4 +1,4 @@
-function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler) {
+function dataSetGroupService($q, periodService, Restangular, errorHandler) {
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
