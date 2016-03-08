@@ -1,10 +1,8 @@
 /* global jQuery, dhis2 */
-angular.module('PEPFAR.approvals').service('periodService', periodService);
+angular.module('PEPFAR.approvals').factory('periodService', periodService);
 
 //FIXME: the service is not consistent with getters and setters
 function periodService(Restangular, rx) {
-    var service = this;
-
     var currentPeriodType;
     var currentPeriod;
     var generatedPeriods;
@@ -34,37 +32,23 @@ function periodService(Restangular, rx) {
         'thai'
     ];
 
-    this.setPeriod = function setPeriod(newPeriod) {
-        currentPeriod = newPeriod;
-        this.period$.onNext(currentPeriod);
-    };
+    var periodTypes$ = new rx.BehaviorSubject(periodTypes);
+    var period$ = new rx.ReplaySubject(1);
 
-    this.prepareCalendar = function () {
-        var calendar = jQuery.calendars.instance(service.getCalendarType());
-        dhis2.period.generator = new dhis2.period.PeriodGenerator(calendar, this.getDateFormat());
-    };
+    function prepareCalendar() {
+        var calendar = jQuery.calendars.instance(getCalendarType());
+        dhis2.period.generator = new dhis2.period.PeriodGenerator(calendar, getDateFormat());
+    }
 
-    this.getDateFormat = function () {
+    function getDateFormat() {
         return dateFormat;
-    };
+    }
 
-    this.getPeriodTypes = function () {
-        return periodTypes;
-    };
-
-    this.getCalendarTypes = function () {
-        return calendarTypes;
-    };
-
-    this.getCalendarType = function () {
+    function getCalendarType() {
         return calendarType;
-    };
+    }
 
-    this.getPastPeriodsRecentFirst = function () {
-        return generatedPeriods;
-    };
-
-    this.setPeriodType = function (periodType) {
+    function setPeriodType(periodType) {
         var periods;
         if (_(periodTypes).contains(periodType)) {
             currentPeriodType = periodType;
@@ -105,34 +89,54 @@ function periodService(Restangular, rx) {
         return periods.slice(5);
     }
 
-    this.loadCalendarScript = function (calendarType) {
+    function loadCalendarScript(calendarType) {
         jQuery.getScript('../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarType + '.min.js',
             function () {
-                service.prepareCalendar();
+                prepareCalendar();
             }).error(function () {
                 throw new Error('Unable to load ' + calendarType + ' calendar');
             });
 
-    };
+    }
 
-    this.getPeriodTypesForDataSet = function (dataSetPeriodTypes) {
+    function getPeriodTypesForDataSet(dataSetPeriodTypes) {
         var firstPeriodIndex = _(periodBaseList).findLastIndex(function (periodType) {
             return _(dataSetPeriodTypes).contains(periodType);
         });
 
         return _.rest(periodBaseList, firstPeriodIndex);
-    };
+    }
 
-    this.filterPeriodTypes = function (dataSetPeriodTypes) {
-        periodTypes = this.getPeriodTypesForDataSet(dataSetPeriodTypes);
+    function setPeriod(newPeriod) {
+        currentPeriod = newPeriod;
+        period$.onNext(currentPeriod);
+    }
 
-        this.periodTypes$.onNext(periodTypes);
+    function getPeriodTypes() {
+        return periodTypes;
+    }
+
+    function filterPeriodTypes(dataSetPeriodTypes) {
+        periodTypes = getPeriodTypesForDataSet(dataSetPeriodTypes);
+
+        periodTypes$.onNext(periodTypes);
 
         return periodTypes;
-    };
+    }
 
-    this.periodTypes$ = new rx.BehaviorSubject(periodTypes);
-    this.period$ = new rx.ReplaySubject(1);
+    function getPastPeriodsRecentFirst() {
+        return generatedPeriods;
+    }
+
+    var service = {
+        setPeriodType: setPeriodType,
+        setPeriod: setPeriod,
+        getPeriodTypes: getPeriodTypes,
+        filterPeriodTypes: filterPeriodTypes,
+        getPastPeriodsRecentFirst: getPastPeriodsRecentFirst,
+        periodTypes$: periodTypes$,
+        period$: period$
+    };
 
     Restangular
         .all('system')
@@ -142,13 +146,15 @@ function periodService(Restangular, rx) {
 
             if (info.calendar === 'iso8601') {
                 calendarType = 'gregorian';
-                service.prepareCalendar();
+                prepareCalendar();
             } else {
                 calendarType = info.calendar;
 
                 if (_(calendarTypes).contains(calendarType)) {
-                    service.loadCalendarScript(calendarType);
+                    loadCalendarScript(calendarType);
                 }
             }
         });
+
+    return service;
 }
