@@ -1,4 +1,4 @@
-function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, categoriesService) {
+function mechanismsService(d2Api, Restangular, $log, $q, approvalLevelsService, categoriesService) {
     var self = this;
     var AGENCY_LEVEL = 4;
     var PARTNER_LEVEL = 5;
@@ -305,20 +305,17 @@ function mechanismsService(d2Api, $log, $q, approvalLevelsService, request, cate
     };
 
     this.getStatuses = function () {
-        return d2Api.getEndPoint('dataApprovals/categoryOptionCombos').getList({
+        return Restangular.all('dataApprovals/categoryOptionCombos').getList({
             pe: period,
             ds: dataSetIds,
             ou: self.isGlobal ? undefined : organisationUnit //Don't pass the org unit id when the org unit is global
-        }).then(function (data) {
-            return data.getDataOnly();
         }).catch(function (e) {
             $log.error('Failed to get statuses');
-            $q.reject(e);
+            return $q.reject(e);
         });
     };
 
     d2Api.addEndPoint('categories');
-    d2Api.addEndPoint('dataApprovals/categoryOptionCombos');
 }
 
 angular.module('PEPFAR.approvals').service('mechanismsService', mechanismsService);

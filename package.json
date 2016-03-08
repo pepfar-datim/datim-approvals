@@ -2,6 +2,9 @@
   "name": "PEPFAR-Approvals",
   "description": "Approvals app for the pepfar project",
   "README": "readme.md",
+  "scripts": {
+    "deploy": "gulp build-prod && ./install.sh"
+  },
   "dependencies": {
     "coveralls": "^2.11.2",
     "gulp-if": "^1.2.5",

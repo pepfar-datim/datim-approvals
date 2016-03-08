@@ -4,7 +4,6 @@ angular.module('PEPFAR.approvals', [
     'd2-translate',
     'ui.select',
     'ui.bootstrap.tabs',
-    'd2-typeahead',
     'ui.bootstrap.typeahead',
     'ui.bootstrap.progressbar',
     'd2HeaderBar',
