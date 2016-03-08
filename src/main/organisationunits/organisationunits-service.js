@@ -1,17 +1,25 @@
-function organisationunitsService(d2Api) {
-    this.currentOrganisationUnit = {};
-
-    this.requestOrganisationUnitsForLevel = function (orgUnitId, orgUnitLevel) {
-        return d2Api.organisationUnits.get(orgUnitId, {
+function organisationunitsService(Restangular, rx) {
+    function requestOrganisationUnitsForLevel(orgUnitId, orgUnitLevel) {
+        var queryParams = {
             fields: 'id,name,displayName',
             level: orgUnitLevel,
             paging: 'false'
-        }).then(function (organisationUnitData) {
-            return organisationUnitData.organisationUnits;
-        });
-    };
+        };
 
-    d2Api.addEndPoint('organisationUnits');
+        var organisationUnitRequest = Restangular
+            .all('organisationUnits')
+            .get(orgUnitId, queryParams)
+            .then(function (organisationUnitData) {
+                return organisationUnitData.organisationUnits;
+            });
+
+        return rx.Observable.fromPromise(organisationUnitRequest);
+    }
+
+    return {
+        currentOrganisationUnit: {},
+        requestOrganisationUnitsForLevel: requestOrganisationUnitsForLevel
+    };
 }
 
-angular.module('PEPFAR.approvals').service('organisationunitsService', organisationunitsService);
+angular.module('PEPFAR.approvals').factory('organisationunitsService', organisationunitsService);
