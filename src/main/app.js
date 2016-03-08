@@ -28,9 +28,9 @@ angular.module('PEPFAR.approvals')
 
 //jshint maxstatements: 41
 function appController(periodService, $scope, currentUser, mechanismsService,
-                       approvalLevelsService, $q, toastr, AppManifest,
-                       systemSettings, $translate, d2Api,
-                       organisationunitsService, $log) {
+                       approvalLevelsService, toastr, AppManifest,
+                       systemSettings, $translate, userApprovalLevels$,
+                       organisationunitsService, $log, rx) {
     var self = this;
     var vm = this;
 
@@ -104,6 +104,14 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         vm.infoBox.levelBelow = levelNames[currentUserApprovalLevel.level];
     }
 
+    var usersAndAllApprovalLevels$ = rx.Observable.combineLatest(
+        userApprovalLevels$,
+        approvalLevelsService,
+        function (userApprovalLevel, approvalLevels) {
+            return [userApprovalLevel, approvalLevels];
+        }
+    );
+
     this.getTableData = function () {
         if (self.hasTableDetails()) {
             $translate('Loading...').then(function (translation) {
@@ -112,38 +120,39 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
             self.loading = true;
 
-            $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (data) {
-                mechanismsService.getMechanisms().then(function (mechanisms) {
-                    var currentUserApprovalLevel = data[0][0];
-                    var actionMechanisms = [];
+            usersAndAllApprovalLevels$
+                .subscribe(function (data) {
+                    mechanismsService.getMechanisms().then(function (mechanisms) {
+                        var currentUserApprovalLevel = data[0][0];
+                        var actionMechanisms = [];
 
-                    setInfoBoxLevels(currentUserApprovalLevel, data[0]);
+                        setInfoBoxLevels(currentUserApprovalLevel, data[0]);
 
-                    _.each(mechanisms, function (mechanism) {
-                        if (mechanism.mayApprove && (mechanism.level === parseInt(currentUserApprovalLevel.level, 10) + 1)) {
-                            actionMechanisms.push(mechanism.id);
-                        }
+                        _.each(mechanisms, function (mechanism) {
+                            if (mechanism.mayApprove && (mechanism.level === parseInt(currentUserApprovalLevel.level, 10) + 1)) {
+                                actionMechanisms.push(mechanism.id);
+                            }
 
-                        if (mechanism.mayAccept && (mechanism.level === (parseInt(currentUserApprovalLevel.level, 10) + 1))) {
-                            actionMechanisms.push(mechanism.id);
-                        }
+                            if (mechanism.mayAccept && (mechanism.level === (parseInt(currentUserApprovalLevel.level, 10) + 1))) {
+                                actionMechanisms.push(mechanism.id);
+                            }
+                        });
+
+                        actionMechanisms = actionMechanisms.reduce(function (actionMechanisms, mechanismId) {
+                            if (actionMechanisms.indexOf(mechanismId) === -1) {
+                                actionMechanisms.push(mechanismId);
+                            }
+                            return actionMechanisms;
+                        }, []);
+
+                        self.actionItems = actionMechanisms.length;
+
+                        self.setStatus();
+
+                        $scope.$broadcast('MECHANISMS.updated', mechanisms);
+                        self.loading = false;
                     });
-
-                    actionMechanisms = actionMechanisms.reduce(function (actionMechanisms, mechanismId) {
-                        if (actionMechanisms.indexOf(mechanismId) === -1) {
-                            actionMechanisms.push(mechanismId);
-                        }
-                        return actionMechanisms;
-                    }, []);
-
-                    self.actionItems = actionMechanisms.length;
-
-                    self.setStatus();
-
-                    $scope.$broadcast('MECHANISMS.updated', mechanisms);
-                    self.loading = false;
                 });
-            });
         }
     };
 
@@ -348,11 +357,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         ].join(' ');
     };
 
-    d2Api.addEndPoint('me/dataApprovalLevels', true);
-    var userApprovalLevelPromise = d2Api
-        .getEndPoint('me/dataApprovalLevels')
-        .get();
-
     //Get the users org unit off the user
     currentUser.then(function () {
         var orgUnit;
@@ -377,31 +381,35 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         self.updateTitle();
 
-        userApprovalLevelPromise.then(function (approvalLevel) {
+        function userApprovalLevelsLoaded(approvalLevel) {
             $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel[0];
             if ($scope.approvalLevel.categoryOptionGroupSet) {
                 self.updateTitle();
             }
             organisationunitsService.currentOrganisationUnit.level = $scope.approvalLevel.level;
-        })
-        .catch(function () {
+        }
+
+        function userApprovalLevelsFailed() {
             toastr.error('Unable to load your Data Approval Levels. (Please submit a ticket)');
-        });
+        }
+
+        userApprovalLevels$.subscribe(userApprovalLevelsLoaded, userApprovalLevelsFailed);
+
     });
 
     //TODO: This might be confusing as this is changing the tabs in a different place.
-    $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (result) {
-        if ($scope.approvalLevel.level === result[1].length) {
-            self.tabs.accept.access = false;
-            self.tabs.accept.state = false;
-            self.tabs.submit.access = true;
-            self.tabs.submit.state = true;
-            self.tabs.submit.name = ['Submit'];
-        }
-    })
-    .catch(function () {
-        toastr.error('Unable to load Data Approval levels, yours or all. (Please submit a ticket)');
-    });
+    usersAndAllApprovalLevels$
+        .subscribe(function (result) {
+            if ($scope.approvalLevel.level === result[1].length) {
+                self.tabs.accept.access = false;
+                self.tabs.accept.state = false;
+                self.tabs.submit.access = true;
+                self.tabs.submit.state = true;
+                self.tabs.submit.name = ['Submit'];
+            }
+        }, function () {
+            toastr.error('Unable to load Data Approval levels, yours or all. (Please submit a ticket)');
+        });
 
     //When the dataset group is changed update the filter types and the datasets
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
