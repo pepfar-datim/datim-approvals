@@ -83,7 +83,7 @@ function periodService(Restangular, rx) {
             //For other periods like month/day etc. show only the default generated
             generatedPeriods = periods;
         }
-    };
+    }
 
     function removeFuturePeriodsExceptClosestOne(periods) {
         return periods.slice(5);
