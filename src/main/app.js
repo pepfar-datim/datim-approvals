@@ -8,7 +8,8 @@ angular.module('PEPFAR.approvals', [
     'ui.bootstrap.typeahead',
     'ui.bootstrap.progressbar',
     'd2HeaderBar',
-    'ngCacheBuster'
+    'ngCacheBuster',
+    'rx'
 ]);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
@@ -493,18 +494,16 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
     });
 
-    $scope.$watch(function () {
-        return periodService.period;
-    }, function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-            $scope.details.period = newVal.iso;
+    periodService.period$
+        .subscribe(function (period) {
+            $log.info('Period changed to',  period);
+            $scope.details.period = period.iso;
             mechanismsService.period = $scope.details.period;
-        }
 
-        //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
-        $scope.details.currentSelection = [];
-        self.updateViewButton();
-    });
+            //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
+            $scope.details.currentSelection = [];
+            self.updateViewButton();
+        });
 
     $scope.$watch(function () {
         return mechanismsService.period;

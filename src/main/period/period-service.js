@@ -2,7 +2,7 @@
 angular.module('PEPFAR.approvals').service('periodService', periodService);
 
 //FIXME: the service is not consistent with getters and setters
-function periodService(Restangular) {
+function periodService(Restangular, rx) {
     var service = this;
 
     var currentPeriodType;
@@ -34,15 +34,10 @@ function periodService(Restangular) {
         'thai'
     ];
 
-    Object.defineProperties(this, {
-        period: {
-            get: function () { return currentPeriod; },
-            set: function (period) { currentPeriod = period; }
-        },
-        periodType: {
-            get: function () { return currentPeriodType; }
-        }
-    });
+    this.setPeriod = function setPeriod(newPeriod) {
+        currentPeriod = newPeriod;
+        this.period$.onNext(currentPeriod);
+    };
 
     this.prepareCalendar = function () {
         var calendar = jQuery.calendars.instance(service.getCalendarType());
@@ -130,8 +125,14 @@ function periodService(Restangular) {
 
     this.filterPeriodTypes = function (dataSetPeriodTypes) {
         periodTypes = this.getPeriodTypesForDataSet(dataSetPeriodTypes);
+
+        this.periodTypes$.onNext(periodTypes);
+
         return periodTypes;
     };
+
+    this.periodTypes$ = new rx.BehaviorSubject(periodTypes);
+    this.period$ = new rx.ReplaySubject(1);
 
     Restangular
         .all('system')
