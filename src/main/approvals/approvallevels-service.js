@@ -7,7 +7,7 @@ function approvalLevelsService($q, Restangular, rx, $log) {
             fields: 'level,displayName', 
             paging: false
         });
-    
+
     var dataApprovalLevelsRequest = Restangular
         .all('dataApprovalLevels')
         .getList({
@@ -79,12 +79,13 @@ function approvalLevelsService($q, Restangular, rx, $log) {
     
     approvalLevels$
         .subscribe(success, failure);
-        
-    return {
-        get: function get() {
-            return deferred.promise;
-        }
+
+
+    approvalLevels$.get = function get() {
+        return deferred.promise;
     };
+
+    return approvalLevels$;
 }
 
 angular.module('PEPFAR.approvals').factory('approvalLevelsService', approvalLevelsService);
