@@ -10,8 +10,8 @@ describe('Dataview Controller', function () {
         scope = $rootScope.$new();
         scope.details = {};
 
-        promiseMock = jasmine.createSpy();
-        promiseMock.andReturn({ then: jasmine.createSpy() });
+        promiseMock = sinon.stub();
+        promiseMock.returns({ then: sinon.spy() });
 
         approvalServiceMock = {
             approve: promiseMock
@@ -24,12 +24,12 @@ describe('Dataview Controller', function () {
     }));
 
     it('should be an object', function () {
-        expect(controller).toBeAnObject();
+        expect(controller).to.be.a('object');
     });
 
     describe('getMechanismsByIds', function () {
         it('should be a method', function () {
-            expect(controller.getMechanismsByIds).toBeAFunction();
+            expect(controller.getMechanismsByIds).to.be.a('function');
         });
 
         it('should return an array for all the mechanisms in the current selection', function () {
@@ -44,37 +44,37 @@ describe('Dataview Controller', function () {
                 { id: "myId", name: "Mechanism1"}
             ];
 
-            expect(controller.getMechanismsByIds(['a', '2'])).toEqual(expectedMechanisms);
+            expect(controller.getMechanismsByIds(['a', '2'])).to.deep.equal(expectedMechanisms);
         });
 
         it('should return an empty array when there are no mechanisms', function () {
-            expect(controller.getMechanismsByIds(['a'])).toEqual([]);
+            expect(controller.getMechanismsByIds(['a'])).to.deep.equal([]);
         });
 
         it('should return an empty array when there are no ids passed to the method', function () {
-            expect(controller.getMechanismsByIds([])).toEqual([]);
+            expect(controller.getMechanismsByIds([])).to.deep.equal([]);
         });
 
         it('should return an empty array when undefined is passed to the method', function () {
-            expect(controller.getMechanismsByIds()).toEqual([]);
+            expect(controller.getMechanismsByIds()).to.deep.equal([]);
         });
     });
 
     describe('getPeriod', function () {
         it('should be a method', function () {
-            expect(controller.getPeriod).toBeAFunction();
+            expect(controller.getPeriod).to.be.a('function');
         });
 
         it('should return the period from the details', function () {
             scope.details.period = '2014';
 
-            expect(controller.getPeriod()).toBe('2014');
+            expect(controller.getPeriod()).to.equal('2014');
         });
     });
 
     describe('getDataSetIds', function () {
         it('should be a method', function () {
-            expect(controller.getDataSetIds).toBeAFunction();
+            expect(controller.getDataSetIds).to.be.a('function');
         });
 
         it('should get the data sets from the details', function () {
@@ -83,19 +83,19 @@ describe('Dataview Controller', function () {
                 { id: '2' }
             ];
 
-            expect(controller.getDataSetIds()).toEqual(['1', '2']);
+            expect(controller.getDataSetIds()).to.deep.equal(['1', '2']);
         });
     });
 
     describe('getApprovalLevelId', function () {
         it('should be a method', function () {
-            expect(controller.getApprovalLevelId).toBeAFunction();
+            expect(controller.getApprovalLevelId).to.be.a('function');
         });
 
         it('should return the current appoval level id', function () {
             scope.details.approvalLevel = { id: 'd2dsf222' };
 
-            expect(controller.getApprovalLevelId()).toEqual('d2dsf222');
+            expect(controller.getApprovalLevelId()).to.equal('d2dsf222');
         });
     });
 
@@ -112,47 +112,47 @@ describe('Dataview Controller', function () {
         });
 
         it('should be a method', function () {
-            expect(controller.isParamsComplete).toBeAFunction();
+            expect(controller.isParamsComplete).to.be.a('function');
         });
 
         it('should return true when all parameters are present', function () {
-            expect(controller.isParamsComplete()).toBe(true);
+            expect(controller.isParamsComplete()).to.equal(true);
         });
 
         it('should return false when pe is an empty string', function () {
-            spyOn(controller, 'getPeriod').andReturn('');
+            sinon.stub(controller, 'getPeriod').returns('');
 
-            expect(controller.isParamsComplete()).toBe(false);
+            expect(controller.isParamsComplete()).to.equal(false);
         });
 
         it('should return false when all datasets is an empty array', function () {
             scope.details.dataSets = [];
 
-            expect(controller.isParamsComplete()).toBe(false);
+            expect(controller.isParamsComplete()).to.equal(false);
         });
 
         it('should return false when period is not a string', function () {
             scope.details.period = [ {}, {} ];
 
-            expect(controller.isParamsComplete()).toBe(false);
+            expect(controller.isParamsComplete()).to.equal(false);
         });
 
         it('should return false when datasets is not an array', function () {
             scope.details.dataSets = 'dataSets';
 
-            expect(controller.isParamsComplete()).toBe(false);
+            expect(controller.isParamsComplete()).to.equal(false);
         });
     });
 
     describe('getParamsForMechanism', function () {
         it('should return an object', function () {
-            expect(controller.getParamsForMechanism()).toEqual({});
+            expect(controller.getParamsForMechanism()).to.deep.equal({});
         });
 
         it('should add the period if it is available', function () {
             scope.details.period = '2014';
 
-            expect(controller.getParamsForMechanism()).toEqual({ pe: '2014' });
+            expect(controller.getParamsForMechanism()).to.deep.equal({ pe: '2014' });
         });
 
         it('should add the datasets when they are available', function () {
@@ -161,7 +161,7 @@ describe('Dataview Controller', function () {
                 { id: '2' }
             ];
 
-            expect(controller.getParamsForMechanism()).toEqual({ ds: [ '1', '2'] });
+            expect(controller.getParamsForMechanism()).to.deep.equal({ ds: [ '1', '2'] });
         });
     });
 
@@ -174,41 +174,41 @@ describe('Dataview Controller', function () {
         });
 
         it('should be a method', function () {
-            expect(controller.submit).toBeAFunction();
+            expect(controller.submit).to.be.a('function');
         });
 
         it('should call getMechanismsByIds with the passed ids', function () {
-            spyOn(controller, 'getMechanismsByIds');
+            sinon.spy(controller, 'getMechanismsByIds');
 
             controller.submit(['a', 'b']);
 
-            expect(controller.getMechanismsByIds).toHaveBeenCalledWith(['a', 'b']);
+            expect(controller.getMechanismsByIds).to.be.calledWith(['a', 'b']);
         });
 
         it('should call getPeriod', function () {
-            spyOn(controller, 'getPeriod');
+            sinon.spy(controller, 'getPeriod');
 
             controller.submit(['a', 'b']);
 
-            expect(controller.getPeriod).toHaveBeenCalled();
+            expect(controller.getPeriod).to.be.called;
         });
 
         it('should call getDataSetIds', function () {
-            spyOn(controller, 'getDataSetIds').andReturn({
+            sinon.stub(controller, 'getDataSetIds').returns({
                 getIds: function () {}
             });
 
             controller.submit([]);
 
-            expect(controller.getDataSetIds).toHaveBeenCalled();
+            expect(controller.getDataSetIds).to.be.called;
         });
 
         it('should ask to check the data', function () {
-            spyOn(controller, 'isParamsComplete');
+            sinon.spy(controller, 'isParamsComplete');
 
             controller.submit();
 
-            expect(controller.isParamsComplete).toHaveBeenCalled();
+            expect(controller.isParamsComplete).to.be.called;
         });
 
         describe('when parameters are correct', function () {
@@ -237,13 +237,13 @@ describe('Dataview Controller', function () {
 
                 controller.submit(['aa']);
 
-                expect(approvalServiceMock.approve).toHaveBeenCalledWith(expectedArguments);
+                expect(approvalServiceMock.approve).to.be.calledWith(expectedArguments);
             });
 
             it('should not ask approvalService to approve when passed mechanism id does not exist', function () {
                 controller.submit(['c']);
 
-                expect(approvalServiceMock.approve).not.toHaveBeenCalled();
+                expect(approvalServiceMock.approve).not.to.be.called;
             });
 
             it('should not call the approvalService to approve twice when multiple mechanisms exist', function () {
@@ -255,8 +255,8 @@ describe('Dataview Controller', function () {
 
                 controller.submit(['aa', '22']);
 
-                expect(approvalServiceMock.approve).toHaveCallCount(1);
-                expect(approvalServiceMock.approve).toHaveBeenCalledWith(expectedArgumentsMechanismA);
+                expect(approvalServiceMock.approve).to.have.callCount(1);
+                expect(approvalServiceMock.approve).to.be.calledWith(expectedArgumentsMechanismA);
             });
         });
     });

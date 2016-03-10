@@ -1,10 +1,10 @@
 module.exports = function( config ) {
     config.set({
         basePath: '../../src/main',
-        frameworks: ['jasmine', 'sinon'],
+        frameworks: ['mocha', 'chai', 'chai-sinon', 'sinon'],
 
         preprocessors: {
-            './**/*.html': 'html2js',
+            './**/*.html': 'ng-html2js',
             './**/*.js': 'coverage'
         },
 

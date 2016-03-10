@@ -3,16 +3,26 @@ describe('Period service', function () {
 
     beforeEach(module('d2-rest'));
     beforeEach(module('PEPFAR.approvals'));
-    beforeEach(inject(function (periodService) {
+    beforeEach(inject(function (periodService, $httpBackend) {
         service = periodService;
+        
+        $httpBackend
+            .expectGET('/dhis/api/system/info')
+            .respond(200, {
+                calendar: 'iso8601',
+                dateFormat: 'yyyy-mm-dd',
+            });
+            
+        
+        $httpBackend.flush();
     }));
 
     it('should be an object', function () {
-        expect(service).toBeAnObject();
+        expect(service).to.be.a('object');
     });
 
     it('should expose the getPastPeriodsRecentFirst periods', function () {
-        expect(service.getPastPeriodsRecentFirst).toBeAFunction();
+        expect(service.getPastPeriodsRecentFirst).to.be.a('function');
     });
 
     it('should have the period types', function () {
@@ -30,111 +40,7 @@ describe('Period service', function () {
             "FinancialOct"
         ];
 
-        expect(service.getPeriodTypes()).toEqual(periodTypes);
-    });
-
-    it('should have the calendar types', function () {
-        var calendarTypes = [
-            'coptic',
-            'ethiopian',
-            'islamic',
-            'julian',
-            'nepali',
-            'thai'
-        ];
-
-        expect(service.getCalendarTypes()).toEqual(calendarTypes);
-    });
-
-    it('should have a getDateFormat method', function () {
-        expect(service.getDateFormat).toBeAFunction();
-    });
-
-    describe('dateFormat', function () {
-        var $httpBackend;
-
-        beforeEach(inject(function (_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-        }));
-
-        it('should return the default date format', function () {
-            expect(service.getDateFormat()).toBe('yyyy-mm-dd');
-        });
-
-        it('should return the dateformat after it has been loaded', function () {
-            $httpBackend.expectGET('/dhis/api/system/info')
-                .respond(200, {
-                    calendar: "iso8601",
-                    dateFormat: "dd-mm-yyyy"
-                });
-            $httpBackend.flush();
-
-            expect(service.getDateFormat()).toBe('dd-mm-yyyy');
-        });
-    });
-
-    describe('getCalendarType', function () {
-        var $httpBackend;
-
-        beforeEach(inject(function (_$httpBackend_) {
-            $httpBackend = _$httpBackend_;
-        }));
-
-        //TODO: check what to do about this
-        it('should return undefined for the default calendar', function () {
-            expect(service.getCalendarType()).toBe(undefined);
-        });
-
-        it('should return iso8601 when loaded from the api', function () {
-            $httpBackend.expectGET('/dhis/api/system/info')
-                .respond(200, {
-                    calendar: "iso8601",
-                    dateFormat: "yyyy-mm-dd"
-                });
-            $httpBackend.flush();
-
-            expect(service.getCalendarType()).toBe('gregorian');
-        });
-
-        it('should set the nepali calendar after loading from the api', function () {
-            //Mock the getScript call for javascript
-            spyOn(service, 'loadCalendarScript');
-
-            $httpBackend.expectGET('/dhis/api/system/info')
-                .respond(200, {
-                    calendar: "nepali",
-                    dateFormat: "yyyy-mm-dd"
-                });
-            $httpBackend.flush();
-
-            expect(service.getCalendarType()).toBe('nepali');
-        });
-
-        it('should load the script for the nepali calendar', function () {
-            spyOn(service, 'loadCalendarScript');
-
-            $httpBackend.expectGET('/dhis/api/system/info')
-                .respond(200, {
-                    calendar: "nepali",
-                    dateFormat: "yyyy-mm-dd"
-                });
-            $httpBackend.flush();
-
-            expect(service.loadCalendarScript).toHaveBeenCalled();
-        });
-
-        it('should not request the script when it is not a calendar type', function () {
-            spyOn(service, 'loadCalendarScript');
-
-            $httpBackend.expectGET('/dhis/api/system/info')
-                .respond(200, {
-                    calendar: "fakenotexist",
-                    dateFormat: "yyyy-mm-dd"
-                });
-            $httpBackend.flush();
-
-            expect(service.loadCalendarScript).not.toHaveBeenCalled();
-        });
+        expect(service.getPeriodTypes()).to.deep.equal(periodTypes);
     });
 
     //TODO: Mock out the period generator
@@ -142,19 +48,30 @@ describe('Period service', function () {
         it('should return periods', function () {
             service.setPeriodType('Monthly');
 
-            expect(service.getPastPeriodsRecentFirst()).toBeAnArray();
+            expect(service.getPastPeriodsRecentFirst()).to.be.a('array');
         });
 
         it('it should not return a new array', function () {
             service.setPeriodType('Monthly');
 
-            expect(service.getPastPeriodsRecentFirst()).toBe(service.getPastPeriodsRecentFirst());
+            expect(service.getPastPeriodsRecentFirst()).to.equal(service.getPastPeriodsRecentFirst());
         });
+    });
+    
+    describe('setPeriodType', function () {
+        it('should generate the correct yearly periods', function () {
+            service.setPeriodType('Yearly');
+            
+            var generatedPeriods = service.getPastPeriodsRecentFirst();
+            var thisYearString = (new Date()).getFullYear().toString();
+            
+            expect(thisYearString).to.equal(generatedPeriods[0].name);
+        })
     });
 
     describe('filterPeriodTypes', function () {
         it('should be a method', function () {
-            expect(service.filterPeriodTypes).toBeAFunction();
+            expect(service.filterPeriodTypes).to.be.a('function');
         });
 
         it('filter period types on the lowerst available one', function () {
@@ -163,7 +80,7 @@ describe('Period service', function () {
             service.filterPeriodTypes(['Monthly', 'BiMonthly', 'Weekly', 'Daily']);
             filteredPeriods = service.getPeriodTypes();
 
-            expect(filteredPeriods).toEqual(['BiMonthly', 'Quarterly', 'SixMonthly', 'SixMonthlyApril', 'Yearly', 'FinancialApril', 'FinancialJuly', 'FinancialOct']);
+            expect(filteredPeriods).to.deep.equal(['BiMonthly', 'Quarterly', 'SixMonthly', 'SixMonthlyApril', 'Yearly', 'FinancialApril', 'FinancialJuly', 'FinancialOct']);
         });
 
         it('filter period types with yearly as the lowest', function () {
@@ -172,24 +89,29 @@ describe('Period service', function () {
             service.filterPeriodTypes(['Monthly', 'BiMonthly', 'Weekly', 'Daily', 'Yearly']);
             filteredPeriods = service.getPeriodTypes();
 
-            expect(filteredPeriods).toEqual(['Yearly', 'FinancialApril', 'FinancialJuly', 'FinancialOct']);
+            expect(filteredPeriods).to.deep.equal(['Yearly', 'FinancialApril', 'FinancialJuly', 'FinancialOct']);
+        });
+        
+        it('should emit a value from the periodTypes$ observable', function (done) {
+            service.filterPeriodTypes(['Monthly', 'BiMonthly', 'Weekly', 'Daily', 'Yearly']);
+
+            service.periodTypes$
+                .subscribe(function (filteredPeriods) {
+                    expect(filteredPeriods).to.deep.equal(['Yearly', 'FinancialApril', 'FinancialJuly', 'FinancialOct']);
+                    done();
+                });
         });
     });
-
-    it('should have a periodType getter that gets the current period type', function () {
-        service.setPeriodType('Monthly');
-        expect(service.periodType).toBe('Monthly');
-    });
-
-    it('should not allow the periodType to be set on the object directly', function () {
-        function shouldThrow() {
-            service.periodType = 'Monthly';
-        }
-        expect(shouldThrow).toThrow();
-    });
-
-    it('should have a period getter and setter', function () {
-        service.period = 'value';
-        expect(service.period).toBe('value');
+    
+    describe('setPeriod', function () {
+        it('should emit the set value from the observable', function (done) {
+            service.setPeriod('September');
+           
+            service.period$
+                .subscribe(function (period) {
+                    expect(period).to.equal('September');
+                    done();
+                });
+        });
     });
 });

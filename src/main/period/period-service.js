@@ -37,7 +37,7 @@ function periodService(Restangular, rx) {
 
     function prepareCalendar() {
         var calendar = jQuery.calendars.instance(getCalendarType());
-        dhis2.period.generator = new dhis2.period.PeriodGenerator(calendar, getDateFormat());
+        dhis2.period.generator = new window.dhis2.period.PeriodGenerator(calendar, getDateFormat());
     }
 
     function getDateFormat() {
@@ -50,9 +50,11 @@ function periodService(Restangular, rx) {
 
     function setPeriodType(periodType) {
         var periods;
+        var generator = window.dhis2.period.generator;
+
         if (_(periodTypes).contains(periodType)) {
             currentPeriodType = periodType;
-            periods = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
+            periods = generator.generateReversedPeriods(currentPeriodType, 0);
 
             //Only show One year ahead and the previous years
             if (/^Yearly|Financial/.test(currentPeriodType)) {
@@ -63,18 +65,18 @@ function periodService(Restangular, rx) {
             //Show this years and last years quarters
             if (/^Quarterly$/.test(currentPeriodType)) {
                 var futureYear = [];
-                var thisYear = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
+                var thisYear = generator.generateReversedPeriods(currentPeriodType, 0);
 
-                var currentQuarter = dhis2.period.generator.filterFuturePeriodsExceptCurrent(thisYear);
+                var currentQuarter = generator.filterFuturePeriodsExceptCurrent(thisYear);
                 thisYear = thisYear.slice((3 - currentQuarter.length >= 0) ? 3 - currentQuarter.length : 0);
 
                 if (currentQuarter.length === 4) {
-                    futureYear = [dhis2.period.generator.generateReversedPeriods(currentPeriodType, 1)[3]];
+                    futureYear = [generator.generateReversedPeriods(currentPeriodType, 1)[3]];
                 }
 
-                var oneYearAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -1);
-                var twoYearsAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -2);
-                var threeYearsAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -3);
+                var oneYearAgo = generator.generateReversedPeriods(currentPeriodType, -1);
+                var twoYearsAgo = generator.generateReversedPeriods(currentPeriodType, -2);
+                var threeYearsAgo = generator.generateReversedPeriods(currentPeriodType, -3);
 
                 generatedPeriods = futureYear.concat(thisYear).concat(oneYearAgo).concat(twoYearsAgo).concat(threeYearsAgo);
                 return;

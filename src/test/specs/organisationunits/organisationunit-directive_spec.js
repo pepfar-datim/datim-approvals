@@ -1,4 +1,4 @@
-describe('Period selector directive', function () {
+describe('Organisation unit selector directive', function () {
     var element;
     var scope;
     var organisationunitsService;
@@ -19,6 +19,6 @@ describe('Period selector directive', function () {
 
 
     it('should compile to a div', function () {
-        expect(element.prop('tagName')).toBe('DIV');
+        expect(element.prop('tagName')).to.equal('DIV');
     });
 });

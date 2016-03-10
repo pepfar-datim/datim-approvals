@@ -5,6 +5,7 @@ var build_directory = 'build';
 
 var files = [
     //Test libraries
+    'src/vendor/rxjs/dist/rx.all.js',
     'src/vendor/lodash/dist/lodash.compat.js',
     'src/vendor/jquery/dist/jquery.js',
     'src/vendor/angular/angular.js',
@@ -13,8 +14,7 @@ var files = [
     'src/vendor/restangular/dist/restangular.js',
     'src/vendor/angular-bootstrap/ui-bootstrap-tpls.js',
     'src/vendor/angular-ui-select/dist/select.js',
-    'src/vendor/rxjs/dist/rx.all.js',
-    'src/vendor/rx-angular/dist/rx-angular.js',
+    'src/vendor/rx-angular/dist/rx.angular.js',
 
     //Test files
     'src/test/utils/*.js',

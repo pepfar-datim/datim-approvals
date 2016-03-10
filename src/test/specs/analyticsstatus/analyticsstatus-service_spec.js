@@ -5,7 +5,7 @@ describe('Analytics status service', function () {
     beforeEach(module('PEPFAR.approvals', function ($provide) {
         $provide.factory('errorHandler', function () {
             return {
-                warn: jasmine.createSpy('errorHandler.warn')
+                warn: sinon.spy()
             };
         })
     }));
@@ -14,11 +14,12 @@ describe('Analytics status service', function () {
     }));
 
     it('should be an object', function () {
-        expect(service).toBeAnObject();
+        expect(service).to.be.a('object');
     });
 
     it('should return a promise object', function () {
-        expect(service.getIntervalSinceLastAnalyticsTableSuccess()).toBeAPromiseLikeObject();
+        expect(service.getIntervalSinceLastAnalyticsTableSuccess().then).to.be.a('function');
+        expect(service.getIntervalSinceLastAnalyticsTableSuccess().catch).to.be.a('function');
     });
 
     describe('getStatus', function () {
@@ -53,7 +54,7 @@ describe('Analytics status service', function () {
 
             $httpBackend.flush();
 
-            expect(intervalText).toEqual('996 h, 36 m, 11 s');
+            expect(intervalText).to.equal('996 h, 36 m, 11 s');
         });
 
         it('should show message on missing property', function () {
@@ -68,7 +69,7 @@ describe('Analytics status service', function () {
 
             $httpBackend.flush();
 
-            expect(intervalText).toEqual('Unable to find last updated time');
+            expect(intervalText).to.equal('Unable to find last updated time');
         });
 
         it('should show not found message on http error', function () {
@@ -83,7 +84,7 @@ describe('Analytics status service', function () {
 
             $httpBackend.flush();
 
-            expect(intervalText).toEqual('Unable to find last updated time');
+            expect(intervalText).to.equal('Unable to find last updated time');
         });
     });
 });

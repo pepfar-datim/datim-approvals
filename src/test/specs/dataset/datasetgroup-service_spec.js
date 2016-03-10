@@ -5,7 +5,7 @@ describe('Datasetgroup service', function () {
     var service;
     var $httpBackend;
     var periodService = {
-        filterPeriodTypes: jasmine.createSpy()
+        filterPeriodTypes: sinon.spy()
     };
     var errorHandlerMock;
 
@@ -16,8 +16,8 @@ describe('Datasetgroup service', function () {
         });
         $provide.factory('errorHandler', function () {
            return {
-               error: jasmine.createSpy('errorHandler.error'),
-               warning: jasmine.createSpy('errorHandler.warning')
+               error: sinon.spy(),
+               warning: sinon.spy()
            };
         });
     }));
@@ -96,24 +96,24 @@ describe('Datasetgroup service', function () {
     });
 
     it('should be defined', function () {
-        expect(service).toBeAnObject();
+        expect(service).to.be.a('object');
     });
 
     it('should have a method to get available groups', function () {
-        expect(service.getGroups).toBeAFunction();
+        expect(service.getGroups).to.be.a('function');
     });
 
     describe('getGroups', function () {
         it('should return an array', function () {
-            expect(service.getGroups()).toEqual({});
+            expect(service.getGroups()).to.deep.equal({});
         });
 
         it('should filter the datasetgroups after they have been loaded', function () {
-            spyOn(service, 'filterDataSetsForUser').andCallThrough();
+            sinon.spy(service, 'filterDataSetsForUser');
 
             $httpBackend.flush();
 
-            expect(service.filterDataSetsForUser).toHaveBeenCalledOnce();
+            expect(service.filterDataSetsForUser).to.have.callCount(1);
         });
 
         xit('should return the filtered data sets groups when loaded', function () {
@@ -142,13 +142,13 @@ describe('Datasetgroup service', function () {
 
             $httpBackend.flush();
 
-            expect(service.getGroups()).toEqual(expectedDataSetGroups);
+            expect(service.getGroups()).to.deep.equal(expectedDataSetGroups);
         });
     });
 
     describe('filterDataSetsForUser', function () {
         it('should exist as a method', function () {
-            expect(service.filterDataSetsForUser).toBeAFunction();
+            expect(service.filterDataSetsForUser).to.be.a('function');
         });
 
         xit('should filter the dataset list based on the ones that are accessible', function () {
@@ -180,19 +180,19 @@ describe('Datasetgroup service', function () {
 
             $httpBackend.flush();
 
-            expect(service.getGroups()).toEqual(filteredUserGroups);
+            expect(service.getGroups()).to.deep.equal(filteredUserGroups);
         });
     });
 
     describe('getDataSetGroupNames', function () {
         it('should exist as a method', function () {
-            expect(service.getDataSetGroupNames).toBeAFunction();
+            expect(service.getDataSetGroupNames).to.be.a('function');
         });
 
         it('should return the data set group names', function () {
             $httpBackend.flush();
 
-            expect(service.getDataSetGroupNames()).toEqual([ 'EA', 'MER' ]);
+            expect(service.getDataSetGroupNames()).to.deep.equal([ 'EA', 'MER' ]);
         });
     });
 
@@ -204,16 +204,16 @@ describe('Datasetgroup service', function () {
         it('should return the datasets based for this the key', function () {
             var dataSets = service.getDataSetsForGroup('MER');
 
-            expect(dataSets.length).toEqual(1);
-            expect(dataSets[0].id).toEqual('iP8irTNtByO');
-            expect(dataSets[0].name).toEqual('DSD: DS 1');
-            expect(dataSets[0].workflow).toBeDefined();
+            expect(dataSets.length).to.equal(1);
+            expect(dataSets[0].id).to.equal('iP8irTNtByO');
+            expect(dataSets[0].name).to.equal('DSD: DS 1');
+            expect(dataSets[0].workflow).not.to.be.undefined;
         });
     });
 
     it('after loading the datasets it should call the periodService', function () {
         $httpBackend.flush();
 
-        expect(periodService.filterPeriodTypes).toHaveBeenCalled();
+        expect(periodService.filterPeriodTypes).to.been.called;
     });
 });

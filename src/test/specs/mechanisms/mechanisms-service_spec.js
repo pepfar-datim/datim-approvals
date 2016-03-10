@@ -3,7 +3,6 @@ describe('Mechanisms service', function () {
     var $httpBackend;
     var $rootScope;
     var $log;
-    var server;
     var apiUrlWithCorrectParameters = ['/dhis/api/categories.json?',
         [
             'paging=false',
@@ -34,7 +33,7 @@ describe('Mechanisms service', function () {
         //TODO: If we mock the approvalLevelsService we will not have to do the http call
         $httpBackend.expectGET('/dhis/api/organisationUnitLevels?fields=level,displayName&paging=false')
             .respond(200, fixtures.get('orgUnitLevels'));
-        $httpBackend.whenGET('/dhis/api/dataApprovalLevels?fields=id,name,displayName,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name%5D')
+        $httpBackend.whenGET('/dhis/api/dataApprovalLevels?fields=id,name,displayName,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name%5D&paging=false')
             .respond(200, fixtures.get('approvalLevels'));
 
         $httpBackend.flush();
@@ -46,9 +45,9 @@ describe('Mechanisms service', function () {
 
     describe('getData', function () {
         it('should act like a promise', function () {
-            expect(mechanismsService.getData().then).toBeAFunction();
-            expect(mechanismsService.getData().catch).toBeAFunction();
-            expect(mechanismsService.getData().finally).toBeAFunction();
+            expect(mechanismsService.getData().then).to.be.a('function');
+            expect(mechanismsService.getData().catch).to.be.a('function');
+            expect(mechanismsService.getData().finally).to.be.a('function');
         });
 
         it('should not do a request to the api for the categories when parameters are missing', function () {
@@ -84,7 +83,7 @@ describe('Mechanisms service', function () {
 
 
             it('should reject when the request fails', function () {
-                var catchSpy = jasmine.createSpy();
+                var catchSpy = sinon.spy();
                 categoriesRequest.respond(400, 'Error while loading categories');
 
                 mechanismsService.period = '2014';
@@ -96,7 +95,7 @@ describe('Mechanisms service', function () {
 
                 $httpBackend.flush();
 
-                expect(catchSpy).toHaveBeenCalled();
+                expect(catchSpy).to.be.called;
             });
 
             it('should resolve with the correct values', function () {
@@ -113,9 +112,9 @@ describe('Mechanisms service', function () {
 
                 $httpBackend.flush();
 
-                expect(categories.length).toEqual(2);
-                expect(categories[0].id).toEqual('SH885jaRe0o');
-                expect(categories[1].id).toEqual('GLevLNI9wkl');
+                expect(categories.length).to.equal(2);
+                expect(categories[0].id).to.equal('SH885jaRe0o');
+                expect(categories[1].id).to.equal('GLevLNI9wkl');
             });
         });
     });
@@ -130,56 +129,58 @@ describe('Mechanisms service', function () {
             deferredGetData = $q.defer();
             deferredGetStatuses = $q.defer();
 
-            spyOn(mechanismsService, 'getData').andReturn(deferredGetData.promise);
-            spyOn(mechanismsService, 'getStatuses').andReturn(deferredGetStatuses.promise);
+            sinon.stub(mechanismsService, 'getData').returns(deferredGetData.promise);
+            sinon.stub(mechanismsService, 'getStatuses').returns(deferredGetStatuses.promise);
         }));
 
         it('should act like a promise', function () {
-            expect(mechanismsService.getMechanisms().then).toBeAFunction();
-            expect(mechanismsService.getMechanisms().catch).toBeAFunction();
-            expect(mechanismsService.getMechanisms().finally).toBeAFunction();
+            expect(mechanismsService.getMechanisms().then).to.be.a('function');
+            expect(mechanismsService.getMechanisms().catch).to.be.a('function');
+            expect(mechanismsService.getMechanisms().finally).to.be.a('function');
         });
 
         describe('returned data', function () {
             var dataResult;
-            beforeEach(inject(function () {
-                mechanismsService.getMechanisms().then(function (data) {
-                    dataResult = data;
-                });
+            beforeEach(function (done) {
+                mechanismsService.getMechanisms()
+                    .then(function (data) {
+                        dataResult = data;
+                        done();
+                    });
 
                 deferredGetData.resolve(categoriesFromApi.categories);
                 deferredGetStatuses.resolve(fixtures.get('cocApprovalStatus'));
                 $rootScope.$apply();
-            }));
+            });
 
             it('should return an array in the then function', function () {
-                expect(dataResult).toBeAnArray();
+                expect(dataResult).to.be.a('array');
             });
 
             it('should return all the categoryOptions in an array', function () {
-                expect(dataResult.length).toBe(4);
+                expect(dataResult.length).to.equal(4);
             });
 
             it('should return the correct data', function () {
-                expect(dataResult[0].actions).toBe('Submit')
+                expect(dataResult[0].actions).to.equal('Submit')
             });
 
             it('should add the approval level to the mechanism', function () {
-                expect(dataResult[0].level).toBe(2);
+                expect(dataResult[0].level).to.equal(2);
             });
 
             it('should add the status to the mechanism', function () {
-                expect(dataResult[0].status).toBe('Accepted by Global');
-                expect(dataResult[1].status).toBe('Submitted by Country');
+                expect(dataResult[0].status).to.equal('Accepted by Global');
+                expect(dataResult[1].status).to.equal('Submitted by Country');
             });
 
             it('should show pending for mechanisms without a level', function () {
-                expect(dataResult[3].status).toBe('Pending');
+                expect(dataResult[3].status).to.equal('Pending');
             });
 
             it('should add the mayReadData status to the mechanism', function () {
-                expect(dataResult[0].mayReadData).toBe(true);
-                expect(dataResult[3].mayReadData).toBe(false);
+                expect(dataResult[0].mayReadData).to.equal(true);
+                expect(dataResult[3].mayReadData).to.equal(false);
             });
 
             it('should not return mechanisms without categoryOptionCombos', function () {
@@ -190,37 +191,39 @@ describe('Mechanisms service', function () {
 
     describe('categories property', function () {
         it('should be set to an empty array', function () {
-            expect(mechanismsService.categories).toEqual([]);
+            expect(mechanismsService.categories).to.deep.equal([]);
         });
 
         it('should set the categories on the service', function () {
             mechanismsService.categories = ['set1', 'set2', 'set3'];
 
-            expect(mechanismsService.categories).toEqual(['set1', 'set2', 'set3']);
+            expect(mechanismsService.categories).to.deep.equal(['set1', 'set2', 'set3']);
         });
 
         it('should log an error when the given value is not an array', function () {
             mechanismsService.categories = '';
+            var errorMessages = $log.error.logs.reduce(function (acc, v) {return acc.concat(v);}, []);
 
-            expect($log.error.logs).toContain(['Mechanism Service: Categories should be an array']);
+            expect(errorMessages).to.contain('Mechanism Service: Categories should be an array');
         });
     });
 
     describe('organisation units property', function () {
         it('should set to an empty string', function () {
-            expect(mechanismsService.organisationUnit).toEqual('');
+            expect(mechanismsService.organisationUnit).to.equal('');
         });
 
         it('should set the given orgunit id onto the service', function () {
             mechanismsService.organisationUnit = 'asd11sss';
 
-            expect(mechanismsService.organisationUnit).toEqual('asd11sss');
+            expect(mechanismsService.organisationUnit).to.equal('asd11sss');
         });
 
         it('should log an error when a value that is not a string is given', function () {
             mechanismsService.organisationUnit = [];
+            var errorMessages = $log.error.logs.reduce(function (acc, v) {return acc.concat(v);}, []);
 
-            expect($log.error.logs).toContain(['Mechanism Service: OrganisationUnit should be a string']);
+            expect(errorMessages).to.contain('Mechanism Service: OrganisationUnit should be a string');
         });
     });
 
@@ -249,7 +252,10 @@ describe('Mechanisms service', function () {
 
             $httpBackend.flush();
 
-            expect(returnedData).toEqual(fixtures.get('cocApprovalStatus'));
+            expect(returnedData).to.have.length(5);
+            expect(returnedData[0].id).to.equal('qS0ABIH66TS');
+
+            // TODO: Add more solid verification of the data structure
         });
 
         it('should call the api without an orgunit', function () {
