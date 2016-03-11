@@ -1,4 +1,4 @@
-function mechanismsService(d2Api, Restangular, $log, $q, approvalLevelsService, categoriesService) {
+function mechanismsService(Restangular, $log, $q, approvalLevelsService, workflowService, categoriesService, rx) {
     var self = this;
     var AGENCY_LEVEL = 4;
     var PARTNER_LEVEL = 5;
@@ -206,21 +206,30 @@ function mechanismsService(d2Api, Restangular, $log, $q, approvalLevelsService, 
             return deferred.promise;
         }
 
-        return $q.all([getCategoriesAndReplaceDefaults(), approvalLevelsService.get(), this.getStatuses()]).then(function (data) {
-            var categories = data[0];
-            var approvalLevels = data[1];
+        return rx.Observable.combineLatest(
+                rx.Observable.fromPromise(getCategoriesAndReplaceDefaults()),
+                approvalLevelsService,
+                rx.Observable.fromPromise(this.getStatuses()),
+                workflowService.currentWorkflow$,
+                function (categories, approvalLevels, statuses, workflow) {
+                    return [categories, approvalLevels, statuses, workflow];
+                })
+                .map(function (data) {
+                    var categories = data[0];
+                    var approvalLevels = data[1];
+                    var workflow = data[3];
 
-            var parsedData = parseData(categories, approvalLevels.getCategoryOptionGroupSetIdsForLevels());
+                    var parsedData = parseData(categories, approvalLevels.getCategoryOptionGroupSetIdsForLevels());
 
-            self.filterMechanisms(data[2], parsedData, data[1]);
+                    self.filterMechanisms(data[2], parsedData, data[1], workflow);
 
-            return mechanisms;
-        }, function () {
-            $log.error('Mechanism Service: Unable to parse the mechanisms');
-        });
+                    return mechanisms;
+                }, function () {
+                    $log.error('Mechanism Service: Unable to parse the mechanisms');
+                });
     };
 
-    this.filterMechanisms = function (mechanismsStatuses, parsedData, approvalLevels) {
+    this.filterMechanisms = function (mechanismsStatuses, parsedData, approvalLevels, workflow) {
         mechanisms = [];
 
         //TODO: Refactor this function
@@ -236,7 +245,9 @@ function mechanismsService(d2Api, Restangular, $log, $q, approvalLevelsService, 
             }
 
             if (mechanismStatus.level && mechanismStatus.level.id) {
-                approvalLevel = _.find(approvalLevels, {id: mechanismStatus.level.id});
+                // console.log('Current level', workflow.getApprovalLevelById(mechanismStatus.level.id));
+                // approvalLevel = _.find(approvalLevels, {id: mechanismStatus.level.id});
+                approvalLevel = workflow.getApprovalLevelById(mechanismStatus.level.id);
             }
 
             if (mechanismStatus.permissions.mayApprove === true) {
@@ -273,12 +284,13 @@ function mechanismsService(d2Api, Restangular, $log, $q, approvalLevelsService, 
                     mechanism.accepted = true;
                     status.push('Accepted');
                     if (mechanismStatus.level && mechanismStatus.level.level) {
-                        approvalLevel = _.find(approvalLevels, {level: (parseInt(mechanismStatus.level.level) - 1)});
-                        status.push(approvalLevel.levelName);
+                        // approvalLevel = _.find(approvalLevels, {level: (parseInt(mechanismStatus.level.level) - 1)});
+                        approvalLevel = workflow.getApprovalLevelBeforeLevel(mechanismStatus.level.id);
+                        status.push(approvalLevel.displayName);
                     }
                 } else {
                     status.push('Submitted');
-                    status.push(approvalLevel.levelName);
+                    status.push(approvalLevel.displayName);
                 }
             } else {
                 status.push('Pending');
@@ -287,14 +299,14 @@ function mechanismsService(d2Api, Restangular, $log, $q, approvalLevelsService, 
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
             mechanism.organisationUnit = mechanismStatus.ou;
-
-            if (mechanism.country === '') {
-                if (orgUnitCache[mechanismStatus.ou]) {
-                    mechanism.country = orgUnitCache[mechanismStatus.ou];
-                }
-            }
+            mechanism.country = mechanismStatus.ouName;
 
             mechanism.level = mechanismStatus.level && parseInt(mechanismStatus.level.level, 10) || undefined;
+
+            try {
+                mechanism.nextLevel = workflow.getApprovalLevelBeforeLevel(mechanismStatus.level.id).level;
+            } catch(e) {}
+
             mechanisms.push(mechanism);
         });
     };
@@ -314,8 +326,6 @@ function mechanismsService(d2Api, Restangular, $log, $q, approvalLevelsService, 
             return $q.reject(e);
         });
     };
-
-    d2Api.addEndPoint('categories');
 }
 
 angular.module('PEPFAR.approvals').service('mechanismsService', mechanismsService);

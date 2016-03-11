@@ -27,7 +27,7 @@ describe('Datasetgroup service', function () {
         $httpBackend = _$httpBackend_;
         service = dataSetGroupService;
 
-        $httpBackend.expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels&paging=false')
+        $httpBackend.expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D%26paging%3Dfalse&paging=false')
             .respond(200, {
                 "dataApprovalWorkflows": [{
                     "name": "EA",

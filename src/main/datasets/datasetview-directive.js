@@ -1,5 +1,5 @@
 /* global jQuery */
-function datasetViewDirective(AppManifest, $translate) {
+function datasetViewDirective(AppManifest, $translate, workflowService) {
     var dataSetReportWrapSelector = '.dataset-report-wrap';
 
     function loadDataSetReport(details, ds, element, scope) {
@@ -113,21 +113,31 @@ function datasetViewDirective(AppManifest, $translate) {
                 scope.checkValues();
             });
 
+            var currentWorkflow$disposable;
             scope.checkValues = function () {
                 var details = scope.details;
 
-                if (details.orgUnit &&
-                    details.period &&
-                    details.dataSets &&
-                    details.currentSelection &&
-                    details.actions) {
-
-                    scope.loadReports();
+                // Clean up old subscription
+                if (currentWorkflow$disposable && currentWorkflow$disposable.dispose) {
+                    currentWorkflow$disposable.dispose();
                 }
+
+                workflowService.currentWorkflow$
+                    .subscribe(function (workflow) {
+                            if (details.orgUnit &&
+                                details.period &&
+                                details.dataSets &&
+                                details.currentSelection &&
+                                details.actions) {
+
+                                scope.loadReports(workflow);
+
+                        }
+                    });
             };
 
             scope.hasUnreadableMechanisms = 0;
-            scope.loadReports = function () {
+            scope.loadReports = function (workflow) {
                 var details = scope.details;
                 scope.details.dataSetsFilteredByMechanisms = _.filter(details.dataSets, function (dataSet) {
                     var result = false;
@@ -161,12 +171,26 @@ function datasetViewDirective(AppManifest, $translate) {
                 scope.details.loaded = 0;
                 scope.reportView.currentDataSet = scope.details.dataSetsFilteredByMechanisms[0];
                 scope.details.dataSetsFilteredByMechanisms.forEach(function (item) {
-                    loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
-                    scope.reportView[item.id] = {};
-                    scope.reportView[item.id].content = angular.element(
-                        '<div class="report-loading-message">' +
+
+                    if (workflow.name !== 'SIMS') {
+                        loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
+                        scope.reportView[item.id] = {};
+                        scope.reportView[item.id].content = angular.element(
+                            '<div class="report-loading-message">' +
                             '<i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span>' +
-                        '</div>');
+                            '</div>');
+                    } else {
+                        // SIMS Reports / Redirect to Genie
+                        scope.reportView[item.id] = {};
+                        scope.reportView[item.id].content = angular.element(
+                            '<div class="report-loading-message">' +
+                            'Please review the SIMS data in the Genie at <a href="https://www.datim.org/api/apps/Genie_v1.1.7/index.html?v=1.0.0#/" target="_blank">https://www.datim.org/api/apps/Genie_v1.1.7/index.html?v=1.0.0#/</a></span>' +
+                            '</div>');
+                        scope.details.loaded += 1;
+                    }
+
+
+
                 });
 
                 //Add the first element

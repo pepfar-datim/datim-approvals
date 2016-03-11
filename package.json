@@ -4,7 +4,8 @@
   "README": "readme.md",
   "scripts": {
     "test": "gulp test",
-    "validate": "gulp git:pre-commit"
+    "validate": "gulp git:pre-commit",
+    "deploy": "gulp build-prod && ./install.sh"
   },
   "dependencies": {
     "coveralls": "^2.11.2",

@@ -133,17 +133,17 @@ describe('Mechanisms service', function () {
             sinon.stub(mechanismsService, 'getStatuses').returns(deferredGetStatuses.promise);
         }));
 
-        it('should act like a promise', function () {
-            expect(mechanismsService.getMechanisms().then).to.be.a('function');
-            expect(mechanismsService.getMechanisms().catch).to.be.a('function');
-            expect(mechanismsService.getMechanisms().finally).to.be.a('function');
+        it('should act like an observable', function () {
+            expect(mechanismsService.getMechanisms().subscribe).to.be.a('function');
+            expect(mechanismsService.getMechanisms().map).to.be.a('function');
+            expect(mechanismsService.getMechanisms().combineLatest).to.be.a('function');
         });
 
         describe('returned data', function () {
             var dataResult;
             beforeEach(function (done) {
                 mechanismsService.getMechanisms()
-                    .then(function (data) {
+                    .subscribe(function (data) {
                         dataResult = data;
                         done();
                     });

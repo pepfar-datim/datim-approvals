@@ -22,7 +22,7 @@ function organisationunitSelectorDirective(organisationunitsService, $log) {
                     organisationunitsService.currentOrganisationUnit.id) {
                     levelToGet = organisationunitsService.currentOrganisationUnit.level + 1;
 
-                    //TODO: PEPFAR Hack to only display this option for global users
+                    //Only display this option for global users
                     if (organisationunitsService.currentOrganisationUnit.level !== 1) { return; }
 
                     organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet)

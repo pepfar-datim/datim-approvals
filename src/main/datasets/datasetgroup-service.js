@@ -1,4 +1,4 @@
-function dataSetGroupService($q, periodService, Restangular, errorHandler) {
+function dataSetGroupService($q, periodService, Restangular, workflowService, errorHandler, $log) {
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
@@ -108,12 +108,17 @@ function dataSetGroupService($q, periodService, Restangular, errorHandler) {
         service.filterDataSetsForUser(workflows);
     }
 
-    Restangular.all('dataApprovalWorkflows')
-        .withHttpConfig({cache: true})
-        .getList({fields: 'id,name,displayName,dataApprovalLevels', paging: false})
-        .then(loadDataSetsForWorkflows)
-        .then(matchDataSetsToWorkflows)
-        .then(setWorkflowsOntoService);
+    workflowService.workflows$
+        .subscribe(
+            function (workflows) {
+                loadDataSetsForWorkflows(workflows)
+                    .then(matchDataSetsToWorkflows)
+                    .then(setWorkflowsOntoService);
+            },
+            function (error) {
+                errorHandler.error(error.message);
+            }
+        );
 }
 
 function dataSetGroupFactory() {

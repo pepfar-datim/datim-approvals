@@ -1,8 +1,10 @@
 /* global jQuery */
 angular.module('PEPFAR.approvals', [
-    'd2',
+    'restangular',
+    'd2-recordtable',
     'd2-translate',
     'ui.select',
+    'ui.bootstrap.tpls',
     'ui.bootstrap.tabs',
     'ui.bootstrap.typeahead',
     'ui.bootstrap.progressbar',
@@ -29,7 +31,7 @@ angular.module('PEPFAR.approvals')
 function appController(periodService, $scope, currentUser, mechanismsService,
                        approvalLevelsService, toastr, AppManifest,
                        systemSettings, $translate, userApprovalLevels$,
-                       organisationunitsService, $log, rx) {
+                       organisationunitsService, $log, rx, workflowService) {
     var self = this;
     var vm = this;
 
@@ -90,17 +92,9 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         return false;
     };
 
-    function setInfoBoxLevels(currentUserApprovalLevel) {
-        //TODO: Move this to translate
-        var levelNames = [
-            'Global',
-            'Country',
-            'Funding Agency',
-            'Implementing Partner'
-        ];
-
-        vm.infoBox.levelAbove = levelNames[currentUserApprovalLevel.level - 2];
-        vm.infoBox.levelBelow = levelNames[currentUserApprovalLevel.level];
+    function setInfoBoxLevels() {
+        vm.infoBox.levelAbove = getNextApprovalLevel() && getNextApprovalLevel().displayName;
+        vm.infoBox.levelBelow = getPreviousApprovalLevel() && getPreviousApprovalLevel().displayName;
     }
 
     var usersAndAllApprovalLevels$ = rx.Observable.combineLatest(
@@ -111,6 +105,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
     );
 
+    var mechanism$disposable;
     this.getTableData = function () {
         if (self.hasTableDetails()) {
             $translate('Loading...').then(function (translation) {
@@ -119,20 +114,32 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
             self.loading = true;
 
-            usersAndAllApprovalLevels$
+            if (mechanism$disposable && mechanism$disposable.dispose) {
+                mechanism$disposable.dispose();
+            }
+
+            mechanism$disposable = rx.Observable.combineLatest(
+                usersAndAllApprovalLevels$,
+                mechanismsService.getMechanisms(),
+                function (approvalLevels, mechanisms) {
+                    return {
+                        approvalLevels: approvalLevels,
+                        mechanisms: mechanisms
+                    };
+                }
+            )
                 .subscribe(function (data) {
-                    mechanismsService.getMechanisms().then(function (mechanisms) {
-                        var currentUserApprovalLevel = data[0][0];
+                    var mechanisms = data.mechanisms;
                         var actionMechanisms = [];
 
-                        setInfoBoxLevels(currentUserApprovalLevel, data[0]);
+                        setInfoBoxLevels();
 
                         _.each(mechanisms, function (mechanism) {
-                            if (mechanism.mayApprove && (mechanism.level === parseInt(currentUserApprovalLevel.level, 10) + 1)) {
+                            if (mechanism.mayApprove && (mechanism.level === getPreviousApprovalLevel().level)) {
                                 actionMechanisms.push(mechanism.id);
                             }
 
-                            if (mechanism.mayAccept && (mechanism.level === (parseInt(currentUserApprovalLevel.level, 10) + 1))) {
+                            if (mechanism.mayAccept && (mechanism.level === getPreviousApprovalLevel().level)) {
                                 actionMechanisms.push(mechanism.id);
                             }
                         });
@@ -145,13 +152,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                         }, []);
 
                         self.actionItems = actionMechanisms.length;
-
                         self.setStatus();
 
                         $scope.$broadcast('MECHANISMS.updated', mechanisms);
                         self.loading = false;
                     });
-                });
+
         }
     };
 
@@ -410,10 +416,39 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             toastr.error('Unable to load Data Approval levels, yours or all. (Please submit a ticket)');
         });
 
+    workflowService
+        .currentWorkflow$
+        .subscribe(function (workflow) {
+            $scope.currentWorkflow = workflow;
+            $log.info('Current workflow', workflow);
+        });
+
+    function getNextApprovalLevel() {
+        if ($scope.currentWorkflow) {
+            try {
+                var nextApprovalLevel = $scope.currentWorkflow.getApprovalLevelBeforeLevel($scope.approvalLevel.id);
+                return nextApprovalLevel;
+            } catch (e) {}
+        }
+    }
+
+    function getPreviousApprovalLevel() {
+        if ($scope.currentWorkflow) {
+            try {
+                var previousApprovalLevel = $scope.currentWorkflow.getApprovalLevelBelowLevel($scope.approvalLevel.id);
+                return previousApprovalLevel;
+            } catch (e) {}
+        }
+    }
+
     //When the dataset group is changed update the filter types and the datasets
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
+        // Grab the period types from the Workflow
+        var workflowPeriodTypes = _.unique(_.pluck(_.reject(_.pluck(dataSets.get(), 'workflow'), _.isUndefined), 'periodType'));
+        workflowService.setCurrentWorkflow(dataSets.get()[0].workflow);
+
         var oldPeriods = periodService.getPeriodTypes();
-        var newPeriods = periodService.filterPeriodTypes(dataSets.getPeriodTypes());
+        var newPeriods = periodService.filterPeriodTypes(workflowPeriodTypes);
 
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
@@ -503,7 +538,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     periodService.period$
         .subscribe(function (period) {
-            $log.info('Period changed to',  period);
+            // $log.info('Period changed to',  period);
             $scope.details.period = period.iso;
             mechanismsService.period = $scope.details.period;
 
@@ -551,7 +586,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     });
 }
 
-function tableViewController() {
+function tableViewController($scope) {
     this.approvalTableConfig = {
         columns: [
             {name: 'mechanism', sortable: true, searchable: true},
@@ -584,6 +619,15 @@ function tableViewController() {
 
         return _.uniq(result);
     };
+
+    this.getPreviousApprovalLevel = function () {
+        if ($scope.currentWorkflow) {
+            try {
+                var previousApprovalLevel = $scope.currentWorkflow.getApprovalLevelBelowLevel($scope.approvalLevel.id);
+                return previousApprovalLevel;
+            } catch (e) {}
+        }
+    }
 }
 
 function acceptTableViewController($scope, $controller) {
@@ -603,7 +647,7 @@ function acceptTableViewController($scope, $controller) {
         this.approvalTableData = this.filterData(mechanisms);
         this.hasActionItems = !!_.filter(this.approvalTableData, {
             mayAccept: true,
-            level: ($scope.approvalLevel.level + 1)
+            level: this.getPreviousApprovalLevel().level
         }).length;
     }.bind(this));
 }
@@ -618,7 +662,7 @@ function acceptedTableViewController($scope, $controller) {
         this.approvalTableData = this.filterData(mechanisms);
         this.hasActionItems = !!_.filter(this.approvalTableData, {
             mayApprove: true,
-            level: $scope.approvalLevel.level + 1
+            level: this.getPreviousApprovalLevel().level
         }).length;
     }.bind(this));
 }
@@ -632,9 +676,9 @@ function submittedTableViewController($scope, $controller) {
             return false;
         }
 
-        var onLowerLevelAndAccepted = ((parseInt(item.level, 10) === parseInt($scope.approvalLevel.level, 10) + 1) && item.accepted);
+        var onLowerLevelAndAccepted = ((parseInt(item.level, 10) === this.getPreviousApprovalLevel().level) && item.accepted);
 
-        if (((item.level === $scope.approvalLevel.level) || onLowerLevelAndAccepted)  && item.mayUnapprove === true) {
+        if (((item.level === $scope.approvalLevel.level)  | onLowerLevelAndAccepted)  && item.mayUnapprove === true) {
             return true;
         }
         return false;
