@@ -2,6 +2,7 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
+    var datasetDisplayRules = [];
 
     this.getGroups = function () {
         return dataSetGroups;
@@ -94,6 +95,10 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
         }
     };
 
+    this.getDataSetDisplayRules = function () {
+        return datasetDisplayRules;
+    };
+
     // Configure the api endpoints we use
     d2Api.addEndPoint('systemSettings');
     d2Api.addEndPoint('dataSets');
@@ -102,8 +107,11 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
     d2Api.addEndPoint('categoryCombos');
 
     // Load the dataSetGroups that are available from system settings
-    d2Api.systemSettings.get('keyApprovalDataSetGroups')
-        .then(function (resultDataSetGroups) {
+    $q.all([d2Api.systemSettings.get('keyApprovalsDataSetDisplayRules'), d2Api.systemSettings.get('keyApprovalDataSetGroups')])
+        .then(function (data) {
+            datasetDisplayRules = data[0];
+            var resultDataSetGroups = data[1];
+
             if (!Array.isArray(resultDataSetGroups)) {
                 return $q.reject('Dataset groups not defined in systemsettings (key: keyApprovalDataSetGroups), see the deployment manual on how to configure the app.');
             }
