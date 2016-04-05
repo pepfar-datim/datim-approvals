@@ -1,7 +1,7 @@
 function mechanismsService(Restangular, $log, $q, approvalLevelsService, workflowService, categoriesService, rx) {
     var self = this;
-    var AGENCY_LEVEL = 4;
-    var PARTNER_LEVEL = 5;
+    var AGENCY_LEVEL = 'Funding Agency';
+    var PARTNER_LEVEL = 'Implementing Partner';
 
     var period;
     var dataSetIds = [];
@@ -72,14 +72,14 @@ function mechanismsService(Restangular, $log, $q, approvalLevelsService, workflo
             var data;
 
             var agencyCOGSId = _.find(cogsIdsForLevels, function (cogsIdsForLevel) {
-                if (cogsIdsForLevel.level === AGENCY_LEVEL) {
+                if (cogsIdsForLevel.name === AGENCY_LEVEL) {
                     return true;
                 }
                 return false;
             }).cogsId;
 
             var parterCOGSId = _.find(cogsIdsForLevels, function (cogsIdsForLevel) {
-                if (cogsIdsForLevel.level === PARTNER_LEVEL) {
+                if (cogsIdsForLevel.name === PARTNER_LEVEL) {
                     return true;
                 }
                 return false;

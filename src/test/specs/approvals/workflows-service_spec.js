@@ -54,7 +54,7 @@ describe('Workflow service', function () {
         $httpBackend = $injector.get('$httpBackend');
 
         dataApprovalWorkflowsRequest = $httpBackend
-            .expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D%26paging%3Dfalse&paging=false');
+            .expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D&paging=false');
         dataApprovalWorkflowsRequest.respond(200, workflowResponse);
     }));
 

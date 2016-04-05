@@ -56,6 +56,7 @@ function approvalLevelsService($q, Restangular, rx, $log, $rootScope) {
                 return _.map(_.filter(approvalLevelsWithLevelName, 'categoryOptionGroupSet'), function (level) {
                     if (level.categoryOptionGroupSet) {
                         return {
+                            name: level.name,
                             level: level.level,
                             cogsId: level.categoryOptionGroupSet.id
                         };

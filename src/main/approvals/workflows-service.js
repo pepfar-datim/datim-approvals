@@ -68,7 +68,7 @@ function workflowService(rx, Restangular, $q) {
         var workflowRequest = Restangular.all('dataApprovalWorkflows')
             .withHttpConfig({cache: true})
             .getList({
-                fields: 'id,name,displayName,dataApprovalLevels[displayName,id,level]&paging=false',
+                fields: 'id,name,displayName,dataApprovalLevels[displayName,id,level]',
                 paging: false
             })
             .catch(function (response) {

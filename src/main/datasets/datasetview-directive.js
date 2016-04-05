@@ -139,6 +139,27 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
             scope.hasUnreadableMechanisms = 0;
             scope.loadReports = function (workflow) {
                 var details = scope.details;
+
+                // Reset the report section to empty
+                jQuery(dataSetReportWrapSelector).html('');
+
+                // Reviewing SIMS workflow items this can only be done in the Genie. Therefore display a message for the
+                // data to be reviewed in the genie.
+                if (workflow.name === 'SIMS') {
+                    // SIMS Reports / Redirect to Genie
+                    var simsReviewHtml = angular.element(
+                        '<div class="report-loading-message">' +
+                        'Please review the SIMS data in the Genie at <a href="https://www.datim.org/api/apps/Genie_v1.1.7/index.html?v=1.0.0#/" target="_blank">https://www.datim.org/api/apps/Genie_v1.1.7/index.html?v=1.0.0#/</a></span>' +
+                        '</div>');
+
+                    // Set the amount of loaded items to one to hide the loading message.
+                    scope.details.loaded += 1;
+
+                    // Append the created message to the reports element
+                    element.find(dataSetReportWrapSelector).append(simsReviewHtml);
+                    return;
+                }
+
                 scope.details.dataSetsFilteredByMechanisms = _.filter(details.dataSets, function (dataSet) {
                     var result = false;
                     var categoryOptionComboIds;
@@ -161,9 +182,6 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
                     return result;
                 });
 
-                //Move this out
-                jQuery(dataSetReportWrapSelector).html('');
-
                 $translate('Go to top').then(function (translation) {
                     addBackToTop(translation);
                 });
@@ -171,30 +189,21 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
                 scope.details.loaded = 0;
                 scope.reportView.currentDataSet = scope.details.dataSetsFilteredByMechanisms[0];
                 scope.details.dataSetsFilteredByMechanisms.forEach(function (item) {
-
-                    if (workflow.name !== 'SIMS') {
-                        loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
-                        scope.reportView[item.id] = {};
-                        scope.reportView[item.id].content = angular.element(
-                            '<div class="report-loading-message">' +
-                            '<i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span>' +
-                            '</div>');
-                    } else {
-                        // SIMS Reports / Redirect to Genie
-                        scope.reportView[item.id] = {};
-                        scope.reportView[item.id].content = angular.element(
-                            '<div class="report-loading-message">' +
-                            'Please review the SIMS data in the Genie at <a href="https://www.datim.org/api/apps/Genie_v1.1.7/index.html?v=1.0.0#/" target="_blank">https://www.datim.org/api/apps/Genie_v1.1.7/index.html?v=1.0.0#/</a></span>' +
-                            '</div>');
-                        scope.details.loaded += 1;
-                    }
-
-
-
+                    loadDataSetReport(scope.details, item, element.find(dataSetReportWrapSelector), scope);
+                    scope.reportView[item.id] = {};
+                    scope.reportView[item.id].content = angular.element(
+                        '<div class="report-loading-message">' +
+                        '<i class="fa fa-circle-o-notch fa-spin"></i> Loading report: <span class="report-name">' + item.name + '</span>' +
+                        '</div>');
                 });
 
-                //Add the first element
-                element.find(dataSetReportWrapSelector).append(scope.reportView[scope.details.dataSetsFilteredByMechanisms[0].id].content);
+                // When reports are available add the first element to the screen
+                if (scope.reportView &&
+                    angular.isArray(scope.details.dataSetsFilteredByMechanisms) &&
+                    scope.details.dataSetsFilteredByMechanisms.length > 0 &&
+                    scope.reportView[scope.details.dataSetsFilteredByMechanisms[0]]) {
+                    element.find(dataSetReportWrapSelector).append(scope.reportView[scope.details.dataSetsFilteredByMechanisms[0].id].content);
+                }
             };
 
             scope.onChange = function ($event, $item) {

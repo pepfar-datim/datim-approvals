@@ -36,6 +36,52 @@ describe('Mechanisms service', function () {
         $httpBackend.whenGET('/dhis/api/dataApprovalLevels?fields=id,name,displayName,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name%5D&paging=false')
             .respond(200, fixtures.get('approvalLevels'));
 
+        var workflowResponse = {
+            "dataApprovalWorkflows": [{
+                "name": "MER Results",
+                "id": "QeGps9iWl1i",
+                "displayName": "MER Results",
+                "dataApprovalLevels": [{"id": "aypLtfWShE5", "level": 1, "displayName": "Global"}, {
+                    "id": "fsIo8vU2VFZ",
+                    "level": 5,
+                    "displayName": "Implementing Partner"
+                }, {"id": "rImhZfF6RKy", "level": 3, "displayName": "Inter-Agency"}, {
+                    "id": "jtLSx6a19Ps",
+                    "level": 4,
+                    "displayName": "Funding Agency"
+                }]
+            }, {
+                "name": "MER Targets",
+                "id": "AEt9nEjcmhw",
+                "displayName": "MER Targets",
+                "dataApprovalLevels": [{"id": "aypLtfWShE5", "level": 1, "displayName": "Global"}, {
+                    "id": "fsIo8vU2VFZ",
+                    "level": 5,
+                    "displayName": "Implementing Partner"
+                }, {"id": "rImhZfF6RKy", "level": 3, "displayName": "Inter-Agency"}, {
+                    "id": "jtLSx6a19Ps",
+                    "level": 4,
+                    "displayName": "Funding Agency"
+                }]
+            }, {
+                "name": "mg_test",
+                "id": "rrUYETtwcgu",
+                "displayName": "mg_test",
+            }, {
+                "name": "SIMS",
+                "id": "FmDY2sTeoYw",
+                "displayName": "SIMS",
+                "dataApprovalLevels": [{
+                    "id": "MROYE5CmsDF",
+                    "level": 2,
+                    "displayName": "Global Funding Agency"
+                }, {"id": "aypLtfWShE5", "level": 1, "displayName": "Global"}]
+            }]
+        };
+
+        $httpBackend.whenGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D&paging=false')
+            .respond(200, workflowResponse);
+
         $httpBackend.flush();
     }));
 
