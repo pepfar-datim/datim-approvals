@@ -135,11 +135,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                         setInfoBoxLevels();
 
                         _.each(mechanisms, function (mechanism) {
-                            if (mechanism.mayApprove && (mechanism.level === getPreviousApprovalLevel().level)) {
+                            const previousApprovalLevel = getPreviousApprovalLevel() || {};
+
+                            if (mechanism.mayApprove && (mechanism.level === previousApprovalLevel.level)) {
                                 actionMechanisms.push(mechanism.id);
                             }
 
-                            if (mechanism.mayAccept && (mechanism.level === getPreviousApprovalLevel().level)) {
+                            if (mechanism.mayAccept && (mechanism.level === previousApprovalLevel.level)) {
                                 actionMechanisms.push(mechanism.id);
                             }
                         });
@@ -430,6 +432,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 return nextApprovalLevel;
             } catch (e) {}
         }
+
+        return {};
     }
 
     function getPreviousApprovalLevel() {
@@ -439,6 +443,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 return previousApprovalLevel;
             } catch (e) {}
         }
+
+        return {};
     }
 
     //When the dataset group is changed update the filter types and the datasets
@@ -627,6 +633,8 @@ function tableViewController($scope) {
                 return previousApprovalLevel;
             } catch (e) {}
         }
+
+        return {};
     }
 }
 
