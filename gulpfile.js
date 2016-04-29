@@ -1,6 +1,6 @@
 'use strict';
 
-var dhis_directory = '/usr/local/apache-tomcat-8.0.5/webapps/dhis/apps/approvals/';
+var dhis_directory = '/Users/markadm/Projects/dhis/DHIS2_HOME/apps/approvals/';
 var build_directory = 'build';
 
 var files = [
