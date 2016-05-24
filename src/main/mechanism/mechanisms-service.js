@@ -299,7 +299,6 @@ function mechanismsService(Restangular, $log, $q, approvalLevelsService, workflo
             mechanism.status = status.join(' by ');
             mechanism.actions = actions.join(', ');
             mechanism.organisationUnit = mechanismStatus.ou;
-            mechanism.country = mechanismStatus.ouName;
 
             mechanism.level = mechanismStatus.level && parseInt(mechanismStatus.level.level, 10) || undefined;
 
