@@ -34,6 +34,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                        organisationunitsService, $log, rx, workflowService) {
     var self = this;
     var vm = this;
+    var organisationUnit$ = new rx.ReplaySubject(1);
+    var mechanisms$ = new rx.ReplaySubject(1);
 
     vm.infoBox = {
         isShowing: false,
@@ -105,7 +107,56 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
     );
 
-    var mechanism$disposable;
+    rx.Observable.combineLatest(
+        usersAndAllApprovalLevels$,
+        mechanisms$,
+        organisationUnit$,
+        function (approvalLevels, mechanisms, organisationUnit) {
+            return {
+                approvalLevels: approvalLevels,
+                mechanisms: mechanisms
+                    .filter(function (mechanism) {
+                        // When you are a global user and global is selected as an organisationUnit you should see everything
+                        if (organisationUnit.name === 'Global') {
+                            return true;
+                        }
+
+                        return mechanism.country === organisationUnit.name;
+                    })
+            };
+        }
+    )
+        .subscribe(function (data) {
+            var mechanisms = data.mechanisms;
+            var actionMechanisms = [];
+
+            setInfoBoxLevels();
+
+            _.each(mechanisms, function (mechanism) {
+                const previousApprovalLevel = getPreviousApprovalLevel() || {};
+
+                if (mechanism.mayApprove && (mechanism.level === previousApprovalLevel.level)) {
+                    actionMechanisms.push(mechanism.id);
+                }
+
+                if (mechanism.mayAccept && (mechanism.level === previousApprovalLevel.level)) {
+                    actionMechanisms.push(mechanism.id);
+                }
+            });
+
+            actionMechanisms = actionMechanisms.reduce(function (actionMechanisms, mechanismId) {
+                if (actionMechanisms.indexOf(mechanismId) === -1) {
+                    actionMechanisms.push(mechanismId);
+                }
+                return actionMechanisms;
+            }, []);
+
+            self.actionItems = actionMechanisms.length;
+            self.setStatus();
+
+            $scope.$broadcast('MECHANISMS.updated', mechanisms);
+        });
+
     this.getTableData = function () {
         if (self.hasTableDetails()) {
             $translate('Loading...').then(function (translation) {
@@ -113,52 +164,12 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             });
 
             self.loading = true;
-
-            if (mechanism$disposable && mechanism$disposable.dispose) {
-                mechanism$disposable.dispose();
-            }
-
-            mechanism$disposable = rx.Observable.combineLatest(
-                usersAndAllApprovalLevels$,
-                mechanismsService.getMechanisms(),
-                function (approvalLevels, mechanisms) {
-                    return {
-                        approvalLevels: approvalLevels,
-                        mechanisms: mechanisms
-                    };
-                }
-            )
-                .subscribe(function (data) {
-                    var mechanisms = data.mechanisms;
-                        var actionMechanisms = [];
-
-                        setInfoBoxLevels();
-
-                        _.each(mechanisms, function (mechanism) {
-                            const previousApprovalLevel = getPreviousApprovalLevel() || {};
-
-                            if (mechanism.mayApprove && (mechanism.level === previousApprovalLevel.level)) {
-                                actionMechanisms.push(mechanism.id);
-                            }
-
-                            if (mechanism.mayAccept && (mechanism.level === previousApprovalLevel.level)) {
-                                actionMechanisms.push(mechanism.id);
-                            }
-                        });
-
-                        actionMechanisms = actionMechanisms.reduce(function (actionMechanisms, mechanismId) {
-                            if (actionMechanisms.indexOf(mechanismId) === -1) {
-                                actionMechanisms.push(mechanismId);
-                            }
-                            return actionMechanisms;
-                        }, []);
-
-                        self.actionItems = actionMechanisms.length;
-                        self.setStatus();
-
-                        $scope.$broadcast('MECHANISMS.updated', mechanisms);
-                        self.loading = false;
-                    });
+            mechanismsService.getMechanisms()
+                .take(1)
+                .subscribe(function (mechanisms) {
+                    mechanisms$.onNext(mechanisms);
+                    self.loading = false;
+                });
 
         }
     };
@@ -461,13 +472,10 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         mechanismsService.dataSetIds = dataSets.getIds();
         mechanismsService.dataSets = dataSets.get();
 
-        //TODO: Perhaps we need to resolve this promise so the orgUnit is always accessible?
-        if (angular.isString(organisationunitsService.currentOrganisationUnit.id)) {
-            setOrganisationUnit();
-        }
-
+        // Reset the selection
         $scope.details.currentSelection = [];
 
+        // When the details are available load the mechanisms for the table
         if (self.hasTableDetails()) {
             self.showData = false;
             self.deSelect();
@@ -497,6 +505,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
 
         mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        organisationUnit$.onNext(organisationunitsService.currentOrganisationUnit);
     }
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
@@ -571,23 +580,15 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
             $scope.details.orgUnit = newVal;
+            setOrganisationUnit();
         }
     });
 
     $scope.$watch(function () {
         return organisationunitsService.currentOrganisationUnit;
     }, function (newVal, oldVal) {
-        if (newVal === oldVal) {
-            return;
-        }
-
-        setOrganisationUnit();
-
-        $scope.details.orgUnit = mechanismsService.organisationUnit;
-
-        if (self.hasTableDetails()) {
-            self.showData = false;
-            self.getTableData();
+        if (newVal && newVal.name) {
+            organisationUnit$.onNext(newVal);
         }
     });
 }
