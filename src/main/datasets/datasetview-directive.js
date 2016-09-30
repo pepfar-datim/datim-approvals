@@ -184,13 +184,19 @@ function datasetViewDirective(AppManifest, $translate, dataSetGroupService, $log
                         })
                         // Check if the rule applies to the current period
                         .filter(function (rulesDefinition) {
-                            var fullYear = parseInt(currentPeriod.substring(0, 4), 10);
-
                             switch (rulesDefinition.matchPeriodOn.comparator) {
+                                case "eq":
+                                    return (currentPeriod == rulesDefinition.matchPeriodOn.value);
+                                case "gt":
+                                    return (currentPeriod > rulesDefinition.matchPeriodOn.value);
                                 case "gte":
-                                    return (fullYear >= rulesDefinition.matchPeriodOn.value)
+                                    return (currentPeriod >= rulesDefinition.matchPeriodOn.value);
                                 case "lt":
-                                    return (fullYear < rulesDefinition.matchPeriodOn.value)
+                                    return (currentPeriod < rulesDefinition.matchPeriodOn.value);
+                                case "lte":
+                                    return (currentPeriod <= rulesDefinition.matchPeriodOn.value);
+                                case "neq":
+                                    return (currentPeriod != rulesDefinition.matchPeriodOn.value);
                             }
 
                             return false;
