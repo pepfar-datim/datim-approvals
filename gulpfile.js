@@ -41,7 +41,7 @@ var jshint = require('gulp-jshint');
 var jscs = require('gulp-jscs');
 
 //Build
-var sass = require('gulp-ruby-sass');
+var sass = require('gulp-sass');
 var zip = require('gulp-zip');
 var ngAnnotate = require('gulp-ng-annotate');
 
