@@ -2,6 +2,40 @@
 function datasetViewDirective(AppManifest, $translate, workflowService) {
     var dataSetReportWrapSelector = '.dataset-report-wrap';
 
+    /**
+     * Creates the events as they exist in data entry so they can be subscribed to.
+     * This is needed so that subscriptions to these events in custom forms do not cause the
+     * form to behave differently between reports and approvals.
+     */
+    (function createDataEntryEvents() {
+        window.dhis2 = window.dhis2 || {};
+        dhis2.de = dhis2.de || {};
+
+        dhis2.de.event = {
+            // Fired
+            formLoaded        : "dhis2.de.event.formLoaded",
+            dataValuesLoaded  : "dhis2.de.event.dataValuesLoaded",
+            formReady         : "dhis2.de.event.formReady",
+            // Never fired in approvals (but can be subscribed to in custom form)
+            dataValueSaved    : "dhis2.de.event.dataValueSaved",
+            completed         : "dhis2.de.event.completed",
+            uncompleted       : "dhis2.de.event.uncompleted",
+            validationSucces  : "dhis2.de.event.validationSuccess",
+            validationError   : "dhis2.de.event.validationError"
+        };
+    }());
+
+    /**
+     * Fire a subset of the data entry events, just like in Data Set Report.
+     */
+    function fireDataEntryEvents() {
+        var $document = $(document);
+
+        $document.trigger(dhis2.de.event.formLoaded);
+        $document.trigger(dhis2.de.event.dataValuesLoaded);
+        $document.trigger(dhis2.de.event.formReady);
+    }
+
     function loadDataSetReport(details, ds, element, scope) {
         var dataSetReportUrl = AppManifest.activities.dhis.href + '/dhis-web-reporting/generateDataSetReport.action';
         var params = {
@@ -214,6 +248,8 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
                         } else {
                             element.find(dataSetReportWrapSelector).append(scope.reportView[$item.id].content);
                         }
+
+                        fireDataEntryEvents();
                     }
                 } catch (e) {
                     if (window.console && window.console.error) {

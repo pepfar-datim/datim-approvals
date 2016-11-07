@@ -56,6 +56,7 @@
     "sinon-chai": "^2.8.0"
   },
   "scripts": {
+    "build": "gulp build-prod",
     "test": "gulp test",
     "validate": "gulp git:pre-commit",
     "build": "gulp build-prod"
