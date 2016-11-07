@@ -269,6 +269,13 @@ gulp.task('vendor', function (cb) {
     return stuff;
 });
 
+gulp.task('font-awesome', function () {
+    return gulp.src([
+        'src/vendor/font-awesome/fonts/**'
+    ])
+    .pipe(gulp.dest('build/fonts'));
+});
+
 gulp.task('do-rev-on-build', function () {
     function doFileCheck(file) {
         if (/\.html$/.test(file.path) || /\.js$/.test(file.path) || /\.css$/.test(file.path)) {
@@ -292,7 +299,7 @@ gulp.task('clean-rev', function(cb){
 });
 
 gulp.task('build', function (cb) {
-    runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'i18n', 'images', 'manifest', cb);
+    runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'font-awesome', 'i18n', 'images', 'manifest', cb);
 });
 
 gulp.task('build-prod', function (cb) {
