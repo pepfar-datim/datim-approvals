@@ -58,7 +58,7 @@
   "scripts": {
     "test": "gulp test",
     "validate": "gulp git:pre-commit",
-    "build-prod": "gulp build-prod"
+    "build": "gulp build-prod"
   },
   "pre-commit": [
     "validate"
