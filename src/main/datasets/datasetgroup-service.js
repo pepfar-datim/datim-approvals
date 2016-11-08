@@ -1,4 +1,4 @@
-function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler) {
+function dataSetGroupService($q, periodService, Restangular, workflowService, errorHandler, $log) {
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
@@ -7,81 +7,33 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
         return dataSetGroups;
     };
 
-    var categoryComboCache = {};
+    this.filterDataSetsForUser = function (workflows) {
+        function onlyWorkflowsWithDataSets(workflow) {
+            return Array.isArray(workflow.dataSets) && workflow.dataSets.length > 0;
+        }
 
-    this.filterDataSetsForUser = function (resultDataSetGroups) {
-        var dataSetGroupsPromises = [];
+        function toObjectByName(acc, workflow) {
+            acc[workflow.name] = workflow;
 
-        _.forEach(resultDataSetGroups, function (dataSetGroup) {
-            var filteredGroup = {};
+            return acc;
+        }
 
-            var filters;
+        dataSetGroups = workflows
+            .filter(onlyWorkflowsWithDataSets)
+            .reduce(toObjectByName, {});
 
-            filteredGroup.name = dataSetGroup.name;
-            filteredGroup.dataSets = [];
+        dataSetGroupNames = _.chain(dataSetGroups)
+            .map(function (dataSetGroup, key) {
+                return key;
+            })
+            .value()
+            .sort();
 
-            filters = [
-                'id:in:[',
-                dataSetGroup.dataSets.join(','),
-                ']'
-            ].join('');
-
-            dataSetGroupsPromises.push(d2Api.dataSets.getList({
-                fields: 'name,shortName,id,periodType,categoryCombo[id,name,categories[id]]',
-                filter: filters,
-                paging: 'false'
-            }).then(function (dataSets) {
-                filteredGroup.dataSets = dataSets.getDataOnly();
-
-                var categoryComboIds = {};
-
-                _.each(filteredGroup.dataSets, function (dataSet) {
-                    if (dataSet.categoryCombo) {
-                        if (categoryComboIds[dataSet.categoryCombo.id]) {
-                            categoryComboIds[dataSet.categoryCombo.id].push(dataSet);
-                        } else {
-                            categoryComboIds[dataSet.categoryCombo.id] = [dataSet];
-                        }
-                    }
-                });
-
-                _.each(categoryComboIds, function (dataSets, catCombo) {
-                    if (!categoryComboCache[catCombo]) {
-                        categoryComboCache[catCombo] = Restangular.all('categoryCombos').withHttpConfig({cache: true}).get(catCombo, {fields: 'id,categoryOptionCombos[id,name]'});
-                    }
-
-                    categoryComboCache[catCombo].then(function (categoryCombo) {
-                        _.each(dataSets, function (dataSet) {
-                            dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
-                        });
-                    });
-                });
-
-                return filteredGroup;
-            }));
-        });
-
-        $q.all(dataSetGroupsPromises).then(function (datasetGroups) {
-            var initialDataSets = dataSetGroupFactory()([]);
-
-            _.forEach(datasetGroups, function (filteredGroup) {
-                if (filteredGroup.dataSets.length > 0) {
-                    dataSetGroups[filteredGroup.name] = filteredGroup;
-                }
-
-                dataSetGroupNames = _.map(dataSetGroups, function (dataSetGroup, key) {
-                    return key;
-                }).sort();
-            });
-
-            //TODO: this code is a bit confusing?
-            if (dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]]) {
-                initialDataSets = dataSetGroupFactory()(dataSetGroups[dataSetGroupNames[0]].dataSets);
-                periodService.filterPeriodTypes(initialDataSets.getPeriodTypes());
-            } else {
-                errorHandler.warning('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
-            }
-        });
+        if (dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]]) {
+            periodService.filterPeriodTypes([dataSetGroups[dataSetGroupNames[0]].periodType]);
+        } else {
+            errorHandler.warning('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
+        }
     };
 
     this.getDataSetGroupNames = function () {
@@ -94,24 +46,79 @@ function dataSetGroupService(d2Api, $q, periodService, Restangular, errorHandler
         }
     };
 
-    // Configure the api endpoints we use
-    d2Api.addEndPoint('systemSettings');
-    d2Api.addEndPoint('dataSets');
+    function pickId(value) {
+        return value.id;
+    }
 
-    //Add combo endpoint for MER Hack
-    d2Api.addEndPoint('categoryCombos');
+    function getWorkFlowIds(dataApprovalWorkflows) {
+        return _.map(dataApprovalWorkflows, pickId);
+    }
 
-    // Load the dataSetGroups that are available from system settings
-    d2Api.systemSettings.get('keyApprovalDataSetGroups')
-        .then(function (resultDataSetGroups) {
-            if (!Array.isArray(resultDataSetGroups)) {
-                return $q.reject('Dataset groups not defined in systemsettings (key: keyApprovalDataSetGroups), see the deployment manual on how to configure the app.');
-            }
-            service.filterDataSetsForUser(resultDataSetGroups);
-        })
-        .catch(function (e) {
-            errorHandler.error(e, true);
+    function loadCategoryOptionCombosForDataSets(data) {
+        var dataSets = data[1];
+
+        var categoryCombosForDataSets = _.map(dataSets, function (dataSet) {
+            return Restangular.all('categoryCombos').withHttpConfig({cache: true}).get(dataSet.categoryCombo.id, {fields: 'id,categoryOptionCombos[id,name]'})
+                .then(function (categoryCombo) {
+                    dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
+                });
         });
+
+        return $q.all(categoryCombosForDataSets)
+            .then(function () {
+                return data;
+            });
+    }
+
+    function loadDataSetsForWorkflows(dataApprovalWorkflows) {
+        return Restangular
+            .all('dataSets')
+            .getList({
+                fields: 'name,shortName,id,periodType,workflow[id,periodType],categoryCombo[id,name,categories[id]]',
+                filter: 'workflow.id:in:[' + getWorkFlowIds(dataApprovalWorkflows).join(',') + ']',
+                paging: false
+            })
+            .then(function (dataSets) {
+                return [dataApprovalWorkflows, dataSets];
+            })
+            .then(loadCategoryOptionCombosForDataSets);
+    }
+
+    function addDataSetsToWorkflow(dataSetsForWorkflow, workflow) {
+        workflow.dataSets = dataSetsForWorkflow[workflow.id] || [];
+
+        return workflow;
+    }
+
+    function matchDataSetsToWorkflows(data) {
+        var dataApprovalWorkflows = data[0];
+        var dataSets = data[1];
+
+        var dataSetsForWorkflow = _.groupBy(dataSets, function (ds) {return ds.workflow.id;});
+
+        return dataApprovalWorkflows
+            .map(addDataSetsToWorkflow.bind(null, dataSetsForWorkflow));
+    }
+
+    function setWorkflowsOntoService(workflows) {
+        // Workflows including dataSets that belong to those workflows
+        if (!Array.isArray(workflows)) {
+            return $q.reject('Could not properly load the Workflows from the api.');
+        }
+        service.filterDataSetsForUser(workflows);
+    }
+
+    workflowService.workflows$
+        .subscribe(
+            function (workflows) {
+                loadDataSetsForWorkflows(workflows)
+                    .then(matchDataSetsToWorkflows)
+                    .then(setWorkflowsOntoService);
+            },
+            function (error) {
+                errorHandler.error(error.message);
+            }
+        );
 }
 
 function dataSetGroupFactory() {

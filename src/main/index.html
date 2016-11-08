@@ -189,9 +189,23 @@
                     });
                     jQuery.get(dhis2Root + '/api/systemSettings.json').success(function (systemSettings) {
                         function configureApp(language) {
-                            angular.module('PEPFAR.approvals').config(function ($provide, d2ApiProvider, $translateProvider) {
+                            angular.module('PEPFAR.approvals').config(function ($provide, RestangularProvider, $translateProvider) {
                                 $provide.constant('API_ENDPOINT', dhis2Root + '/api');
-                                d2ApiProvider.setBaseUrl(dhis2Root + '/api');
+                                RestangularProvider.setBaseUrl(dhis2Root + '/api');
+
+                                RestangularProvider.addResponseInterceptor(function (data, operation, what) {
+                                    if (operation === 'getList' && data && data[what]) {
+                                        var newData = data[what],
+                                                metaData = angular.copy(data);
+
+                                        delete metaData[what];
+                                        newData.meta = metaData;
+
+                                        return newData;
+                                    }
+                                    return data;
+                                });
+
                                 $translateProvider.use(language);
                                 $translateProvider.preferredLanguage(language);
                             });

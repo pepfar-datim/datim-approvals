@@ -48,9 +48,10 @@
     ]};
     library.approvalLevels = {"dataApprovalLevels": [
         {"id": "aypLtfWShE5", "name": "1", "level": 1, "orgUnitLevel": 1},
-        {"id": "JNpaWdWCyDN", "name": "2", "level": 2, "orgUnitLevel": 2},
-        {"id": "vqWNeqjozr9", "name": "2 - Funding Agency", "level": 3, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "bw8KHXzxd9i", "name": "Funding Agency", "displayName": "Funding Agency"}},
-        {"id": "WccDi5x6FSp", "name": "2 - Implementing Partner", "level": 4, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "BOyWrF33hiR", "name": "Implementing Partner", "displayName": "Implementing Partner"}}
+        {"id": "MROYE5CmsDF", "name": "2 - Global Funding Agency", "level": 2, "orgUnitLevel": 1},
+        {"id": "JNpaWdWCyDN", "name": "3", "level": 3, "orgUnitLevel": 2},
+        {"id": "vqWNeqjozr9", "name": "2 - Funding Agency", "level": 4, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "bw8KHXzxd9i", "name": "Funding Agency", "displayName": "Funding Agency"}},
+        {"id": "WccDi5x6FSp", "name": "2 - Implementing Partner", "level": 5, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "BOyWrF33hiR", "name": "Implementing Partner", "displayName": "Implementing Partner"}}
     ]};
     library.fundingAgenciesCOG = {"categoryOptionGroups": [
         {"id": "OO5qyDIwoMk", "name": "DOD"},

@@ -1,10 +1,8 @@
 /* global jQuery, dhis2 */
-angular.module('PEPFAR.approvals').service('periodService', periodService);
+angular.module('PEPFAR.approvals').factory('periodService', periodService);
 
 //FIXME: the service is not consistent with getters and setters
-function periodService(d2Api) {
-    var service = this;
-
+function periodService(Restangular, rx) {
     var currentPeriodType;
     var currentPeriod;
     var generatedPeriods;
@@ -34,46 +32,29 @@ function periodService(d2Api) {
         'thai'
     ];
 
-    Object.defineProperties(this, {
-        period: {
-            get: function () { return currentPeriod; },
-            set: function (period) { currentPeriod = period; }
-        },
-        periodType: {
-            get: function () { return currentPeriodType; }
-        }
-    });
+    var periodTypes$ = new rx.BehaviorSubject(periodTypes);
+    var period$ = new rx.ReplaySubject(1);
 
-    this.prepareCalendar = function () {
-        var calendar = jQuery.calendars.instance(service.getCalendarType());
-        dhis2.period.generator = new dhis2.period.PeriodGenerator(calendar, this.getDateFormat());
-    };
+    function prepareCalendar() {
+        var calendar = jQuery.calendars.instance(getCalendarType());
+        dhis2.period.generator = new window.dhis2.period.PeriodGenerator(calendar, getDateFormat());
+    }
 
-    this.getDateFormat = function () {
+    function getDateFormat() {
         return dateFormat;
-    };
+    }
 
-    this.getPeriodTypes = function () {
-        return periodTypes;
-    };
-
-    this.getCalendarTypes = function () {
-        return calendarTypes;
-    };
-
-    this.getCalendarType = function () {
+    function getCalendarType() {
         return calendarType;
-    };
+    }
 
-    this.getPastPeriodsRecentFirst = function () {
-        return generatedPeriods;
-    };
-
-    this.setPeriodType = function (periodType) {
+    function setPeriodType(periodType) {
         var periods;
+        var generator = window.dhis2.period.generator;
+
         if (_(periodTypes).contains(periodType)) {
             currentPeriodType = periodType;
-            periods = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
+            periods = generator.generateReversedPeriods(currentPeriodType, 0);
 
             //Only show One year ahead and the previous years
             if (/^Yearly|Financial/.test(currentPeriodType)) {
@@ -84,18 +65,18 @@ function periodService(d2Api) {
             //Show this years and last years quarters
             if (/^Quarterly$/.test(currentPeriodType)) {
                 var futureYear = [];
-                var thisYear = dhis2.period.generator.generateReversedPeriods(currentPeriodType, 0);
+                var thisYear = generator.generateReversedPeriods(currentPeriodType, 0);
 
-                var currentQuarter = dhis2.period.generator.filterFuturePeriodsExceptCurrent(thisYear);
+                var currentQuarter = generator.filterFuturePeriodsExceptCurrent(thisYear);
                 thisYear = thisYear.slice((3 - currentQuarter.length >= 0) ? 3 - currentQuarter.length : 0);
 
                 if (currentQuarter.length === 4) {
-                    futureYear = [dhis2.period.generator.generateReversedPeriods(currentPeriodType, 1)[3]];
+                    futureYear = [generator.generateReversedPeriods(currentPeriodType, 1)[3]];
                 }
 
-                var oneYearAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -1);
-                var twoYearsAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -2);
-                var threeYearsAgo = dhis2.period.generator.generateReversedPeriods(currentPeriodType, -3);
+                var oneYearAgo = generator.generateReversedPeriods(currentPeriodType, -1);
+                var twoYearsAgo = generator.generateReversedPeriods(currentPeriodType, -2);
+                var threeYearsAgo = generator.generateReversedPeriods(currentPeriodType, -3);
 
                 generatedPeriods = futureYear.concat(thisYear).concat(oneYearAgo).concat(twoYearsAgo).concat(threeYearsAgo);
                 return;
@@ -104,47 +85,78 @@ function periodService(d2Api) {
             //For other periods like month/day etc. show only the default generated
             generatedPeriods = periods;
         }
-    };
+    }
 
     function removeFuturePeriodsExceptClosestOne(periods) {
         return periods.slice(5);
     }
 
-    this.loadCalendarScript = function (calendarType) {
+    function loadCalendarScript(calendarType) {
         jQuery.getScript('../dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.' + calendarType + '.min.js',
             function () {
-                service.prepareCalendar();
+                prepareCalendar();
             }).error(function () {
                 throw new Error('Unable to load ' + calendarType + ' calendar');
             });
 
-    };
+    }
 
-    this.getPeriodTypesForDataSet = function (dataSetPeriodTypes) {
+    function getPeriodTypesForDataSet(dataSetPeriodTypes) {
         var firstPeriodIndex = _(periodBaseList).findLastIndex(function (periodType) {
             return _(dataSetPeriodTypes).contains(periodType);
         });
+
         return _.rest(periodBaseList, firstPeriodIndex);
-    };
+    }
 
-    this.filterPeriodTypes = function (dataSetPeriodTypes) {
-        periodTypes = this.getPeriodTypesForDataSet(dataSetPeriodTypes);
+    function setPeriod(newPeriod) {
+        currentPeriod = newPeriod;
+        period$.onNext(currentPeriod);
+    }
+
+    function getPeriodTypes() {
         return periodTypes;
+    }
+
+    function filterPeriodTypes(dataSetPeriodTypes) {
+        periodTypes = getPeriodTypesForDataSet(dataSetPeriodTypes);
+
+        periodTypes$.onNext(periodTypes);
+
+        return periodTypes;
+    }
+
+    function getPastPeriodsRecentFirst() {
+        return generatedPeriods;
+    }
+
+    var service = {
+        setPeriodType: setPeriodType,
+        setPeriod: setPeriod,
+        getPeriodTypes: getPeriodTypes,
+        filterPeriodTypes: filterPeriodTypes,
+        getPastPeriodsRecentFirst: getPastPeriodsRecentFirst,
+        periodTypes$: periodTypes$,
+        period$: period$
     };
 
-    d2Api.addEndPoint('system/info', true);
-    d2Api.getEndPoint('system/info').get().then(function (info) {
-        dateFormat = info.dateFormat;
+    Restangular
+        .all('system')
+        .get('info')
+        .then(function (info) {
+            dateFormat = info.dateFormat;
 
-        if (info.calendar === 'iso8601') {
-            calendarType = 'gregorian';
-            service.prepareCalendar();
-        } else {
-            calendarType = info.calendar;
+            if (info.calendar === 'iso8601') {
+                calendarType = 'gregorian';
+                prepareCalendar();
+            } else {
+                calendarType = info.calendar;
 
-            if (_(calendarTypes).contains(calendarType)) {
-                service.loadCalendarScript(calendarType);
+                if (_(calendarTypes).contains(calendarType)) {
+                    loadCalendarScript(calendarType);
+                }
             }
-        }
-    });
+        });
+
+    return service;
 }

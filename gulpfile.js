@@ -1,10 +1,11 @@
 'use strict';
 
-var dhis_directory = '/usr/local/apache-tomcat-8.0.5/webapps/dhis/apps/approvals/';
+var dhis_directory = '/Users/markadm/Projects/dhis/DHIS2_HOME/apps/approvals/';
 var build_directory = 'build';
 
 var files = [
     //Test libraries
+    'src/vendor/rxjs/dist/rx.all.js',
     'src/vendor/lodash/dist/lodash.compat.js',
     'src/vendor/jquery/dist/jquery.js',
     'src/vendor/angular/angular.js',
@@ -13,6 +14,7 @@ var files = [
     'src/vendor/restangular/dist/restangular.js',
     'src/vendor/angular-bootstrap/ui-bootstrap-tpls.js',
     'src/vendor/angular-ui-select/dist/select.js',
+    'src/vendor/rx-angular/dist/rx.angular.js',
 
     //Test files
     'src/test/utils/*.js',
@@ -237,7 +239,8 @@ gulp.task('vendor', function (cb) {
             'src/vendor/angular*/**/select.js',
             'src/vendor/angular*/**/angular-translate.js',
 
-            'src/vendor/restangular/**/restangular.js'
+            'src/vendor/restangular/**/restangular.js',
+            'src/vendor/rxjs/dist/rx.all.js'
         ])
         .pipe(concat('vendor.js'))
         .pipe(uglify())

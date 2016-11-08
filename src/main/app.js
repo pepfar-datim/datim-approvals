@@ -1,14 +1,16 @@
 /* global jQuery */
 angular.module('PEPFAR.approvals', [
-    'd2',
+    'restangular',
+    'd2-recordtable',
     'd2-translate',
     'ui.select',
+    'ui.bootstrap.tpls',
     'ui.bootstrap.tabs',
-    'd2-typeahead',
     'ui.bootstrap.typeahead',
     'ui.bootstrap.progressbar',
     'd2HeaderBar',
-    'ngCacheBuster'
+    'ngCacheBuster',
+    'rx'
 ]);
 angular.module('PEPFAR.approvals').controller('appController', appController);
 angular.module('PEPFAR.approvals').controller('tableViewController', tableViewController);
@@ -27,11 +29,13 @@ angular.module('PEPFAR.approvals')
 
 //jshint maxstatements: 41
 function appController(periodService, $scope, currentUser, mechanismsService,
-                       approvalLevelsService, $q, toastr, AppManifest,
-                       systemSettings, $translate, d2Api,
-                       organisationunitsService, $log) {
+                       approvalLevelsService, toastr, AppManifest,
+                       systemSettings, $translate, userApprovalLevels$,
+                       organisationunitsService, $log, rx, workflowService) {
     var self = this;
     var vm = this;
+    var organisationUnit$ = new rx.ReplaySubject(1);
+    var mechanisms$ = new rx.ReplaySubject(1);
 
     vm.infoBox = {
         isShowing: false,
@@ -90,18 +94,68 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         return false;
     };
 
-    function setInfoBoxLevels(currentUserApprovalLevel) {
-        //TODO: Move this to translate
-        var levelNames = [
-            'Global',
-            'Country',
-            'Funding Agency',
-            'Implementing Partner'
-        ];
-
-        vm.infoBox.levelAbove = levelNames[currentUserApprovalLevel.level - 2];
-        vm.infoBox.levelBelow = levelNames[currentUserApprovalLevel.level];
+    function setInfoBoxLevels() {
+        vm.infoBox.levelAbove = getNextApprovalLevel() && getNextApprovalLevel().displayName;
+        vm.infoBox.levelBelow = getPreviousApprovalLevel() && getPreviousApprovalLevel().displayName;
     }
+
+    var usersAndAllApprovalLevels$ = rx.Observable.combineLatest(
+        userApprovalLevels$,
+        approvalLevelsService,
+        function (userApprovalLevel, approvalLevels) {
+            return [userApprovalLevel, approvalLevels];
+        }
+    );
+
+    rx.Observable.combineLatest(
+        usersAndAllApprovalLevels$,
+        mechanisms$,
+        organisationUnit$,
+        function (approvalLevels, mechanisms, organisationUnit) {
+            return {
+                approvalLevels: approvalLevels,
+                mechanisms: mechanisms
+                    .filter(function (mechanism) {
+                        // When you are a global user and global is selected as an organisationUnit you should see everything
+                        if (organisationUnit.name === 'Global') {
+                            return true;
+                        }
+
+                        return mechanism.country === organisationUnit.name;
+                    })
+            };
+        }
+    )
+        .subscribe(function (data) {
+            var mechanisms = data.mechanisms;
+            var actionMechanisms = [];
+
+            setInfoBoxLevels();
+
+            _.each(mechanisms, function (mechanism) {
+                const previousApprovalLevel = getPreviousApprovalLevel() || {};
+
+                if (mechanism.mayApprove && (mechanism.level === previousApprovalLevel.level)) {
+                    actionMechanisms.push(mechanism.id);
+                }
+
+                if (mechanism.mayAccept && (mechanism.level === previousApprovalLevel.level)) {
+                    actionMechanisms.push(mechanism.id);
+                }
+            });
+
+            actionMechanisms = actionMechanisms.reduce(function (actionMechanisms, mechanismId) {
+                if (actionMechanisms.indexOf(mechanismId) === -1) {
+                    actionMechanisms.push(mechanismId);
+                }
+                return actionMechanisms;
+            }, []);
+
+            self.actionItems = actionMechanisms.length;
+            self.setStatus();
+
+            $scope.$broadcast('MECHANISMS.updated', mechanisms);
+        });
 
     this.getTableData = function () {
         if (self.hasTableDetails()) {
@@ -110,39 +164,13 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             });
 
             self.loading = true;
-
-            $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (data) {
-                mechanismsService.getMechanisms().then(function (mechanisms) {
-                    var currentUserApprovalLevel = data[0][0];
-                    var actionMechanisms = [];
-
-                    setInfoBoxLevels(currentUserApprovalLevel, data[0]);
-
-                    _.each(mechanisms, function (mechanism) {
-                        if (mechanism.mayApprove && (mechanism.level === parseInt(currentUserApprovalLevel.level, 10) + 1)) {
-                            actionMechanisms.push(mechanism.id);
-                        }
-
-                        if (mechanism.mayAccept && (mechanism.level === (parseInt(currentUserApprovalLevel.level, 10) + 1))) {
-                            actionMechanisms.push(mechanism.id);
-                        }
-                    });
-
-                    actionMechanisms = actionMechanisms.reduce(function (actionMechanisms, mechanismId) {
-                        if (actionMechanisms.indexOf(mechanismId) === -1) {
-                            actionMechanisms.push(mechanismId);
-                        }
-                        return actionMechanisms;
-                    }, []);
-
-                    self.actionItems = actionMechanisms.length;
-
-                    self.setStatus();
-
-                    $scope.$broadcast('MECHANISMS.updated', mechanisms);
+            mechanismsService.getMechanisms()
+                .take(1)
+                .subscribe(function (mechanisms) {
+                    mechanisms$.onNext(mechanisms);
                     self.loading = false;
                 });
-            });
+
         }
     };
 
@@ -347,11 +375,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         ].join(' ');
     };
 
-    d2Api.addEndPoint('me/dataApprovalLevels', true);
-    var userApprovalLevelPromise = d2Api
-        .getEndPoint('me/dataApprovalLevels')
-        .get();
-
     //Get the users org unit off the user
     currentUser.then(function () {
         var orgUnit;
@@ -376,49 +399,83 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
         self.updateTitle();
 
-        userApprovalLevelPromise.then(function (approvalLevel) {
+        function userApprovalLevelsLoaded(approvalLevel) {
             $scope.approvalLevel = $scope.details.approvalLevel = approvalLevel[0];
             if ($scope.approvalLevel.categoryOptionGroupSet) {
                 self.updateTitle();
             }
             organisationunitsService.currentOrganisationUnit.level = $scope.approvalLevel.level;
-        })
-        .catch(function () {
+        }
+
+        function userApprovalLevelsFailed() {
             toastr.error('Unable to load your Data Approval Levels. (Please submit a ticket)');
-        });
+        }
+
+        userApprovalLevels$.subscribe(userApprovalLevelsLoaded, userApprovalLevelsFailed);
+
     });
 
     //TODO: This might be confusing as this is changing the tabs in a different place.
-    $q.all([userApprovalLevelPromise, approvalLevelsService.get()]).then(function (result) {
-        if ($scope.approvalLevel.level === result[1].length) {
-            self.tabs.accept.access = false;
-            self.tabs.accept.state = false;
-            self.tabs.submit.access = true;
-            self.tabs.submit.state = true;
-            self.tabs.submit.name = ['Submit'];
+    usersAndAllApprovalLevels$
+        .subscribe(function (result) {
+            if ($scope.approvalLevel.level === result[1].length) {
+                self.tabs.accept.access = false;
+                self.tabs.accept.state = false;
+                self.tabs.submit.access = true;
+                self.tabs.submit.state = true;
+                self.tabs.submit.name = ['Submit'];
+            }
+        }, function () {
+            toastr.error('Unable to load Data Approval levels, yours or all. (Please submit a ticket)');
+        });
+
+    workflowService
+        .currentWorkflow$
+        .subscribe(function (workflow) {
+            $scope.currentWorkflow = workflow;
+            $log.info('Current workflow', workflow);
+        });
+
+    function getNextApprovalLevel() {
+        if ($scope.currentWorkflow) {
+            try {
+                var nextApprovalLevel = $scope.currentWorkflow.getApprovalLevelBeforeLevel($scope.approvalLevel.id);
+                return nextApprovalLevel;
+            } catch (e) {}
         }
-    })
-    .catch(function () {
-        toastr.error('Unable to load Data Approval levels, yours or all. (Please submit a ticket)');
-    });
+
+        return {};
+    }
+
+    function getPreviousApprovalLevel() {
+        if ($scope.currentWorkflow) {
+            try {
+                var previousApprovalLevel = $scope.currentWorkflow.getApprovalLevelBelowLevel($scope.approvalLevel.id);
+                return previousApprovalLevel;
+            } catch (e) {}
+        }
+
+        return {};
+    }
 
     //When the dataset group is changed update the filter types and the datasets
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
+        // Grab the period types from the Workflow
+        var workflowPeriodTypes = _.unique(_.pluck(_.reject(_.pluck(dataSets.get(), 'workflow'), _.isUndefined), 'periodType'));
+        workflowService.setCurrentWorkflow(dataSets.get()[0].workflow);
+
         var oldPeriods = periodService.getPeriodTypes();
-        var newPeriods = periodService.filterPeriodTypes(dataSets.getPeriodTypes());
+        var newPeriods = periodService.filterPeriodTypes(workflowPeriodTypes);
 
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
         mechanismsService.dataSetIds = dataSets.getIds();
         mechanismsService.dataSets = dataSets.get();
 
-        //TODO: Perhaps we need to resolve this promise so the orgUnit is always accessible?
-        if (angular.isString(organisationunitsService.currentOrganisationUnit.id)) {
-            setOrganisationUnit();
-        }
-
+        // Reset the selection
         $scope.details.currentSelection = [];
 
+        // When the details are available load the mechanisms for the table
         if (self.hasTableDetails()) {
             self.showData = false;
             self.deSelect();
@@ -448,6 +505,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
 
         mechanismsService.organisationUnit = organisationunitsService.currentOrganisationUnit.id;
+        organisationUnit$.onNext(organisationunitsService.currentOrganisationUnit);
     }
 
     $scope.$on('RECORDTABLE.selection.changed', function (event, selection) {
@@ -493,18 +551,16 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         }
     });
 
-    $scope.$watch(function () {
-        return periodService.period;
-    }, function (newVal, oldVal) {
-        if (newVal !== oldVal) {
-            $scope.details.period = newVal.iso;
+    periodService.period$
+        .subscribe(function (period) {
+            // $log.info('Period changed to',  period);
+            $scope.details.period = period.iso;
             mechanismsService.period = $scope.details.period;
-        }
 
-        //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
-        $scope.details.currentSelection = [];
-        self.updateViewButton();
-    });
+            //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
+            $scope.details.currentSelection = [];
+            self.updateViewButton();
+        });
 
     $scope.$watch(function () {
         return mechanismsService.period;
@@ -524,28 +580,20 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     }, function (newVal, oldVal) {
         if (newVal !== oldVal) {
             $scope.details.orgUnit = newVal;
+            setOrganisationUnit();
         }
     });
 
     $scope.$watch(function () {
         return organisationunitsService.currentOrganisationUnit;
     }, function (newVal, oldVal) {
-        if (newVal === oldVal) {
-            return;
-        }
-
-        setOrganisationUnit();
-
-        $scope.details.orgUnit = mechanismsService.organisationUnit;
-
-        if (self.hasTableDetails()) {
-            self.showData = false;
-            self.getTableData();
+        if (newVal && newVal.name) {
+            organisationUnit$.onNext(newVal);
         }
     });
 }
 
-function tableViewController() {
+function tableViewController($scope) {
     this.approvalTableConfig = {
         columns: [
             {name: 'mechanism', sortable: true, searchable: true},
@@ -578,6 +626,17 @@ function tableViewController() {
 
         return _.uniq(result);
     };
+
+    this.getPreviousApprovalLevel = function () {
+        if ($scope.currentWorkflow) {
+            try {
+                var previousApprovalLevel = $scope.currentWorkflow.getApprovalLevelBelowLevel($scope.approvalLevel.id);
+                return previousApprovalLevel;
+            } catch (e) {}
+        }
+
+        return {};
+    }
 }
 
 function acceptTableViewController($scope, $controller) {
@@ -597,7 +656,7 @@ function acceptTableViewController($scope, $controller) {
         this.approvalTableData = this.filterData(mechanisms);
         this.hasActionItems = !!_.filter(this.approvalTableData, {
             mayAccept: true,
-            level: ($scope.approvalLevel.level + 1)
+            level: this.getPreviousApprovalLevel().level
         }).length;
     }.bind(this));
 }
@@ -612,7 +671,7 @@ function acceptedTableViewController($scope, $controller) {
         this.approvalTableData = this.filterData(mechanisms);
         this.hasActionItems = !!_.filter(this.approvalTableData, {
             mayApprove: true,
-            level: $scope.approvalLevel.level + 1
+            level: this.getPreviousApprovalLevel().level
         }).length;
     }.bind(this));
 }
@@ -626,9 +685,9 @@ function submittedTableViewController($scope, $controller) {
             return false;
         }
 
-        var onLowerLevelAndAccepted = ((parseInt(item.level, 10) === parseInt($scope.approvalLevel.level, 10) + 1) && item.accepted);
+        var onLowerLevelAndAccepted = ((parseInt(item.level, 10) === this.getPreviousApprovalLevel().level) && item.accepted);
 
-        if (((item.level === $scope.approvalLevel.level) || onLowerLevelAndAccepted)  && item.mayUnapprove === true) {
+        if (((item.level === $scope.approvalLevel.level)  | onLowerLevelAndAccepted)  && item.mayUnapprove === true) {
             return true;
         }
         return false;

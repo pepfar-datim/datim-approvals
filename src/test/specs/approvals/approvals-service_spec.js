@@ -11,7 +11,7 @@ describe('Approvals Service', function () {
         $httpBackend = _$httpBackend_;
         approvalsService = _approvalsService_;
 
-        catchCallback = jasmine.createSpy();
+        catchCallback = sinon.spy();
     }));
 
     afterEach(function () {
@@ -20,47 +20,40 @@ describe('Approvals Service', function () {
     });
 
     it('should be an object', function () {
-        expect(approvalsService).toBeAnObject();
+        expect(approvalsService).to.be.a('object');
     });
-
-    it('should add dataApprovals endPoint to the api service', inject(function (d2Api) {
-        expect(d2Api.getEndPoint('dataAcceptances/acceptances')).toBeAnObject();
-        expect(d2Api.getEndPoint('dataAcceptances/unacceptances')).toBeAnObject();
-        expect(d2Api.getEndPoint('dataApprovals/approvals')).toBeAnObject();
-        expect(d2Api.getEndPoint('dataApprovals/unapprovals')).toBeAnObject();
-    }));
 
     describe('approve', function () {
         it('should be a method', function () {
-            expect(approvalsService.approve).toBeAFunction();
+            expect(approvalsService.approve).to.be.a('function');
         });
 
         it('should reject the promise when there are no parameters', function () {
             approvalsService.approve().catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'The parameters for approvals are missing' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'The parameters for approvals are missing' });
         });
 
         it('should reject the promise when the period is missing', function () {
             approvalsService.approve({}).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
         it('should reject the promise when the datasets are missing', function () {
             approvalsService.approve({ pe: [ '2014' ] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
             approvalsService.approve({ pe: [ '2014' ], ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
 
@@ -76,35 +69,35 @@ describe('Approvals Service', function () {
 
     describe('unapprove', function () {
         it('should be a method', function () {
-            expect(approvalsService.unapprove).toBeAFunction();
+            expect(approvalsService.unapprove).to.be.a('function');
         });
 
         it('should reject the promise when there are no parameters', function () {
             approvalsService.unapprove().catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'The parameters for approvals are missing' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'The parameters for approvals are missing' });
         });
 
         it('should reject the promise when the period is missing', function () {
             approvalsService.unapprove({}).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
         it('should reject the promise when the datasets are missing', function () {
             approvalsService.unapprove({ pe: [ '2014' ] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
             approvalsService.unapprove({ pe: [ '2014' ], ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
         it('should do a post request when the data is completed', function () {
@@ -119,35 +112,35 @@ describe('Approvals Service', function () {
 
     describe('unapprove', function () {
         it('should be a method', function () {
-            expect(approvalsService.accept).toBeAFunction();
+            expect(approvalsService.accept).to.be.a('function');
         });
 
         it('should reject the promise when there are no parameters', function () {
             approvalsService.accept().catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'The parameters for approvals are missing' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'The parameters for approvals are missing' });
         });
 
         it('should reject the promise when the period is missing', function () {
             approvalsService.accept({}).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
         it('should reject the promise when the datasets are missing', function () {
             approvalsService.accept({ pe: [ '2014' ] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
             approvalsService.accept({ pe: [ '2014' ], ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
         it('should do a post request when the data is completed', function () {
@@ -162,35 +155,35 @@ describe('Approvals Service', function () {
 
     describe('unapprove', function () {
         it('should be a method', function () {
-            expect(approvalsService.unaccept).toBeAFunction();
+            expect(approvalsService.unaccept).to.be.a('function');
         });
 
         it('should reject the promise when there are no parameters', function () {
             approvalsService.unaccept().catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'The parameters for approvals are missing' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'The parameters for approvals are missing' });
         });
 
         it('should reject the promise when the period is missing', function () {
             approvalsService.unaccept({}).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Period parameter (pe) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Period parameter (pe) is missing or empty' });
         });
 
         it('should reject the promise when the datasets are missing', function () {
             approvalsService.unaccept({ pe: [ '2014' ] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Dataset id parameter (ds) is missing or empty' });
         });
 
         it('should reject the promise when the category option is missing', function () {
             approvalsService.unaccept({ pe: [ '2014' ], ds: ['1', '2'] }).catch(catchCallback);
             $rootScope.$apply();
 
-            expect(catchCallback).toHaveBeenCalledWith({ statusText : 'Category option combo parameter is missing or empty' });
+            expect(catchCallback).to.be.calledWith({ statusText : 'Category option combo parameter is missing or empty' });
         });
 
         it('should do a post request when the data is completed', function () {

@@ -6,8 +6,8 @@ describe('Analytis status directive', function () {
     beforeEach(module('PEPFAR.approvals', function ($provide) {
         $provide.factory('analyticsStatus', function ($q) {
             return {
-                getIntervalSinceLastAnalyticsTableSuccess: jasmine.createSpy()
-                    .andReturn($q.when(fixtures.get('system/info').intervalSinceLastAnalyticsTableSuccess))
+                getIntervalSinceLastAnalyticsTableSuccess: sinon.stub()
+                    .returns($q.when(fixtures.get('system/info').intervalSinceLastAnalyticsTableSuccess))
             };
         });
     }));
@@ -23,32 +23,32 @@ describe('Analytis status directive', function () {
     }));
 
     it('should compile to a div', function () {
-        expect(element.prop('tagName')).toBe('DIV');
+        expect(element.prop('tagName')).to.equal('DIV');
     });
 
     it('should show the time of the last update', function () {
-        expect(element[0].textContent).toEqual('Data was updated 996 h, 36 m, 11 s ago');
+        expect(element[0].textContent).to.equal('Data was updated 996 h, 36 m, 11 s ago');
     });
 
     it('should update the time after a certain period', inject(function (analyticsStatus, $q) {
-        expect(element[0].textContent).toEqual('Data was updated 996 h, 36 m, 11 s ago');
+        expect(element[0].textContent).to.equal('Data was updated 996 h, 36 m, 11 s ago');
 
         analyticsStatus.getIntervalSinceLastAnalyticsTableSuccess
-            .andReturn($q.when('0 h, 36 m, 11 s'));
+            .returns($q.when('0 h, 36 m, 11 s'));
 
         $timeout.flush(60000);
 
-        expect(element[0].textContent).toEqual('Data was updated 0 h, 36 m, 11 s ago');
+        expect(element[0].textContent).to.equal('Data was updated 0 h, 36 m, 11 s ago');
     }));
 
     it('should not display anything if the status update failed', inject(function (analyticsStatus, $q) {
-        expect(element[0].textContent).toEqual('Data was updated 996 h, 36 m, 11 s ago');
+        expect(element[0].textContent).to.equal('Data was updated 996 h, 36 m, 11 s ago');
 
         analyticsStatus.getIntervalSinceLastAnalyticsTableSuccess
-            .andReturn($q.reject('Unable to find last updated time'));
+            .returns($q.reject('Unable to find last updated time'));
 
         $timeout.flush(60000);
 
-        expect(element[0].textContent).toEqual('Unable to find last updated time');
+        expect(element[0].textContent).to.equal('Unable to find last updated time');
     }));
 });

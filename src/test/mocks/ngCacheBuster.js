@@ -1,7 +1,7 @@
 angular.module('ngCacheBuster', [])
     .provider('httpRequestInterceptorCacheBuster', function () {
         return {
-            setMatchlist: jasmine.createSpy(),
+            setMatchlist: sinon.spy(),
             $get: function () {
                 return {};
             }

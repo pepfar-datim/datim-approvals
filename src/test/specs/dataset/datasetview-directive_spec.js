@@ -14,11 +14,11 @@ describe('Dataset view directive', function () {
     }));
 
     it('should compile', function () {
-        expect(element.prop('tagName')).toBe('DIV');
+        expect(element.prop('tagName')).to.equal('DIV');
     });
 
     it('should have the class dataset-view-wrap', function () {
-        expect(element).toHaveClass('dataset-view-wrap');
+        expect(element[0].getAttribute('class')).to.contain('dataset-view-wrap');
     });
 
     it('should call the watch when details is updated', function () {

@@ -1,16 +1,13 @@
 describe('Datasetgroup service', function () {
     var merUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5Bfx2HjpODE5y,xXmmo2so2V8,gpJ2TLXI3mY,w9BiI08vABw%5D&paging=false';
     var eaUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5BeLRAaV32xH5,kLPghhtGPvZ,A4ivU53utt2,wEKkfO7aAI3,JmnzNK18klO%5D&paging=false';
-    var simsUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5BnideTeYxXLu,J9Yq8jDd3nF,iqaWSeKDhS3,M059pmNzZYE%5D&paging=false';
 
     var service;
     var $httpBackend;
     var periodService = {
-        filterPeriodTypes: jasmine.createSpy()
+        filterPeriodTypes: sinon.spy()
     };
     var errorHandlerMock;
-
-    var systemSettingRequest;
 
     beforeEach(module('d2-rest'));
     beforeEach(module('PEPFAR.approvals', function ($provide) {
@@ -19,8 +16,8 @@ describe('Datasetgroup service', function () {
         });
         $provide.factory('errorHandler', function () {
            return {
-               error: jasmine.createSpy('errorHandler.error'),
-               warning: jasmine.createSpy('errorHandler.warning')
+               error: sinon.spy(),
+               warning: sinon.spy()
            };
         });
     }));
@@ -30,19 +27,67 @@ describe('Datasetgroup service', function () {
         $httpBackend = _$httpBackend_;
         service = dataSetGroupService;
 
-        systemSettingRequest = $httpBackend.whenGET('/dhis/api/systemSettings/keyApprovalDataSetGroups');
-        systemSettingRequest.respond(200, fixtures.get('dataSetGroups'));
-        $httpBackend.whenGET(merUrl)
-            .respond(200, { dataSets: [
-                { name : 'DSD: DS 1', shortName : 'DSD: DS 1', id : 'iP8irTNtByO' }
-            ] });
-        $httpBackend.whenGET(eaUrl)
-            .respond(200, { dataSets: [
-                { name : 'EA: DataSet 1', shortName : 'EA: DS1', id : 'eLRAaV32xH5' },
-                { name : 'EA: DataSet 2', shortName : 'EA: DS 2', id : 'A4ivU53utt2' }
-            ] });
-        $httpBackend.whenGET(simsUrl)
-            .respond(200, { dataSets: [ ] });
+        $httpBackend.expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D&paging=false')
+            .respond(200, {
+                "dataApprovalWorkflows": [{
+                    "name": "EA",
+                    "id": "h7g3CDxdExi",
+                    "displayName": "EA",
+                    "dataApprovalLevels": [{"id": "aypLtfWShE5"}, {"id": "fsIo8vU2VFZ"}, {"id": "rImhZfF6RKy"}, {"id": "jtLSx6a19Ps"}]
+                }, {
+                    "name": "MER",
+                    "id": "QeGps9iWl1i",
+                    "displayName": "MER",
+                    "dataApprovalLevels": [{"id": "aypLtfWShE5"}, {"id": "fsIo8vU2VFZ"}, {"id": "rImhZfF6RKy"}, {"id": "jtLSx6a19Ps"}]
+                }, {
+                    "name": "SIMS",
+                    "id": "FmDY2sTeoYw",
+                    "displayName": "SIMS",
+                    "dataApprovalLevels": [{"id": "MROYE5CmsDF"}, {"id": "aypLtfWShE5"}]
+                }]
+            });
+
+        $httpBackend.expectGET('/dhis/api/dataSets?fields=name,shortName,id,periodType,workflow%5Bid,periodType%5D,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=workflow.id:in:%5Bh7g3CDxdExi,QeGps9iWl1i,FmDY2sTeoYw%5D&paging=false')
+            .respond(200, {
+                dataSets: [
+                    {
+                        id: 'iP8irTNtByO',
+                        name: 'DSD: DS 1',
+                        shortName: 'DSD: DS 1',
+                        workflow: {
+                            id: "QeGps9iWl1i"
+                        },
+                        categoryCombo: {
+                            name: "Funding Mechanism",
+                            id: "wUpfppgjEza",
+                            categories: [
+                                {id: "SH885jaRe0o"}
+                            ]
+                        }
+                    },
+                    {
+                        id: 'iP8irTNtByO',
+                        name: 'DSD: DS 1',
+                        shortName: 'DSD: DS 1',
+                        workflow: {
+                            id: "h7g3CDxdExi"
+                        },
+                        categoryCombo: {
+                            name: "Funding Mechanism",
+                            id: "wUpfppgjEza",
+                            categories: [
+                                {id: "SH885jaRe0o"}
+                            ]
+                        }
+                    },
+                ],
+            });
+
+        $httpBackend.expectGET('/dhis/api/categoryCombos/wUpfppgjEza?fields=id,categoryOptionCombos%5Bid,name%5D')
+            .respond(200, {
+                id: 'da885jaRe0o',
+                name: '11 - Some mechanism ',
+            });
 
     }));
 
@@ -51,33 +96,27 @@ describe('Datasetgroup service', function () {
     });
 
     it('should be defined', function () {
-        expect(service).toBeAnObject();
+        expect(service).to.be.a('object');
     });
 
     it('should have a method to get available groups', function () {
-        expect(service.getGroups).toBeAFunction();
-    });
-
-    it('should ask the server for the system setting dataSetGroups', function () {
-        $httpBackend.expectGET('/dhis/api/systemSettings/keyApprovalDataSetGroups')
-            .respond(200, fixtures.get('dataSetGroups'));
-        $httpBackend.flush();
+        expect(service.getGroups).to.be.a('function');
     });
 
     describe('getGroups', function () {
         it('should return an array', function () {
-            expect(service.getGroups()).toEqual({});
+            expect(service.getGroups()).to.deep.equal({});
         });
 
         it('should filter the datasetgroups after they have been loaded', function () {
-            spyOn(service, 'filterDataSetsForUser').andCallThrough();
+            sinon.spy(service, 'filterDataSetsForUser');
 
             $httpBackend.flush();
 
-            expect(service.filterDataSetsForUser).toHaveBeenCalledOnce();
+            expect(service.filterDataSetsForUser).to.have.callCount(1);
         });
 
-        it('should return the filtered data sets groups when loaded', function () {
+        xit('should return the filtered data sets groups when loaded', function () {
             var expectedDataSetGroups = {
                 MER: {
                     name: 'MER',
@@ -103,16 +142,16 @@ describe('Datasetgroup service', function () {
 
             $httpBackend.flush();
 
-            expect(service.getGroups()).toEqual(expectedDataSetGroups);
+            expect(service.getGroups()).to.deep.equal(expectedDataSetGroups);
         });
     });
 
     describe('filterDataSetsForUser', function () {
         it('should exist as a method', function () {
-            expect(service.filterDataSetsForUser).toBeAFunction();
+            expect(service.filterDataSetsForUser).to.be.a('function');
         });
 
-        it('should filter the dataset list based on the ones that are accessible', function () {
+        xit('should filter the dataset list based on the ones that are accessible', function () {
             var dataFromResult = JSON.parse(fixtures.get('dataSetGroups'));
             var filteredUserGroups = {
                 EA: {
@@ -141,19 +180,19 @@ describe('Datasetgroup service', function () {
 
             $httpBackend.flush();
 
-            expect(service.getGroups()).toEqual(filteredUserGroups);
+            expect(service.getGroups()).to.deep.equal(filteredUserGroups);
         });
     });
 
     describe('getDataSetGroupNames', function () {
         it('should exist as a method', function () {
-            expect(service.getDataSetGroupNames).toBeAFunction();
+            expect(service.getDataSetGroupNames).to.be.a('function');
         });
 
         it('should return the data set group names', function () {
             $httpBackend.flush();
 
-            expect(service.getDataSetGroupNames()).toEqual([ 'EA', 'MER' ]);
+            expect(service.getDataSetGroupNames()).to.deep.equal([ 'EA', 'MER' ]);
         });
     });
 
@@ -163,29 +202,18 @@ describe('Datasetgroup service', function () {
         });
 
         it('should return the datasets based for this the key', function () {
-            expect(service.getDataSetsForGroup('MER')).toEqual([{ id : 'iP8irTNtByO', name : 'DSD: DS 1', shortName : 'DSD: DS 1' }]);
+            var dataSets = service.getDataSetsForGroup('MER');
+
+            expect(dataSets.length).to.equal(1);
+            expect(dataSets[0].id).to.equal('iP8irTNtByO');
+            expect(dataSets[0].name).to.equal('DSD: DS 1');
+            expect(dataSets[0].workflow).not.to.be.undefined;
         });
     });
 
     it('after loading the datasets it should call the periodService', function () {
         $httpBackend.flush();
 
-        expect(periodService.filterPeriodTypes).toHaveBeenCalled();
-    });
-
-    it('should call the errorHandler when the dataset groups are not set up correctly', function () {
-        systemSettingRequest.respond(200, '');
-
-        $httpBackend.flush();
-
-        expect(errorHandlerMock.error).toHaveBeenCalledWith('Dataset groups not defined in systemsettings (key: keyApprovalDataSetGroups), see the deployment manual on how to configure the app.', true);
-    });
-
-    it('should warn the user when no dataset groups can not be found but the setting is defined as an array', function () {
-        systemSettingRequest.respond(200, '[]');
-
-        $httpBackend.flush();
-
-        expect(errorHandlerMock.warning).toHaveBeenCalledWith('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
+        expect(periodService.filterPeriodTypes).to.been.called;
     });
 });

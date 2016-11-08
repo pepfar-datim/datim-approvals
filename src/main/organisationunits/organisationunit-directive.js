@@ -1,4 +1,4 @@
-function organisationunitSelectorDirective(organisationunitsService) {
+function organisationunitSelectorDirective(organisationunitsService, $log) {
     return {
         restrict: 'E',
         replace: true,
@@ -22,18 +22,20 @@ function organisationunitSelectorDirective(organisationunitsService) {
                     organisationunitsService.currentOrganisationUnit.id) {
                     levelToGet = organisationunitsService.currentOrganisationUnit.level + 1;
 
-                    //TODO: PEPFAR Hack to only display this option for global users
+                    //Only display this option for global users
                     if (organisationunitsService.currentOrganisationUnit.level !== 1) { return; }
 
                     organisationunitsService.requestOrganisationUnitsForLevel(organisationunitsService.currentOrganisationUnit.id, levelToGet)
-                        .then(function (dataList) {
+                        .subscribe(function (dataList) {
                             var thisOrgUnit = {
                                 id: organisationunitsService.currentOrganisationUnit.id,
-                                name: organisationunitsService.currentOrganisationUnit.name
+                                name: organisationunitsService.currentOrganisationUnit.displayName
                             };
-                            dataList = _.sortBy(dataList, 'name');
+                            dataList = _.sortBy(dataList, 'displayName');
                             scope.organisationUnit.organisationUnits = [thisOrgUnit].concat(dataList);
                             scope.organisationUnit.selected = scope.organisationUnit.organisationUnits[0];
+                        }, function () {
+                            $log.error('Could not load organisation units for level: ' + levelToGet);
                         });
                 }
             }, true);
