@@ -2757,7 +2757,6 @@ translateApiService.$inject = ["$q", "$translate", "apiConfig", "$timeout", "$ht
 function translateConfig($translateProvider) {
     $translateProvider.useLoader('d2LanguageLoader');
     $translateProvider.preferredLanguage('en');
-    $translateProvider.useMissingTranslationHandler('d2MissingTranslationHandler');
 }
 translateConfig.$inject = ["$translateProvider"];
 
