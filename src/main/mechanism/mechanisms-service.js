@@ -190,7 +190,6 @@ function mechanismsService(Restangular, $log, $q, approvalLevelsService, workflo
                             _.each(category.categoryOptions, function (mechanism) {
                                 if (mechanism.name === 'default') {
                                     mechanism.name = dataSet.name;
-                                    mechanism.hasDefaultCategory = true;
                                 }
                             });
                         }

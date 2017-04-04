@@ -56,11 +56,17 @@ function workflowService(rx, Restangular, $q) {
                 return workflow && workflowToFind && (workflow.id === workflowToFind.id);
             })
             .take(1)
-            .subscribe(function (workflow) {
+            .map(function (workflow) {
+                // TODO: Rewrite helper methods to functional helpers
+                // Add helper methods
                 workflow.getApprovalLevelById = getApprovalLevelById;
                 workflow.getApprovalLevelBeforeLevel = getApprovalLevelBeforeLevel;
                 workflow.getApprovalLevelBelowLevel = getApprovalLevelBelowLevel;
-                currentWorkflow$.onNext(workflow);
+
+                return workflow;
+            })
+            .subscribe(function (workflowWithHelperMethods) {
+                currentWorkflow$.onNext(workflowWithHelperMethods);
             });
     }
 
