@@ -56,7 +56,7 @@ describe('Approval levels Service', function () {
         it('should give an array when the level names when calling getLevelNames on the result', function (done) {
             approvalLevelsService
                 .subscribe(function (approvalLevels) {
-                    expect(approvalLevels.getCategoryOptionGroupSetIdsForLevels()).to.deep.equal([ { level: 4, cogsId: 'bw8KHXzxd9i' }, { level: 5, cogsId: 'BOyWrF33hiR' }]);
+                    expect(approvalLevels.getCategoryOptionGroupSetIdsForLevels()).to.deep.equal([ { name: '2 - Funding Agency', level: 4, cogsId: 'bw8KHXzxd9i' }, { name: '2 - Implementing Partner', level: 5, cogsId: 'BOyWrF33hiR' }]);
                     done();
                 });
         });

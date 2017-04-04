@@ -22,6 +22,63 @@ describe('Mechanisms service', function () {
         $provide.factory('AppManifest', function () {
            return {activities: {dhis: {href: '/dhis'}}};
         });
+        $provide.factory('workflowService', function (rx) {
+            return {
+                currentWorkflow$: rx.Observable.just(
+                    {
+                        "name": "MER Results",
+                        "id": "QeGps9iWl1i",
+                        "displayName": "MER Results",
+                        "dataApprovalLevels": [
+                            {"id": "aypLtfWShE5", "name": "1", "level": 1, "orgUnitLevel": 1, "displayName": "Global"},
+                            {"id": "JNpaWdWCyDN", "name": "3", "level": 3, "orgUnitLevel": 2, "displayName": "Country"},
+                            {"id": "vqWNeqjozr9", "name": "2 - Funding Agency", "level": 4, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "bw8KHXzxd9i", "name": "Funding Agency", "displayName": "Funding Agency"}},
+                            {"id": "WccDi5x6FSp", "name": "2 - Implementing Partner", "level": 5, "orgUnitLevel": 2, "categoryOptionGroupSet": {"id": "BOyWrF33hiR", "name": "Implementing Partner", "displayName": "Implementing Partner"}}
+                        ],
+
+                        getApprovalLevelById: function (id) {
+                            console.log('The id to look for!', id);
+                            if (!id) {
+                                return undefined;
+                            }
+
+                            return this.dataApprovalLevels.reduce(function (acc, workFlow) {
+                                console.log(id, workFlow);
+                                if (workFlow.id === id) {
+                                    return workFlow;
+                                }
+
+                                return acc;
+                            }, null);
+                        },
+                        getApprovalLevelBeforeLevel: function (id) {
+                            if (id === 'JNpaWdWCyDN') {
+                                return this.dataApprovalLevels[0];
+                            }
+
+                            if (id === 'vqWNeqjozr9') {
+                                return this.dataApprovalLevels[1];
+                            }
+
+                            if (id === 'aypLtfWShE5') {
+                                throw new Error('There is no level above this level')
+                            }
+
+                            console.log('before level ', id);
+                            throw new Error('There is no level above this level');
+                        },
+                    }
+                ),
+            }
+        });
+
+        $provide.factory('approvalLevelsService', function (rx) {
+            return rx.Observable.just({
+                getCategoryOptionGroupSetIdsForLevels: function () {
+                    return [{"name":"Funding Agency","level":3,"categoryOptionGroupSet":{"id":"bw8KHXzxd9i"}},{"name":"Implementing Partner","level":4,"categoryOptionGroupSet":{"id":"BOyWrF33hiR"}}];
+                }
+            })
+        });
     }));
 
     beforeEach(inject(function (_mechanismsService_, _$httpBackend_, _$log_, _$rootScope_) {
@@ -31,10 +88,12 @@ describe('Mechanisms service', function () {
         $log = _$log_;
 
         //TODO: If we mock the approvalLevelsService we will not have to do the http call
-        $httpBackend.expectGET('/dhis/api/organisationUnitLevels?fields=level,displayName&paging=false')
+        $httpBackend.whenGET('/dhis/api/organisationUnitLevels?fields=level,displayName&paging=false')
             .respond(200, fixtures.get('orgUnitLevels'));
         $httpBackend.whenGET('/dhis/api/dataApprovalLevels?fields=id,name,displayName,orgUnitLevel,level,categoryOptionGroupSet%5Bid,name%5D&paging=false')
             .respond(200, fixtures.get('approvalLevels'));
+        // $httpBackend.expectGET('/dhis/api/dataApprovals/categoryOptionCombos?ds=a&ds=b&ou=ybg3MO3hcf4&pe=2014Oct')
+        //             .respond(200, fixtures.get('cocApprovalStatus'));
 
         var workflowResponse = {
             "dataApprovalWorkflows": [{
@@ -82,7 +141,7 @@ describe('Mechanisms service', function () {
         $httpBackend.whenGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D&paging=false')
             .respond(200, workflowResponse);
 
-        $httpBackend.flush();
+        // $httpBackend.flush();
     }));
 
     afterEach(function () {
@@ -189,10 +248,15 @@ describe('Mechanisms service', function () {
             var dataResult;
             beforeEach(function (done) {
                 mechanismsService.getMechanisms()
-                    .subscribe(function (data) {
-                        dataResult = data;
-                        done();
-                    });
+                    .subscribe(
+                        function (data) {
+                            dataResult = data;
+                            done();
+                        },
+                        function (error) {
+                            done(error);
+                        }
+                    );
 
                 deferredGetData.resolve(categoriesFromApi.categories);
                 deferredGetStatuses.resolve(fixtures.get('cocApprovalStatus'));
@@ -215,7 +279,8 @@ describe('Mechanisms service', function () {
                 expect(dataResult[0].level).to.equal(2);
             });
 
-            it('should add the status to the mechanism', function () {
+            it.only('should add the status to the mechanism', function () {
+                console.log(JSON.stringify(dataResult[0], undefined, 2));
                 expect(dataResult[0].status).to.equal('Accepted by Global');
                 expect(dataResult[1].status).to.equal('Submitted by Country');
             });

@@ -2,7 +2,15 @@ describe('Dataset view directive', function () {
     var element, scope;
 
     beforeEach(module('datasets/datasetsview.html'));
-    beforeEach(module('PEPFAR.approvals'));
+    beforeEach(module('PEPFAR.approvals', function ($provide) {
+        $provide.factory('workflowService', function () {
+            return {
+                currentWorkflow$: {
+                    subscribe: sinon.spy(),
+                }
+            };
+        });
+    }));
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
         element = angular.element('<dataset-view details="details"></dataset-view>')
