@@ -3,19 +3,19 @@ describe('DataStore Service', function () {
     var $rootScope;
     var dataStore;
     var periodSettingsFixture = {
-                    "MER Results": { // Id of dataApprovalWorkflow
-                        "2017Q1": {
-                            "start": 'Fri Mar 31 2017 21:00:00 GMT+0200',
-                            "end": 'Fri Apr 14 2017 21:00:00 GMT+0200',
-                        }
-                    },
-                    "MER Targets": {  // Id of dataApprovalWorkflow
-                        "2017Oct": {
-                            "start": 1490986800000,
-                            "end": 1492196400,
-                        }
-                    }
-                };
+        "MER Results": { // Id of dataApprovalWorkflow
+            "2017Q1": {
+                "start": 'Fri Mar 31 2017 21:00:00 GMT+0200',
+                "end": 'Fri Apr 14 2017 21:00:00 GMT+0200',
+            }
+        },
+        "MER Targets": {  // Id of dataApprovalWorkflow
+            "2017Oct": {
+                "start": 1490986800000,
+                "end": 1492196400,
+            }
+        }
+    };
 
     beforeEach(module('d2-rest'));
     beforeEach(module('PEPFAR.approvals'));
