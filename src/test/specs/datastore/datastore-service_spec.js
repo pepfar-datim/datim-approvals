@@ -1,4 +1,4 @@
-describe('Approvals Service', function () {
+describe('DataStore Service', function () {
     var $httpBackend;
     var $rootScope;
     var dataStore;
@@ -19,7 +19,7 @@ describe('Approvals Service', function () {
 
     beforeEach(module('d2-rest'));
     beforeEach(module('PEPFAR.approvals'));
-    beforeEach(inject(function (_$rootScope_,  _approvalsService_, _dataStore_) {
+    beforeEach(inject(function (_$rootScope_, _dataStore_) {
         dataStore = _dataStore_;
         $rootScope = _$rootScope_;
     }));
