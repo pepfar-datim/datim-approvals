@@ -5,12 +5,14 @@ describe('DataStore Service', function () {
     var periodSettingsFixture = {
         "MER Results": { // Id of dataApprovalWorkflow
             "2017Q1": {
+                "name": "January - March 2017",
                 "start": 'Fri Mar 31 2017 21:00:00 GMT+0200',
                 "end": 'Fri Apr 14 2017 21:00:00 GMT+0200',
             }
         },
         "MER Targets": {  // Id of dataApprovalWorkflow
             "2017Oct": {
+                "name": "October 2017 - October 2018",
                 "start": 1490986800000,
                 "end": 1492196400,
             }
