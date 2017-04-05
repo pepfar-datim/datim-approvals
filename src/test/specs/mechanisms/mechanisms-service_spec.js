@@ -37,13 +37,11 @@ describe('Mechanisms service', function () {
                         ],
 
                         getApprovalLevelById: function (id) {
-                            console.log('The id to look for!', id);
                             if (!id) {
                                 return undefined;
                             }
 
                             return this.dataApprovalLevels.reduce(function (acc, workFlow) {
-                                console.log(id, workFlow);
                                 if (workFlow.id === id) {
                                     return workFlow;
                                 }
@@ -64,7 +62,6 @@ describe('Mechanisms service', function () {
                                 throw new Error('There is no level above this level')
                             }
 
-                            console.log('before level ', id);
                             throw new Error('There is no level above this level');
                         },
                     }
@@ -279,8 +276,7 @@ describe('Mechanisms service', function () {
                 expect(dataResult[0].level).to.equal(2);
             });
 
-            it.only('should add the status to the mechanism', function () {
-                console.log(JSON.stringify(dataResult[0], undefined, 2));
+            it('should add the status to the mechanism', function () {
                 expect(dataResult[0].status).to.equal('Accepted by Global');
                 expect(dataResult[1].status).to.equal('Submitted by Country');
             });
