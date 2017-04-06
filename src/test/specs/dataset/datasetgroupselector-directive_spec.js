@@ -1,11 +1,15 @@
 describe('Dataset group selector directive', function () {
     var element;
     var scope;
-    var dataSetGroupService = dataSetGroupServiceMock();
+    var dataSetGroupService;
 
     beforeEach(module('datasets/datasetgroupselector.html'));
-    beforeEach(module('PEPFAR.approvals', {
-        dataSetGroupService: dataSetGroupService
+    beforeEach(module('PEPFAR.approvals', function ($provide) {
+        $provide.factory('dataSetGroupService', function (rx) {
+            dataSetGroupService = dataSetGroupServiceMock(rx);
+
+            return dataSetGroupService;
+        });
     }));
     beforeEach(inject(function ($rootScope, $compile) {
         scope = $rootScope.$new();
@@ -32,13 +36,6 @@ describe('Dataset group selector directive', function () {
             scope.$apply();
 
             selectElement = element.children().first();
-        });
-
-        it('should have no options when there are no dataset groups', function () {
-            dataSetGroupService.datasetGroups = [];
-            scope.$apply();
-
-            expect(selectElement.find('.ui-select-choices-group .ui-select-choices-row').length).to.equal(0);
         });
 
         it('should have options when they are set onto the scope', function () {

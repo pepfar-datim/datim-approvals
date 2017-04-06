@@ -30,7 +30,7 @@ angular.module('PEPFAR.approvals')
 function appController(periodService, $scope, currentUser, mechanismsService,
                        approvalLevelsService, toastr, AppManifest,
                        systemSettings, $translate, userApprovalLevels$,
-                       organisationunitsService, $log, rx, workflowService) {
+                       organisationunitsService, $log, rx, workflowService, dataSetGroupService) {
     var self = this;
     var vm = this;
     var organisationUnit$ = new rx.ReplaySubject(1);
@@ -458,26 +458,27 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     }
 
     //When the dataset group is changed update the filter types and the datasets
-    $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
-        // Grab the period types from the Workflow
-        workflowService.setCurrentWorkflow(dataSets.get()[0].workflow);
+    dataSetGroupService.currentDataSetGroup$
+        .subscribe(function (dataSets) {
+            // Grab the period types from the Workflow
+            workflowService.setCurrentWorkflow(dataSets.get()[0].workflow);
 
-        $scope.details.dataSets = dataSets.get();
-        mechanismsService.categories = dataSets.getCategoryIds();
-        mechanismsService.dataSetIds = dataSets.getIds();
-        mechanismsService.dataSets = dataSets.get();
+            $scope.details.dataSets = dataSets.get();
+            mechanismsService.categories = dataSets.getCategoryIds();
+            mechanismsService.dataSetIds = dataSets.getIds();
+            mechanismsService.dataSets = dataSets.get();
 
-        // Reset the selection
-        $scope.details.currentSelection = [];
+            // Reset the selection
+            $scope.details.currentSelection = [];
 
-        // When the details are available load the mechanisms for the table
-        if (self.hasTableDetails()) {
-            self.showData = false;
-            self.deSelect();
-        }
+            // When the details are available load the mechanisms for the table
+            if (self.hasTableDetails()) {
+                self.showData = false;
+                self.deSelect();
+            }
 
-        self.updateViewButton();
-    });
+            self.updateViewButton();
+        });
 
     function setOrganisationUnit() {
         if (organisationunitsService.currentOrganisationUnit.name === 'Global') {

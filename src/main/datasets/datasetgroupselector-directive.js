@@ -1,4 +1,4 @@
-function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory) {
+function dataSetGroupSelectorDirective(dataSetGroupService) {
     return {
         restrict: 'E',
         replace: true,
@@ -10,35 +10,25 @@ function dataSetGroupSelectorDirective(dataSetGroupService, dataSetGroupFactory)
                 selectedDataSetGroup: undefined
             };
 
-            function updateDataSetGroups(datasetGroups) {
-                if (angular.isArray(datasetGroups)) {
-                    scope.dataset.groups = datasetGroups;
-                    scope.dataset.selectedDataSetGroup = scope.dataset.groups[0];
-                }
-            }
-
-            scope.$watch(function () {
-                return dataSetGroupService.getDataSetGroupNames();
-            }, function (newVal, oldVal) {
-                if (newVal !== oldVal) {
-                    updateDataSetGroups(newVal);
-                }
-            });
-
-            scope.$watch(function () {
-                return scope.dataset.selectedDataSetGroup;
-            }, function (newVal, oldVal) {
-                if (newVal !== oldVal) {
-                    scope.$emit(
-                        'DATASETGROUP.changed',
-                        dataSetGroupFactory(dataSetGroupService.getDataSetsForGroup(scope.dataset.selectedDataSetGroup))
-                    );
-                }
-            });
-
             scope.onChange = function ($item) {
+                // Set scope to keep dropdown in sync with dropdown
                 scope.dataset.selectedDataSetGroup = $item;
+                dataSetGroupService.setCurrentDataSetGroup($item);
             };
+
+            dataSetGroupService
+                .dataSetGroups$
+                .take(1)
+                .map(function (datasetGroups) {
+                    if (angular.isArray(datasetGroups)) {
+                        scope.dataset.groups = datasetGroups;
+
+                        // Fire onChange to set to the first group
+                        scope.onChange(scope.dataset.groups[0]);
+                    }
+                })
+                .safeApply(scope)
+                .subscribe();
         }
     };
 }

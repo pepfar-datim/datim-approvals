@@ -1,13 +1,38 @@
-function dataSetGroupService($q, periodService, Restangular, workflowService, errorHandler) {
-    var service = this;
+function dataSetGroupService($q, periodService, Restangular, workflowService, rx, errorHandler) {
     var dataSetGroups = {};
     var dataSetGroupNames = [];
+    var dataSetGroups$ = new rx.ReplaySubject(1);
+    var currentDataSetGroup$ = new rx.ReplaySubject(1);
 
-    this.getGroups = function () {
-        return dataSetGroups;
+    workflowService.workflows$
+        .flatMap(function (workflows) {
+            return rx.Observable.fromPromise(
+                loadDataSetsForWorkflows(workflows)
+                    .then(matchDataSetsToWorkflows)
+                    .then(setWorkflowsOntoService)
+            );
+        })
+        .subscribe(
+            function () {},
+            function (error) {
+                errorHandler.error(error.message);
+            }
+        );
+
+    return {
+        setCurrentDataSetGroup: setCurrentDataSetGroup,
+        dataSetGroups$: dataSetGroups$,
+        currentDataSetGroup$: currentDataSetGroup$,
+        getDataSetsForGroup: getDataSetsForGroup
     };
 
-    this.filterDataSetsForUser = function (workflows) {
+    function setCurrentDataSetGroup(selectedDataSetGroup) {
+        var dataSetGroup = dataSetGroupFactory(getDataSetsForGroup(selectedDataSetGroup));
+
+        currentDataSetGroup$.onNext(dataSetGroup);
+    }
+
+    function filterDataSetsForUser(workflows) {
         function onlyWorkflowsWithDataSets(workflow) {
             return Array.isArray(workflow.dataSets) && workflow.dataSets.length > 0;
         }
@@ -31,18 +56,16 @@ function dataSetGroupService($q, periodService, Restangular, workflowService, er
 
         if (!(dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]])) {
             errorHandler.warning('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
+        } else {
+            dataSetGroups$.onNext(dataSetGroupNames);
         }
-    };
+    }
 
-    this.getDataSetGroupNames = function () {
-        return dataSetGroupNames;
-    };
-
-    this.getDataSetsForGroup = function (dataSetGroupName) {
+    function getDataSetsForGroup(dataSetGroupName) {
         if (dataSetGroups[dataSetGroupName]) {
             return dataSetGroups[dataSetGroupName].dataSets;
         }
-    };
+    }
 
     function pickId(value) {
         return value.id;
@@ -103,46 +126,32 @@ function dataSetGroupService($q, periodService, Restangular, workflowService, er
         if (!Array.isArray(workflows)) {
             return $q.reject('Could not properly load the Workflows from the api.');
         }
-        service.filterDataSetsForUser(workflows);
-    }
 
-    workflowService.workflows$
-        .subscribe(
-            function (workflows) {
-                loadDataSetsForWorkflows(workflows)
-                    .then(matchDataSetsToWorkflows)
-                    .then(setWorkflowsOntoService);
-            },
-            function (error) {
-                errorHandler.error(error.message);
-            }
-        );
+        filterDataSetsForUser(workflows);
+    }
 }
 
-function dataSetGroupFactory() {
-    return function (dataSets) {
-        return {
-            get: function () {
-                return dataSets;
-            },
-            getIds: function () {
-                return _.pluck(dataSets, 'id');
-            },
-            getPeriodTypes: function () {
-                return _.uniq(_.pluck(dataSets, 'periodType'));
-            },
-            getCategoryIds: function () {
-                var categoriesFromCategoryCombos;
+function dataSetGroupFactory(dataSets) {
+    return {
+        get: function () {
+            return dataSets;
+        },
+        getIds: function () {
+            return _.pluck(dataSets, 'id');
+        },
+        getPeriodTypes: function () {
+            return _.uniq(_.pluck(dataSets, 'periodType'));
+        },
+        getCategoryIds: function () {
+            var categoriesFromCategoryCombos;
 
-                categoriesFromCategoryCombos = _.pluck(_.pluck(dataSets, 'categoryCombo'), 'categories');
-                categoriesFromCategoryCombos = _.flatten(categoriesFromCategoryCombos);
-                categoriesFromCategoryCombos = _.pluck(categoriesFromCategoryCombos, 'id');
+            categoriesFromCategoryCombos = _.pluck(_.pluck(dataSets, 'categoryCombo'), 'categories');
+            categoriesFromCategoryCombos = _.flatten(categoriesFromCategoryCombos);
+            categoriesFromCategoryCombos = _.pluck(categoriesFromCategoryCombos, 'id');
 
-                return _.uniq(categoriesFromCategoryCombos);
-            }
-        };
+            return _.uniq(categoriesFromCategoryCombos);
+        }
     };
 }
 
-angular.module('PEPFAR.approvals').service('dataSetGroupService', dataSetGroupService);
-angular.module('PEPFAR.approvals').factory('dataSetGroupFactory', dataSetGroupFactory);
+angular.module('PEPFAR.approvals').factory('dataSetGroupService', dataSetGroupService);

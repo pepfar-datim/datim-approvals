@@ -1,11 +1,8 @@
-function dataSetGroupServiceMock() {
+function dataSetGroupServiceMock(rx) {
     return {
-        datasetGroups: [ 'MER', 'EA' ],
-        getDataSetGroupNames: function () {
-            return this.datasetGroups;
-        },
-        getDataSetsForGroup: function () {
-            return [];
-        }
-    }
+        setCurrentDataSetGroup: function () {},
+        dataSetGroups$: rx.Observable.just(['MER', 'EA'])
+        // currentDataSetGroup$: currentDataSetGroup$,
+        // getDataSetsForGroup: getDataSetsForGroup
+    };
 }
