@@ -3,12 +3,13 @@
   "description": "Approvals app for the pepfar project",
   "README": "readme.md",
   "scripts": {
+    "build": "gulp build-prod",
     "test": "gulp test",
-    "validate": "gulp git:pre-commit",
-    "deploy": "gulp build-prod && ./install.sh"
+    "validate": "gulp git:pre-commit"
   },
   "dependencies": {
     "coveralls": "^2.11.2",
+    "d2-ui": "26",
     "gulp-if": "^1.2.5",
     "gulp-jscs": "^1.6.0",
     "gulp-minify-html": "^1.0.2",
@@ -54,12 +55,6 @@
     "run-sequence": "^0.3.6",
     "sinon": "^1.14.1",
     "sinon-chai": "^2.8.0"
-  },
-  "scripts": {
-    "build": "gulp build-prod",
-    "test": "gulp test",
-    "validate": "gulp git:pre-commit",
-    "build": "gulp build-prod"
   },
   "pre-commit": [
     "validate"

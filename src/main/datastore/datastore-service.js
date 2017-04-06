@@ -1,4 +1,4 @@
-function dataStore(Restangular) {
+function dataStore(Restangular, errorHandler) {
     var periodSettings;
 
     function getPeriodSettings() {
@@ -11,7 +11,10 @@ function dataStore(Restangular) {
             .all('approvals')
             .get('periodSettings')
             .then(function (response) {
-                return response.plain().getDataOnly();
+                return response.plain();
+            })
+            .catch(function () {
+                errorHandler.error('Could not load the period settings from the dataStore.', true);
             });
 
         return periodSettings;

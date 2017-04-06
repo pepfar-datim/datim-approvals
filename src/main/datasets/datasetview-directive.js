@@ -1,4 +1,4 @@
-/* global jQuery */
+/* global jQuery, dhis2 */
 function datasetViewDirective(AppManifest, $translate, workflowService) {
     var dataSetReportWrapSelector = '.dataset-report-wrap';
 
@@ -13,15 +13,15 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
 
         dhis2.de.event = {
             // Fired
-            formLoaded        : "dhis2.de.event.formLoaded",
-            dataValuesLoaded  : "dhis2.de.event.dataValuesLoaded",
-            formReady         : "dhis2.de.event.formReady",
+            formLoaded        : 'dhis2.de.event.formLoaded',
+            dataValuesLoaded  : 'dhis2.de.event.dataValuesLoaded',
+            formReady         : 'dhis2.de.event.formReady',
             // Never fired in approvals (but can be subscribed to in custom form)
-            dataValueSaved    : "dhis2.de.event.dataValueSaved",
-            completed         : "dhis2.de.event.completed",
-            uncompleted       : "dhis2.de.event.uncompleted",
-            validationSucces  : "dhis2.de.event.validationSuccess",
-            validationError   : "dhis2.de.event.validationError"
+            dataValueSaved    : 'dhis2.de.event.dataValueSaved',
+            completed         : 'dhis2.de.event.completed',
+            uncompleted       : 'dhis2.de.event.uncompleted',
+            validationSucces  : 'dhis2.de.event.validationSuccess',
+            validationError   : 'dhis2.de.event.validationError'
         };
     }());
 
@@ -29,7 +29,7 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
      * Fire a subset of the data entry events, just like in Data Set Report.
      */
     function fireDataEntryEvents() {
-        var $document = $(document);
+        var $document = jQuery(document);
 
         $document.trigger(dhis2.de.event.formLoaded);
         $document.trigger(dhis2.de.event.dataValuesLoaded);

@@ -1,4 +1,4 @@
-function dataSetGroupService($q, periodService, Restangular, workflowService, errorHandler, $log) {
+function dataSetGroupService($q, periodService, Restangular, workflowService, errorHandler) {
     var service = this;
     var dataSetGroups = {};
     var dataSetGroupNames = [];
@@ -29,9 +29,7 @@ function dataSetGroupService($q, periodService, Restangular, workflowService, er
             .value()
             .sort();
 
-        if (dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]]) {
-            periodService.filterPeriodTypes([dataSetGroups[dataSetGroupNames[0]].periodType]);
-        } else {
+        if (!(dataSetGroups && dataSetGroupNames[0] && dataSetGroups[dataSetGroupNames[0]])) {
             errorHandler.warning('No dataset groups were found that your account can access. This could be the result of your account not having access to these datasets.', true);
         }
     };

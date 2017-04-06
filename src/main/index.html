@@ -10,9 +10,10 @@
     <link href="vendor/select.css" type="text/css" rel="stylesheet" />
 
     <link href="css/app.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../../dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css">
 </head>
 <body ng-controller="appController as app">
-    <d2-header-bar></d2-header-bar>
+    <div id="header"></div>
 
     <div class="info-wrap">
         <div>
@@ -130,9 +131,22 @@
         <div ng-include="'dataview.html'"></div>
     </div>
 
+    <script type="text/javascript" src="../../../dhis-web-commons/javascripts/jQuery/jquery.min.js?_rev=3928cfa"></script>
+    <script type="text/javascript" src="../../../dhis-web-commons/javascripts/header-bar/babel-polyfill.js?_rev=3928cfa"></script>
+    <script type="text/javascript" src="./lodash.min.js"></script>
+    <script type="text/javascript" src="./lodash-functional.js"></script>
+    <script type="text/javascript" src="./rx.lite.min.js"></script>
+    <script type="text/javascript" src="./react-15.min.js"></script>
+    <script type="text/javascript" src="./header-bar.js"></script>
+    <script>
+        Dhis2HeaderBar.initHeaderBar(document.querySelector('#header'), '../../../api', { noLoadingIndicator: true });
+    </script>
     <script src="vendor/vendor.js"></script>
     <script src="vendor/d2js/js/d2.js"></script>
     <script src="js/app.js"></script>
+    <script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.util.js"></script>
+    <script src="../../../dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js"></script>
+    <script src="../../../dhis-web-commons/javascripts/dhis2/dhis2.translate.js"></script>
 
     <!-- Scripts and stylesheet loader based on the location set in the manifest -->
     <script>
@@ -140,35 +154,9 @@
             //TODO: Improve this script loader and bootstrapper
             var dhis2Root;
 
-            var dhis2CoreScripts = [
-                '/dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.min.js',
-                '/dhis-web-commons/javascripts/jQuery/calendars/jquery.calendars.plus.min.js',
-                '/dhis-web-commons/javascripts/dhis2/dhis2.util.js',
-                '/dhis-web-commons/javascripts/dhis2/dhis2.period.js',
-                '/dhis-web-commons/javascripts/jQuery/ui/jquery-ui.min.js',
-                '/dhis-web-commons/javascripts/dhis2/dhis2.translate.js',
-                '/dhis-web-commons/javascripts/dhis2/dhis2.menu.js',
-                '/dhis-web-commons/javascripts/dhis2/dhis2.menu.ui.js'
-            ];
-
             $.ajaxSetup({
                 cache: true
             });
-
-            function loadScript(callBack) {
-                var script;
-                if (dhis2CoreScripts.length > 0) {
-                    script = dhis2CoreScripts.shift();
-
-                    window.console && console.log('Loading: ' + dhis2Root + script);
-
-                    jQuery.getScript(dhis2Root + script, function () {
-                        loadScript(callBack);
-                    });
-                } else {
-                    callBack();
-                }
-            }
 
             jQuery.get('manifest.webapp').success(function (manifest) {
                 var manifest = JSON.parse(manifest);
@@ -182,11 +170,10 @@
                 dhis2.settings = dhis2.settings || {};
                 dhis2.settings.baseUrl = dhis2Root.replace(window.location.origin, '').replace(/^\//, ''); //TODO: Perhaps this regex should go into the menu.js
 
-                //Load all the required scripts and then launch the angular app
-                loadScript(function (){
-                    angular.module('PEPFAR.approvals').factory('AppManifest', function () {
+                angular.module('PEPFAR.approvals').factory('AppManifest', function () {
                         return manifest;
                     });
+
                     jQuery.get(dhis2Root + '/api/systemSettings.json').success(function (systemSettings) {
                         function configureApp(language) {
                             angular.module('PEPFAR.approvals').config(function ($provide, RestangularProvider, $translateProvider) {
@@ -233,22 +220,6 @@
                     }).fail(function () {
                        alert('Unable to load System settings');
                     });
-
-
-                });
-
-                //Load the jquery ui stylesheet for the forms
-                jQuery('<link/>', {
-                    rel: 'stylesheet',
-                    type: 'text/css',
-                    href: dhis2Root + '/dhis-web-commons/javascripts/jQuery/ui/css/redmond/jquery-ui.css'
-                }).appendTo('head');
-
-                jQuery('<link/>', {
-                    rel: 'stylesheet',
-                    type: 'text/css',
-                    href: dhis2Root + '/dhis-web-commons/css/menu.css'
-                }).appendTo('head');
             });
         })(jQuery);
     </script>

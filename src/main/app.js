@@ -8,7 +8,6 @@ angular.module('PEPFAR.approvals', [
     'ui.bootstrap.tabs',
     'ui.bootstrap.typeahead',
     'ui.bootstrap.progressbar',
-    'd2HeaderBar',
     'ngCacheBuster',
     'rx'
 ]);
@@ -27,7 +26,7 @@ angular.module('PEPFAR.approvals')
         httpRequestInterceptorCacheBusterProvider.setMatchlist([/.*\.html.*/]);
     });
 
-//jshint maxstatements: 41
+//jshint maxstatements: 46
 function appController(periodService, $scope, currentUser, mechanismsService,
                        approvalLevelsService, toastr, AppManifest,
                        systemSettings, $translate, userApprovalLevels$,
@@ -133,7 +132,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             setInfoBoxLevels();
 
             _.each(mechanisms, function (mechanism) {
-                const previousApprovalLevel = getPreviousApprovalLevel() || {};
+                var previousApprovalLevel = getPreviousApprovalLevel() || {};
 
                 if (mechanism.mayApprove && (mechanism.level === previousApprovalLevel.level)) {
                     actionMechanisms.push(mechanism.id);
@@ -461,11 +460,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     //When the dataset group is changed update the filter types and the datasets
     $scope.$on('DATASETGROUP.changed', function (event, dataSets) {
         // Grab the period types from the Workflow
-        var workflowPeriodTypes = _.unique(_.pluck(_.reject(_.pluck(dataSets.get(), 'workflow'), _.isUndefined), 'periodType'));
         workflowService.setCurrentWorkflow(dataSets.get()[0].workflow);
-
-        var oldPeriods = periodService.getPeriodTypes();
-        var newPeriods = periodService.filterPeriodTypes(workflowPeriodTypes);
 
         $scope.details.dataSets = dataSets.get();
         mechanismsService.categories = dataSets.getCategoryIds();
@@ -479,11 +474,6 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         if (self.hasTableDetails()) {
             self.showData = false;
             self.deSelect();
-
-            //When the periodType has not changed, force a reload of the table since the dataset group changed
-            if (oldPeriods.length && newPeriods.length && oldPeriods[0] === newPeriods[0]) {
-                self.getTableData();
-            }
         }
 
         self.updateViewButton();
@@ -554,7 +544,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     periodService.period$
         .subscribe(function (period) {
             // $log.info('Period changed to',  period);
-            $scope.details.period = period.iso;
+            $scope.details.period = period.id;
             mechanismsService.period = $scope.details.period;
 
             //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
@@ -586,7 +576,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
 
     $scope.$watch(function () {
         return organisationunitsService.currentOrganisationUnit;
-    }, function (newVal, oldVal) {
+    }, function (newVal) {
         if (newVal && newVal.name) {
             organisationUnit$.onNext(newVal);
         }
@@ -636,7 +626,7 @@ function tableViewController($scope) {
         }
 
         return {};
-    }
+    };
 }
 
 function acceptTableViewController($scope, $controller) {
@@ -687,7 +677,7 @@ function submittedTableViewController($scope, $controller) {
 
         var onLowerLevelAndAccepted = ((parseInt(item.level, 10) === this.getPreviousApprovalLevel().level) && item.accepted);
 
-        if (((item.level === $scope.approvalLevel.level)  | onLowerLevelAndAccepted)  && item.mayUnapprove === true) {
+        if (((item.level === $scope.approvalLevel.level)  || onLowerLevelAndAccepted)  && item.mayUnapprove === true) {
             return true;
         }
         return false;

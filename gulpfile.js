@@ -299,11 +299,19 @@ gulp.task('clean-rev', function(cb){
 });
 
 gulp.task('build', function (cb) {
-    runSequence('clean', 'js', 'sass', 'html', 'dependencies', 'font-awesome', 'i18n', 'images', 'manifest', cb);
+    runSequence('clean', 'js', 'header-bar-dependency', 'sass', 'html', 'dependencies', 'font-awesome', 'i18n', 'images', 'manifest', cb);
 });
 
 gulp.task('build-prod', function (cb) {
     runSequence('clean-rev', 'build', 'do-rev-on-build', 'package', cb);
+});
+
+gulp.task('header-bar-dependency', function () {
+    return gulp.src([
+            'node_modules/d2-ui/dist/header-bar.js',
+            'src/header-bar/**/*.js',
+        ])
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('deploy', function () {

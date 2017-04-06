@@ -18,9 +18,16 @@ describe('DataStore Service', function () {
             }
         }
     };
+    var errorHandlerError;
 
-    beforeEach(module('d2-rest'));
-    beforeEach(module('PEPFAR.approvals'));
+    beforeEach(module('PEPFAR.approvals', function ($provide) {
+        errorHandlerError = sinon.spy();
+        $provide.factory('errorHandler', function () {
+            return {
+                error: errorHandlerError,
+            };
+        });
+    }));
     beforeEach(inject(function (_$rootScope_, _dataStore_) {
         dataStore = _dataStore_;
         $rootScope = _$rootScope_;
@@ -31,10 +38,14 @@ describe('DataStore Service', function () {
     });
 
     describe('getPeriodSettings', function () {
+        var periodSettingsRequest;
+
         beforeEach(inject(function (_$httpBackend_) {
             $httpBackend = _$httpBackend_;
 
-            $httpBackend.expectGET('/dhis/api/dataStore/approvals/periodSettings')
+            periodSettingsRequest = $httpBackend.expectGET('/dataStore/approvals/periodSettings');
+            
+            periodSettingsRequest
                 .respond(200, periodSettingsFixture);
         }));
 
@@ -66,6 +77,16 @@ describe('DataStore Service', function () {
 
         it('should return the same promise when it was once called', function () {
             expect(dataStore.getPeriodSettings()).to.equal(dataStore.getPeriodSettings());
+        });
+
+        it('should call the error handler when the settings can not be loaded', function () {
+            periodSettingsRequest.respond(404, '');
+            dataStore.getPeriodSettings();
+
+            $httpBackend.flush();
+            $rootScope.$apply();
+            
+            expect(errorHandlerError).to.be.called;
         });
     });
 });

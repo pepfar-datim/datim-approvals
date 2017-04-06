@@ -1,4 +1,4 @@
-function periodSelectorDirective(periodService) {
+function periodSelectorDirective(periodService, workflowService, $log) {
     return {
         restrict: 'E',
         replace: true,
@@ -6,10 +6,8 @@ function periodSelectorDirective(periodService) {
         templateUrl: 'period/periodselector.html',
         link: function (scope) {
             scope.period = {
-                selectedPeriodType: undefined,
                 selectedPeriod: undefined,
-                periodTypes: periodService.getPeriodTypes(),
-                periodsRecentFirst: periodService.getPastPeriodsRecentFirst()
+                periods: []
             };
 
             scope.changePeriod = function ($item) {
@@ -20,19 +18,24 @@ function periodSelectorDirective(periodService) {
                 periodService.setPeriod($item);
             };
 
-            periodService.periodTypes$
-                .subscribe(function () {
-                    scope.period.periodTypes = periodService.getPeriodTypes();
-                    scope.period.selectedPeriodType = scope.period.periodTypes[0];
+            // When the workflow is updated we'll need to update the periods
+            workflowService.currentWorkflow$
+                .flatMap(function (workflow) {
+                    return periodService.getPeriodsForWorkflow(workflow);
+                })
+                .map(function (periods) {
+                    // Set retrieved periods onto the scope so they show up in the dropdown
+                    scope.period.periods = periods;
 
-                    periodService.setPeriodType(scope.period.selectedPeriodType);
-                    scope.period.periodsRecentFirst = periodService.getPastPeriodsRecentFirst();
-
-                    //Always select the first period when a new type is picked
-                    scope.period.selectedPeriod = scope.period.periodsRecentFirst[1];
-                    scope.changePeriod(scope.period.selectedPeriod);
-                });
-
+                    // If we have at least 1 period we'll change the selected period to the first one in the list
+                    if (periods.length > 0) {
+                        $log.info('Set selected period to ', periods[0]);
+                        scope.period.selectedPeriod = periods[0];
+                        scope.changePeriod(periods[0]);
+                    }
+                })
+                .safeApply(scope)
+                .subscribe();
         }
     };
 }

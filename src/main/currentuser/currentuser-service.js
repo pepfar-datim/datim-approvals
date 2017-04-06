@@ -1,5 +1,4 @@
-function currentUser(Restangular, $q, $log) {
-    var permissions;
+function currentUser(Restangular, $q) {
     var user;
 
     function loadPermissions() {
@@ -47,6 +46,6 @@ function currentUser(Restangular, $q, $log) {
 
     return user;
 }
-currentUser.$inject = ["Restangular", "$q", '$log'];
+currentUser.$inject = ['Restangular', '$q'];
 
 angular.module('PEPFAR.approvals').factory('currentUser', currentUser);
