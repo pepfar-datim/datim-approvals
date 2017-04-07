@@ -14,7 +14,7 @@ function periodService(dataStore, rx, $rootScope) {
         return rx.Observable.fromPromise(dataStore.getPeriodSettings())
             .map(onlyPeriodsForWorkflow(workflow))
             .map(periodSettingsToArray)
-            .filter(onlyOpenPeriods)
+            .map(onlyOpenPeriods)
             .map(onlyNameAndIdProperties)
             .safeApply($rootScope);
     }
@@ -40,7 +40,7 @@ function periodService(dataStore, rx, $rootScope) {
         var start = Date.parse(startDate);
         var end = Date.parse(endDate);
         var now = Date.now();
-        
+
         if (isNumber(start) && isNumber(end)) {
             return (start < now) && (now < end);
         }

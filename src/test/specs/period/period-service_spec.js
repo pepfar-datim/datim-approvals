@@ -10,6 +10,11 @@ describe('Period service', function () {
             periodSettingMock = sinon.stub()
                 .returns($q.when({
                         "MER Results": { // Id of dataApprovalWorkflow
+                            "2016Q2": {
+                                "name": "April - June 2016",
+                                "start": "Mar 3 2017 21:00:00 GMT+0200",
+                                "end": "Mar 4 2017 21:00:00 GMT+0200"
+                            },
                             "2017Q1": {
                                 "name": "January - March 2017",
                                 "start": 'Fri Mar 31 2017 21:00:00 GMT+0200',
@@ -63,7 +68,7 @@ describe('Period service', function () {
             expect(periodsForWorkflow$.subscribe).to.be.a('function');
         });
 
-        it('should return the periods for just the workflow', function (done) {
+        it('should return the open periods for the workflow', function (done) {
             var periodsForWorkflow$ = service.getPeriodsForWorkflow({ id: 'QeGps9iWl1i', name: 'MER Results' });
 
             periodsForWorkflow$.subscribe(
