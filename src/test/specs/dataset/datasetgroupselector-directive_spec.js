@@ -32,9 +32,6 @@ describe('Dataset group selector directive', function () {
     describe('select', function () {
         var selectElement;
         beforeEach(function () {
-            dataSetGroupService.datasetGroups = ['MER', 'EA'];
-            scope.$apply();
-
             selectElement = element.children().first();
         });
 

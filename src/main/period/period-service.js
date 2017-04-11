@@ -53,7 +53,7 @@ function periodService(dataStore, rx, $rootScope) {
     }
 
     function periodSettingsToArray(periodSettings) {
-        return Object.keys(periodSettings)
+        return Object.keys(periodSettings || {})
             .reduce(function (acc, periodKey) {
                 return acc.concat([ _.extend({ id: periodKey }, periodSettings[periodKey]) ]);
             }, []);

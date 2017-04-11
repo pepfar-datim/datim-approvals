@@ -2,48 +2,7 @@ describe('Workflow service', function () {
     var workflowService;
     var rx;
     var $httpBackend;
-    var workflowResponse = {
-        "dataApprovalWorkflows": [{
-            "name": "MER Results",
-            "id": "QeGps9iWl1i",
-            "displayName": "MER Results",
-            "dataApprovalLevels": [{"id": "aypLtfWShE5", "level": 1, "displayName": "Global"}, {
-                "id": "fsIo8vU2VFZ",
-                "level": 5,
-                "displayName": "Implementing Partner"
-            }, {"id": "rImhZfF6RKy", "level": 3, "displayName": "Inter-Agency"}, {
-                "id": "jtLSx6a19Ps",
-                "level": 4,
-                "displayName": "Funding Agency"
-            }]
-        }, {
-            "name": "MER Targets",
-            "id": "AEt9nEjcmhw",
-            "displayName": "MER Targets",
-            "dataApprovalLevels": [{"id": "aypLtfWShE5", "level": 1, "displayName": "Global"}, {
-                "id": "fsIo8vU2VFZ",
-                "level": 5,
-                "displayName": "Implementing Partner"
-            }, {"id": "rImhZfF6RKy", "level": 3, "displayName": "Inter-Agency"}, {
-                "id": "jtLSx6a19Ps",
-                "level": 4,
-                "displayName": "Funding Agency"
-            }]
-        }, {
-            "name": "mg_test",
-            "id": "rrUYETtwcgu",
-            "displayName": "mg_test",
-        }, {
-            "name": "SIMS",
-            "id": "FmDY2sTeoYw",
-            "displayName": "SIMS",
-            "dataApprovalLevels": [{
-                "id": "MROYE5CmsDF",
-                "level": 2,
-                "displayName": "Global Funding Agency"
-            }, {"id": "aypLtfWShE5", "level": 1, "displayName": "Global"}]
-        }]
-    };
+    var workflowResponse = fixtures.get('workflowsWithDatasets');
     var dataApprovalWorkflowsRequest;
 
     beforeEach(module('d2-rest'));
@@ -54,8 +13,11 @@ describe('Workflow service', function () {
         $httpBackend = $injector.get('$httpBackend');
 
         dataApprovalWorkflowsRequest = $httpBackend
-            .expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D&paging=false');
+            .expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,periodType,dataApprovalLevels%5BdisplayName,id,level%5D,dataSets%5Bname,shortName,id,periodType,workflow%5Bid,periodType%5D,categoryCombo%5Bid,name,categories%5Bid%5D%5D%5D&paging=false');
         dataApprovalWorkflowsRequest.respond(200, workflowResponse);
+
+        $httpBackend.whenGET('/dhis/api/categoryCombos/wUpfppgjEza?fields=id,categoryOptionCombos%5Bid,name%5D')
+            .respond(200, fixtures.get('categoryCombos'));
     }));
 
     it('should return an object', function () {
@@ -69,8 +31,8 @@ describe('Workflow service', function () {
 
         it('should emit a value from currentWorkflow$ when called', function (done) {
             var newWorkflow = {
-                name: 'QUR Results',
-                id: 'QeGps9iWl1i'
+                name: 'MER Results',
+                id: 'RwNpkAM7Hw7'
             };
 
             workflowService.currentWorkflow$
@@ -78,7 +40,7 @@ describe('Workflow service', function () {
                     expect(currentWorkflow.displayName).to.equal(workflowResponse.dataApprovalWorkflows[0].displayName);
                     expect(currentWorkflow.dataApprovalLevels).to.deep.equal(workflowResponse.dataApprovalWorkflows[0].dataApprovalLevels);
                     done();
-                });
+                }, function (err) { done(err); });
 
             workflowService.setCurrentWorkflow(newWorkflow);
             $httpBackend.flush();
@@ -95,7 +57,7 @@ describe('Workflow service', function () {
 
             workflowService.workflows$
                 .subscribe(function (workflows) {
-                    expect(workflows.length).to.equal(4);
+                    expect(workflows.length).to.equal(3);
                     workflows
                         .forEach(function (workflow, index) {
                             expect(workflow.displayName).to.equal(expectedWorkflows[index].displayName);
@@ -129,7 +91,7 @@ describe('Workflow service', function () {
 
             workflowService.workflows$
                 .subscribe(function (workflows) {
-                    expect(workflows.length).to.equal(4);
+                    expect(workflows.length).to.equal(3);
                     workflows
                         .forEach(function (workflow, index) {
                             expect(workflow.displayName).to.equal(expectedWorkflows[index].displayName);
@@ -139,6 +101,31 @@ describe('Workflow service', function () {
 
                     done();
                 });
+        });
+
+        it('should have loaded the dataSets for the workflows', function (done) {
+            workflowService.workflows$
+                .subscribe(function (workflows) {
+                    expect(workflows[0].dataSets).to.have.length(27);
+                    expect(workflows[1].dataSets).to.have.length(19);
+                    expect(workflows[2].dataSets).to.have.length(0);
+
+                    done();
+                });
+
+            $httpBackend.flush();
+        });
+
+        it('should have loaded the categoryOptionCombos for the datasets', function (done) {
+            workflowService.workflows$
+                .subscribe(function (workflows) {
+                    expect(workflows[0].dataSets[0].categoryCombo.categoryOptionCombos).to.have.length(2);
+                    expect(workflows[1].dataSets[0].categoryCombo.categoryOptionCombos).to.have.length(2);
+
+                    done();
+                });
+
+            $httpBackend.flush();
         });
     });
 
@@ -163,7 +150,7 @@ describe('Workflow service', function () {
             });
 
             it('should return the correct level for a workflow', function () {
-                expect(workflow.getApprovalLevelById('rImhZfF6RKy')).to.deep.equal({"id": "rImhZfF6RKy", "level": 3, "displayName": "Inter-Agency"});
+                expect(workflow.getApprovalLevelById('rImhZfF6RKy')).to.deep.equal({"id": "rImhZfF6RKy", "level": 2, "displayName": "Inter-Agency"});
             });
         });
 
@@ -176,7 +163,7 @@ describe('Workflow service', function () {
                     done();
                 });
 
-            workflowService.setCurrentWorkflow({id: 'rrUYETtwcgu'});
+            workflowService.setCurrentWorkflow({id: 'AAAAAAAAAAA'});
             $httpBackend.flush();
         });
     });
@@ -202,7 +189,11 @@ describe('Workflow service', function () {
             });
 
             it('should return the correct level before the provided level', function () {
-                expect(workflow.getApprovalLevelBeforeLevel('rImhZfF6RKy')).to.deep.equal({"id": "aypLtfWShE5", "level": 1, "displayName": "Global"});
+                expect(workflow.getApprovalLevelBeforeLevel('jtLSx6a19Ps')).to.deep.equal({
+                        "id": "rImhZfF6RKy",
+                        "level": 2,
+                        "displayName": "Inter-Agency"
+                    });
             });
 
             it('should throw an error when there is no higher level', function () {
@@ -216,12 +207,12 @@ describe('Workflow service', function () {
             workflowService.currentWorkflow$
                 .subscribe(function (workflow) {
                     expect(function () {
-                        workflow.getApprovalLevelBeforeLevel('rrUYETtwcgu');
+                        workflow.getApprovalLevelBeforeLevel('fsIo8vU2VFZ');
                     }).to.throw('This workflow does not have any approval levels');
                     done();
                 });
 
-            workflowService.setCurrentWorkflow({id: 'rrUYETtwcgu'});
+            workflowService.setCurrentWorkflow({id: 'AAAAAAAAAAA'});
             $httpBackend.flush();
         });
     });
@@ -247,7 +238,11 @@ describe('Workflow service', function () {
             });
 
             it('should return the correct level before the provided level', function () {
-                expect(workflow.getApprovalLevelBelowLevel('rImhZfF6RKy')).to.deep.equal({"id": "jtLSx6a19Ps", "level": 4, "displayName": "Funding Agency"});
+                expect(workflow.getApprovalLevelBelowLevel('rImhZfF6RKy')).to.deep.equal({
+                        "id": "jtLSx6a19Ps",
+                        "level": 3, 
+                        "displayName": "Funding Agency"
+                    });
             });
 
             it('should throw an error when there is no higher level', function () {
@@ -261,12 +256,12 @@ describe('Workflow service', function () {
             workflowService.currentWorkflow$
                 .subscribe(function (workflow) {
                     expect(function () {
-                        workflow.getApprovalLevelBelowLevel('rrUYETtwcgu');
+                        workflow.getApprovalLevelBelowLevel('aypLtfWShE5');
                     }).to.throw('This workflow does not have any approval levels');
                     done();
                 });
 
-            workflowService.setCurrentWorkflow({id: 'rrUYETtwcgu'});
+            workflowService.setCurrentWorkflow({id: 'AAAAAAAAAAA'});
             $httpBackend.flush();
         });
     });

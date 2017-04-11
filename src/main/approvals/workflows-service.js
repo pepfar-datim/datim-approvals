@@ -70,12 +70,35 @@ function workflowService(rx, Restangular, $q) {
             });
     }
 
+    function setDefaultsWhenMissing(workflow) {
+        if (!workflow.dataSets) {
+            workflow.dataSets = [];
+        }
+                    
+        return workflow;
+    }
+
     function requestWorkflowsFromApi() {
         var workflowRequest = Restangular.all('dataApprovalWorkflows')
             .withHttpConfig({cache: true})
             .getList({
-                fields: 'id,name,displayName,dataApprovalLevels[displayName,id,level]',
+                fields: 'id,name,displayName,periodType,dataApprovalLevels[displayName,id,level],dataSets[name,shortName,id,periodType,workflow[id,periodType],categoryCombo[id,name,categories[id]]]',
                 paging: false
+            })
+            .then(function (workflows) {
+                return _.map(workflows, setDefaultsWhenMissing);
+            })
+            .then(function (workflows) {
+                return $q.all(workflows.map(function (workflow) {
+                    if (workflow && workflow.dataSets) {
+                        return loadCategoryOptionCombosForDataSets(workflow.dataSets)
+                            .then(function () {
+                                return workflow;
+                            });
+                    } else {
+                        return $q.when(workflow);
+                    }
+                }));
             })
             .catch(function (response) {
                 return $q.reject(new Error(response.data));
@@ -88,6 +111,23 @@ function workflowService(rx, Restangular, $q) {
         workflow$.connect();
 
         return workflow$;
+    }
+
+    function loadCategoryOptionCombosForDataSets(dataSets) {
+        var categoryCombosForDataSets = _.map(dataSets, function (dataSet) {
+            return Restangular
+                .all('categoryCombos')
+                .withHttpConfig({cache: true})
+                .get(dataSet.categoryCombo.id, {fields: 'id,categoryOptionCombos[id,name]'})
+                .then(function (categoryCombo) {
+                    dataSet.categoryCombo.categoryOptionCombos = categoryCombo.categoryOptionCombos;
+                });
+        });
+
+        return $q.all(categoryCombosForDataSets)
+            .then(function () {
+                return dataSets;
+            });
     }
 
     return {

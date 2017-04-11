@@ -1,3 +1,4 @@
+// TODO: Rename to workflow selector
 function dataSetGroupSelectorDirective(dataSetGroupService) {
     return {
         restrict: 'E',
@@ -20,7 +21,7 @@ function dataSetGroupSelectorDirective(dataSetGroupService) {
                 .dataSetGroups$
                 .take(1)
                 .map(function (datasetGroups) {
-                    if (angular.isArray(datasetGroups)) {
+                    if (angular.isArray(datasetGroups) && datasetGroups.length) {
                         scope.dataset.groups = datasetGroups;
 
                         // Fire onChange to set to the first group

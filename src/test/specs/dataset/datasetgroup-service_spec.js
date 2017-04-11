@@ -1,16 +1,20 @@
 describe('Datasetgroup service', function () {
-    var merUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5Bfx2HjpODE5y,xXmmo2so2V8,gpJ2TLXI3mY,w9BiI08vABw%5D&paging=false';
-    var eaUrl = '/dhis/api/dataSets?fields=name,shortName,id,periodType,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=id:in:%5BeLRAaV32xH5,kLPghhtGPvZ,A4ivU53utt2,wEKkfO7aAI3,JmnzNK18klO%5D&paging=false';
-
     var service;
     var $httpBackend;
+    var $rootScope;
     var periodService = {
-        filterPeriodTypes: sinon.spy()
+        getPeriodsForWorkflow: sinon.stub()
     };
     var errorHandlerMock;
+    var dataApprovalWorkflows = fixtures.get('workflowsWithDatasets').dataApprovalWorkflows;
 
     beforeEach(module('d2-rest'));
     beforeEach(module('PEPFAR.approvals', function ($provide) {
+        $provide.factory('workflowService', function (rx, $rootScope) {
+            return {
+                workflows$: rx.Observable.just(dataApprovalWorkflows).safeApply($rootScope)
+            };
+        });
         $provide.factory('periodService', function () {
             return periodService;
         });
@@ -21,87 +25,110 @@ describe('Datasetgroup service', function () {
            };
         });
     }));
-    beforeEach(inject(function (_$httpBackend_, dataSetGroupService, errorHandler) {
+    beforeEach(inject(function (_$httpBackend_, _$rootScope_, errorHandler) {
         errorHandlerMock = errorHandler;
 
         $httpBackend = _$httpBackend_;
+        $rootScope = _$rootScope_;
+
+        periodService.getPeriodsForWorkflow
+            .returns(Rx.Observable.just([]));
+    }));
+
+    beforeEach(inject(function (dataSetGroupService) {
         service = dataSetGroupService;
-
-        $httpBackend.expectGET('/dhis/api/dataApprovalWorkflows?fields=id,name,displayName,dataApprovalLevels%5BdisplayName,id,level%5D&paging=false')
-            .respond(200, {
-                "dataApprovalWorkflows": [{
-                    "name": "EA",
-                    "id": "h7g3CDxdExi",
-                    "displayName": "EA",
-                    "dataApprovalLevels": [{"id": "aypLtfWShE5"}, {"id": "fsIo8vU2VFZ"}, {"id": "rImhZfF6RKy"}, {"id": "jtLSx6a19Ps"}]
-                }, {
-                    "name": "MER",
-                    "id": "QeGps9iWl1i",
-                    "displayName": "MER",
-                    "dataApprovalLevels": [{"id": "aypLtfWShE5"}, {"id": "fsIo8vU2VFZ"}, {"id": "rImhZfF6RKy"}, {"id": "jtLSx6a19Ps"}]
-                }, {
-                    "name": "SIMS",
-                    "id": "FmDY2sTeoYw",
-                    "displayName": "SIMS",
-                    "dataApprovalLevels": [{"id": "MROYE5CmsDF"}, {"id": "aypLtfWShE5"}]
-                }]
-            });
-
-        $httpBackend.whenGET('/dhis/api/dataSets?fields=name,shortName,id,periodType,workflow%5Bid,periodType%5D,categoryCombo%5Bid,name,categories%5Bid%5D%5D&filter=workflow.id:in:%5Bh7g3CDxdExi,QeGps9iWl1i,FmDY2sTeoYw%5D&paging=false')
-            .respond(200, {
-                dataSets: [
-                    {
-                        id: 'iP8irTNtByO',
-                        name: 'DSD: DS 1',
-                        shortName: 'DSD: DS 1',
-                        workflow: {
-                            id: "QeGps9iWl1i"
-                        },
-                        categoryCombo: {
-                            name: "Funding Mechanism",
-                            id: "wUpfppgjEza",
-                            categories: [
-                                {id: "SH885jaRe0o"}
-                            ]
-                        }
-                    },
-                    {
-                        id: 'iP8irTNtByO',
-                        name: 'DSD: DS 1',
-                        shortName: 'DSD: DS 1',
-                        workflow: {
-                            id: "h7g3CDxdExi"
-                        },
-                        categoryCombo: {
-                            name: "Funding Mechanism",
-                            id: "wUpfppgjEza",
-                            categories: [
-                                {id: "SH885jaRe0o"}
-                            ]
-                        }
-                    },
-                ],
-            });
-
-        $httpBackend.whenGET('/dhis/api/categoryCombos/wUpfppgjEza?fields=id,categoryOptionCombos%5Bid,name%5D')
-            .respond(200, {
-                id: 'da885jaRe0o',
-                name: '11 - Some mechanism ',
-            });
-
     }));
 
     afterEach(function () {
         $httpBackend.verifyNoOutstandingRequest();
+        $httpBackend.verifyNoOutstandingExpectation();
     });
 
     it('should be defined', function () {
         expect(service).to.be.a('object');
     });
 
-    xit('after loading the datasets it should call the periodService', function () {
-        $httpBackend.flush();
+    describe('dataSetGroups$', function () {
+        it('should emit the workflows', function (done) {
+            periodService.getPeriodsForWorkflow
+                .withArgs(dataApprovalWorkflows[0])
+                .returns(Rx.Observable.just([
+                    { id: '2016Q2', "name": "April - June 2016", },
+                    { id: '2017Q1', name: 'January - March 2017' }
+                ]));
 
-        expect(periodService.filterPeriodTypes).to.been.called;
+            periodService.getPeriodsForWorkflow
+                .withArgs(dataApprovalWorkflows[1])
+                .returns(Rx.Observable.just([
+                    { id: '2017Oct', "name": "October 2017 - September 2018", },
+                ]));
+
+            service.dataSetGroups$
+                .subscribe(
+                    function (workflows) {
+                        expect(workflows).to.have.length(2);
+                        done();
+                    },
+                    function (err) { done(err) }
+                );
+        });
+
+        it('should return just the workflow that has periods', function (done) {
+            periodService.getPeriodsForWorkflow
+                .withArgs(dataApprovalWorkflows[0])
+                .returns(Rx.Observable.just([]));
+
+            periodService.getPeriodsForWorkflow
+                .withArgs(dataApprovalWorkflows[1])
+                .returns(Rx.Observable.just([
+                    { id: '2017Oct', "name": "October 2017 - September 2018", },
+                ]));
+
+            service.dataSetGroups$
+                .subscribe(
+                    function (workflows) {
+                        expect(workflows).to.have.length(1);
+                        done();
+                    },
+                    function (err) { done(err) }
+                );
+        });
+
+        it('should log an error message when no workflows have been found', function (done) {
+            periodService.getPeriodsForWorkflow
+                .withArgs(dataApprovalWorkflows[0])
+                .returns(Rx.Observable.just([]));
+
+            periodService.getPeriodsForWorkflow
+                .withArgs(dataApprovalWorkflows[1])
+                .returns(Rx.Observable.just([]));
+
+            service.dataSetGroups$
+                .subscribe(
+                    function (workflows) {
+                        expect(errorHandlerMock.error).to.be.calledWith('Could not not find any workflows (Data Streams)');
+                        expect(workflows).to.have.length(0);
+                        done();
+                    },
+                    function (err) { done(err) }
+                );
+        });
+
+        it('should not log an error when there are workflows', function (done) {
+            periodService.getPeriodsForWorkflow
+                .withArgs(dataApprovalWorkflows[1])
+                .returns(Rx.Observable.just([
+                    { id: '2017Oct', "name": "October 2017 - September 2018", },
+                ]));
+
+            service.dataSetGroups$
+                .subscribe(
+                    function (workflows) {
+                        expect(errorHandlerMock.error).not.to.be.called;
+                        done();
+                    },
+                    function (err) { done(err) }
+                );
+        });
     });
 });
