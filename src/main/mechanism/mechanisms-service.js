@@ -142,9 +142,10 @@ function mechanismsService(Restangular, $log, $q, approvalLevelsService, workflo
 
         function getPartnerFromCategoryOption(categoryOptionGroups, parterCOGSId) {
             var partner = _.find(categoryOptionGroups, function (categoryOptionGroup) {
-                if (categoryOptionGroup.categoryOptionGroupSet &&
-                    categoryOptionGroup.categoryOptionGroupSet.id &&
-                    categoryOptionGroup.categoryOptionGroupSet.id === parterCOGSId) {
+                if (categoryOptionGroup.groupSets &&
+                    categoryOptionGroup.groupSets[0] &&
+                    categoryOptionGroup.groupSets[0].id &&
+                    categoryOptionGroup.groupSets[0].id === parterCOGSId) {
                     return true;
                 }
                 return false;
@@ -158,9 +159,10 @@ function mechanismsService(Restangular, $log, $q, approvalLevelsService, workflo
 
         function getAgencyFromCategoryOption(categoryOptionGroups, agencyCOGSId) {
             var agency = _.find(categoryOptionGroups, function (categoryOptionGroup) {
-                if (categoryOptionGroup.categoryOptionGroupSet &&
-                    categoryOptionGroup.categoryOptionGroupSet.id &&
-                    categoryOptionGroup.categoryOptionGroupSet.id === agencyCOGSId) {
+                if (categoryOptionGroup.groupSets &&
+                    categoryOptionGroup.groupSets[0] &&
+                    categoryOptionGroup.groupSets[0].id &&
+                    categoryOptionGroup.groupSets[0].id === agencyCOGSId) {
                     return true;
                 }
                 return false;
@@ -386,7 +388,7 @@ function categoriesService(request, $q, $log) {
         return request('api/categoryOptions', [
             'paging=false',
             'filter=categories.id:eq:' + categoryId,
-            'fields=' + encodeURI('id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,categoryOptionGroupSet[id]]')
+            'fields=' + encodeURI('id,name,organisationUnits[id,name],categoryOptionCombos[id,name],categoryOptionGroups[id,name,groupSets[id]]')
         ]);
     }
 

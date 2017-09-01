@@ -183,7 +183,7 @@
                                 name: "(1234 - How....)"
                             }
                         ],
-                        groups: [
+                        categoryOptionGroups: [
                             {
                                 id: "BnjwQmbgK1b",
                                 name: "Partner 1",
@@ -217,7 +217,7 @@
                                 name: "(9876 - Nat...)"
                             }
                         ],
-                        groups: [
+                        categoryOptionGroups: [
                             {
                                 id: "wxAh2TvsTUj",
                                 name: "Partner 5",
@@ -251,7 +251,7 @@
                                 name: "(2342 - Wat...)"
                             }
                         ],
-                        groups: [
+                        categoryOptionGroups: [
                             {
                                 id: "CSPJnuxBAnz",
                                 name: "Partner 4",
@@ -277,7 +277,7 @@
                                 name: "(5433 - JH...)"
                             }
                         ],
-                        groups: [
+                        categoryOptionGroups: [
                             {
                                 id: "NLV6dy7BE2O",
                                 name: "Agency 2",
@@ -311,7 +311,7 @@
                                 name: "(7654 - Pre...)"
                             }
                         ],
-                        groups: [
+                        categoryOptionGroups: [
                             {
                                 id: "vNQlvpUamTo",
                                 name: "Partner 2",
@@ -339,7 +339,7 @@
                                 "lastUpdated": "2014-09-18T11:03:00.174+0000"
                             }
                         ],
-                        groups: [
+                        categoryOptionGroups: [
                             {
                                 id: "iadd8tHFS9C",
                                 name: "Partner 1",
@@ -372,7 +372,7 @@
                                 name: "(default)"
                             }
                         ],
-                        groups: []
+                        categoryOptionGroups: []
                     }
                 ]
             }
@@ -499,20 +499,20 @@
                         name: "(1234 - How....)"
                     }
                 ],
-                groups: [
+                categoryOptionGroups: [
                     {
                         id: "BnjwQmbgK1b",
                         name: "Partner 1",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "BOyWrF33hiR"
-                        }
+                        }]
                     },
                     {
                         id: "FPUgmtt8HRi",
                         name: "Agency 1",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "bw8KHXzxd9i"
-                        }
+                        }]
                     }
                 ]
             },
@@ -533,20 +533,20 @@
                         name: "(9876 - Nat...)"
                     }
                 ],
-                groups: [
+                categoryOptionGroups: [
                     {
                         id: "wxAh2TvsTUj",
                         name: "Partner 5",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "BOyWrF33hiR"
-                        }
+                        }]
                     },
                     {
                         id: "FPUgmtt8HRi",
                         name: "Agency 1",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "bw8KHXzxd9i"
-                        }
+                        }]
                     }
                 ]
             },
@@ -567,20 +567,20 @@
                         name: "(2342 - Wat...)"
                     }
                 ],
-                groups: [
+                categoryOptionGroups: [
                     {
                         id: "CSPJnuxBAnz",
                         name: "Partner 4",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "BOyWrF33hiR"
-                        }
+                        }]
                     },
                     {
                         id: "RGC9tURSc3W",
                         name: "Agency 3",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "bw8KHXzxd9i"
-                        }
+                        }]
                     }
                 ]
             },
@@ -593,20 +593,20 @@
                         name: "(5433 - JH...)"
                     }
                 ],
-                groups: [
+                categoryOptionGroups: [
                     {
                         id: "NLV6dy7BE2O",
                         name: "Agency 2",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "bw8KHXzxd9i"
-                        }
+                        }]
                     },
                     {
                         id: "yrIYjIn0aom",
                         name: "Partner 3",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "BOyWrF33hiR"
-                        }
+                        }]
                     }
                 ]
             },
@@ -627,20 +627,20 @@
                         name: "(7654 - Pre...)"
                     }
                 ],
-                groups: [
+                categoryOptionGroups: [
                     {
                         id: "vNQlvpUamTo",
                         name: "Partner 2",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "BOyWrF33hiR"
-                        }
+                        }]
                     },
                     {
                         id: "NLV6dy7BE2O",
                         name: "Agency 2",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "bw8KHXzxd9i"
-                        }
+                        }]
                     }
                 ]
             },
@@ -655,20 +655,20 @@
                         "lastUpdated": "2014-09-18T11:03:00.174+0000"
                     }
                 ],
-                groups: [
+                categoryOptionGroups: [
                     {
                         id: "iadd8tHFS9C",
                         name: "Partner 1",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "BOyWrF33hiR"
-                        }
+                        }]
                     },
                     {
                         id: "FPUgmtt8HRi",
                         name: "Agency 1",
-                        categoryOptionGroupSet: {
+                        groupSets: [{
                             id: "bw8KHXzxd9i"
-                        }
+                        }]
                     }
                 ]
             }
@@ -687,7 +687,7 @@
                         name: "(default)"
                     }
                 ],
-                groups: []
+                categoryOptionGroups: []
             }
         ]
     };

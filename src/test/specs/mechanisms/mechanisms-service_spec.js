@@ -12,8 +12,8 @@ describe('Mechanisms service', function () {
         ].join('&')
     ].join('');
 
-    var defaultCategoryUrl =  '/dhis/api/categoryOptions?paging=false&filter=categories.id:eq:GLevLNI9wkl&fields=id,name,organisationUnits%5Bid,name%5D,categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D';
-    var fundingMechanismCategoryUrl = '/dhis/api/categoryOptions?paging=false&filter=categories.id:eq:SH885jaRe0o&fields=id,name,organisationUnits%5Bid,name%5D,categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,categoryOptionGroupSet%5Bid%5D%5D';
+    var defaultCategoryUrl =  '/dhis/api/categoryOptions?paging=false&filter=categories.id:eq:GLevLNI9wkl&fields=id,name,organisationUnits%5Bid,name%5D,categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,groupSets%5Bid%5D%5D';
+    var fundingMechanismCategoryUrl = '/dhis/api/categoryOptions?paging=false&filter=categories.id:eq:SH885jaRe0o&fields=id,name,organisationUnits%5Bid,name%5D,categoryOptionCombos%5Bid,name%5D,categoryOptionGroups%5Bid,name,groupSets%5Bid%5D%5D';
 
     var categoriesFromApi = fixtures.get('categories');
 
