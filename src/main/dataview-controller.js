@@ -114,14 +114,15 @@ function dataViewController($scope, approvalsService, $translate, $log) {
         function determineOu(mechanism, action) {
             if (isGlobal()) {
                 //Adjust the mechanisms ou for any actions that happen on the global level
-                if (mechanism.level === 1) {
+                if (mechanism.level === 1 || mechanism.level === 2) {
                     //Adjust the mechanisms ou for any actions that happen on the global level
                     $log.info(mechanism, 'is on level 1 therefore we replace the ou with', $scope.globalUser.globalOUId);
                     return $scope.globalUser.globalOUId;
                 }
-                if (mechanism.nextLevel === 1 && mechanism.accepted === true && action === 'submit') {
-                    $log.info(mechanism, 'is about to be submitted from level 2 and is accepted therefore we replace the ou with', $scope.globalUser.globalOUId);
-                    return $scope.globalUser.globalOUId;
+                if ((mechanism.nextLevel === 1 || mechanism.level === 2)
+                    && mechanism.accepted === true && action === 'submit') {
+                        $log.info(mechanism, 'is about to be submitted from level 2 and is accepted therefore we replace the ou with', $scope.globalUser.globalOUId);
+                        return $scope.globalUser.globalOUId;
                 }
             }
 
