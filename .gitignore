@@ -25,6 +25,7 @@ __my_notes__
 fake-api
 
 *.zip
+!releases/*/*.zip
 src/main/_manifest.webapp
 src/main/np
 
