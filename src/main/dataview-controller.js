@@ -119,7 +119,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
                     $log.info(mechanism, 'is on level 1 therefore we replace the ou with', $scope.globalUser.globalOUId);
                     return $scope.globalUser.globalOUId;
                 }
-                if ((mechanism.nextLevel === 1 || mechanism.level === 2)
+                if ((mechanism.nextLevel === 1 || mechanism.nextLevel === 2)
                     && mechanism.accepted === true && action === 'submit') {
                         $log.info(mechanism, 'is about to be submitted from level 2 and is accepted therefore we replace the ou with', $scope.globalUser.globalOUId);
                         return $scope.globalUser.globalOUId;
