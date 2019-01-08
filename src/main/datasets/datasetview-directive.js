@@ -197,6 +197,7 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
                 scope.details.dataSetsFilteredByMechanisms = _.filter(details.dataSets, function (dataSet) {
                     var result = false;
                     var categoryOptionComboIds;
+                    if(details.validDataSets.indexOf(dataSet.id)<0){return false} //TOM (2018-01-08)(for Global ticket #3332)
 
                     if (!dataSet.categoryCombo || !angular.isArray(dataSet.categoryCombo.categoryOptionCombos)) {
                         return false;
