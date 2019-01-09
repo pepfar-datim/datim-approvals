@@ -64,6 +64,6 @@ function periodService(dataStore, rx, $rootScope) {
     }
 
     function pickIdAndNameFromPeriod(period) { 
-        return _.pick(period, ['id', 'name']);
+        return _.pick(period, ['id', 'name','datasets']); //TOM (2018-01-08)(for Global ticket #3332)
     }
 }

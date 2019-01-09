@@ -546,6 +546,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
         .subscribe(function (period) {
             // $log.info('Period changed to',  period);
             $scope.details.period = period.id;
+            if(period.hasOwnProperty('datasets')){$scope.details.validDataSets = period.datasets}else{$scope.details.validDataSets=[]} //TOM (2018-01-08)(for Global ticket #3332)
             mechanismsService.period = $scope.details.period;
 
             //TODO: See if we can resolve this a bit more clever (It's duplicate with other stuff)
