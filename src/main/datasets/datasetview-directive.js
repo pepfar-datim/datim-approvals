@@ -218,6 +218,8 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
                     return result;
                 });
 
+                scope.details.dataSetsFilteredByMechanisms.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0)); //TOM (2018-11-09)(for Global ticket #3332, datim-approvals #7)
+
                 $translate('Go to top').then(function (translation) {
                     addBackToTop(translation);
                 });
