@@ -5,11 +5,11 @@
   "scripts": {
     "build": "gulp build-prod",
     "test": "gulp test",
-    "validate": "gulp git:pre-commit"
+    "validate": ""
   },
   "dependencies": {
     "coveralls": "^2.11.2",
-    "d2-ui": "26",
+    "d2-ui": "27.0.0-7",
     "gulp-if": "^1.2.5",
     "gulp-jscs": "^1.6.0",
     "gulp-minify-html": "^1.0.2",
