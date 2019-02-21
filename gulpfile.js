@@ -306,6 +306,7 @@ gulp.task('build-prod', function (cb) {
     runSequence('clean-rev', 'build', 'do-rev-on-build', 'package', cb);
 });
 
+
 gulp.task('header-bar-dependency', function () {
     return gulp.src([
             'node_modules/d2-ui/dist/header-bar.js',
