@@ -1,5 +1,5 @@
 {
-    "version": "1.5.3",
+    "version": "1.5.4",
     "name": "Data Approval",
     "description": "Approvals app for PEPFAR",
     "icons": {
@@ -9,7 +9,7 @@
         "url": "http://www.dhis2.org",
         "name": "Mark Polak and Ben Guaraldi"
     },
-    "launch_path": "index.html?v=1.5.3",
+    "launch_path": "index.html?v=1.5.4",
     "default_locale": "en",
     "activities": {
         "dhis": {

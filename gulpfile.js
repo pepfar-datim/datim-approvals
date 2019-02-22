@@ -187,6 +187,11 @@ gulp.task('dependencies', function () {
     var depFiles = []
     _.forEach(dependencies, function (version, dependency) {
         if (dependency === 'd2js') return;
+        if (dependency === 'lodash') {
+            let p = [ 'src/vendor', 'lodash','dist', 'lodash.js' ].join('/');
+            depFiles.push(p);
+            return;
+        }
         depFiles = depFiles.concat(get_main_script(dependency));
     });
 
@@ -218,7 +223,8 @@ gulp.task('dependencies', function () {
     //TODO: fix this
     // Redo d2js seperately
     return gulp.src([
-        'src/vendor/d2js/dist/**/*'
+        'src/vendor/d2js/dist/**/' +
+        '*'
     ]).pipe(gulp.dest([
         build_directory,
         'vendor',
