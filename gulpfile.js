@@ -223,8 +223,7 @@ gulp.task('dependencies', function () {
     //TODO: fix this
     // Redo d2js seperately
     return gulp.src([
-        'src/vendor/d2js/dist/**/' +
-        '*'
+        'src/vendor/d2js/dist/**/*'
     ]).pipe(gulp.dest([
         build_directory,
         'vendor',
