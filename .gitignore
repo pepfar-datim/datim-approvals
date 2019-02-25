@@ -30,3 +30,4 @@ src/main/_manifest.webapp
 src/main/np
 
 install.sh
+yarn-error.log

@@ -187,6 +187,11 @@ gulp.task('dependencies', function () {
     var depFiles = []
     _.forEach(dependencies, function (version, dependency) {
         if (dependency === 'd2js') return;
+        if (dependency === 'lodash') {
+            let p = [ 'src/vendor', 'lodash','dist', 'lodash.js' ].join('/');
+            depFiles.push(p);
+            return;
+        }
         depFiles = depFiles.concat(get_main_script(dependency));
     });
 
@@ -305,6 +310,7 @@ gulp.task('build', function (cb) {
 gulp.task('build-prod', function (cb) {
     runSequence('clean-rev', 'build', 'do-rev-on-build', 'package', cb);
 });
+
 
 gulp.task('header-bar-dependency', function () {
     return gulp.src([
