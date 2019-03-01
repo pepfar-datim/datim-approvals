@@ -5,11 +5,11 @@
   "scripts": {
     "build": "gulp build-prod",
     "test": "gulp test",
-    "validate": "gulp git:pre-commit"
+    "validate": ""
   },
   "dependencies": {
     "coveralls": "^2.11.2",
-    "d2-ui": "26",
+    "d2-ui": "27.0.0-7",
     "gulp-if": "^1.2.5",
     "gulp-jscs": "^1.6.0",
     "gulp-minify-html": "^1.0.2",
@@ -48,7 +48,7 @@
     "karma-ng-html2js-preprocessor": "^0.2.1",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-sinon": "^1.0.4",
-    "lodash": "^2.4.1",
+    "lodash": "^4.17.11",
     "mocha": "^2.4.5",
     "phantomjs-prebuilt": "^2.1.5",
     "rimraf": "^2.2.8",
