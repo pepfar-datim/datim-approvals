@@ -49,13 +49,13 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
         //Leave off the dimension if the category is `default`
         //If the dataset has a category(or multiple, in this case one) get the currentSelection items that have that category
         //If the dataset has the category default don't add the dimension
-        var datasetCOCNames = _.pluck(ds.categoryCombo.categoryOptionCombos, 'name');
+        var datasetCOCNames = _.map(ds.categoryCombo.categoryOptionCombos, 'name');
         var hasDefaultCOC = _.contains(datasetCOCNames, '(default)');
         var datasetCOCIds;
 
         var COsForReport;
         if (!hasDefaultCOC) {
-            datasetCOCIds = _.pluck(ds.categoryCombo.categoryOptionCombos, 'id');
+            datasetCOCIds = _.map(ds.categoryCombo.categoryOptionCombos, 'id');
             //Filter out the ones that have default as COG
             COsForReport = _.filter(details.currentSelection, function (mechanism) {
                 if (_.contains(datasetCOCIds, mechanism.catComboId)) {
@@ -65,7 +65,7 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
             });
             // TODO: This picks the first category and assumes that all the other COs have the same category
             // which might not be true
-            params.dimension = COsForReport[0].category + ':' + _.pluck(COsForReport, 'id').join(';');
+            params.dimension = COsForReport[0].category + ':' + _.map(COsForReport, 'id').join(';');
         }
 
         jQuery.post(dataSetReportUrl, params).success(function (data) {
@@ -204,7 +204,7 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
                         return false;
                     }
 
-                    categoryOptionComboIds = _.pluck(dataSet.categoryCombo.categoryOptionCombos, 'id');
+                    categoryOptionComboIds = _.map(dataSet.categoryCombo.categoryOptionCombos, 'id');
 
                     _.each(scope.details.currentSelection, function (mechanism) {
                         if (mechanism.mayReadData === false) {

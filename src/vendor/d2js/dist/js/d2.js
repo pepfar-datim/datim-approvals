@@ -1900,7 +1900,7 @@ function RecordTableController($scope, $q, $filter, $timeout, typeAheadService) 
      */
     this.doLocalSorting = function () {
         var sorting = _.filter($scope.tableConfig.columns, 'sort'),
-            sortBy = _.pluck(sorting, 'name'),
+            sortBy = _.map(sorting, 'name'),
             items;
 
         //Don't do anything when there is no sorting to be done

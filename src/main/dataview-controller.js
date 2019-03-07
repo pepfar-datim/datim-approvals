@@ -40,7 +40,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
 
     this.getDataSetIds = function () {
         if (angular.isArray(this.details.dataSets)) {
-            return _.pluck(this.details.dataSets, 'id');
+            return _.map(this.details.dataSets, 'id');
         }
         return [];
     };
