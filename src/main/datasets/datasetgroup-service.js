@@ -54,17 +54,17 @@ function dataSetGroupFactory(dataSets) {
             return dataSets;
         },
         getIds: function () {
-            return _.pluck(dataSets, 'id');
+            return _.map(dataSets, 'id');
         },
         getPeriodTypes: function () {
-            return _.uniq(_.pluck(dataSets, 'periodType'));
+            return _.uniq(_.map(dataSets, 'periodType'));
         },
         getCategoryIds: function () {
             var categoriesFromCategoryCombos;
 
-            categoriesFromCategoryCombos = _.pluck(_.pluck(dataSets, 'categoryCombo'), 'categories');
+            categoriesFromCategoryCombos = _.map(_.map(dataSets, 'categoryCombo'), 'categories');
             categoriesFromCategoryCombos = _.flatten(categoriesFromCategoryCombos);
-            categoriesFromCategoryCombos = _.pluck(categoriesFromCategoryCombos, 'id');
+            categoriesFromCategoryCombos = _.map(categoriesFromCategoryCombos, 'id');
 
             return _.uniq(categoriesFromCategoryCombos);
         }
