@@ -281,7 +281,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
     currentUser.permissions.then(function (permissions) { //jshint maxcomplexity:7
         permissions = _(permissions);
 
-        if (permissions.contains('ALL')) {
+        if (permissions.includes('ALL')) {
             self.tabs.accept.access = true;
             self.tabs.accept.name = ['Accept'];
             self.tabs.accept.action = ['accept'];
@@ -294,8 +294,8 @@ function appController(periodService, $scope, currentUser, mechanismsService,
             return;
         }
 
-        if (permissions.contains('F_ACCEPT_DATA_LOWER_LEVELS')) {
-            if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
+        if (permissions.includes('F_ACCEPT_DATA_LOWER_LEVELS')) {
+            if ((permissions.includes('F_APPROVE_DATA') || permissions.includes('F_APPROVE_DATA_LOWER_LEVELS'))) {
                 //All permissions
                 self.tabs.accept.access = true;
                 self.tabs.accept.name = ['Accept'];
@@ -319,7 +319,7 @@ function appController(periodService, $scope, currentUser, mechanismsService,
                 self.tabs.unsubmit.action = ['unaccept'];
             }
         } else {
-            if ((permissions.contains('F_APPROVE_DATA') || permissions.contains('F_APPROVE_DATA_LOWER_LEVELS'))) {
+            if ((permissions.includes('F_APPROVE_DATA') || permissions.includes('F_APPROVE_DATA_LOWER_LEVELS'))) {
                 //Only approve
                 self.tabs.submit.access = true;
                 self.tabs.submit.name = ['Submit'];
