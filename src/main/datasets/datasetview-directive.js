@@ -50,7 +50,7 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
         //If the dataset has a category(or multiple, in this case one) get the currentSelection items that have that category
         //If the dataset has the category default don't add the dimension
         var datasetCOCNames = _.map(ds.categoryCombo.categoryOptionCombos, 'name');
-        var hasDefaultCOC = _.contains(datasetCOCNames, '(default)');
+        var hasDefaultCOC = _.includes(datasetCOCNames, '(default)');
         var datasetCOCIds;
 
         var COsForReport;
@@ -58,7 +58,7 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
             datasetCOCIds = _.map(ds.categoryCombo.categoryOptionCombos, 'id');
             //Filter out the ones that have default as COG
             COsForReport = _.filter(details.currentSelection, function (mechanism) {
-                if (_.contains(datasetCOCIds, mechanism.catComboId)) {
+                if (_.includes(datasetCOCIds, mechanism.catComboId)) {
                     return true;
                 }
                 return false;
