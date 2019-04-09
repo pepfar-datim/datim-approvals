@@ -6,7 +6,7 @@ function dataViewController($scope, approvalsService, $translate, $log) {
     this.getMechanismsByIds = function (ids) {
         var idsLodash = _(ids);
         return _.filter(this.details.currentSelection, function (mechanism) {
-            return idsLodash.contains(mechanism.id);
+            return idsLodash.includes(mechanism.id);
         });
     };
 
