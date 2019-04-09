@@ -211,7 +211,7 @@ function datasetViewDirective(AppManifest, $translate, workflowService) {
                             scope.hasUnreadableMechanisms += 1;
                         }
 
-                        if (_.contains(categoryOptionComboIds, mechanism.catComboId)) {
+                        if (_.includes(categoryOptionComboIds, mechanism.catComboId)) {
                             result = true;
                         }
                     });
