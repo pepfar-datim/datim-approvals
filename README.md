@@ -1,4 +1,4 @@
-#PEPFAR Approvals DHIS2 App
+# PEPFAR Approvals DHIS2 App
 
 To set up:
 1. Run `yarn add gulp`
