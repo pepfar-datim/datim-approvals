@@ -1,4 +1,5 @@
 # PEPFAR Approvals DHIS2 App
+**Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)
 
 To set up:
 1. Run `yarn add gulp`
