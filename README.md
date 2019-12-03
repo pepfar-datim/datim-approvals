@@ -3,6 +3,7 @@
 [![Dependencies](https://david-dm.org/pepfar-datim/datim-approvals.svg)](https://david-dm.org/pepfar-datim/datim-approvals)
 
 **Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)
+**Developer:** Jakub Flaska [@jakub-bao](https://github.com/jakub-bao)
 
 ![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
 
