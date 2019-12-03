@@ -10,7 +10,7 @@ def load_users():
 def persist_users(users):
     print(len(users),'users loaded')
     for user in users:
-        user['userCredentials']['password'] = "Cypress1!"
+        user['userCredentials']['password'] = "blank"
         res = api.post('users.json', user)
         print(res)
 
