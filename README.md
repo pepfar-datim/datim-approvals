@@ -1,13 +1,13 @@
 # Datim Approvals v2
 
-Author: Jakub Flaska
+[![Dependencies](https://david-dm.org/pepfar-datim/datim-approvals.svg)](https://david-dm.org/pepfar-datim/datim-approvals)
 
-The project is a DHIS2 custom app dedicated to mechanism approval process.
+**Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)
 
-## Screenshots
+![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
 
-![Mechanism List](https://github.com/pepfar-datim/datim-approvals/raw/master/help/list.png)
-![Approve Mechanism](https://github.com/pepfar-datim/datim-approvals/raw/master/help/action.png)
+This project is a DHIS2 custom app dedicated to mechanism approval process.
+
 
 ## Technology Stack
 1. REACT - all front-end rendering
