@@ -5,9 +5,9 @@
 **Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)  
 **Developer:** Jakub Flaska [@jakub-bao](https://github.com/jakub-bao)
 
-![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
-
 This project is a DHIS2 custom app dedicated to mechanism approval process.
+
+![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
 
 
 ## Technology Stack
