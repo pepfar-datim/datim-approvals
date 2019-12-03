@@ -2,12 +2,10 @@
 
 Author: Jakub Flaska
 
-The project is a DHIS2 custom app dedicated to mechanism approval process.
+![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
 
-## Screenshots
+This project is a DHIS2 custom app dedicated to mechanism approval process.
 
-![Mechanism List](https://github.com/pepfar-datim/datim-approvals/raw/master/help/list.png)
-![Approve Mechanism](https://github.com/pepfar-datim/datim-approvals/raw/master/help/action.png)
 
 ## Technology Stack
 1. REACT - all front-end rendering
