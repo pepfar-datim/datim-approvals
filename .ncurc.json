@@ -1,0 +1,9 @@
+{
+  "upgrade": true,
+  "reject": [
+    "typescript",
+    "@dhis2/d2-ui-header-bar",
+    "d2"
+  ],
+  "packageFile": "package.json"
+}

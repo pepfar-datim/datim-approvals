@@ -1,9 +1,0 @@
-<div class="dataset-group-selector">
-    <!--<select ng-change="onChange()" ng-options="datasetGroup for datasetGroup in dataset.groups" ng-model="dataset.selectedDataSetGroup"></select>-->
-    <ui-select ng-model="dataset.selectedDataSetGroup" on-select="onChange($item, $model)">
-        <ui-select-match placeholder="Select a dataset group">{{$select.selected.name}}</ui-select-match>
-        <ui-select-choices repeat="datasetGroup.name as datasetGroup in dataset.groups | filter: $select.search">
-            <div>{{datasetGroup.name}}</div>
-        </ui-select-choices>
-    </ui-select>
-</div>
