@@ -8,9 +8,9 @@ The project is a DHIS2 custom app dedicated to mechanism approval process.
 
 Mechanism List:
 
-![Mechanism List](https://github.com/pepfar-datim/datim-approvals/raw/master/help/list.png)
+![Mechanism List](https://github.com/pepfar-datim/datim-approvals/raw/master/help/list.png | width=300)
 
-![Approve Mechanism](![Mechanism List](https://github.com/pepfar-datim/datim-approvals/raw/master/help/action.png))
+![Approve Mechanism](https://github.com/pepfar-datim/datim-approvals/raw/master/help/action.png | width=300)
 
 ## Technology Stack
 1. REACT - all front-end rendering
