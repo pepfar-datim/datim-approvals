@@ -2,7 +2,7 @@
 
 [![Dependencies](https://david-dm.org/pepfar-datim/datim-approvals.svg)](https://david-dm.org/pepfar-datim/datim-approvals)
 
-Author: Jakub Flaska
+**Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)
 
 ![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
 
