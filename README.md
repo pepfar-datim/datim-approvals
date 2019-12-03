@@ -1,6 +1,6 @@
 # Datim Approvals v2
 
-[![Dependencies][https://david-dm.org/pepfar-datim/datim-approvals.svg]][https://david-dm.org/pepfar-datim/datim-approvals]
+[![Dependencies](https://david-dm.org/pepfar-datim/datim-approvals.svg)](https://david-dm.org/pepfar-datim/datim-approvals)
 
 Author: Jakub Flaska
 
