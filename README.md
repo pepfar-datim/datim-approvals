@@ -2,11 +2,12 @@
 
 [![Dependencies](https://david-dm.org/pepfar-datim/datim-approvals.svg)](https://david-dm.org/pepfar-datim/datim-approvals)
 
-**Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)
-
-![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
+**Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)  
+**Developer:** Jakub Flaska [@jakub-bao](https://github.com/jakub-bao)
 
 This project is a DHIS2 custom app dedicated to mechanism approval process.
+
+![Datim Approvals](https://github.com/pepfar-datim/datim-approvals/raw/master/help/approvals.png)
 
 
 ## Technology Stack
