@@ -43,7 +43,5 @@
       "last 1 chrome version"
     ]
   },
-  "devDependencies": {
-    "cypress": "^3.6.0"
-  }
+  "devDependencies": {}
 }

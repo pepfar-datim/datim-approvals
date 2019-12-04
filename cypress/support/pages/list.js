@@ -24,7 +24,7 @@ Cypress.Commands.add('searchMechanisms', (workflow, period, ou)=>{
 });
 
 Cypress.Commands.overwrite('select', (x, subject, value)=>{
-    subject.click();
+    cy.get(subject).click();
     cy.get(`[data-value="${value}"]`).click();
 });
 

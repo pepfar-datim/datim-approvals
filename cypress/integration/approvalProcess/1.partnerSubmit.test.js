@@ -1,7 +1,7 @@
 describe('Approval Process #1 - Submitted by Partner', function() {
 
     it('_ return to pending at partner', ()=>{
-        cy.resetMerMechanism();
+        // cy.resetMerMechanism();
     });   
 
     it('Should see MER Results / India / Q1 / Pending', function () {
