@@ -19,11 +19,11 @@ export default function MechanismTabs({workflow, period, userOu, mechanisms, mec
     if (!mechanisms[0].info) return null;
     return <Paper>
         <Tabs value={openTab} onChange={(event,tabIndex)=>setOpenTab(tabIndex)} variant="scrollable" onClick={()=>userClicked(clicks+1)}>
-            {mechanisms.slice(0, 29).map(mechanism=><Tab label={mechanism.info.name} key={mechanism.meta.id}/>)}
+            {mechanisms.slice(0, 29).map(mechanism=><Tab label={mechanism.info.name} key={mechanism.meta.cocId}/>)}
         </Tabs>
         {lengthWarning(mechanisms.length, clicks)}
         <MechanismInfo mechanismState={mechanismState} mechanismInfo={mechanisms[openTab].info}/>
         <br/>
-        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanism={mechanisms[openTab].meta.id}/>
+        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanism={mechanisms[openTab].meta.cocId}/>
     </Paper>;
 }

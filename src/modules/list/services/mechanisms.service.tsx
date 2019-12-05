@@ -61,7 +61,7 @@ export default class Data {
                             view: mech.permissions.mayReadData
                         },
                         meta: {
-                            id: mech.id,
+                            cocId: mech.id,
                             ou: mechInfo.organisationUnits[0].id
                         }
                     }

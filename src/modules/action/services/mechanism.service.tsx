@@ -41,7 +41,7 @@ function getInfoByGroupSet(mechInfo, groupSetId){
 
 export function performAction(action: string, workflow: string, period: string, mechanismsMeta: MechanismMeta[]){
     return api.post(getActionUrl(action), {
-        "approvals": mechanismsMeta.map(m=>{return {"aoc": m.id, "ou": m.ou}}),
+        "approvals": mechanismsMeta.map(m=>{return {"aoc": m.cocId, "ou": m.ou}}),
         "pe": [period],
         "wf": [workflow]
     });
@@ -92,7 +92,7 @@ function transformCOCToMechanismState(workflow, combo){
 
 export function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
     return api.get(mechanismStatesUrl(workflow, period))
-        .then(res => res.filter(categoryOptionCombo=>mechanisms.map(m=>m.meta.id).includes(categoryOptionCombo.id)))
+        .then(res => res.filter(categoryOptionCombo=>mechanisms.map(m=>m.meta.cocId).includes(categoryOptionCombo.id)))
         .then(categoryOptionCombos=>categoryOptionCombos.map(coc=>transformCOCToMechanismState(workflow, coc)))
         .then(mechanismStates=>{
             if (mechanismStates.every((val, i, arr)=>JSON.stringify(val)===JSON.stringify(arr[0]))) return mechanismStates[0];
