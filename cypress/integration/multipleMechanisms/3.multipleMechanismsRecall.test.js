@@ -40,7 +40,7 @@ describe('Multiple Mechanisms RECALL', function() {
 
     it('should be able to recall both', ()=>{
         cy.get('#cy_mechanismAction_recall').click();
-        cy.contains('Mechanism successfully recalled');
+        cy.contains('Mechanism(s) successfully recalled');
         cy.info().containsAll([
             'pending at partner',
         ]);

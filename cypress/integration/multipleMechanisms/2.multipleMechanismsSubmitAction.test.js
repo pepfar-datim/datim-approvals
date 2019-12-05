@@ -19,7 +19,7 @@ describe('Multiple Mechanisms SUBMIT #2 (Action)', function() {
 
     it('should be able to submit both', ()=>{
         cy.get('#cy_mechanismAction_submit').click();
-        cy.contains('Mechanism successfully submitted');
+        cy.contains('Mechanism(s) successfully submitted');
         cy.info().containsAll([
             'submitted by partner',
         ]);

@@ -20,7 +20,7 @@ describe('Approval Process #3 - Agency SUBMIT', ()=>{
 
     it('Should be able to RETURN accepted mechanism', ()=>{
         cy.get('#cy_mechanismAction_recall').click();  
-        cy.contains('Mechanism successfully recalled');        
+        cy.contains('Mechanism(s) successfully recalled');        
         cy.actions().contains('No actions');
         cy.info().contains('pending at partner');          
     });
@@ -40,14 +40,14 @@ describe('Approval Process #3 - Agency SUBMIT', ()=>{
         cy.info().contains('accepted by agency');           
 
         cy.get('#cy_mechanismAction_submit').click();  
-        cy.contains('Mechanism successfully submitted');       
+        cy.contains('Mechanism(s) successfully submitted');       
         cy.actions().contains('recall');
         cy.info().contains('submitted by agency');           
     });    
 
     it('Should be able to RECALL submitted mechanism', ()=>{
         cy.get('#cy_mechanismAction_recall').click();  
-        cy.contains('Mechanism successfully recalled');       
+        cy.contains('Mechanism(s) successfully recalled');       
         cy.actions().contains('recall');
         cy.info().contains('accepted by agency');         
     });

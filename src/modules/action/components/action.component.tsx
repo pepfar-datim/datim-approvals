@@ -71,7 +71,9 @@ export default class Action extends React.Component<
         getMechanismsInfo(mechanisms.map(m=>m.meta.id)).then(mechanismsInfo=>{
             mechanismsInfo.forEach((info,i)=>{
                 mechanisms[i].info = mechanismsInfo[i];
+                console.log(info);
             });
+            console.log(mechanisms);
             this.setState({mechanisms: mechanisms});
         });
     };
@@ -103,7 +105,7 @@ export default class Action extends React.Component<
     }
 
     postMessage(action){
-        let message = `Mechanism successfully `;
+        let message = `Mechanism(s) successfully `;
         switch(action){
             case 'submit': message += 'submitted'; break;
             case 'recall': message += 'recalled'; break;

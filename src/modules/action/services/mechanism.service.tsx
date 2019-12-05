@@ -13,8 +13,13 @@ function mechanismStatesUrl(workflow: string, period: string){
 }
 
 function mechanismsInfoUrl(mechanismIds:string[]){
-    return `/categoryOptions.json?filter=categoryOptionCombos.id:in:[${mechanismIds.join(',')}]`
-        + `&fields=id,name,organisationUnits[id,name],categoryOptionGroups[id,name,groupSets[id]],categoryOptionCombos[id,name]`;
+    let filter;
+    if (mechanismIds.length<100) filter = `&filter=categoryOptionCombos.id:in:[${mechanismIds.join(',')}]`;
+    else filter = '&filter=categories.id:eq:SH885jaRe0o';
+    return `/categoryOptions.json`
+        + '?fields=id,name,organisationUnits[id,name],categoryOptionGroups[id,name,groupSets[id]],categoryOptionCombos[id,name]'
+        + '&paging=false'
+        + filter;
 }
 
 function getActionUrl(action){
@@ -41,19 +46,35 @@ export function performAction(action: string, workflow: string, period: string, 
         "wf": [workflow]
     });
 }
-function transformCategoryOptionToMechanismInfo(categoryOption:any){
+function transformCategoryOptionToMechanismInfo(categoryOption:any):MechanismInfo{
+    let ouName;
+    if (categoryOption.organisationUnits[0]) ouName = categoryOption.organisationUnits[0].name;
+    else {
+        console.log(categoryOption);
+        console.error(Error("Mechanism has no assigned OU"));
+    }
     return {
         name: categoryOption.name,
-        ou: categoryOption.organisationUnits[0].name || {},
+        ou: ouName,
         partner: getInfoByGroupSet(categoryOption, partnerGroupSet).name,
         agency: getInfoByGroupSet(categoryOption, agencyGroupSet).name,
     };
 }
 
-export function getMechanismsInfo(mechanismIds:string[]):Promise<MechanismInfo[]>{
-    return api.get(mechanismsInfoUrl(mechanismIds))
-        .then(res=>res.categoryOptions)
-        .then(categoryOptions=>categoryOptions.map(transformCategoryOptionToMechanismInfo));
+export function getMechanismsInfo(mechanismIds: string[]):Promise<MechanismInfo[]>{
+    return api.get(mechanismsInfoUrl(mechanismIds)).then(res=>res.categoryOptions)
+        .then(categoryOptions=>{
+            let result = {};
+            categoryOptions.forEach(categoryOption=>{
+                result[categoryOption.categoryOptionCombos[0].id] = transformCategoryOptionToMechanismInfo(categoryOption);
+            });
+            return result;
+        })
+        .then(mechanismsInfoMap=>{
+            return mechanismIds.map(mechanismId=>{
+                return mechanismsInfoMap[mechanismId];
+            })
+        });
 }
 
 function transformCOCToMechanismState(workflow, combo){
