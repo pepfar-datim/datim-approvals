@@ -19,7 +19,6 @@ export class MechanismState {
 }
 
 export class MechanismMeta {
-    coId: string;
     cocId: string;
     workflow: string;
     period: string;

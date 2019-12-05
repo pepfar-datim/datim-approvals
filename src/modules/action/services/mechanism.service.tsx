@@ -31,6 +31,10 @@ function getActionUrl(action){
     }
 }
 
+function catOptUrl(cocId:string):string{
+    return `/categoryOptions.json?filter=categoryOptionCombos.id:eq:${cocId}`;
+}
+
 const agencyGroupSet = 'bw8KHXzxd9i';
 const partnerGroupSet = 'BOyWrF33hiR';
 
@@ -98,4 +102,8 @@ export function getMechanismStates(workflow: string, period: string, mechanisms:
             if (mechanismStates.every((val, i, arr)=>JSON.stringify(val)===JSON.stringify(arr[0]))) return mechanismStates[0];
             else throw new Error("Mechanisms have different statuses.");
         });
+}
+
+export function getCoidByCocid(cocId:string):Promise<string> {
+    return api.get(catOptUrl(cocId)).then(response=>response.categoryOptions[0].id);
 }
