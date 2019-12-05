@@ -19,7 +19,8 @@ export class MechanismState {
 }
 
 export class MechanismMeta {
-    id: string;
+    coId: string;
+    cocId: string;
     workflow: string;
     period: string;
     ou: string;
@@ -32,6 +33,6 @@ export default class MechanismModel{
 }
 
 export class ApprovalsCombo{
-    id: string;
+    cocId: string;
     ou: string;
 }

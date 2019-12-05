@@ -35,7 +35,7 @@ export default class Action extends React.Component<
     constructor(props){
         super(props);
         let mechanismsMeta:MechanismMeta[] = props.approvalCombos.map(ac=>{return {
-            id: ac.id,
+            cocId: ac.cocId,
             ou: ac.ou,
             workflow: props.workflow,
             period: props.period
@@ -68,7 +68,7 @@ export default class Action extends React.Component<
     }
 
     getMechanismsInfo(mechanisms: MechanismModel[]){
-        getMechanismsInfo(mechanisms.map(m=>m.meta.id)).then(mechanismsInfo=>{
+        getMechanismsInfo(mechanisms.map(m=>m.meta.cocId)).then(mechanismsInfo=>{
             mechanismsInfo.forEach((info,i)=>{
                 mechanisms[i].info = mechanismsInfo[i];
                 console.log(info);
