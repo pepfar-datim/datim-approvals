@@ -5,7 +5,7 @@ export function fetchUserType():Promise<string>{
         .then(response=>{
             return response.userGroups.map(g=>g.name.toLowerCase());
         }).then(groups=>{
-            return groups.filter(name=>name.indexOf('users')>-1||name.indexOf('country team')>-1)
+            return groups.filter(name=>name.indexOf('users')>-1||name.indexOf('country team')>-1||name.indexOf('admin')>-1)
         }).then(groupNames=>{
             let type;
             groupNames.forEach(groupName=> {
@@ -14,6 +14,8 @@ export function fetchUserType():Promise<string>{
                 if (groupName.indexOf('agency') > -1) type = 'agency';
                 if (groupName.indexOf('global agency') > -1) type = 'agency hq';
                 if (groupName.indexOf('partner') > -1) type = 'partner';
+
+                if (groupName.indexOf('admin') > -1) type = 'global';
             });
             if (!type) console.error(`can't determine user type: ${JSON.stringify(groupNames)}`);
             return type;

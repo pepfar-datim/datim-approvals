@@ -71,9 +71,7 @@ export default class Action extends React.Component<
         getMechanismsInfo(mechanisms.map(m=>m.meta.cocId)).then(mechanismsInfo=>{
             mechanismsInfo.forEach((info,i)=>{
                 mechanisms[i].info = mechanismsInfo[i];
-                console.log(info);
             });
-            console.log(mechanisms);
             this.setState({mechanisms: mechanisms});
         });
     };
