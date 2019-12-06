@@ -3,7 +3,6 @@ import {withRouter} from "react-router-dom";
 import queryString from "query-string";
 import {Divider, LinearProgress} from "@material-ui/core";
 
-import mechanisms from "../services/mechanisms.service";
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
 import MechanismModel from "../../shared/models/mechanism.model";
@@ -12,6 +11,7 @@ import Filters from "../models/filters.model";
 import ListAction from "./listAction.component";
 import WorkflowPeriodService from "../../shared/services/workflowsPeriods.service";
 import {idNameList} from "../../shared/models/idNameList.model";
+import {fetchMechanisms} from "../services/mechanisms.service";
 
 class List extends React.Component<
     {history: any, searchOptions: any},
@@ -52,7 +52,7 @@ class List extends React.Component<
             let f = this.state.filters;
             if (!f.ou || !f.period || !f.workflow) return;
             this.setState({mechanisms: null, loading: {mechanisms: true}});
-            mechanisms.fetchMechanisms(this.state.filters).then(mechanisms=>{
+            fetchMechanisms(this.state.filters).then(mechanisms=>{
                 this.setState({mechanisms: mechanisms, loading:{mechanisms: false}});
             });
         },0);
