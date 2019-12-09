@@ -20,15 +20,17 @@ function renderOverviewTab(mechanismNr){
 function renderMechanismInfo(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]){
     if (mechanisms.length>1 && openTab===0) return;
     return <React.Fragment>
-        <MechanismInfo mechanismState={mechanismState} mechanismInfo={mechanisms[openTab].info}/>
+        <MechanismInfo mechanismState={mechanismState} mechanismInfo={mechanisms[openTab-1].info}/>
         <br/>
-        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanism={mechanisms[openTab].meta.cocId}/>
+        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismCocIds={[mechanisms[openTab-1].meta.cocId]}/>
     </React.Fragment>
 }
 
 function extractData(mechanisms: MechanismModel[], property: string){
     let [p1,p2] = property.split('.');
-    return mechanisms.map(m=>m[p1][p2]).join(', ');
+    let values = mechanisms.map(m=>m[p1][p2]);
+    let uniqueValues = [... new Set(values)];
+    return uniqueValues.join(', ');
 }
 
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
@@ -42,7 +44,7 @@ function renderMechanismOverview(openTab:number, workflow:string, period:string,
     return <React.Fragment>
         <MechanismInfo mechanismState={mechanismState} mechanismInfo={aggregatedInfo}/>
         <br/>
-        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanism={mechanisms[openTab].meta.cocId}/>
+        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismCocIds={mechanisms.map(m=>m.meta.cocId)}/>
     </React.Fragment>
 }
 

@@ -11,7 +11,7 @@ function getDatasetUrl(workflow: string){
 }
 
 export default class FormSelect extends React.Component<
-    {workflow: string, period: string, userOu: string, mechanism: string},
+    {workflow: string, period: string, userOu: string, mechanismCocIds: string[]},
     {selectedDataset: {name?: string, id?: string}, datasets: {name: string, id: string}[]}
     > {
     constructor(props){
@@ -44,7 +44,7 @@ export default class FormSelect extends React.Component<
             <DatasetSelect selectedDataset={this.state.selectedDataset} datasets={this.state.datasets} onDsChange={this.onDsChange}/>
             <br/>
             <Divider/>
-            <FormContent workflow={this.props.workflow} period={this.props.period} userOu={this.props.userOu} dataSet={this.state.selectedDataset.id} mechanism={this.props.mechanism}/>
+            <FormContent workflow={this.props.workflow} period={this.props.period} userOu={this.props.userOu} dataSet={this.state.selectedDataset.id} mechanismCocIds={this.props.mechanismCocIds}/>
         </div>
     }
 }

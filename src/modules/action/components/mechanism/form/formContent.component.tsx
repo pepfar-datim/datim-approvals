@@ -1,7 +1,7 @@
 import React from "react";
 import api from "../../../../shared/services/api.service";
 import FormRender from "./formRender.component";
-import {getCoidByCocid} from "../../../services/mechanism.service";
+import {getCoidByCocids} from "../../../services/mechanism.service";
 
 function generateFormUrl(period: string, dataSet: string, userOu: string, mechanism: string){
     return `../../../dhis-web-reporting/generateDataSetReport.action` +
@@ -9,25 +9,29 @@ function generateFormUrl(period: string, dataSet: string, userOu: string, mechan
 }
 
 export default class FormContent extends React.Component<
-    {workflow: string, period: string, userOu: string, dataSet: string, mechanism: string},
-    {formHtml: string, catOpId:string}>{
+    {workflow: string, period: string, userOu: string, dataSet: string, mechanismCocIds: string[]},
+    {formHtml: string, mechanismCoIds:string}>{
     constructor(props){
         super(props);
-        this.state = {formHtml: null, catOpId: null};
+        this.state = {formHtml: null, mechanismCoIds: null};
     }
 
-    componentDidMount():void {
-        getCoidByCocid(this.props.mechanism).then(catOpId=>{
-            this.fetchForm(this.props.period, this.props.dataSet, this.props.userOu, catOpId);
-            this.setState({catOpId: catOpId});
+
+    init(){
+        getCoidByCocids(this.props.mechanismCocIds).then(catOpIds=>{
+            this.fetchForm(this.props.period, this.props.dataSet, this.props.userOu, catOpIds);
+            this.setState({mechanismCoIds: catOpIds});
         });
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.dataSet !== prevProps.dataSet || this.props.mechanism!==prevProps.mechanism) {
-            this.fetchForm(this.props.period, this.props.dataSet, this.props.userOu, this.state.catOpId);
-        }
+    componentDidMount():void {
+        this.init();
     }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.dataSet !== prevProps.dataSet || this.props.mechanismCocIds !== prevProps.mechanismCocIds) this.init();
+    }
+
 
     fetchForm(period: string, dataSet: string, userOu: string, mechanism: string){
         this.setState({formHtml: null});
