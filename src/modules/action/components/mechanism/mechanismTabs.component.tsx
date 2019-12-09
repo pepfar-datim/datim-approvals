@@ -13,11 +13,6 @@ function lengthWarning(mechanismsLength: number, clicks: number){
     </Typography>;
 }
 
-function extractData(mechanisms: MechanismModel[], property: string){
-    let [p1,p2] = property.split('.');
-    return mechanisms.map(m=>m[p1][p2]).join(', ');
-}
-
 function renderOverviewTab(mechanismNr){
     if (mechanismNr>1) return <Tab label="All Mechanisms Overview" key={0}/>;
 }
@@ -38,7 +33,7 @@ function extractData(mechanisms: MechanismModel[], property: string){
 
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
     if (mechanisms.length<=1 || openTab!==0) return;
-    let aggregatedInfo:MechanismInfo = {
+    let aggregatedInfo = {
         name: 'All Mechanisms Overview',
         ou: extractData(mechanisms, 'info.ou'),
         agency: extractData(mechanisms, 'info.agency'),
