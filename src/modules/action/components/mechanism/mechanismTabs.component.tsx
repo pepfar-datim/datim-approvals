@@ -33,6 +33,12 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
 
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
     if (mechanisms.length<=1 || openTab!==0) return;
+    let aggregatedInfo = ;
+    return <React.Fragment>
+        <MechanismInfo mechanismState={mechanismState} mechanismInfo={aggregatedInfo}/>
+        <br/>
+        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanism={mechanisms[openTab].meta.cocId}/>
+    </React.Fragment>
 }
 
 export default function MechanismTabs({workflow, period, userOu, mechanisms, mechanismState}:{workflow: string, period: string, userOu: string, mechanisms: MechanismModel[], mechanismState: MechanismState}){
