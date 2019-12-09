@@ -31,9 +31,19 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
     </React.Fragment>
 }
 
+function extractData(mechanisms: MechanismModel[], property: string){
+    let [p1,p2] = property.split('.');
+    return mechanisms.map(m=>m[p1][p2]).join(', ');
+}
+
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
     if (mechanisms.length<=1 || openTab!==0) return;
-    let aggregatedInfo = ;
+    let aggregatedInfo:MechanismInfo = {
+        name: 'All Mechanisms Overview',
+        ou: extractData(mechanisms, 'info.ou'),
+        agency: extractData(mechanisms, 'info.agency'),
+        partner: extractData(mechanisms, 'info.partner'),
+    };
     return <React.Fragment>
         <MechanismInfo mechanismState={mechanismState} mechanismInfo={aggregatedInfo}/>
         <br/>
