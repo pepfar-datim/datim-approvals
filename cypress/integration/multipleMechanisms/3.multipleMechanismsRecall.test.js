@@ -29,7 +29,7 @@ describe('Multiple Mechanisms RECALL', function() {
     });
 
     it('should have the right content', ()=>{
-        cy.wait(5000);
+        cy.wait(8000);
         cy.containsAll([
             '14707 - Ambassador\'s PEPFAR Small Grants Program',
             'DEPARTMENT OF STATE',

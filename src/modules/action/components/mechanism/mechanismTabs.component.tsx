@@ -19,10 +19,11 @@ function renderOverviewTab(mechanismNr){
 
 function renderMechanismInfo(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]){
     if (mechanisms.length>1 && openTab===0) return;
+    if (mechanisms.length>1) openTab = openTab - 1;
     return <React.Fragment>
-        <MechanismInfo mechanismState={mechanismState} mechanismInfo={mechanisms[openTab-1].info}/>
+        <MechanismInfo mechanismState={mechanismState} mechanismInfo={mechanisms[openTab].info}/>
         <br/>
-        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismCocIds={[mechanisms[openTab-1].meta.cocId]}/>
+        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismCocIds={[mechanisms[openTab].meta.cocId]}/>
     </React.Fragment>
 }
 
