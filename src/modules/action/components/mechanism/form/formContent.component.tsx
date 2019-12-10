@@ -1,37 +1,35 @@
 import React from "react";
 import api from "../../../../shared/services/api.service";
 import FormRender from "./formRender.component";
-import {getCoidByCocid} from "../../../services/mechanism.service";
+import {MechanismMeta} from "../../../../shared/models/mechanism.model";
 
-function generateFormUrl(period: string, dataSet: string, userOu: string, mechanism: string){
+function generateFormUrl(period: string, dataSet: string, userOu: string, mechanismMetas: MechanismMeta[]){
+    let coIds = mechanismMetas.map(mm=>mm.coId).join(';')
     return `../../../dhis-web-reporting/generateDataSetReport.action` +
-        `?ds=${dataSet}&pe=${period}&ou=${userOu}&dimension=SH885jaRe0o:${mechanism}`;
+        `?ds=${dataSet}&pe=${period}&ou=${userOu}&dimension=SH885jaRe0o:${coIds}`;
 }
 
 export default class FormContent extends React.Component<
-    {workflow: string, period: string, userOu: string, dataSet: string, mechanism: string},
-    {formHtml: string, catOpId:string}>{
+    {workflow: string, period: string, userOu: string, dataSet: string, mechanismMetas: MechanismMeta[]},
+    {formHtml: string}>{
     constructor(props){
         super(props);
-        this.state = {formHtml: null, catOpId: null};
+        this.state = {formHtml: null};
     }
 
     componentDidMount():void {
-        getCoidByCocid(this.props.mechanism).then(catOpId=>{
-            this.fetchForm(this.props.period, this.props.dataSet, this.props.userOu, catOpId);
-            this.setState({catOpId: catOpId});
-        });
+        this.fetchForm(this.props.period, this.props.dataSet, this.props.userOu, this.props.mechanismMetas);
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.dataSet !== prevProps.dataSet || this.props.mechanism!==prevProps.mechanism) {
-            this.fetchForm(this.props.period, this.props.dataSet, this.props.userOu, this.state.catOpId);
-        }
+        if (this.props.dataSet !== prevProps.dataSet || this.props.mechanismMetas !== prevProps.mechanismMetas)
+            this.fetchForm(this.props.period, this.props.dataSet, this.props.userOu, this.props.mechanismMetas);
     }
 
-    fetchForm(period: string, dataSet: string, userOu: string, mechanism: string){
+
+    fetchForm(period: string, dataSet: string, userOu: string, mechanismMetas: MechanismMeta[]){
         this.setState({formHtml: null});
-        api.getHtml(generateFormUrl(period, dataSet, userOu, mechanism)).then(html=>{
+        api.getHtml(generateFormUrl(period, dataSet, userOu, mechanismMetas)).then(html=>{
             this.setState({formHtml: html});
         });
     }

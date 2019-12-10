@@ -61,8 +61,8 @@ export function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>{
                     },
                     meta: {
                         cocId: mech.id,
-                        ou: mech.ou
-                        // ou: mechInfo.organisationUnits[0].id
+                        ou: mech.ou,
+                        coId: mechInfo.id
                     }
                 }
             }).filter(mech=>mech);

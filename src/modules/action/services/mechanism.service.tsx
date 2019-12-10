@@ -31,8 +31,8 @@ function getActionUrl(action){
     }
 }
 
-function catOptUrl(cocId:string):string{
-    return `/categoryOptions.json?filter=categoryOptionCombos.id:eq:${cocId}`;
+function catOptUrl(cocIds:string[]):string{
+    return `/categoryOptions.json?filter=categoryOptionCombos.id:in:[${cocIds.join(',')}]`;
 }
 
 const agencyGroupSet = 'bw8KHXzxd9i';
@@ -104,6 +104,7 @@ export function getMechanismStates(workflow: string, period: string, mechanisms:
         });
 }
 
-export function getCoidByCocid(cocId:string):Promise<string> {
-    return api.get(catOptUrl(cocId)).then(response=>response.categoryOptions[0].id);
+
+export function getCoidByCocids(cocIds:string[]):Promise<string> {
+    return api.get(catOptUrl(cocIds)).then(response=>response.categoryOptions.map(co=>co.id).join(','));
 }
