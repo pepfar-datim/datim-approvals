@@ -3,6 +3,9 @@ Cypress.Commands.add('goHome', ()=>{
 });
 
 
-Cypress.Commands.add('gotoMechanism', (mechanismId, workflow, period, ou)=>{
-    cy.visit(`/#/action?action=view&approvalCombos=${mechanismId}:${ou}&period=${period}&workflow=${workflow}`);
+Cypress.Commands.add('gotoMechanism', (cocId, workflow, period, ou)=>{
+    let coId;
+    if (cocId==='ifIy3vjx3Xx') coId = 'HBArdtWFelX';
+    if (cocId==='lMYMYFB2ybp') coId = 'G0MUqG3bRui';
+    cy.visit(`/#/action?action=view&approvalCombos=${ou}:${cocId}:${coId}&period=${period}&workflow=${workflow}`);
 });

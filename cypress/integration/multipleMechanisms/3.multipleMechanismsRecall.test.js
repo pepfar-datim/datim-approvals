@@ -25,7 +25,7 @@ describe('Multiple Mechanisms RECALL', function() {
 
     it('Should redirect to action page with the right url', ()=>{
         cy.get('#cy_list_mechanismAction').click();
-        cy.url().should('include','/action?action=recall&approvalCombos=TKBbV46WUX3%3Al1KFEXKI4Dg&approvalCombos=VdSh1pgKSLp%3Al1KFEXKI4Dg&period=2019Q3&workflow=RwNpkAM7Hw7');
+        cy.url().should('include','/action?action=recall&approvalCombos=l1KFEXKI4Dg%3ATKBbV46WUX3%3AiRbiBYQuiNZ%3A&approvalCombos=l1KFEXKI4Dg%3AVdSh1pgKSLp%3AXTVSZlHG6Ux%3A&period=2019Q3&workflow=RwNpkAM7Hw7');
     });
 
     it('should have the right content', ()=>{
