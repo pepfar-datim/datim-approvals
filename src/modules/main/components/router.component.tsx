@@ -27,9 +27,8 @@ function enforceArray(value:(string|string[])):string[]{
 
 function assembleMechanismCombos(mechanisms: string[]):ApprovalsCombo[]{
     return mechanisms.map(mech=>{
-        let cocId = mech.split(':')[0];
-        let ou = mech.split(':')[1];
-        return {cocId: cocId, ou: ou};
+        let [ou, cocId, coId] = mech.split(':');
+        return {ou: ou, cocId: cocId, coId: coId};
     });
 }
 

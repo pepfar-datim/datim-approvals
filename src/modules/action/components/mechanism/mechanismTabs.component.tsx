@@ -23,7 +23,7 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
     return <React.Fragment>
         <MechanismInfo mechanismState={mechanismState} mechanismInfo={mechanisms[openTab].info}/>
         <br/>
-        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismCocIds={[mechanisms[openTab].meta.cocId]}/>
+        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismMetas={[mechanisms[openTab].meta]}/>
     </React.Fragment>
 }
 
@@ -45,7 +45,7 @@ function renderMechanismOverview(openTab:number, workflow:string, period:string,
     return <React.Fragment>
         <MechanismInfo mechanismState={mechanismState} mechanismInfo={aggregatedInfo}/>
         <br/>
-        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismCocIds={mechanisms.map(m=>m.meta.cocId)}/>
+        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismMetas={mechanisms.map(m=>m.meta)}/>
     </React.Fragment>
 }
 

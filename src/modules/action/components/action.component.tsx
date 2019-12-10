@@ -35,8 +35,9 @@ export default class Action extends React.Component<
     constructor(props){
         super(props);
         let mechanismsMeta:MechanismMeta[] = props.approvalCombos.map(ac=>{return {
-            cocId: ac.cocId,
             ou: ac.ou,
+            cocId: ac.cocId,
+            coId: ac.coId,
             workflow: props.workflow,
             period: props.period
         }});

@@ -86,7 +86,7 @@ class List extends React.Component<
             action: action,
             period: this.state.filters.period,
             workflow: this.state.filters.workflow,
-            approvalCombos: mechs.map(m=>`${m.meta.cocId}:${m.meta.ou}`)
+            approvalCombos: mechs.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
         };
         this.props.history.push(`/action?` + queryString.stringify(params));
     };

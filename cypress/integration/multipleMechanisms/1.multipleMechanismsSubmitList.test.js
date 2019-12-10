@@ -28,7 +28,7 @@ describe('Multiple Mechanisms SUBMIT #1 (List)', function() {
         cy.url().should('include','http://localhost:3003/#/action?action=submit&approvalCombos=TKBbV46WUX3%3Al1KFEXKI4Dg&approvalCombos=VdSh1pgKSLp%3Al1KFEXKI4Dg&period=2019Q3&workflow=RwNpkAM7Hw7');
     });
     it('should have the right content', ()=>{
-        cy.wait(8000);
+        cy.wait(10000);
         cy.containsAll([
             '14707 - Ambassador\'s PEPFAR Small Grants Program',
             'DEPARTMENT OF STATE',
