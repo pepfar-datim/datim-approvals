@@ -9,7 +9,7 @@ function renderText(text:string, showMore:boolean){
 }
 
 function renderShowMoreButton(showMore: boolean, setShowMore:(boolean)=>void){
-    if (!showMore) return <Button size="small" onClick={()=>setShowMore(true)}>Show more</Button>
+    if (!showMore) return <Button size="small" onClick={()=>setShowMore(true)}>Show more</Button>;
 }
 
 export default function ShowMore({text}:{text:string}) {
