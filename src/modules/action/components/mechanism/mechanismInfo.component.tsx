@@ -14,11 +14,11 @@ export default function MechanismInfo({mechanismState, mechanismInfo}:{mechanism
                     </TableRow>
                     <TableRow>
                         <TableCell>OU</TableCell>
-                        <TableCell><ShowMore text={mechanismInfo.ou}/></TableCell>
+                        <TableCell>{mechanismInfo.ou}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Agency</TableCell>
-                        <TableCell><ShowMore text={mechanismInfo.agency}/></TableCell>
+                        <TableCell>{mechanismInfo.agency}</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>Partner</TableCell>

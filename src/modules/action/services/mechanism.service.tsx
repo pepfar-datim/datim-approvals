@@ -45,7 +45,7 @@ function getInfoByGroupSet(mechInfo, groupSetId){
 
 export function performAction(action: string, workflow: string, period: string, mechanismsMeta: MechanismMeta[]){
     return api.post(getActionUrl(action), {
-        "approvals": mechanismsMeta.map(m=>{return {"aoc": m.cocId, "ou": m.ou}}),
+        "approvals": mechanismsMeta.map(m=>{return {"aoc": m.cocId/*+'1'*/, "ou": m.ou}}),
         "pe": [period],
         "wf": [workflow]
     });
