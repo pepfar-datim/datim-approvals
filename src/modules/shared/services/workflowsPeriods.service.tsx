@@ -52,7 +52,7 @@ export default class WorkflowPeriodService {
             this.workflowPeriods = workflowPeriods.filter(wfp=>{
                 return workflows.map(wf=>wf.name).includes(wfp.name);
             }).map(wfp=>{
-                wfp.id = workflows.filter(wf=>wf.name==wfp.name)[0].id;
+                wfp.id = workflows.filter(wf=>wf.name===wfp.name)[0].id;
                 return wfp;
             }).filter(wfp=>{
                 return wfp.periods.length>0;

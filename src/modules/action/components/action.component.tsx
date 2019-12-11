@@ -4,7 +4,6 @@ import {Divider, LinearProgress, Paper} from "@material-ui/core";
 import ActionButtons from "./actionButtons.component";
 import {getMechanismsInfo, performAction, getMechanismStates} from "../services/mechanism.service";
 import Step from "./step/step.component";
-import FormSelect from "./mechanism/form/formSelect.component";
 import MechanismTabs from "./mechanism/mechanismTabs.component";
 import {fetchUserOu, fetchUserType} from "../services/user.service";
 import WorkflowOverview from "./workflowOverview.component";
