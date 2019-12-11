@@ -1,4 +1,5 @@
 import {baseUrl} from "./apiUrl.service";
+import queryString from "query-string";
 
 export default class Api{
     static get(url){
@@ -14,10 +15,16 @@ export default class Api{
             body: JSON.stringify(data)
         });
     }
-    static transformCategoryOptions(){
+    static getFormHtml(url, request){
+        let settings:RequestInit = {
+            credentials: 'include',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            },
+            body: queryString.stringify(request)
 
-    }
-    static getHtml(url){
-        return fetch(baseUrl + url, {credentials: 'include'}).then(resp=>resp.text());
+        };
+        return fetch(baseUrl + url, settings).then(resp=>resp.text());
     }
 }
