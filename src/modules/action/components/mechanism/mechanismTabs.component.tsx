@@ -30,7 +30,7 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
 function extractData(mechanisms: MechanismModel[], property: string){
     let [p1,p2] = property.split('.');
     let values = mechanisms.map(m=>m[p1][p2]);
-    let uniqueValues = [... new Set(values)];
+    let uniqueValues = [...new Set(values)];
     return uniqueValues.join(', ');
 }
 
