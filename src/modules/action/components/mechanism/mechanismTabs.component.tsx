@@ -29,9 +29,9 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
 
 function extractData(mechanisms: MechanismModel[], property: string){
     let [p1,p2] = property.split('.');
-    let values = mechanisms.map(m=>m[p1][p2]);
+    let values = mechanisms.map(m=>m[p1][p2]).filter(s=>s);
     let uniqueValues = [...new Set(values)];
-    return uniqueValues.join(', ');
+    return uniqueValues.sort().join(', ');
 }
 
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
