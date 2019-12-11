@@ -1,5 +1,5 @@
 import React from "react";
-import {Stepper, StepLabel, makeStyles, Theme, createStyles} from "@material-ui/core";
+import {Stepper, StepLabel, makeStyles, Theme, createStyles, LinearProgress} from "@material-ui/core";
 import MuiStep from "@material-ui/core/Step";
 import {getWorkflowTypeById} from "../../../shared/services/workflowService";
 import {MechanismState} from "../../../shared/models/mechanism.model";
@@ -64,7 +64,7 @@ function getStepNr(status: string, workflowType: string){
 
 export default function Step({workflow, mechanismState, userType}:{workflow: string, mechanismState: MechanismState, userType: string}){
     const classes = useStyles();
-    if (!mechanismState) return null;
+    if (!mechanismState) return <LinearProgress/>;
     if (!userType) return null;
     const workflowType = getWorkflowTypeById(workflow);
     return(

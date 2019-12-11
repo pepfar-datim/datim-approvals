@@ -1,5 +1,5 @@
 import React from "react";
-import {Paper, Tab, Tabs, Typography} from "@material-ui/core";
+import {LinearProgress, Paper, Tab, Tabs, Typography} from "@material-ui/core";
 import MechanismInfo from "./mechanismInfo.component";
 import MechanismModel, {MechanismState} from "../../../shared/models/mechanism.model";
 import FormSelect from "./form/formSelect.component";
@@ -29,9 +29,9 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
 
 function extractData(mechanisms: MechanismModel[], property: string){
     let [p1,p2] = property.split('.');
-    let values = mechanisms.map(m=>m[p1][p2]);
+    let values = mechanisms.map(m=>m[p1][p2]).filter(s=>s);
     let uniqueValues = [...new Set(values)];
-    return uniqueValues.join(', ');
+    return uniqueValues.sort().join(', ');
 }
 
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
@@ -52,7 +52,7 @@ function renderMechanismOverview(openTab:number, workflow:string, period:string,
 export default function MechanismTabs({workflow, period, userOu, mechanisms, mechanismState}:{workflow: string, period: string, userOu: string, mechanisms: MechanismModel[], mechanismState: MechanismState}){
     const [openTab, setOpenTab] = React.useState(0);
     const [clicks, userClicked] = React.useState(0);
-    if (!mechanisms[0].info) return null;
+    if (!mechanisms[0].info) return <LinearProgress/>;
     return <Paper>
         <Tabs value={openTab} onChange={(event,tabIndex)=>setOpenTab(tabIndex)} variant="scrollable" onClick={()=>userClicked(clicks+1)}>
             {renderOverviewTab(mechanisms.length)}
