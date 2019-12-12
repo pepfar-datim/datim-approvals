@@ -90,8 +90,8 @@ export default class Action extends React.Component<
         this.setState({processing: true});
         performAction(action, this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta)).then((response)=>{
             this.setState({processing: false});
+            if (!response.ok || response.redirected) return this.errorMessage(action);
             this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms).then(()=>{
-                if (!response.ok) return this.errorMessage(action);
                 this.successMessage(action);
             });
         });
@@ -104,7 +104,8 @@ export default class Action extends React.Component<
     }
 
     successMessage(action:string){
-        let message = `Mechanism(s) successfully `;
+        let plural = this.state.mechanisms.length>1?'s':'';
+        let message = `Mechanism${plural} successfully `;
         switch(action){
             case 'submit': message += 'submitted'; break;
             case 'recall': message += 'recalled'; break;
@@ -114,7 +115,8 @@ export default class Action extends React.Component<
     }
 
     errorMessage(action:string){
-        this.props.postMessage(`Mechanism(s) ${action} failed`, 'error');
+        let plural = this.state.mechanisms.length>1?'s':'';
+        this.props.postMessage(`Server error: Failed to ${action} mechanism${plural}`, 'error');
     }
 
     render() {

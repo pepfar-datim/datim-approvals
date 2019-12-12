@@ -29,7 +29,7 @@ describe('ER Approval Process #1 - Agency HQ ACCEPT', ()=>{
     it('Should be able to accept mechanism', ()=>{
         cy.get('#cy_mechanismAction_accept').click();
         cy.containsAll([
-            'Mechanism(s) successfully accepted',
+            'Mechanism successfully accepted',
         ]);
         cy.actions().containsAll(['submit', 'recall', 'return']);
         cy.info().containsAll([
