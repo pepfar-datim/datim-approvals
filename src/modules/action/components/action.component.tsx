@@ -20,7 +20,7 @@ const styles = {
 };
 
 export default class Action extends React.Component<
-    {postMessage: (string)=>void, approvalCombos: ApprovalsCombo[], workflow: string, period: string},
+    {postMessage: (message:string, type?:string)=>void, approvalCombos: ApprovalsCombo[], workflow: string, period: string},
     {
         workflow: idName,
         period: idName,
@@ -88,10 +88,11 @@ export default class Action extends React.Component<
 
     performAction = (action:string)=>{
         this.setState({processing: true});
-        performAction(action, this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta)).then(()=>{
+        performAction(action, this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta)).then((response)=>{
             this.setState({processing: false});
             this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms).then(()=>{
-                this.postMessage(action);
+                if (!response.ok) return this.errorMessage(action);
+                this.successMessage(action);
             });
         });
     };
@@ -102,7 +103,7 @@ export default class Action extends React.Component<
         return <ActionButtons mechanismState={this.state.mechanismState} performAction={this.performAction} mechanismsNr={this.state.mechanisms.length}/>;
     }
 
-    postMessage(action){
+    successMessage(action:string){
         let message = `Mechanism(s) successfully `;
         switch(action){
             case 'submit': message += 'submitted'; break;
@@ -110,6 +111,10 @@ export default class Action extends React.Component<
             case 'accept': message += 'accepted'; break;
         }
         this.props.postMessage(message);
+    }
+
+    errorMessage(action:string){
+        this.props.postMessage(`Mechanism(s) ${action} failed`, 'error');
     }
 
     render() {

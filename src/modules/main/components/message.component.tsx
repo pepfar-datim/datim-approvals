@@ -1,35 +1,46 @@
 import React from "react";
 import Router from "./router.component";
 import Snackbar from "@material-ui/core/Snackbar/Snackbar";
-import {IconButton} from "@material-ui/core";
+import {IconButton, SnackbarContent, withTheme} from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 
-export default class Message extends React.Component<{}, {message: {open?: boolean, text?: string}}>{
+
+class Message extends React.Component<{theme:any}, {text:string, open:boolean, type:string}>{
     constructor(props){
         super(props);
-        this.state = {message: {}};
+        this.state = {text:null, open: false, type:null};
     }
-    postMessage(message){
-        this.setState({message: {open: true, text: message}});
-        setTimeout(()=>{this.hideMessage()}, 3500);
-    }
-    hideMessage(){
-        this.setState({message: {open: false, text: null}});
-    }
+    postMessage = (message:string, type?:string):void=>{
+        this.setState({text: message, open: true, type: type});
+        if (type!=="error") setTimeout(this.hideMessage, 5000);
+    };
+    hideMessage = ()=>{
+        this.setState({text:null, open:false, type: null});
+    };
+    popupStyle = ()=>{
+        if (this.state.type==="error") return {backgroundColor: this.props.theme.palette.error.main};
+    };
     render(){
+
         return <React.Fragment>
-            <Router postMessage={(message)=>this.postMessage(message)}/>
+            <Router postMessage={this.postMessage}/>
             <Snackbar
-                open={this.state.message.open}
-                message={this.state.message.text}
-                action={<IconButton
-                    key="close"
-                    aria-label="Close"
-                    onClick={()=>this.hideMessage()}
-                >
-                    <CloseIcon />
-                </IconButton>}
-            />
+                open={this.state.open}
+            >
+                <SnackbarContent
+                    message={this.state.text}
+                    style={this.popupStyle()}
+                    action={<IconButton
+                        color="inherit"
+                        key="close"
+                        aria-label="Close"
+                        onClick={()=>this.hideMessage()}>
+                        <CloseIcon />
+                    </IconButton>}
+                />
+            </Snackbar>
         </React.Fragment>
     }
 }
+
+export default withTheme(Message);
