@@ -45,6 +45,7 @@ function cleanup(){
 }
 
 export default function FormRender({formHtml}:{formHtml: string}){
+    console.log('form render');
     useEffect(() => {
         return cleanup;
     });
