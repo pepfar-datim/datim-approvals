@@ -20,7 +20,7 @@ const styles = {
 };
 
 export default class Action extends React.Component<
-    {postMessage: (string)=>void, approvalCombos: ApprovalsCombo[], workflow: string, period: string},
+    {postMessage: (message:string, type?:string)=>void, approvalCombos: ApprovalsCombo[], workflow: string, period: string},
     {
         workflow: idName,
         period: idName,
@@ -114,7 +114,7 @@ export default class Action extends React.Component<
     }
 
     errorMessage(action:string){
-        console.error(new Error('fix error message'));
+        this.props.postMessage(`Mechanism(s) ${action} failed`, 'error');
     }
 
     render() {

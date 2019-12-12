@@ -32,7 +32,7 @@ function assembleMechanismCombos(mechanisms: string[]):ApprovalsCombo[]{
     });
 }
 
-export default function Router({postMessage}){
+export default function Router({postMessage}:{postMessage:(message:string, type?:string)=>void}){
     return(
         <Paper style={styles.root}>
             <Typography variant="h4" component="h2">
@@ -55,7 +55,7 @@ export default function Router({postMessage}){
                     approvalCombos={assembleMechanismCombos(enforceArray(getQueryParams(location).approvalCombos))}
                     workflow={getQueryParams(location).workflow}
                     period={getQueryParams(location).period}
-                    postMessage={message=>postMessage(message)}
+                    postMessage={postMessage}
                 />} />
             </HashRouter>
         </Paper>
