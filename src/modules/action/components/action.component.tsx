@@ -90,8 +90,8 @@ export default class Action extends React.Component<
         this.setState({processing: true});
         performAction(action, this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta)).then((response)=>{
             this.setState({processing: false});
+            if (!response.ok || response.redirected) return this.errorMessage(action);
             this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms).then(()=>{
-                if (!response.ok) return this.errorMessage(action);
                 this.successMessage(action);
             });
         });
