@@ -26,7 +26,7 @@ describe('Approval Process #1 - Submitted by Partner', function() {
     });
     it('Should submit mechanism on SUBMIT click', ()=>{
         cy.get('#cy_mechanismAction_submit').click();
-        cy.contains('Mechanism(s) successfully submitted');
+        cy.contains('Mechanism successfully submitted');
         cy.info().containsAll([
             'submitted by partner',
             '17350 - Laboratory Strengthening'
@@ -35,7 +35,7 @@ describe('Approval Process #1 - Submitted by Partner', function() {
     });
     it('Should recall mechanism on RECALL click', ()=>{
         cy.get('#cy_mechanismAction_recall').click();
-        cy.contains('Mechanism(s) successfully recalled');
+        cy.contains('Mechanism successfully recalled');
         cy.info().containsAll([
             'pending at partner',
             '17350 - Laboratory Strengthening'

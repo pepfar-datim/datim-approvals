@@ -43,7 +43,7 @@ describe('Approval Process #6 - Global ACCEPT', ()=>{
         cy.actions().containsAll(['recall', 'accept']);
         cy.info().containsAll(['submitted by inter-agency', '17350 - Laboratory Strengthening']);           
         cy.get('#cy_mechanismAction_recall').click();  
-        cy.contains('Mechanism(s) successfully recalled');        
+        cy.contains('Mechanism successfully recalled');        
         cy.actions().contains('No actions');
         cy.info().contains('accepted by inter-agency');        
     });    
@@ -58,7 +58,7 @@ describe('Approval Process #6 - Global ACCEPT', ()=>{
         cy.actions().containsAll(['recall', 'accept']);
         cy.info().containsAll(['submitted by inter-agency', '17350 - Laboratory Strengthening']);   
         cy.get('#cy_mechanismAction_accept').click();  
-        cy.contains('Mechanism(s) successfully accepted');        
+        cy.contains('Mechanism successfully accepted');        
         cy.actions().containsAll(['recall', 'return']);
         cy.info().contains('accepted by global');           
     });

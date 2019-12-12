@@ -38,7 +38,7 @@ describe('Approval Process #4 - Inter-Agency ACCEPT', ()=>{
 
     it('Should be able to RECALL mechanism', ()=>{
         cy.get('#cy_mechanismAction_recall').click();  
-        cy.contains('Mechanism(s) successfully recalled');        
+        cy.contains('Mechanism successfully recalled');        
         cy.actions().contains('No actions');
         cy.info().contains('accepted by agency');        
     });
@@ -52,14 +52,14 @@ describe('Approval Process #4 - Inter-Agency ACCEPT', ()=>{
         cy.loginAs('approvals-inter-agency');
         cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'skj3e4YSiJY');
         cy.get('#cy_mechanismAction_accept').click();  
-        cy.contains('Mechanism(s) successfully accepted');        
+        cy.contains('Mechanism successfully accepted');        
         cy.actions().containsAll(['submit', 'recall', 'return']);
         cy.info().contains('accepted by inter-agency');               
     });    
 
     it('Should be able to RECALL ACCEPTED mechanism', ()=>{
         cy.get('#cy_mechanismAction_recall').click();  
-        cy.contains('Mechanism(s) successfully recalled');        
+        cy.contains('Mechanism successfully recalled');        
         cy.actions().contains('No actions');
         cy.info().contains('accepted by agency');                    
     });        

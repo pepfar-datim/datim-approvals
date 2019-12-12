@@ -22,7 +22,7 @@ describe('Approval Process #2 - Agency ACCEPT', ()=>{
     it('Should be able to return mechanism', ()=>{
         cy.get('#cy_mechanismAction_recall').click();        
         cy.containsAll([
-            'Mechanism(s) successfully recalled',
+            'Mechanism successfully recalled',
             'Number of new health workers who graduated'
         ]);
         cy.actions().contains('No actions');
@@ -42,7 +42,7 @@ describe('Approval Process #2 - Agency ACCEPT', ()=>{
 
         cy.get('#cy_mechanismAction_accept').click();        
         cy.containsAll([
-            'Mechanism(s) successfully accepted',
+            'Mechanism successfully accepted',
             'Number of new health workers who graduated'
         ]);
         cy.actions().containsAll(['return', 'submit']);

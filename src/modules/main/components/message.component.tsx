@@ -18,7 +18,7 @@ class Message extends React.Component<{theme:any}, {text:string, open:boolean, t
         this.setState({text:null, open:false, type: null});
     };
     popupStyle = ()=>{
-        if (this.state.type==="error") return {backgroundColor: this.props.theme.palette.error.main};
+        if (this.state.type==="error") return {backgroundColor: this.props.theme.palette.secondary.main};
     };
     render(){
 
