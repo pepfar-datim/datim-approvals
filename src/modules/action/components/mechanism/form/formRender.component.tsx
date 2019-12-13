@@ -44,8 +44,7 @@ function cleanup(){
     }
 }
 
-export default function FormRender({formHtml}:{formHtml: string}){
-    console.log('form render');
+function FormRender({formHtml}:{formHtml: string}){
     useEffect(() => {
         return cleanup;
     });
@@ -61,3 +60,5 @@ export default function FormRender({formHtml}:{formHtml: string}){
         <div style={styles.clear as any}/>
     </React.Fragment>;
 }
+
+export default React.memo(FormRender);
