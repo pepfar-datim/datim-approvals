@@ -21,6 +21,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.3.0",
     "typescript": "3.4.5",
+    "styled-jsx": "^3.2.4",
     "wait-until": "0.0.2"
   },
   "scripts": {
@@ -45,7 +46,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^3.7.0",
-    "styled-jsx": "^3.2.4"
+    "cypress": "^3.7.0"
   }
 }

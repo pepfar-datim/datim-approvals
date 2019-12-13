@@ -1,6 +1,5 @@
 {
-  "baseUrl": "../../../api",
-  "serverUrl": "../../../api",
+  "baseUrl": "../../../",
   "sqlViewId": "rQZnEgCAhuI",
   "apiVersion": "29"
 }
