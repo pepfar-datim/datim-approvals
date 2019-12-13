@@ -1,31 +1,31 @@
 import React from "react";
-import { render } from 'react-dom';
-import ThemeWrapper from "./modules/main/components/themeWrapper.component";
-import {baseUrl} from "./modules/shared/services/apiUrl.service";
-import { init, config } from 'd2';
-import HeaderBar from '@dhis2/d2-ui-header-bar';
-import "./index.css";
-import NetworkError from "./modules/main/components/networkError.component";
+import {render} from 'react-dom';
+import {baseUrl, serverUrl} from "./modules/shared/services/apiUrl.service";
+import {init, config} from 'd2';
+import {HeaderBar} from '@dhis2/ui-widgets'
+import {Provider} from '@dhis2/app-runtime'
 
-function Dhis2Wrapper(props:any){
-    if (!props.d2) return null;
+import ThemeWrapper from "./modules/main/components/themeWrapper.component";
+import NetworkError from "./modules/main/components/networkError.component";
+import "./index.css";
+
+config.baseUrl = baseUrl;
+config.i18n.sources.add('i18n.txt');
+
+function Dhis2(){
     return (
-        <React.Fragment>
+        <Provider config={{baseUrl: serverUrl, apiVersion: '30'}}>
             <span id='dhis2HeaderBar'>
-            <HeaderBar d2={props.d2}/>
+                <HeaderBar/>
             </span>
             <br/><br/><br/>
             <ThemeWrapper/>
-        </React.Fragment>
+        </Provider>
     );
 }
 
-config.baseUrl = baseUrl;
-
-config.i18n.sources.add('i18n.txt');
-
 init().then(d2 => {
-    render(<Dhis2Wrapper appName={'Dedupe Dashboard'} d2={d2}/>, document.getElementById('root'));
+    render(<Dhis2/>, document.getElementById('root'));
 }).catch(e=>{
     render(<NetworkError/>, document.getElementById('root'));
 });
