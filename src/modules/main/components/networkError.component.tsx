@@ -19,7 +19,7 @@ export default function NetworkError(){
             <ul>
                 <li><Typography>You are still connected to the Internet</Typography></li>
                 <li><Typography>You are still logged in into DATIM</Typography></li>
-                <li><Typography>You have the rights to use Datim Approvals app</Typography></li>
+                <li><Typography>You have the rights to use DATIM Approvals app</Typography></li>
             </ul>
             <Typography>If this problem persists, please contact DATIM support</Typography>
         </Paper>

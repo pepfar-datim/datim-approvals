@@ -1,7 +1,7 @@
-const apiUrl = require('../../../src/config/serverConfig.dev').baseUrl;
-const submitUrl = `/dataApprovals/approvals`;
-const recallUrl = `/dataApprovals/unapprovals`;
-const acceptUrl = `/dataAcceptances/acceptances`;
+const baseUrl = require('../../../src/config/serverConfig.dev').baseUrl;
+const submitUrl = `api/dataApprovals/approvals`;
+const recallUrl = `api/dataApprovals/unapprovals`;
+const acceptUrl = `api/dataAcceptances/acceptances`;
 const requestBodyTemplate = {"approvals":[],"pe":[],"wf":[]};
 
 function generateRequestBody(workflow, period, ou, mechanism){
@@ -25,7 +25,7 @@ function apiRequest(userType, action, body){
     cy.request({
         method: 'POST',
         failOnStatusCode: false,
-        url: apiUrl+getUrl(action),
+        url: baseUrl+getUrl(action),
         body: body,
         auth: {
             'user': `cypress-approvals-${userType}`,
