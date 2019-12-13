@@ -17,8 +17,9 @@ export default class FormContent extends React.Component<
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.dataSet !== prevProps.dataSet || this.props.mechanismMetas !== prevProps.mechanismMetas)
+        if (this.props.dataSet !== prevProps.dataSet || JSON.stringify(this.props.mechanismMetas) !== JSON.stringify(prevProps.mechanismMetas)) {
             this.fetchForm(this.props.dataSet, this.props.period, this.props.userOu, this.props.mechanismMetas);
+        }
     }
 
 
