@@ -1,4 +1,5 @@
 import React from "react";
+import {withRouter} from "react-router-dom";
 import queryString from "query-string";
 import {Divider, LinearProgress, Typography} from "@material-ui/core";
 
@@ -12,8 +13,8 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 
-export default class List extends React.Component<
-    {urlSearchOptions: Filters},
+class List extends React.Component<
+    {history: any, urlSearchOptions: Filters},
     {
         filters: Filters,
         mechanisms: MechanismModel[],
@@ -88,7 +89,16 @@ export default class List extends React.Component<
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
         this.fetchMechanisms();
+        this.updateUrl();
     };
+
+    updateUrl(){
+        setTimeout(()=>{
+            let url = queryString.stringify(this.state.filters);
+            this.props.history.push('/search?'+url);
+        },0);
+    }
+
     renderFilters(){
         if (this.state.loading.filters) return <LinearProgress className='cy_loading'/>;
         return <FilterSelect
@@ -136,3 +146,5 @@ export default class List extends React.Component<
         );
     }
 }
+
+export default withRouter(List);
