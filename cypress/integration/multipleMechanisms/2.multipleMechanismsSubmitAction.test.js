@@ -4,7 +4,7 @@ describe('Multiple Mechanisms SUBMIT #2 (Action)', function() {
         cy.resetMultipleMechanisms();
     });
     it('_ go to action page for two mechanisms',()=>{
-        cy.visit('/#/action?action=view&approvalCombos=l1KFEXKI4Dg%3ATKBbV46WUX3%3AiRbiBYQuiNZ%3A&approvalCombos=l1KFEXKI4Dg%3AVdSh1pgKSLp%3AXTVSZlHG6Ux%3A&period=2019Q3&workflow=RwNpkAM7Hw7');
+        cy.visit('/#/action?approvalCombos=l1KFEXKI4Dg%3ATKBbV46WUX3%3AiRbiBYQuiNZ%3A&approvalCombos=l1KFEXKI4Dg%3AVdSh1pgKSLp%3AXTVSZlHG6Ux%3A&period=2019Q3&workflow=RwNpkAM7Hw7');
         cy.wait(5000);
     });
 
