@@ -18,10 +18,10 @@ function renderSameStatusError(mechanisms: MechanismModel[]){
     if (!checkMechanismStates(mechanisms)) return <Typography>All selected mechanisms must have the same status to proceed.</Typography>;
 }
 
-export default function ListAction({selectedAction, selectedMechanisms, performMechanismAction}:{selectedAction: string, selectedMechanisms: MechanismModel[], performMechanismAction: (string,MechanismModel)=>void}){
+export default function ListAction({selectedAction, selectedMechanisms, performMechanismAction}:{selectedAction: string, selectedMechanisms: MechanismModel[], performMechanismAction: (MechanismModel)=>void}){
     if (!selectedAction || !selectedMechanisms || selectedMechanisms.length===0) return null;
     return <React.Fragment>
-        <Button disabled={!checkMechanismStates(selectedMechanisms)} onClick={()=>performMechanismAction(selectedAction, selectedMechanisms)} id='cy_list_mechanismAction' variant="contained" color="secondary">
+        <Button disabled={!checkMechanismStates(selectedMechanisms)} onClick={()=>performMechanismAction(selectedMechanisms)} id='cy_list_mechanismAction' variant="contained" color="secondary">
             {selectedAction}
         </Button>
         <Typography style={styles.infoText}>{selectedMechanisms.length} selected mechanism(s)</Typography>

@@ -14,7 +14,7 @@ import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 
 class List extends React.Component<
-    {history: any, urlSearchOptions: any},
+    {history: any, urlSearchOptions: Filters},
     {
         filters: Filters,
         mechanisms: MechanismModel[],
@@ -80,14 +80,14 @@ class List extends React.Component<
         let filters = this.state.filters;
         filters[key] = val;
         this.setState({filters: filters});
-    }
-    onUserSelect = (property:string, value:string)=>{
-        this.setFilter(property, value);
-        if (property==='workflow') {
-            let periods = this.workflowPeriodService.getPeriods(value);
+        if (key==='workflow') {
+            let periods = this.workflowPeriodService.getPeriods(val);
             this.setState({periods: periods});
             this.setFilter('period', periods[0].id);
         }
+    }
+    onUserSelect = (property:string, value:string)=>{
+        this.setFilter(property, value);
         this.fetchMechanisms();
     };
     renderFilters(){
@@ -100,9 +100,8 @@ class List extends React.Component<
             select={this.onUserSelect}
         />
     }
-    performMechanismAction = (action:string, mechs:MechanismModel[])=>{
+    performMechanismAction = (mechs:MechanismModel[])=>{
         let params = {
-            action: action,
             period: this.state.filters.period,
             workflow: this.state.filters.workflow,
             approvalCombos: mechs.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
