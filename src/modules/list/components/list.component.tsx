@@ -1,7 +1,7 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 import queryString from "query-string";
-import {Divider, LinearProgress} from "@material-ui/core";
+import {Divider, LinearProgress, Typography} from "@material-ui/core";
 
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
@@ -102,6 +102,7 @@ class List extends React.Component<
     renderResults(){
         if (this.state.loading.mechanisms) return <LinearProgress className='cy_loading'/>;
         if (!this.state.mechanisms) return null;
+        if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
     }
 

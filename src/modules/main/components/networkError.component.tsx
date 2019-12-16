@@ -1,9 +1,27 @@
 import React from "react";
+import {Divider, Link, Paper, Typography} from "@material-ui/core";
 
-export default function NetworkError(props){
+const styles = {
+    root: {
+        maxWidth: 600,
+        margin: `100px auto`
+    }
+};
+
+export default function NetworkError(){
     return(
-        <React.Fragment>
-            <strong>Network Error</strong> Please check your internet connection
-        </React.Fragment>
+        <Paper style={styles.root}>
+            <Typography variant="h5">Connection Error</Typography>
+            <Divider/>
+            <Typography>Cannot connect to DATIM</Typography>
+            <br/>
+            <Typography>Please check the following:</Typography>
+            <ul>
+                <li><Typography>You are still connected to the Internet</Typography></li>
+                <li><Typography>You are still logged in into DATIM</Typography></li>
+                <li><Typography>You have the rights to use DATIM Approvals app</Typography></li>
+            </ul>
+            <Typography>If this problem persists, please contact <Link href='https://datim.zendesk.com/'>DATIM Support</Link></Typography>
+        </Paper>
     );
 }

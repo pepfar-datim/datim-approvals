@@ -1,12 +1,16 @@
 import {baseUrl} from "./apiUrl.service";
 import queryString from "query-string";
 
+function makeUrl(url:string){
+    return baseUrl+'api'+url;
+}
+
 export default class Api{
     static get(url){
-        return fetch(baseUrl + url, {credentials: 'include'}).then(resp => resp.json());
+        return fetch(makeUrl(url), {credentials: 'include'}).then(resp => resp.json());
     }
     static post(url, data){
-        return fetch(baseUrl+url, {
+        return fetch(makeUrl(url), {
             credentials: 'include',
             method: 'POST',
             headers: {
@@ -25,6 +29,6 @@ export default class Api{
             body: queryString.stringify(request)
 
         };
-        return fetch(baseUrl + url, settings).then(resp=>resp.text());
+        return fetch(makeUrl(url), settings).then(resp=>resp.text());
     }
 }

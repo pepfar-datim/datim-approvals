@@ -6,3 +6,4 @@ if(process.env.NODE_ENV === 'production') serverConfig = prodServerConfig;
 else serverConfig = devServerConfig;
 
 export let baseUrl = serverConfig.baseUrl;
+export let serverUrl = serverConfig.serverUrl;
