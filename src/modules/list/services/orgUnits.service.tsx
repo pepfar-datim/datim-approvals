@@ -1,4 +1,5 @@
 import api from "../../shared/services/api.service";
+import {idNameList} from "../../shared/models/idNameList.model";
 
 let allOusUrl = `/organisationUnits/ybg3MO3hcf4.json`
     +`?fields=id,name,displayName`
@@ -8,37 +9,37 @@ let allOusUrl = `/organisationUnits/ybg3MO3hcf4.json`
 let userOusUrl = `/me?fields=organisationUnits[id,name]`;
 
 export default class OrgUnits {
-    static allOus;
-    static userOus;
+    static allOus:idNameList;
+    static userOus:idNameList;
 
-    static init() {
+    static init():Promise<idNameList>{
         return Promise.all([this.fetchAllOus(), this.fetchUserOus()]).then(()=>{
             return this.getOus();
         });
     }
 
-    static namesOnly(array) {
+    static namesOnly(array):string[]{
         return array.map(ou => ou.name)
     }
 
-    static fetchAllOus() {
+    static fetchAllOus():Promise<idNameList>{
         return api.get(allOusUrl).then(res => {
             this.allOus = res.organisationUnits;
             return this.allOus;
         });
     }
 
-    static fetchUserOus() {
+    static fetchUserOus():Promise<idNameList>{
         return api.get(userOusUrl).then(res => {
             this.userOus = res.organisationUnits;
             return this.userOus;
         });
     }
 
-    static getOus() {
+    static getOus():idNameList{
         if (!this.allOus || !this.userOus) return null;
         if (this.namesOnly(this.userOus).indexOf('Global')>-1) {
-            return [{name:'Global', id: 'ybg3MO3hcf4', displayName: 'Global'}].concat(this.allOus);
+            return [{name:'Global', id: 'ybg3MO3hcf4'}].concat(this.allOus);
         }
         else return this.userOus;
     }
@@ -47,7 +48,7 @@ export default class OrgUnits {
         return this.namesOnly(this.getOus());
     }
 
-    static getOuId(name){
+    static getOuId(name):string{
         return this.allOus.filter(ou=>ou.name===name)[0].id;
     }
 }

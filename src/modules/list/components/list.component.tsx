@@ -14,8 +14,17 @@ import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 
 class List extends React.Component<
-    {history: any, searchOptions: any},
-    {filters: Filters, mechanisms: MechanismModel[], selectedMechanisms: MechanismModel[], selectedAction: string, workflows: idNameList, periods: idNameList,loading: {filters?: boolean, mechanisms?: boolean}}
+    {history: any, urlSearchOptions: any},
+    {
+        filters: Filters,
+        mechanisms: MechanismModel[],
+        selectedMechanisms: MechanismModel[],
+        selectedAction: string,
+        workflows: idNameList,
+        periods: idNameList,
+        loading: {filters?: boolean, mechanisms?: boolean},
+        ous: idNameList
+    }
     > {
     workflowPeriodService;
     constructor(props){
@@ -27,9 +36,11 @@ class List extends React.Component<
             workflows: null,
             periods: null,
             selectedMechanisms: null,
-            selectedAction: null
+            selectedAction: null,
+            ous: null
         };
         let ouPromise = orgUnits.init().then((ous)=>{
+            this.setState({ous: ous})
             this.preselectOu(ous);
         });
 
@@ -38,13 +49,21 @@ class List extends React.Component<
             let selectedWorkflow = workflows[0].id;
             let periods = this.workflowPeriodService.getPeriods(selectedWorkflow);
             this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods[0].id, ou: this.state.filters.ou}});
+            this.setFilterFromUrl('workflow');
+            this.setFilterFromUrl('period');
         });
 
         Promise.all([ouPromise,workflowsPromise]).then(()=>this.fetchMechanisms());
     }
 
+    setFilterFromUrl(property:string){
+        if (!this.props.urlSearchOptions) return;
+        let value = this.props.urlSearchOptions[property];
+        if (value) this.setFilter(property, value);
+    }
+
     preselectOu(ous){
-        if (!this.props.searchOptions || !this.props.searchOptions.ou) this.setFilter('ou', this.props.searchOptions.ou);
+        this.setFilterFromUrl('ou');
         if (ous.length===1) this.setFilter('ou', ous[0].id);
     }
     fetchMechanisms(){
@@ -74,7 +93,7 @@ class List extends React.Component<
     renderFilters(){
         if (this.state.loading.filters) return <LinearProgress className='cy_loading'/>;
         return <FilterSelect
-            organisationUnits={orgUnits.getOus()}
+            organisationUnits={this.state.ous}
             periods={this.state.periods}
             workflows={this.state.workflows}
             selected={this.state.filters}
