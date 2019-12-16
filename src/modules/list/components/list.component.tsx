@@ -100,14 +100,24 @@ class List extends React.Component<
             select={this.onUserSelect}
         />
     }
-    performMechanismAction = (mechs:MechanismModel[])=>{
+    // performMechanismAction = (mechs:MechanismModel[])=>{
+    //     let params = {
+    //         period: this.state.filters.period,
+    //         workflow: this.state.filters.workflow,
+    //         approvalCombos: mechs.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
+    //     };
+    //     this.props.history.push(`/action?` + queryString.stringify(params));
+    // };
+
+    getActionUrl():string{
+        if (!this.state.mechanisms) return null;
         let params = {
             period: this.state.filters.period,
             workflow: this.state.filters.workflow,
-            approvalCombos: mechs.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
+            approvalCombos: this.state.mechanisms.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
         };
-        this.props.history.push(`/action?` + queryString.stringify(params));
-    };
+        return '/action?' + queryString.stringify(params);
+    }
 
     onMechanismsSelected = (mechanisms:MechanismModel[]):void=>{
         this.setState({selectedMechanisms: mechanisms});
@@ -129,7 +139,7 @@ class List extends React.Component<
             <React.Fragment>
                 {this.renderFilters()}
                 <Divider/>
-                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} performMechanismAction={this.performMechanismAction}/>
+                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()}/>
                 {this.renderResults()}
             </React.Fragment>
         );
