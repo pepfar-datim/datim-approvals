@@ -1,5 +1,5 @@
 import React from "react";
-import {Divider, Paper, Typography} from "@material-ui/core";
+import {Divider, Link, Paper, Typography} from "@material-ui/core";
 
 const styles = {
     root: {
@@ -21,7 +21,7 @@ export default function NetworkError(){
                 <li><Typography>You are still logged in into DATIM</Typography></li>
                 <li><Typography>You have the rights to use DATIM Approvals app</Typography></li>
             </ul>
-            <Typography>If this problem persists, please contact DATIM support</Typography>
+            <Typography>If this problem persists, please contact <Link href='https://datim.zendesk.com/'>DATIM Support</Link></Typography>
         </Paper>
     );
 }
