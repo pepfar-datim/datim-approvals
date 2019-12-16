@@ -14,8 +14,10 @@ const styles = {
     }
 };
 
+class urlParams {ou: string; workflow: string; period: string; approvalCombos: (string|string[])};
 
-function getQueryParams(location):{ou: string, workflow: string, period: string, action: string, approvalCombos: (string|string[])}{
+
+function getQueryParams(location):urlParams{
     return queryString.parse(location.search) as any;
 }
 
@@ -49,7 +51,7 @@ export default function Router({postMessage}:{postMessage:(message:string, type?
                     search: location.search,
                 }}/>}/>
                 <Route path="/search" render={({location})=><List
-                    searchOptions={getQueryParams(location)}
+                    urlSearchOptions={getQueryParams(location)}
                 />} />
                 <Route path="/action" render={({location})=><Action
                     approvalCombos={assembleMechanismCombos(enforceArray(getQueryParams(location).approvalCombos))}
