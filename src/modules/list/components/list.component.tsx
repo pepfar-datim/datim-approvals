@@ -102,7 +102,7 @@ class List extends React.Component<
     renderResults(){
         if (this.state.loading.mechanisms) return <LinearProgress className='cy_loading'/>;
         if (!this.state.mechanisms) return null;
-        if (this.state.mechanisms.length===0) return <Typography color="secondary">There are no Mechanisms matching the selected criteria</Typography>
+        if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
     }
 
