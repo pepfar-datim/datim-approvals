@@ -43,7 +43,6 @@ export default function Router({postMessage}:{postMessage:(message:string, type?
             <HashRouter>
                 <Typography variant="h5" component="h2">
                     <Route path="/search" exact render={()=>'Mechanisms List'}/>
-                    <Route path="/action" render={()=>''}/>
                 </Typography>
                 <Divider/>
                 <Route path="/" exact render={({location})=><Redirect to={{
