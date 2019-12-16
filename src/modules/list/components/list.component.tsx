@@ -1,5 +1,4 @@
 import React from "react";
-import {withRouter} from "react-router-dom";
 import queryString from "query-string";
 import {Divider, LinearProgress, Typography} from "@material-ui/core";
 
@@ -13,8 +12,8 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 
-class List extends React.Component<
-    {history: any, urlSearchOptions: Filters},
+export default class List extends React.Component<
+    {urlSearchOptions: Filters},
     {
         filters: Filters,
         mechanisms: MechanismModel[],
@@ -100,14 +99,6 @@ class List extends React.Component<
             select={this.onUserSelect}
         />
     }
-    // performMechanismAction = (mechs:MechanismModel[])=>{
-    //     let params = {
-    //         period: this.state.filters.period,
-    //         workflow: this.state.filters.workflow,
-    //         approvalCombos: mechs.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
-    //     };
-    //     this.props.history.push(`/action?` + queryString.stringify(params));
-    // };
 
     getActionUrl():string{
         if (!this.state.mechanisms) return null;
@@ -145,5 +136,3 @@ class List extends React.Component<
         );
     }
 }
-
-export default withRouter(List);
