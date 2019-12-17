@@ -89,7 +89,16 @@ class List extends React.Component<
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
         this.fetchMechanisms();
+        this.updateUrl();
     };
+
+    updateUrl(){
+        setTimeout(()=>{
+            let url = queryString.stringify(this.state.filters);
+            this.props.history.push('/search?'+url);
+        },0);
+    }
+
     renderFilters(){
         if (this.state.loading.filters) return <LinearProgress className='cy_loading'/>;
         return <FilterSelect
@@ -100,14 +109,16 @@ class List extends React.Component<
             select={this.onUserSelect}
         />
     }
-    performMechanismAction = (mechs:MechanismModel[])=>{
+
+    getActionUrl():string{
+        if (!this.state.selectedMechanisms) return null;
         let params = {
             period: this.state.filters.period,
             workflow: this.state.filters.workflow,
-            approvalCombos: mechs.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
+            approvalCombos: this.state.selectedMechanisms.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
         };
-        this.props.history.push(`/action?` + queryString.stringify(params));
-    };
+        return '/action?' + queryString.stringify(params);
+    }
 
     onMechanismsSelected = (mechanisms:MechanismModel[]):void=>{
         this.setState({selectedMechanisms: mechanisms});
@@ -129,7 +140,7 @@ class List extends React.Component<
             <React.Fragment>
                 {this.renderFilters()}
                 <Divider/>
-                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} performMechanismAction={this.performMechanismAction}/>
+                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()}/>
                 {this.renderResults()}
             </React.Fragment>
         );

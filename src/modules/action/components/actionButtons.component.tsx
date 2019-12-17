@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button/Button";
-import {Link} from 'react-router-dom';
+import {withRouter} from "react-router-dom";
 import {MechanismState} from "../../shared/models/mechanism.model";
 import {Typography} from "@material-ui/core";
 
@@ -24,15 +24,15 @@ function renderButtons(actions:string[], mechanismsNr:number, performAction: (ac
     </Button>);
 }
 
-export default function ActionButtons({mechanismState, mechanismsNr, performAction}:{mechanismState: MechanismState, mechanismsNr: number, performAction: (action: string)=>void}){
+function ActionButtons({mechanismState, mechanismsNr, performAction, history}:{mechanismState: MechanismState, mechanismsNr: number, performAction: (action: string)=>void, history: any}){
     if (!mechanismState) return null;
     let actions = Object.keys(mechanismState.actions).filter(a=>mechanismState.actions[a]);
     return(
         <div id='cy_mechanismActions'>
-            <Link to="../" style={styles.back as any}>
-                <Button>Back</Button>
-            </Link>
+            <Button style={styles.back as any} onClick={history.goBack}>Back</Button>
             {renderButtons(actions, mechanismsNr, performAction)}
         </div>
     );
 }
+
+export default withRouter(ActionButtons);

@@ -25,17 +25,16 @@ describe('Multiple Mechanisms RECALL', function() {
 
     it('Should redirect to action page with the right url', ()=>{
         cy.get('#cy_list_mechanismAction').click();
-        cy.url().should('include','/action?action=recall&approvalCombos=l1KFEXKI4Dg%3ATKBbV46WUX3%3AiRbiBYQuiNZ%3A&approvalCombos=l1KFEXKI4Dg%3AVdSh1pgKSLp%3AXTVSZlHG6Ux%3A&period=2019Q3&workflow=RwNpkAM7Hw7');
+        cy.url().should('include','/action?approvalCombos=l1KFEXKI4Dg%3ATKBbV46WUX3%3AiRbiBYQuiNZ%3A&approvalCombos=l1KFEXKI4Dg%3AVdSh1pgKSLp%3AXTVSZlHG6Ux%3A&period=2019Q3&workflow=RwNpkAM7Hw7');
     });
 
     it('should have the right content', ()=>{
-        cy.wait(8000);
         cy.containsAll([
             '14707 - Ambassador\'s PEPFAR Small Grants Program',
             'DEPARTMENT OF STATE',
             'Number of new health workers who graduated from a pre-service training institution or program as a result of PEPFAR-supported strengthening efforts, within the reporting period, by select cadre. Numerator will auto-calculate from cadre disaggregates.',
             '14790 - Public Affairs/Public Diplomacy (PA/PD) Outreach'
-        ]);
+        ], {timeout: 15000});
     });
 
     it('should be able to recall both', ()=>{

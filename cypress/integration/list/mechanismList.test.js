@@ -1,4 +1,26 @@
 describe('Mechanism List', function() {
+
+    it('_ submit by partner', ()=>{
+        cy.approvalsApiCall('partner', 'submit', 'mer');
+    });
+
+    it('_ accept by agency', ()=>{
+        cy.approvalsApiCall('agency', 'accept', 'mer');
+    });
+
+    it('_ submit by agency', ()=>{
+        cy.approvalsApiCall('agency', 'submit', 'mer');
+    });
+
+    it('_ accept by inter-agency', ()=>{
+        cy.approvalsApiCall('inter-agency', 'accept', 'mer');
+    });
+
+    it('_ submit by inter-agency', ()=>{
+        cy.approvalsApiCall('inter-agency', 'submit', 'mer');
+    });
+
+
     it('Should see MER Results for India', function () {
         cy.loginAs('agency-india');
         cy.goHome();
@@ -16,11 +38,10 @@ describe('Mechanism List', function() {
         cy.loginAs('approvals-global');
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Global');
-        cy.wait(7*1000);
         cy.get('.cy_list_results').containsAll([
             '1620 mechanisms',
             'Global',
-        ]);
+        ],{timeout: 15000});
     });  
 
     it('Should have tabs', ()=>{

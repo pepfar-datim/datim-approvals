@@ -2,6 +2,10 @@ body {
     margin: 0px;
 }
 
+a:-webkit-any-link {
+    text-decoration: none;
+}
+
 #dhis2HeaderBar{
     font-family: sans-serif;
 }

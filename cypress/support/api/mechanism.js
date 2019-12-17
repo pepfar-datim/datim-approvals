@@ -21,7 +21,6 @@ function getUrl(action){
 }
 
 function apiRequest(userType, action, body){
-    cy.wait(1000);
     cy.request({
         method: 'POST',
         failOnStatusCode: false,
@@ -34,7 +33,6 @@ function apiRequest(userType, action, body){
     }).then((res)=>{
         console.log(`sent api request as ${userType} to ${action} mechanism ${body.approvals[0].aoc}`);
     });
-    cy.wait(1000);
 }
 
 Cypress.Commands.add('approvalsApiCall', (userType, action, workflowName)=>{

@@ -5,9 +5,9 @@ function getContext(subject){
     return s;
 }
 
-Cypress.Commands.add('containsAll', { prevSubject: 'optional'}, (subject, texts) => {
+Cypress.Commands.add('containsAll', { prevSubject: 'optional'}, (subject, texts, options) => {
     texts.forEach(t=>{
-        getContext(subject).contains(t);
+        getContext(subject).contains(t, options);
     });
 });
 
