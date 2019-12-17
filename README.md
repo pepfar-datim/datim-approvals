@@ -1,7 +1,6 @@
 # Datim Approvals v2
 
 [![Dependencies](https://david-dm.org/pepfar-datim/datim-approvals.svg)](https://david-dm.org/pepfar-datim/datim-approvals)
-[![Vulnerabilities](https://snyk.io/test/github/pepfar-datim/datim-approvals/badge.svg)](https://snyk.io/test/github/pepfar-datim/datim-approvals/)
 
 **Repo Owner:** Ben Guaraldi [@benguaraldi](https://github.com/benguaraldi)  
 **Developer:** Jakub Flaska [@jakub-bao](https://github.com/jakub-bao)
