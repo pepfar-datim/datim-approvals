@@ -3,10 +3,11 @@ import Button from "@material-ui/core/Button/Button";
 import {withRouter} from "react-router-dom";
 import {MechanismState} from "../../shared/models/mechanism.model";
 import {Typography} from "@material-ui/core";
+import {FloatProperty} from "csstype";
 
 const styles = {
     back: {
-        float: 'right',
+        float: 'right' as FloatProperty,
         textDecoration: 'none'
     },
     infoText: {
@@ -29,7 +30,7 @@ function ActionButtons({mechanismState, mechanismsNr, performAction, history}:{m
     let actions = Object.keys(mechanismState.actions).filter(a=>mechanismState.actions[a]);
     return(
         <div id='cy_mechanismActions'>
-            <Button style={styles.back as any} onClick={history.goBack} id="cy_actionPage_back">Back</Button>
+            <Button style={styles.back} onClick={history.goBack} id="cy_actionPage_back">Back</Button>
             {renderButtons(actions, mechanismsNr, performAction)}
         </div>
     );
