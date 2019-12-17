@@ -1,3 +1,5 @@
+let url = '/#/search?ou=skj3e4YSiJY&period=2019Q3&workflow=RwNpkAM7Hw7';
+
 describe('List Back Button', ()=>{
     it('_ return to pending at partner', ()=>{
         cy.resetMerMechanism();
@@ -7,6 +9,7 @@ describe('List Back Button', ()=>{
         cy.loginAs('approvals-partner');
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','India');
+        cy.url().should('include',url);
     });
 
     it('Should redirect to action page when click on SUBMIT', ()=>{
@@ -17,5 +20,8 @@ describe('List Back Button', ()=>{
         ]);
     });
 
-    
+    it('Should remember search after hitting Back', ()=>{
+        cy.get('#cy_actionPage_back').click();
+        cy.url().should('include',url);
+    });
 });
