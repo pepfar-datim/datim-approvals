@@ -1,5 +1,9 @@
 describe('ER Approval Process #2 - Global', ()=>{
 
+    // it('_ return to pending at partner', ()=>{
+    //     cy.resetMerMechanism();
+    // });
+
     it('_ return to submitted by agency', ()=>{
         cy.approvalsApiCall('agency-hq', 'recall', 'er');
         cy.approvalsApiCall('agency', 'submit', 'er');

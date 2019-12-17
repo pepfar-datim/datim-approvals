@@ -111,11 +111,11 @@ class List extends React.Component<
     }
 
     getActionUrl():string{
-        if (!this.state.mechanisms) return null;
+        if (!this.state.selectedMechanisms) return null;
         let params = {
             period: this.state.filters.period,
             workflow: this.state.filters.workflow,
-            approvalCombos: this.state.mechanisms.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
+            approvalCombos: this.state.selectedMechanisms.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
         };
         return '/action?' + queryString.stringify(params);
     }
