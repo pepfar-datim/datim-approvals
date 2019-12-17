@@ -1,4 +1,12 @@
 describe('Mechanism List', function() {
+
+    it('_ return to pending at partner', ()=>{
+        cy.resetMerMechanism();
+    });
+    it('_ submit by partner', ()=>{
+        cy.approvalsApiCall('partner', 'submit', 'mer');
+    });
+
     it('Should see MER Results for India', function () {
         cy.loginAs('agency-india');
         cy.goHome();
