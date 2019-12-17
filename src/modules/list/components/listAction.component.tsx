@@ -30,9 +30,23 @@ function checkMechanismStates(mechanisms: MechanismModel[]):boolean {
     return mechanisms.every(m=>m.state.status===firstStatus);
 }
 
+function getMajorStatus(mechanisms: MechanismModel[]):string{
+    let statuses = mechanisms.map(mech=>mech.state.status);
+    let statusCounts = {};
+    statuses.forEach(s=>{
+        if (!statusCounts[s]) statusCounts[s] = 0;
+        statusCounts[s]++;
+    });
+    let countedStatuses = Object.keys(statusCounts).map(status=>{return{status: status, count: statusCounts[status]}});
+    function sortStatuses(s1, s2){
+        return s2.count-s1.count;
+    }
+    return countedStatuses.sort(sortStatuses)[0].status;
+}
+
 function sameStatusError({mechanisms, theme}:{mechanisms: MechanismModel[], theme: any}){
-    let majorStatus = '';
     if (checkMechanismStates(mechanisms)) return null;
+    let majorStatus = getMajorStatus(mechanisms);
     return <Paper style={styles.error(theme)}>
         <Button style={styles.selectOnly}>Select {majorStatus} only</Button>
         <Typography>All selected mechanisms must have the same status to proceed.</Typography>
