@@ -29,13 +29,12 @@ describe('Multiple Mechanisms RECALL', function() {
     });
 
     it('should have the right content', ()=>{
-        cy.wait(8000);
         cy.containsAll([
             '14707 - Ambassador\'s PEPFAR Small Grants Program',
             'DEPARTMENT OF STATE',
             'Number of new health workers who graduated from a pre-service training institution or program as a result of PEPFAR-supported strengthening efforts, within the reporting period, by select cadre. Numerator will auto-calculate from cadre disaggregates.',
             '14790 - Public Affairs/Public Diplomacy (PA/PD) Outreach'
-        ]);
+        ], {timeout: 15000});
     });
 
     it('should be able to recall both', ()=>{

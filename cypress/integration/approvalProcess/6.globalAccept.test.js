@@ -1,8 +1,8 @@
 describe('Approval Process #6 - Global ACCEPT', ()=>{
 
-    it('_ return to pending at partner', ()=>{
-        cy.resetMerMechanism();
-    });   
+    // it('_ return to pending at partner', ()=>{
+    //     cy.resetMerMechanism();
+    // });   
     it('_ submit by partner', ()=>{
         cy.approvalsApiCall('partner', 'submit', 'mer');
     });

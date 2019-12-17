@@ -2,12 +2,12 @@ describe('Form Render', ()=>{
     it('Should render form content (Laboratory Settings)', ()=>{
         cy.loginAs('approvals-partner-botswana');
         cy.gotoMechanism('lMYMYFB2ybp', 'RwNpkAM7Hw7', '2019Q3', 'l1KFEXKI4Dg');
-        cy.wait(5000);
+        // cy.wait(5000);
         cy.containsAll([
             '7320 - RPSO laboratory construction projects',
             'Number of new health workers who graduated',
             'Disaggregated by Cadre Category',
-        ]);
+        ], {timeout: 5000});
     });
     it('Should load entered data', ()=>{
         cy.get('[data-co="QPO0ZfoGC5D"]').contains('123456');
