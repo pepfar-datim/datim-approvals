@@ -1,6 +1,7 @@
 /* global window */
 
 import React, {useEffect} from "react";
+import {FloatProperty} from "csstype";
 var waitUntil = require('wait-until');
 
 const scripts = [
@@ -13,7 +14,7 @@ const styles = {
         overflow: 'hidden',
         fontFamily: 'Arial'
     },
-    clear: {clear: 'both'}
+    clear: {clear: 'both' as FloatProperty}
 };
 
 function loadStaticScript(url){
@@ -57,7 +58,7 @@ function FormRender({formHtml}:{formHtml: string}){
     });
     return <React.Fragment>
         <div dangerouslySetInnerHTML={{__html: formHtml}} style={styles.form}/>
-        <div style={styles.clear as any}/>
+        <div style={styles.clear}/>
     </React.Fragment>;
 }
 
