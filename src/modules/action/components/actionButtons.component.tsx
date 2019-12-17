@@ -29,7 +29,7 @@ function ActionButtons({mechanismState, mechanismsNr, performAction, history}:{m
     let actions = Object.keys(mechanismState.actions).filter(a=>mechanismState.actions[a]);
     return(
         <div id='cy_mechanismActions'>
-            <Button style={styles.back as any} onClick={history.goBack}>Back</Button>
+            <Button style={styles.back as any} onClick={history.goBack} id="cy_actionPage_back">Back</Button>
             {renderButtons(actions, mechanismsNr, performAction)}
         </div>
     );
