@@ -27,7 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build:react": "react-scripts build",
-    "build:zip": "(rm -f approvals.zip && cd build && zip ../approvals.zip -r .)",
+    "build:zip": "(rm -f Data-Approval.zip && cd build && zip ../Data-Approval.zip -r .)",
     "build": "npm run build:react && npm run build:zip",
     "test": "node_modules/cypress/bin/cypress open"
   },

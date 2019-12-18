@@ -3,6 +3,7 @@ import FormRender from "./formRender.component";
 import {MechanismMeta} from "../../../../shared/models/mechanism.model";
 import getFormContent from "../../../services/formContent.service";
 import {LinearProgress} from "@material-ui/core";
+import Loading from "../../../../shared/components/loading.component";
 
 export default class FormContent extends React.Component<
     {workflow: string, period: string, userOu: string, dataSet: string, mechanismMetas: MechanismMeta[]},
@@ -31,7 +32,7 @@ export default class FormContent extends React.Component<
 
     }
     render() {
-        if (!this.state.formHtml) return <LinearProgress/>;
+        if (!this.state.formHtml) return <Loading message='Loading dataset...'/>;;
         return <FormRender formHtml={this.state.formHtml}/>;
     }
 }

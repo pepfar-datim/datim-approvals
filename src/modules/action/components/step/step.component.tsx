@@ -3,6 +3,7 @@ import {Stepper, StepLabel, makeStyles, Theme, createStyles, LinearProgress} fro
 import MuiStep from "@material-ui/core/Step";
 import {getWorkflowTypeById} from "../../../shared/services/workflowService";
 import {MechanismState} from "../../../shared/models/mechanism.model";
+import Loading from "../../../shared/components/loading.component";
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -64,7 +65,7 @@ function getStepNr(status: string, workflowType: string){
 
 export default function Step({workflow, mechanismState, userType}:{workflow: string, mechanismState: MechanismState, userType: string}){
     const classes = useStyles();
-    if (!mechanismState) return <LinearProgress/>;
+    if (!mechanismState) return <Loading message='Loading mechanism state...'/>;;
     if (!userType) return null;
     const workflowType = getWorkflowTypeById(workflow);
     return(
