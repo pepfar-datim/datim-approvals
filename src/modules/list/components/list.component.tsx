@@ -40,7 +40,7 @@ class List extends React.Component<
             ous: null
         };
         let ouPromise = orgUnits.init().then((ous)=>{
-            this.setState({ous: ous})
+            this.setState({ous: ous});
             this.preselectOu(ous);
         });
 
@@ -64,7 +64,7 @@ class List extends React.Component<
 
     preselectOu(ous){
         this.setFilterFromUrl('ou');
-        if (ous.length===1) this.setFilter('ou', ous[0].id);
+        this.setFilter('ou', ous[0].id);
     }
     fetchMechanisms(){
         setTimeout(()=>{
