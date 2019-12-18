@@ -12,6 +12,7 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {getWorkflowNameById} from "../../shared/services/workflowService";
 
 import "../css/action.component.css";
+import Loading from "../../shared/components/loading.component";
 
 const styles = {
     progress: {
@@ -99,7 +100,7 @@ export default class Action extends React.Component<
 
 
     renderAction(){
-        if (this.state.processing) return <LinearProgress style={styles.progress}/>;
+        if (this.state.processing) return <Loading message='Loading...'/>;
         return <ActionButtons mechanismState={this.state.mechanismState} performAction={this.performAction} mechanismsNr={this.state.mechanisms.length}/>;
     }
 

@@ -12,6 +12,7 @@ import ListAction from "./listAction.component";
 import WorkflowPeriodService from "../../shared/services/workflowsPeriods.service";
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
+import Loading from "../../shared/components/loading.component";
 
 class List extends React.Component<
     {history: any, urlSearchOptions: Filters},
@@ -100,7 +101,7 @@ class List extends React.Component<
     }
 
     renderFilters(){
-        if (this.state.loading.filters) return <LinearProgress className='cy_loading'/>;
+        if (this.state.loading.filters) return <Loading message='Loading workflow information...'/>;
         return <FilterSelect
             organisationUnits={this.state.ous}
             periods={this.state.periods}
@@ -129,7 +130,7 @@ class List extends React.Component<
     };
 
     renderResults(){
-        if (this.state.loading.mechanisms) return <LinearProgress className='cy_loading'/>;
+        if (this.state.loading.mechanisms) return <Loading message='Loading mechanisms...'/>;
         if (!this.state.mechanisms) return null;
         if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
