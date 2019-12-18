@@ -140,7 +140,7 @@ class List extends React.Component<
             <React.Fragment>
                 {this.renderFilters()}
                 <Divider/>
-                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()}/>
+                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
             </React.Fragment>
         );
