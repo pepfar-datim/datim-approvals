@@ -8,5 +8,5 @@ export default function getFormContent(dataSet:string, period:string, userOu:str
         ou: userOu,
         dimension: 'SH885jaRe0o:'+mechanismMetas.map(mm=>mm.coId).join(';')
     };
-    return api.getFormHtml('../../../dhis-web-reporting/generateDataSetReport.action', request);
+    return api.getFormHtml('/api/dataSetReport/custom', request);
 }
