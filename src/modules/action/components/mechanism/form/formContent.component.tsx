@@ -2,7 +2,6 @@ import React from "react";
 import FormRender from "./formRender.component";
 import {MechanismMeta} from "../../../../shared/models/mechanism.model";
 import getFormContent from "../../../services/formContent.service";
-import {LinearProgress} from "@material-ui/core";
 import Loading from "../../../../shared/components/loading.component";
 
 export default class FormContent extends React.Component<

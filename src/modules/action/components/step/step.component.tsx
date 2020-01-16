@@ -1,5 +1,5 @@
 import React from "react";
-import {Stepper, StepLabel, makeStyles, Theme, createStyles, LinearProgress} from "@material-ui/core";
+import {Stepper, StepLabel, makeStyles, Theme, createStyles} from "@material-ui/core";
 import MuiStep from "@material-ui/core/Step";
 import {getWorkflowTypeById} from "../../../shared/services/workflowService";
 import {MechanismState} from "../../../shared/models/mechanism.model";

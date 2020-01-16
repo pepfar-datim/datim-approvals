@@ -1,5 +1,5 @@
 import React from "react";
-import {LinearProgress, Paper, Tab, Tabs, Typography} from "@material-ui/core";
+import {Paper, Tab, Tabs, Typography} from "@material-ui/core";
 import MechanismInfo from "./mechanismInfo.component";
 import MechanismModel, {MechanismState} from "../../../shared/models/mechanism.model";
 import FormSelect from "./form/formSelect.component";
