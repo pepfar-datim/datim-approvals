@@ -1,12 +1,15 @@
 import {MechanismMeta} from "../../shared/models/mechanism.model";
 import api from "../../shared/services/api.service";
+import queryString from "query-string";
 
 export default function getFormContent(dataSet:string, period:string, userOu:string, mechanismMetas:MechanismMeta[]):Promise<string>{
     let request = {
         ds: dataSet,
         pe: period,
         ou: userOu,
-        dimension: 'SH885jaRe0o:'+mechanismMetas.map(mm=>mm.coId).join(';')
+        filter: 'queryFilter',
+        selectedUnitOnly: false
     };
-    return api.getFormHtml('/api/dataSetReport/custom', request);
+    let requestUrl = queryString.stringify(request).replace('queryFilter','SH885jaRe0o:'+mechanismMetas.map(mm=>mm.coId).join(';'));
+    return api.getFormHtml('/dataSetReport/custom?'+requestUrl);
 }
