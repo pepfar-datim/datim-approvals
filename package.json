@@ -46,7 +46,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^3.7.0",
-    "@dhis2/d2-ui-header-bar": "^6.3.3"
+    "cypress": "^3.7.0"
   }
 }
