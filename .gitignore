@@ -19,3 +19,8 @@ yarn-error.log*
 
 #test password
 src/config/testConfig.dev.json
+
+#python
+cypress/scripts/users/__pycache__
+cypress/scripts/users/api.pyc
+

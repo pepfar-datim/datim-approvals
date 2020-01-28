@@ -1,10 +1,10 @@
 import requests
+import os
 
-api = 'https://dev-jakub.datim.org/api/'
-credentials = ('bao-admin', 'Soller29-Seafowl10')
+api = os.environ['DHIS_BASEURL'] + '/api/'
+credentials = (os.environ['DHIS_USERNAME'], os.environ['DHIS_PASSWORD'])
 
-#api = 'https://dev.datim.org/api/'
-#credentials = ('bao-admin', 'Savaged21-Ree24')
+print('Connecting to DHIS2: ' + api)
 
 res = requests.get(api + 'resources.json', auth=credentials)
 if res.json()['resources'][0]:
