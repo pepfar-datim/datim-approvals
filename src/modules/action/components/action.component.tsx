@@ -1,6 +1,6 @@
 import React from "react";
 import MechanismModel, {ApprovalsCombo,   MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
-import {Divider, LinearProgress, Paper} from "@material-ui/core";
+import {Divider, Paper} from "@material-ui/core";
 import ActionButtons from "./actionButtons.component";
 import {getMechanismsInfo, performAction, getMechanismStates} from "../services/mechanism.service";
 import Step from "./step/step.component";

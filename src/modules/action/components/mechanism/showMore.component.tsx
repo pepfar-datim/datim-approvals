@@ -20,6 +20,7 @@ function renderShowMoreButton(showMore: boolean, setShowMore:(boolean)=>void){
 
 export default function ShowMore({text}:{text:string}) {
     let [showMore, setShowMore] = useState(false);
+    if (!text) return null;
     if (text.length<cutOff) return <React.Fragment>{text}</React.Fragment>;
     return <React.Fragment>
         {renderText(text, showMore)}

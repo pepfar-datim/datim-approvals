@@ -44,6 +44,7 @@ export function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>{
         return api.get(getMechanismInfoUrl(mechanismIds)).then(infoResp=>{
             return mechResp.map(mech=>{
                 let mechInfo = infoResp.categoryOptions.filter(i=>i.categoryOptionCombos[0].id===mech.id)[0];
+                if (!mechInfo) return console.log(`No Mechanism Info for mech.id ${mech.id}. Skipping.`);
                 if (infoResp.categoryOptions.filter(i=>i.id===mech.id).length>1) console.log(`Two info records per mechanism ${mech.id} ${mechInfo.name}`);
                 if (!mechInfo.organisationUnits[0]) return console.log(`No OU info for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
                 if (mechInfo.organisationUnits[0].id!==filters.ou && filters.ou!=='ybg3MO3hcf4') return console.log(`OU info not matching for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);

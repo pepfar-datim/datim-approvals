@@ -1,7 +1,7 @@
 import React from "react";
 import {withRouter} from "react-router-dom";
 import queryString from "query-string";
-import {Divider, LinearProgress, Typography} from "@material-ui/core";
+import {Divider, Typography} from "@material-ui/core";
 
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
