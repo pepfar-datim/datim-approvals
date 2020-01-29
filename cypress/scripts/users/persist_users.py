@@ -1,17 +1,17 @@
 import api
 import json
 import os
-import argparse
+import sys
 
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('-s',  default='users.json', help='source file with users as JSON')
-args = parser.parse_args()
+sourcefile = 'users.json'
+if len(sys.argv)>1:
+    sourcefile = sys.argv[1]
 
 if not os.environ['CYPRESS_TEST_PASSWORD']:
     raise Exception('DHIS2 password for test accounts not set')
 
 def load_users():
-    file = open(args.source, "r")
+    file = open(sourcefile, "r")
     contents = file.read()
     return json.loads(contents)
 
