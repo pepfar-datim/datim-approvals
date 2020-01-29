@@ -1,1 +1,1861 @@
-[{"lastUpdated": "2019-07-03T20:19:40.731", "id": "rAfbxjVVomP", "href": "https://dev-jakub.datim.org/api/users/rAfbxjVVomP", "created": "2019-07-03T20:17:49.890", "name": "Approvals Global", "displayName": "Approvals Global", "externalAccess": false, "surname": "Global", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Approvals", "phoneNumber": "29823-982", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-07-11T15:06:35.676", "id": "OLqav5ue881", "created": "2019-07-03T20:17:44.329", "name": "Approvals Global", "lastLogin": "2019-07-11T15:06:35.676", "displayName": "Approvals Global", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-07-03T20:18:59.149", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-approvals-global", "userInfo": {"id": "rAfbxjVVomP"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "saSooWeXauJ"}, {"id": "NsYYVxduOTM"}, {"id": "QbxXEPw9xlf"}, {"id": "b2uHwX9YLhu"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "ybg3MO3hcf4"}], "dataViewOrganisationUnits": [{"id": "ybg3MO3hcf4"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "gh9tn4QBbKZ"}, {"id": "TOOIJWRzJ3g"}, {"id": "M9Uer9SioL7"}, {"id": "OoiLAfMTyMx"}, {"id": "iuD8wUFz95X"}, {"id": "c6hGi8GEZot"}], "userAccesses": []}, {"lastUpdated": "2019-07-01T16:25:30.987", "id": "lvNZcWQNrZO", "href": "https://dev-jakub.datim.org/api/users/lvNZcWQNrZO", "created": "2019-07-01T16:23:54.693", "name": "Approvals Inter-Agency", "displayName": "Approvals Inter-Agency", "externalAccess": false, "surname": "Inter-Agency", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Approvals", "phoneNumber": "2-0942-029", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-07-10T20:15:49.278", "id": "eDCpvPrdo63", "created": "2019-07-01T16:23:50.958", "name": "Approvals Inter-Agency", "lastLogin": "2019-07-10T20:15:49.278", "displayName": "Approvals Inter-Agency", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-07-01T16:25:30.526", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-approvals-inter-agency", "userInfo": {"id": "lvNZcWQNrZO"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "lastUpdatedBy": {"id": "rAfbxjVVomP"}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "saSooWeXauJ"}, {"id": "n777lf1THwQ"}, {"id": "QbxXEPw9xlf"}, {"id": "b2uHwX9YLhu"}, {"id": "k7BWFXkG6zt"}, {"id": "NsYYVxduOTM"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "skj3e4YSiJY"}], "dataViewOrganisationUnits": [{"id": "skj3e4YSiJY"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "OoiLAfMTyMx"}, {"id": "iuD8wUFz95X"}, {"id": "c6hGi8GEZot"}, {"id": "f6wtRWtCqZ6"}, {"id": "ZiK5R9d001L"}, {"id": "CwFniyubXbx"}], "userAccesses": []}, {"lastUpdated": "2019-06-26T17:44:18.682", "id": "pjOBNCPfJXs", "href": "https://dev-jakub.datim.org/api/users/pjOBNCPfJXs", "created": "2019-06-26T15:27:22.090", "name": "Approvals Agency", "displayName": "Approvals Agency", "externalAccess": false, "surname": "Agency", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Approvals", "phoneNumber": "292032923-0923", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-07-10T20:15:34.033", "id": "SgVnAx5ONQu", "created": "2019-06-26T15:27:18.032", "name": "Approvals Agency", "lastLogin": "2019-07-10T20:15:34.033", "displayName": "Approvals Agency", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-06-26T15:29:09.873", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-approvals-agency", "userInfo": {"id": "pjOBNCPfJXs"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "lastUpdatedBy": {"id": "pwbiqJTtFFH"}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "R74PQmVFl6R"}, {"id": "n777lf1THwQ"}, {"id": "NsYYVxduOTM"}, {"id": "QbxXEPw9xlf"}, {"id": "b2uHwX9YLhu"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "skj3e4YSiJY"}], "dataViewOrganisationUnits": [{"id": "skj3e4YSiJY"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "M9Uer9SioL7"}, {"id": "dC7jwUgo23e"}, {"id": "OoiLAfMTyMx"}, {"id": "iuD8wUFz95X"}, {"id": "aaJqXrV1NvU"}, {"id": "c6hGi8GEZot"}, {"id": "CwFniyubXbx"}], "userAccesses": []}, {"lastUpdated": "2019-06-18T15:43:45.804", "id": "pwbiqJTtFFH", "href": "https://dev-jakub.datim.org/api/users/pwbiqJTtFFH", "created": "2019-06-17T16:39:57.946", "name": "Cypress Partner", "displayName": "Cypress Partner", "externalAccess": false, "surname": "Partner", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "292983209", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-07-25T16:02:53.243", "id": "N0hUxQ4eNFD", "created": "2019-06-17T16:39:54.462", "name": "Cypress Partner", "lastLogin": "2019-07-25T16:02:53.243", "displayName": "Cypress Partner", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-06-17T16:41:33.734", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-approvals-partner", "userInfo": {"id": "pwbiqJTtFFH"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "b2uHwX9YLhu"}, {"id": "n777lf1THwQ"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "skj3e4YSiJY"}], "dataViewOrganisationUnits": [{"id": "skj3e4YSiJY"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "M9Uer9SioL7"}, {"id": "L4HSHUCsl1f"}, {"id": "c6hGi8GEZot"}, {"id": "h93bKJSVKyC"}], "userAccesses": []}, {"lastUpdated": "2019-05-03T14:18:26.688", "id": "ZRCXvR94dSG", "href": "https://dev-jakub.datim.org/api/users/ZRCXvR94dSG", "created": "2019-05-03T14:14:49.929", "name": "Cypress DOD Partner", "displayName": "Cypress DOD Partner", "externalAccess": false, "surname": "DOD Partner", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "309438903", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-05-21T20:12:10.282", "id": "JVF6PUffkKm", "created": "2019-05-03T14:14:46.296", "name": "Cypress DOD Partner", "lastLogin": "2019-05-21T20:12:10.282", "displayName": "Cypress DOD Partner", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-05-03T14:18:26.202", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-dod-partner", "userInfo": {"id": "ZRCXvR94dSG"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "lastUpdatedBy": {"id": "ZRCXvR94dSG"}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "n777lf1THwQ"}, {"id": "k7BWFXkG6zt"}, {"id": "KagqnetfxMr"}, {"id": "b2uHwX9YLhu"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "f5RoebaDLMx"}], "dataViewOrganisationUnits": [{"id": "f5RoebaDLMx"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "KhaAMo1zOZ5"}, {"id": "rP0VPKQcC8y"}, {"id": "M9Uer9SioL7"}, {"id": "NIJU54SGwya"}, {"id": "XgctRYBpSiR"}, {"id": "TfIy2OlquoO"}, {"id": "c6hGi8GEZot"}], "userAccesses": []}, {"lastUpdated": "2019-05-01T14:47:48.161", "id": "Sf0OaRiBmgi", "href": "https://dev-jakub.datim.org/api/users/Sf0OaRiBmgi", "created": "2019-05-01T14:22:44.157", "name": "Cypress Agency HQ", "displayName": "Cypress Agency HQ", "externalAccess": false, "surname": "Agency HQ", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "24903809348", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-05-21T20:11:29.740", "id": "RJc15TWGd7c", "created": "2019-05-01T14:22:40.779", "name": "Cypress Agency HQ", "lastLogin": "2019-05-21T20:11:29.740", "displayName": "Cypress Agency HQ", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-05-01T14:26:42.961", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-agency-hq", "userInfo": {"id": "Sf0OaRiBmgi"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "lastUpdatedBy": {"id": "Sf0OaRiBmgi"}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "saSooWeXauJ"}, {"id": "n777lf1THwQ"}, {"id": "KagqnetfxMr"}, {"id": "QbxXEPw9xlf"}, {"id": "b2uHwX9YLhu"}, {"id": "k7BWFXkG6zt"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "ybg3MO3hcf4"}], "dataViewOrganisationUnits": [{"id": "ybg3MO3hcf4"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "TF24aqj1A4w"}, {"id": "vRgSmygNu7r"}, {"id": "M9Uer9SioL7"}, {"id": "NYkn7ZSgtUJ"}, {"id": "XgctRYBpSiR"}], "userAccesses": []}, {"lastUpdated": "2019-04-26T20:12:55.889", "id": "HMGw0YjHIgA", "href": "https://dev-jakub.datim.org/api/users/HMGw0YjHIgA", "created": "2019-04-26T20:11:44.229", "name": "Cypress Global", "displayName": "Cypress Global", "externalAccess": false, "surname": "Global", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "320983983", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-07-03T15:19:42.050", "id": "AyDrxXC7gqf", "created": "2019-04-26T20:11:40.697", "name": "Cypress Global", "lastLogin": "2019-07-03T15:19:42.050", "displayName": "Cypress Global", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-04-26T20:12:55.399", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-global", "userInfo": {"id": "HMGw0YjHIgA"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "saSooWeXauJ"}, {"id": "KagqnetfxMr"}, {"id": "NsYYVxduOTM"}, {"id": "b2uHwX9YLhu"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "ybg3MO3hcf4"}], "dataViewOrganisationUnits": [{"id": "ybg3MO3hcf4"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "gh9tn4QBbKZ"}, {"id": "TOOIJWRzJ3g"}, {"id": "M9Uer9SioL7"}, {"id": "OoiLAfMTyMx"}, {"id": "iuD8wUFz95X"}, {"id": "ghYxzrKHldx"}, {"id": "c6hGi8GEZot"}, {"id": "CwFniyubXbx"}], "userAccesses": []}, {"lastUpdated": "2019-04-16T18:52:41.800", "id": "kiesrLRjlsk", "href": "https://dev-jakub.datim.org/api/users/kiesrLRjlsk", "created": "2019-04-16T18:51:43.486", "name": "Cypress MOH", "displayName": "Cypress MOH", "externalAccess": false, "surname": "MOH", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "30948390843", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-06-27T17:09:35.720", "id": "la2NhMHTPHf", "created": "2019-04-16T18:51:39.889", "name": "Cypress MOH", "lastLogin": "2019-06-27T17:09:35.720", "displayName": "Cypress MOH", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-04-16T18:52:41.314", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-moh-ukraine", "userInfo": {"id": "kiesrLRjlsk"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "KagqnetfxMr"}, {"id": "b2uHwX9YLhu"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "ligZVIYs2rL"}], "dataViewOrganisationUnits": [{"id": "ligZVIYs2rL"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "OoiLAfMTyMx"}, {"id": "pg1qZfuLAb3"}, {"id": "WGX9HuoLoGr"}], "userAccesses": []}, {"lastUpdated": "2019-04-05T17:01:15.849", "id": "PpsYOaUylGl", "href": "https://dev-jakub.datim.org/api/users/PpsYOaUylGl", "created": "2019-04-05T16:57:45.989", "name": "Cypress InterAgency", "displayName": "Cypress InterAgency", "externalAccess": false, "surname": "InterAgency", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "098-08-98090", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-06-27T17:10:25.851", "id": "VPXQ5aB2Iob", "created": "2019-04-05T16:57:42.688", "name": "Cypress InterAgency", "lastLogin": "2019-06-27T17:10:25.851", "displayName": "Cypress InterAgency", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-04-05T17:01:15.362", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-interAgency", "userInfo": {"id": "PpsYOaUylGl"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "PZAx69RkL9Q"}, {"id": "n777lf1THwQ"}, {"id": "KagqnetfxMr"}, {"id": "QbxXEPw9xlf"}, {"id": "b2uHwX9YLhu"}, {"id": "k7BWFXkG6zt"}, {"id": "NsYYVxduOTM"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "XWZK2nop7pM"}], "dataViewOrganisationUnits": [{"id": "XWZK2nop7pM"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "hnqbnG1nWRe"}, {"id": "bM1CccehzoJ"}, {"id": "ZH20mYbNuxG"}, {"id": "OoiLAfMTyMx"}, {"id": "iuD8wUFz95X"}, {"id": "FmY9Kli6XOv"}, {"id": "zY2t7de7Jzz"}, {"id": "jq83EI17WdN"}, {"id": "c6hGi8GEZot"}, {"id": "CwFniyubXbx"}], "userAccesses": []}, {"lastUpdated": "2019-04-03T15:31:35.609", "id": "WEZM4CunH9e", "href": "https://dev-jakub.datim.org/api/users/WEZM4CunH9e", "created": "2019-04-03T15:30:44.526", "name": "Cypress Agency", "displayName": "Cypress Agency", "externalAccess": false, "surname": "Agency", "employer": "Test Org", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "2942-047-40934", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-07-10T20:16:05.106", "id": "CvW2ODWMsgT", "created": "2019-04-03T15:30:40.995", "name": "Cypress Agency", "lastLogin": "2019-07-10T20:16:05.106", "displayName": "Cypress Agency", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-04-03T15:31:35.125", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-agency-india", "userInfo": {"id": "WEZM4CunH9e"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "lastUpdatedBy": {"id": "pwbiqJTtFFH"}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "n777lf1THwQ"}, {"id": "KagqnetfxMr"}, {"id": "QbxXEPw9xlf"}, {"id": "b2uHwX9YLhu"}, {"id": "R74PQmVFl6R"}, {"id": "k7BWFXkG6zt"}, {"id": "NsYYVxduOTM"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "skj3e4YSiJY"}], "dataViewOrganisationUnits": [{"id": "skj3e4YSiJY"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "XgctRYBpSiR"}, {"id": "tVzVUOed3zF"}, {"id": "M9Uer9SioL7"}, {"id": "m1lYfdanqRQ"}, {"id": "OoiLAfMTyMx"}, {"id": "iuD8wUFz95X"}, {"id": "hzDDL5XnD3f"}, {"id": "c6hGi8GEZot"}, {"id": "AZU9Haopetn"}, {"id": "CwFniyubXbx"}], "userAccesses": []}, {"lastUpdated": "2019-04-05T17:02:05.493", "id": "LXZ7PF0YQDj", "href": "https://dev-jakub.datim.org/api/users/LXZ7PF0YQDj", "created": "2019-04-01T18:36:36.435", "name": "Cypress Partner", "displayName": "Cypress Partner", "externalAccess": false, "surname": "Partner", "employer": "Test", "email": "jflaska@baosystems.com", "firstName": "Cypress", "phoneNumber": "121234335", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-06-27T17:09:10.706", "id": "Gz60B2NS1qf", "created": "2019-04-01T18:36:32.954", "name": "Cypress Partner", "lastLogin": "2019-06-27T17:09:10.706", "displayName": "Cypress Partner", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-04-01T19:08:49.361", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-partner", "userInfo": {"id": "LXZ7PF0YQDj"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "user": {"id": "oVNxiNnDvl4"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [{"id": "SH885jaRe0o"}], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "n777lf1THwQ"}, {"id": "k7BWFXkG6zt"}, {"id": "KagqnetfxMr"}, {"id": "b2uHwX9YLhu"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "YM6xn5QxNpY"}], "dataViewOrganisationUnits": [{"id": "YM6xn5QxNpY"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "M9Uer9SioL7"}, {"id": "BmoknaL2WKW"}, {"id": "XgctRYBpSiR"}, {"id": "gr5hqDFrF73"}, {"id": "c6hGi8GEZot"}, {"id": "YXMLh5uqsmW"}, {"id": "hCofOhr3q1Q"}], "userAccesses": []}, {"lastUpdated": "2019-04-05T17:01:42.537", "id": "WQEkD3SA4Jb", "href": "https://dev-jakub.datim.org/api/users/WQEkD3SA4Jb", "created": "2019-03-29T16:06:12.355", "name": "Cypress SuperAdmin", "displayName": "Cypress SuperAdmin", "externalAccess": false, "surname": "SuperAdmin", "employer": "BAO Systems", "email": "jflaska@baosystems.com", "lastCheckedInterpretations": "2019-03-18T14:25:44.997", "firstName": "Cypress", "phoneNumber": "3014013049", "favorite": false, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "userCredentials": {"lastUpdated": "2019-06-12T20:16:23.828", "id": "dDaFWbJeyXz", "created": "2019-03-29T16:06:12.355", "name": "Cypress SuperAdmin", "lastLogin": "2019-06-12T20:16:23.828", "displayName": "Cypress SuperAdmin", "externalAuth": false, "externalAccess": false, "disabled": false, "passwordLastUpdated": "2019-04-01T19:13:33.706", "invitation": false, "selfRegistered": false, "favorite": false, "username": "cypress-superAdmin", "userInfo": {"id": "WQEkD3SA4Jb"}, "access": {"read": true, "update": true, "externalize": true, "delete": true, "write": true, "manage": true}, "lastUpdatedBy": {"id": "WQEkD3SA4Jb"}, "user": {"id": "KxdQZCgLyCk"}, "favorites": [], "cogsDimensionConstraints": [], "catDimensionConstraints": [], "translations": [], "userGroupAccesses": [], "attributeValues": [], "userRoles": [{"id": "jtzbVV4ZmdP"}, {"id": "b2uHwX9YLhu"}], "userAccesses": []}, "favorites": [], "teiSearchOrganisationUnits": [], "translations": [], "organisationUnits": [{"id": "ybg3MO3hcf4"}], "dataViewOrganisationUnits": [{"id": "ybg3MO3hcf4"}], "userGroupAccesses": [], "attributeValues": [], "userGroups": [{"id": "TDcG3257Xpn"}, {"id": "gh9tn4QBbKZ"}, {"id": "TOOIJWRzJ3g"}, {"id": "M9Uer9SioL7"}, {"id": "aaSPLmfLi6p"}, {"id": "OoiLAfMTyMx"}, {"id": "iuD8wUFz95X"}, {"id": "HdRhHh3F5FF"}, {"id": "c6hGi8GEZot"}, {"id": "CwFniyubXbx"}], "userAccesses": []}]
+[
+  {
+    "surname": "Global (Unapproved Data Viewer)",
+    "href": "https://dev-jakub.datim.org/api/users/HJoj933dZdm",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ],
+    "id": "HJoj933dZdm",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "R74PQmVFl6R"
+        },
+        {
+          "id": "saSooWeXauJ"
+        },
+        {
+          "id": "NsYYVxduOTM"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "NIfSOROr0DL",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [],
+      "username": "cypress-approvals-global-unaporovedDataViewer",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-12-10T20:53:02.339",
+      "translations": [],
+      "lastUpdated": "2019-12-10T20:53:02.339",
+      "userInfo": {
+        "id": "HJoj933dZdm"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Approvals Global (Unapproved Data Viewer)",
+      "name": "Approvals Global (Unapproved Data Viewer)",
+      "created": "2019-12-10T20:53:02.339",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-10T20:53:53.211",
+      "invitation": false
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "29823-982",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "gh9tn4QBbKZ"
+      },
+      {
+        "id": "TOOIJWRzJ3g"
+      },
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-12-10T20:53:07.270",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Approvals Global (Unapproved Data Viewer)",
+    "name": "Approvals Global (Unapproved Data Viewer)",
+    "firstName": "Approvals",
+    "created": "2019-12-10T20:51:00.415",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ]
+  },
+  {
+    "surname": "InterAgency Zambia",
+    "href": "https://dev-jakub.datim.org/api/users/stWoAYT2GPU",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "f5RoebaDLMx"
+      }
+    ],
+    "id": "stWoAYT2GPU",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "saSooWeXauJ"
+        },
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "QX8OgjKS9DY",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [],
+      "username": "cypress-approvals-interAgency-zambia",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-12-10T18:02:30.320",
+      "translations": [],
+      "lastUpdated": "2019-12-10T17:59:52.885",
+      "userInfo": {
+        "id": "stWoAYT2GPU"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Approvals InterAgency Zambia",
+      "name": "Approvals InterAgency Zambia",
+      "created": "2019-12-10T17:59:52.885",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-10T18:09:05.579",
+      "invitation": false
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "20932-0923-0",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "PG1DgIPvH8T"
+      },
+      {
+        "id": "TRBfaInIiOK"
+      },
+      {
+        "id": "DmhKE9EqmZ0"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-12-10T18:02:30.594",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Approvals InterAgency Zambia",
+    "name": "Approvals InterAgency Zambia",
+    "firstName": "Approvals",
+    "created": "2019-12-10T17:59:57.180",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "f5RoebaDLMx"
+      }
+    ]
+  },
+  {
+    "surname": "Partner Botswana",
+    "href": "https://dev-jakub.datim.org/api/users/WiWNXp8TkLi",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "l1KFEXKI4Dg"
+      }
+    ],
+    "id": "WiWNXp8TkLi",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "xcvxOUnV8PX",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-approvals-partner-botswana",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-29T18:30:26.721",
+      "translations": [],
+      "lastUpdated": "2019-10-29T18:29:08.380",
+      "userInfo": {
+        "id": "WiWNXp8TkLi"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Approvals Partner Botswana",
+      "name": "Approvals Partner Botswana",
+      "created": "2019-10-29T18:29:08.380",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-18T21:17:44.883",
+      "invitation": false
+    },
+    "employer": "test org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "3-0943093434",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "HLJlUST9Beb"
+      },
+      {
+        "id": "TRBfaInIiOK"
+      },
+      {
+        "id": "Tk6A8AaVmKf"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-29T18:30:27.013",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Approvals Partner Botswana",
+    "name": "Approvals Partner Botswana",
+    "firstName": "Approvals",
+    "created": "2019-10-29T18:29:12.392",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "l1KFEXKI4Dg"
+      }
+    ]
+  },
+  {
+    "surname": "HQ Agency",
+    "href": "https://dev-jakub.datim.org/api/users/UmUS3uthchQ",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ],
+    "id": "UmUS3uthchQ",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "saSooWeXauJ"
+        },
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "TukBrcBsAqU",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-approvals-agency-hq",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-16T20:10:53.148",
+      "translations": [],
+      "lastUpdated": "2019-10-16T20:09:29.268",
+      "userInfo": {
+        "id": "UmUS3uthchQ"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Approvals HQ Agency",
+      "name": "Approvals HQ Agency",
+      "created": "2019-10-16T20:09:29.268",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-18T21:12:52.826",
+      "invitation": false
+    },
+    "employer": "test org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "23-032-0239",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "vRgSmygNu7r"
+      },
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "NYkn7ZSgtUJ"
+      },
+      {
+        "id": "XgctRYBpSiR"
+      },
+      {
+        "id": "TRBfaInIiOK"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-16T20:10:53.441",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Approvals HQ Agency",
+    "name": "Approvals HQ Agency",
+    "firstName": "Approvals",
+    "created": "2019-10-16T20:09:33.387",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ]
+  },
+  {
+    "surname": "Global",
+    "href": "https://dev-jakub.datim.org/api/users/rAfbxjVVomP",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ],
+    "id": "rAfbxjVVomP",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "saSooWeXauJ"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        },
+        {
+          "id": "NsYYVxduOTM"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "OLqav5ue881",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [],
+      "username": "cypress-approvals-global",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:35:24.941",
+      "translations": [],
+      "lastUpdated": "2019-07-11T15:06:35.676",
+      "userInfo": {
+        "id": "rAfbxjVVomP"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Approvals Global",
+      "name": "Approvals Global",
+      "created": "2019-07-03T20:17:44.329",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-18T20:55:09.749",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "29823-982",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "gh9tn4QBbKZ"
+      },
+      {
+        "id": "TOOIJWRzJ3g"
+      },
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:35:23.203",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Approvals Global",
+    "name": "Approvals Global",
+    "firstName": "Approvals",
+    "created": "2019-07-03T20:17:49.890",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ]
+  },
+  {
+    "surname": "Inter-Agency",
+    "href": "https://dev-jakub.datim.org/api/users/lvNZcWQNrZO",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ],
+    "id": "lvNZcWQNrZO",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "saSooWeXauJ"
+        },
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        },
+        {
+          "id": "NsYYVxduOTM"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "eDCpvPrdo63",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [],
+      "username": "cypress-approvals-inter-agency",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:35:33.676",
+      "translations": [],
+      "lastUpdated": "2019-07-10T20:15:49.278",
+      "lastUpdatedBy": {
+        "id": "rAfbxjVVomP"
+      },
+      "userInfo": {
+        "id": "lvNZcWQNrZO"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Approvals Inter-Agency",
+      "name": "Approvals Inter-Agency",
+      "created": "2019-07-01T16:23:50.958",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-18T21:15:32.726",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "2-0942-029",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      },
+      {
+        "id": "f6wtRWtCqZ6"
+      },
+      {
+        "id": "ZiK5R9d001L"
+      },
+      {
+        "id": "CwFniyubXbx"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:35:32.959",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Approvals Inter-Agency",
+    "name": "Approvals Inter-Agency",
+    "firstName": "Approvals",
+    "created": "2019-07-01T16:23:54.693",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ]
+  },
+  {
+    "surname": "Agency",
+    "href": "https://dev-jakub.datim.org/api/users/pjOBNCPfJXs",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ],
+    "id": "pjOBNCPfJXs",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "R74PQmVFl6R"
+        },
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "NsYYVxduOTM"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "SgVnAx5ONQu",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-approvals-agency",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:35:46.007",
+      "translations": [],
+      "lastUpdated": "2019-07-10T20:15:34.033",
+      "userInfo": {
+        "id": "pjOBNCPfJXs"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Approvals Agency",
+      "name": "Approvals Agency",
+      "created": "2019-06-26T15:27:18.032",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-18T21:15:30.498",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "292032923-0923",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "dC7jwUgo23e"
+      },
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "aaJqXrV1NvU"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      },
+      {
+        "id": "CwFniyubXbx"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:35:43.127",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Approvals Agency",
+    "name": "Approvals Agency",
+    "firstName": "Approvals",
+    "created": "2019-06-26T15:27:22.090",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ]
+  },
+  {
+    "surname": "Partner",
+    "href": "https://dev-jakub.datim.org/api/users/pwbiqJTtFFH",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ],
+    "id": "pwbiqJTtFFH",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "n777lf1THwQ"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "N0hUxQ4eNFD",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-approvals-partner",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:35:55.104",
+      "translations": [],
+      "lastUpdated": "2019-07-25T16:02:53.243",
+      "userInfo": {
+        "id": "pwbiqJTtFFH"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress Partner",
+      "name": "Cypress Partner",
+      "created": "2019-06-17T16:39:54.462",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-18T21:14:49.334",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "292983209",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "L4HSHUCsl1f"
+      },
+      {
+        "id": "h93bKJSVKyC"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:35:54.487",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress Partner",
+    "name": "Cypress Partner",
+    "firstName": "Cypress",
+    "created": "2019-06-17T16:39:57.946",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ]
+  },
+  {
+    "surname": "DOD Partner",
+    "href": "https://dev-jakub.datim.org/api/users/ZRCXvR94dSG",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "f5RoebaDLMx"
+      }
+    ],
+    "id": "ZRCXvR94dSG",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "KagqnetfxMr"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "JVF6PUffkKm",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-dod-partner",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:36:02.722",
+      "translations": [],
+      "lastUpdated": "2019-05-21T20:12:10.282",
+      "lastUpdatedBy": {
+        "id": "ZRCXvR94dSG"
+      },
+      "userInfo": {
+        "id": "ZRCXvR94dSG"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress DOD Partner",
+      "name": "Cypress DOD Partner",
+      "created": "2019-05-03T14:14:46.296",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-30T15:52:13.498",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "309438903",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "rP0VPKQcC8y"
+      },
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "NIJU54SGwya"
+      },
+      {
+        "id": "XgctRYBpSiR"
+      },
+      {
+        "id": "KhaAMo1zOZ5"
+      },
+      {
+        "id": "TfIy2OlquoO"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:36:02.106",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress DOD Partner",
+    "name": "Cypress DOD Partner",
+    "firstName": "Cypress",
+    "created": "2019-05-03T14:14:49.929",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "f5RoebaDLMx"
+      }
+    ]
+  },
+  {
+    "surname": "Agency HQ",
+    "href": "https://dev-jakub.datim.org/api/users/Sf0OaRiBmgi",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ],
+    "id": "Sf0OaRiBmgi",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "saSooWeXauJ"
+        },
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "KagqnetfxMr"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "RJc15TWGd7c",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-agency-hq",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:36:11.094",
+      "translations": [],
+      "lastUpdated": "2019-05-21T20:11:29.740",
+      "lastUpdatedBy": {
+        "id": "Sf0OaRiBmgi"
+      },
+      "userInfo": {
+        "id": "Sf0OaRiBmgi"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress Agency HQ",
+      "name": "Cypress Agency HQ",
+      "created": "2019-05-01T14:22:40.779",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-30T15:51:28.095",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "24903809348",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "TF24aqj1A4w"
+      },
+      {
+        "id": "vRgSmygNu7r"
+      },
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "NYkn7ZSgtUJ"
+      },
+      {
+        "id": "XgctRYBpSiR"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:36:10.213",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress Agency HQ",
+    "name": "Cypress Agency HQ",
+    "firstName": "Cypress",
+    "created": "2019-05-01T14:22:44.157",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ]
+  },
+  {
+    "surname": "Global",
+    "href": "https://dev-jakub.datim.org/api/users/HMGw0YjHIgA",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ],
+    "id": "HMGw0YjHIgA",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "saSooWeXauJ"
+        },
+        {
+          "id": "KagqnetfxMr"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "NsYYVxduOTM"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "AyDrxXC7gqf",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-global",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:36:20.876",
+      "translations": [],
+      "lastUpdated": "2019-07-03T15:19:42.050",
+      "userInfo": {
+        "id": "HMGw0YjHIgA"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress Global",
+      "name": "Cypress Global",
+      "created": "2019-04-26T20:11:40.697",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-30T15:52:17.504",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "320983983",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "gh9tn4QBbKZ"
+      },
+      {
+        "id": "TOOIJWRzJ3g"
+      },
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "ghYxzrKHldx"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      },
+      {
+        "id": "CwFniyubXbx"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:36:20.262",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress Global",
+    "name": "Cypress Global",
+    "firstName": "Cypress",
+    "created": "2019-04-26T20:11:44.229",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ]
+  },
+  {
+    "surname": "MOH",
+    "href": "https://dev-jakub.datim.org/api/users/kiesrLRjlsk",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "ligZVIYs2rL"
+      }
+    ],
+    "id": "kiesrLRjlsk",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "KagqnetfxMr"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "la2NhMHTPHf",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-moh-ukraine",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:36:29.670",
+      "translations": [],
+      "lastUpdated": "2019-06-27T17:09:35.720",
+      "userInfo": {
+        "id": "kiesrLRjlsk"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress MOH",
+      "name": "Cypress MOH",
+      "created": "2019-04-16T18:51:39.889",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-30T15:52:42.265",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "30948390843",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "pg1qZfuLAb3"
+      },
+      {
+        "id": "WGX9HuoLoGr"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:36:29.078",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress MOH",
+    "name": "Cypress MOH",
+    "firstName": "Cypress",
+    "created": "2019-04-16T18:51:43.486",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "ligZVIYs2rL"
+      }
+    ]
+  },
+  {
+    "surname": "InterAgency",
+    "href": "https://dev-jakub.datim.org/api/users/PpsYOaUylGl",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "XWZK2nop7pM"
+      }
+    ],
+    "id": "PpsYOaUylGl",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "PZAx69RkL9Q"
+        },
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "KagqnetfxMr"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        },
+        {
+          "id": "NsYYVxduOTM"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "VPXQ5aB2Iob",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [],
+      "username": "cypress-interAgency",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:36:35.706",
+      "translations": [],
+      "lastUpdated": "2019-06-27T17:10:25.851",
+      "userInfo": {
+        "id": "PpsYOaUylGl"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress InterAgency",
+      "name": "Cypress InterAgency",
+      "created": "2019-04-05T16:57:42.688",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-30T15:52:30.243",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "098-08-98090",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "hnqbnG1nWRe"
+      },
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "bM1CccehzoJ"
+      },
+      {
+        "id": "FmY9Kli6XOv"
+      },
+      {
+        "id": "zY2t7de7Jzz"
+      },
+      {
+        "id": "jq83EI17WdN"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      },
+      {
+        "id": "ZH20mYbNuxG"
+      },
+      {
+        "id": "CwFniyubXbx"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:36:35.103",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress InterAgency",
+    "name": "Cypress InterAgency",
+    "firstName": "Cypress",
+    "created": "2019-04-05T16:57:45.989",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "XWZK2nop7pM"
+      }
+    ]
+  },
+  {
+    "surname": "Agency",
+    "href": "https://dev-jakub.datim.org/api/users/WEZM4CunH9e",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ],
+    "id": "WEZM4CunH9e",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "KagqnetfxMr"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "QbxXEPw9xlf"
+        },
+        {
+          "id": "R74PQmVFl6R"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        },
+        {
+          "id": "NsYYVxduOTM"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "CvW2ODWMsgT",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-agency-india",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:36:44.087",
+      "translations": [],
+      "lastUpdated": "2019-07-10T20:16:05.106",
+      "lastUpdatedBy": {
+        "id": "pwbiqJTtFFH"
+      },
+      "userInfo": {
+        "id": "WEZM4CunH9e"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress Agency",
+      "name": "Cypress Agency",
+      "created": "2019-04-03T15:30:40.995",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-30T15:51:52.738",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test Org",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "2942-047-40934",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "m1lYfdanqRQ"
+      },
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "XgctRYBpSiR"
+      },
+      {
+        "id": "hzDDL5XnD3f"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      },
+      {
+        "id": "AZU9Haopetn"
+      },
+      {
+        "id": "tVzVUOed3zF"
+      },
+      {
+        "id": "CwFniyubXbx"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:36:43.493",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress Agency",
+    "name": "Cypress Agency",
+    "firstName": "Cypress",
+    "created": "2019-04-03T15:30:44.526",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "skj3e4YSiJY"
+      }
+    ]
+  },
+  {
+    "surname": "Partner",
+    "href": "https://dev-jakub.datim.org/api/users/LXZ7PF0YQDj",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "YM6xn5QxNpY"
+      }
+    ],
+    "id": "LXZ7PF0YQDj",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "n777lf1THwQ"
+        },
+        {
+          "id": "KagqnetfxMr"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        },
+        {
+          "id": "k7BWFXkG6zt"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "Gz60B2NS1qf",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [
+        {
+          "id": "SH885jaRe0o"
+        }
+      ],
+      "username": "cypress-partner",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:36:53.328",
+      "translations": [],
+      "lastUpdated": "2019-06-27T17:09:10.706",
+      "userInfo": {
+        "id": "LXZ7PF0YQDj"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress Partner",
+      "name": "Cypress Partner",
+      "created": "2019-04-01T18:36:32.954",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2019-12-30T15:52:57.344",
+      "invitation": false,
+      "user": {
+        "id": "oVNxiNnDvl4"
+      }
+    },
+    "employer": "Test",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "121234335",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "BmoknaL2WKW"
+      },
+      {
+        "id": "XgctRYBpSiR"
+      },
+      {
+        "id": "gr5hqDFrF73"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      },
+      {
+        "id": "YXMLh5uqsmW"
+      },
+      {
+        "id": "hCofOhr3q1Q"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:36:52.727",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress Partner",
+    "name": "Cypress Partner",
+    "firstName": "Cypress",
+    "created": "2019-04-01T18:36:36.435",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "YM6xn5QxNpY"
+      }
+    ]
+  },
+  {
+    "surname": "SuperAdmin",
+    "lastCheckedInterpretations": "2019-03-18T14:25:44.997",
+    "href": "https://dev-jakub.datim.org/api/users/WQEkD3SA4Jb",
+    "userGroupAccesses": [],
+    "dataViewOrganisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ],
+    "id": "WQEkD3SA4Jb",
+    "userCredentials": {
+      "userRoles": [
+        {
+          "id": "jtzbVV4ZmdP"
+        },
+        {
+          "id": "b2uHwX9YLhu"
+        }
+      ],
+      "disabled": false,
+      "externalAuth": false,
+      "userGroupAccesses": [],
+      "id": "dDaFWbJeyXz",
+      "twoFA": false,
+      "access": {
+        "read": true,
+        "manage": true,
+        "update": true,
+        "externalize": true,
+        "write": true,
+        "delete": true
+      },
+      "cogsDimensionConstraints": [],
+      "catDimensionConstraints": [],
+      "username": "cypress-superAdmin",
+      "userAccesses": [],
+      "selfRegistered": false,
+      "passwordLastUpdated": "2019-10-08T17:37:02.850",
+      "translations": [],
+      "lastUpdated": "2019-06-12T20:16:23.828",
+      "lastUpdatedBy": {
+        "id": "WQEkD3SA4Jb"
+      },
+      "userInfo": {
+        "id": "WQEkD3SA4Jb"
+      },
+      "favorites": [],
+      "attributeValues": [],
+      "displayName": "Cypress SuperAdmin",
+      "name": "Cypress SuperAdmin",
+      "created": "2019-03-29T16:06:12.355",
+      "externalAccess": false,
+      "favorite": false,
+      "lastLogin": "2020-01-17T20:58:09.247",
+      "invitation": false,
+      "user": {
+        "id": "KxdQZCgLyCk"
+      }
+    },
+    "employer": "BAO Systems",
+    "access": {
+      "read": true,
+      "manage": true,
+      "update": true,
+      "externalize": true,
+      "write": true,
+      "delete": true
+    },
+    "phoneNumber": "3014013049",
+    "email": "jflaska@baosystems.com",
+    "userGroups": [
+      {
+        "id": "gh9tn4QBbKZ"
+      },
+      {
+        "id": "TOOIJWRzJ3g"
+      },
+      {
+        "id": "M9Uer9SioL7"
+      },
+      {
+        "id": "TDcG3257Xpn"
+      },
+      {
+        "id": "aaSPLmfLi6p"
+      },
+      {
+        "id": "OoiLAfMTyMx"
+      },
+      {
+        "id": "iuD8wUFz95X"
+      },
+      {
+        "id": "HdRhHh3F5FF"
+      },
+      {
+        "id": "c6hGi8GEZot"
+      },
+      {
+        "id": "CwFniyubXbx"
+      }
+    ],
+    "userAccesses": [],
+    "translations": [],
+    "lastUpdated": "2019-10-08T17:37:02.249",
+    "favorites": [],
+    "attributeValues": [],
+    "displayName": "Cypress SuperAdmin",
+    "name": "Cypress SuperAdmin",
+    "firstName": "Cypress",
+    "created": "2019-03-29T16:06:12.355",
+    "externalAccess": false,
+    "teiSearchOrganisationUnits": [],
+    "favorite": false,
+    "organisationUnits": [
+      {
+        "id": "ybg3MO3hcf4"
+      }
+    ]
+  }
+]
