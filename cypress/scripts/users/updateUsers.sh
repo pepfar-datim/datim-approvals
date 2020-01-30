@@ -106,7 +106,15 @@
 # "name": "OU Asia Region Country team",
 # "id": "nArTNoncIZZ"
 
-userGroupUpdates=('dC7jwUgo23e->y4kPXXeNzxe' 'aaJqXrV1NvU->dBW0Xm1YBkE' 'ZiK5R9d001L->Z67RKj0UUx6' 'f6wtRWtCqZ6->nArTNoncIZZ' 'tVzVUOed3zF->kCQ2gMvkkUg' 'bceRMHIksMJ->rkd3Ok4r0oe' 'm1lYfdanqRQ->vTUZSYiSom4' 'hzDDL5XnD3f->rutVB5w25IP' 'ZH20mYbNuxG->DSBFkL4uzd2' 'FmY9Kli6XOv->rkd3Ok4r0oe' 'jq83EI17WdN->Z67RKj0UUx6' 'bM1CccehzoJ->xXvf3vvSaq6' 'hnqbnG1nWRe->nArTNoncIZZ')
+# old
+# "id": "skj3e4YSiJY",
+# "displayName": "India"
+
+# new
+# "id": "ptVxnBssua6",
+# "displayName": "Asia Region"
+
+userGroupUpdates=('dC7jwUgo23e->y4kPXXeNzxe' 'aaJqXrV1NvU->dBW0Xm1YBkE' 'ZiK5R9d001L->Z67RKj0UUx6' 'f6wtRWtCqZ6->nArTNoncIZZ' 'tVzVUOed3zF->kCQ2gMvkkUg' 'bceRMHIksMJ->rkd3Ok4r0oe' 'm1lYfdanqRQ->vTUZSYiSom4' 'hzDDL5XnD3f->rutVB5w25IP' 'ZH20mYbNuxG->DSBFkL4uzd2' 'FmY9Kli6XOv->rkd3Ok4r0oe' 'jq83EI17WdN->Z67RKj0UUx6' 'bM1CccehzoJ->xXvf3vvSaq6' 'hnqbnG1nWRe->nArTNoncIZZ' 'skj3e4YSiJY->ptVxnBssua6')
 
 replacementRule=''
 
