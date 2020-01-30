@@ -42,7 +42,7 @@
 # "id": "kCQ2gMvkkUg"
 
 
-#old
+#old !!! (not in users.json)
 # "name": "OU India MOH User administrators",
 # "id": "bceRMHIksMJ"
 
@@ -76,6 +76,14 @@
 
 userGroupUpdates=('dC7jwUgo23e->y4kPXXeNzxe' 'aaJqXrV1NvU->dBW0Xm1YBkE' 'ZiK5R9d001L->Z67RKj0UUx6' 'f6wtRWtCqZ6->nArTNoncIZZ' 'tVzVUOed3zF->kCQ2gMvkkUg' 'bceRMHIksMJ->rkd3Ok4r0oe' 'm1lYfdanqRQ->vTUZSYiSom4' 'hzDDL5XnD3f->rutVB5w25IP' 'ZH20mYbNuxG->DSBFkL4uzd2')
 
-for i in ${userGroupUpdates[@]}; do
-	echo $i
+replacementRule=''
+
+for rule in ${userGroupUpdates[@]}; do
+	oldId=$(echo $rule | cut -c1-11)
+	newId=$(echo $rule | cut -c14-24)
+	replacementRule="${replacementRule};s/$oldId/$newId/g"
 done
+
+replacementRule=${replacementRule:1:1000}
+
+sed $replacementRule users.json > updatedUsers.json
