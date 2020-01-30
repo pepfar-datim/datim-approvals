@@ -58,7 +58,23 @@
 # "name": "OU Asia Region Agency USAID all mechanisms",
 # "id": "vTUZSYiSom4"
 
-userGroupUpdates=('dC7jwUgo23e->y4kPXXeNzxe' 'aaJqXrV1NvU->dBW0Xm1YBkE' 'ZiK5R9d001L->Z67RKj0UUx6' 'f6wtRWtCqZ6->nArTNoncIZZ' 'tVzVUOed3zF->kCQ2gMvkkUg' 'bceRMHIksMJ->rkd3Ok4r0oe' 'm1lYfdanqRQ->vTUZSYiSom4')
+#old
+# "id": "hzDDL5XnD3f",
+# "displayName": "OU India Agency USAID user administrators",
+
+# new
+# "name": "OU Asia Region Agency USAID user administrators",
+# "id": "rutVB5w25IP"
+
+# old
+# "id": "ZH20mYbNuxG",
+# "displayName": "OU Cambodia MOH Users",
+
+# new
+# "id": "DSBFkL4uzd2",
+# "displayName": "OU Asia Region MOH Users"
+
+userGroupUpdates=('dC7jwUgo23e->y4kPXXeNzxe' 'aaJqXrV1NvU->dBW0Xm1YBkE' 'ZiK5R9d001L->Z67RKj0UUx6' 'f6wtRWtCqZ6->nArTNoncIZZ' 'tVzVUOed3zF->kCQ2gMvkkUg' 'bceRMHIksMJ->rkd3Ok4r0oe' 'm1lYfdanqRQ->vTUZSYiSom4' 'hzDDL5XnD3f->rutVB5w25IP' 'ZH20mYbNuxG->DSBFkL4uzd2')
 
 for i in ${userGroupUpdates[@]}; do
 	echo $i
