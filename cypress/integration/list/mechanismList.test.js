@@ -21,10 +21,10 @@ describe('Mechanism List', function() {
     });
 
 
-    it('Should see MER Results for India', function () {
+    it('Should see MER Results for Asia Region', function () {
         cy.loginAs('agency-india');
         cy.goHome();
-        cy.searchMechanisms('MER Results','2019Q3','India');
+        cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([
             '5 mechanisms',
             '16566 - Orphans and Vulnerable Children Project',
@@ -47,7 +47,7 @@ describe('Mechanism List', function() {
     it('Should have tabs', ()=>{
         cy.get('#cy_mechanismListTab_recall').click();
         cy.get('.cy_list_results').containsAll([
-            '17350 - Laboratory Strengthening',
+            '17350 - 6NU2GGH001462 - Laboratory Strengthening',
         ]);
         cy.get('.cy_list_results').containsNotAll([
             '11040 - HIV in Refugee Camps'

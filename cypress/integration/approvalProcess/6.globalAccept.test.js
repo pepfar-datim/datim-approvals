@@ -1,8 +1,9 @@
 describe('Approval Process #6 - Global ACCEPT', ()=>{
 
-    // it('_ return to pending at partner', ()=>{
-    //     cy.resetMerMechanism();
-    // });   
+    it('_ return to pending at partner', ()=>{
+        cy.resetMerMechanism();
+    });
+
     it('_ submit by partner', ()=>{
         cy.approvalsApiCall('partner', 'submit', 'mer');
     });
@@ -27,21 +28,22 @@ describe('Approval Process #6 - Global ACCEPT', ()=>{
         //TODO: See correct status
         cy.loginAs('approvals-global');
         cy.goHome();
-        cy.searchMechanisms('MER Results','2019Q3','India');
+        cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([    
-            '15 mechanisms',
-            '16566 - Orphans and Vulnerable Children Project',
-            '18593 - HIV/AIDS Services for Key Populations Affected by HIV Project',
+            '75 mechanisms',
+            '16566 - AID386A1400007 - Orphans and Vulnerable Children Project',
+            '16681 - National Center for Tuberculosis and Leprosy Control (CENAT) Phase II',
             'UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS',
             'KARNATAKA HEALTH PROMOTION TRUST'
-        ]);              
-        cy.get('#cy_results_17350___Laboratory_Strengthening').contains('submitted by inter-agency');
-        cy.mechanismAction('accept', '#cy_results_17350___Laboratory_Strengthening');
+        ]);
+        cy.switchMechanismsTab('accept');
+        cy.get('#cy_results_17350___6NU2GGH001462___Laboratory_Strengthening').contains('submitted by inter-agency');
+        cy.mechanismAction('accept', '#cy_results_17350___6NU2GGH001462___Laboratory_Strengthening');
     });
 
     it('Should be able to RECALL mechanism', ()=>{
         cy.actions().containsAll(['recall', 'accept']);
-        cy.info().containsAll(['submitted by inter-agency', '17350 - Laboratory Strengthening']);           
+        cy.info().containsAll(['submitted by inter-agency', '17350 - 6NU2GGH001462 - Laboratory Strengthening']);
         cy.get('#cy_mechanismAction_recall').click();  
         cy.contains('Mechanism successfully recalled');        
         cy.actions().contains('No actions');
@@ -54,9 +56,9 @@ describe('Approval Process #6 - Global ACCEPT', ()=>{
 
     it('Should be able to ACCEPT mechanism as Global', ()=>{
         cy.loginAs('approvals-global');
-        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'skj3e4YSiJY');
+        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'ptVxnBssua6');
         cy.actions().containsAll(['recall', 'accept']);
-        cy.info().containsAll(['submitted by inter-agency', '17350 - Laboratory Strengthening']);   
+        cy.info().containsAll(['submitted by inter-agency', '17350 - 6NU2GGH001462 - Laboratory Strengthening']);
         cy.get('#cy_mechanismAction_accept').click();  
         cy.contains('Mechanism successfully accepted');        
         cy.actions().containsAll(['recall', 'return']);

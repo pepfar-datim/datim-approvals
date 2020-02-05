@@ -13,7 +13,7 @@ describe('Approval Process #3 - Agency SUBMIT', ()=>{
 
     it('Should display Mechanism 17350 as ready to SUBMIT', ()=>{
         cy.loginAs('approvals-agency');
-        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'skj3e4YSiJY');
+        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'ptVxnBssua6');
         cy.actions().containsAll(['return', 'submit']);
         cy.info().contains('accepted by agency');          
     });
@@ -35,7 +35,7 @@ describe('Approval Process #3 - Agency SUBMIT', ()=>{
     
     it('Should be able to SUBMIT accepted mechanism', ()=>{
         cy.loginAs('approvals-agency');
-        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'skj3e4YSiJY');
+        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'ptVxnBssua6');
         cy.actions().containsAll(['return','submit']);
         cy.info().contains('accepted by agency');           
 

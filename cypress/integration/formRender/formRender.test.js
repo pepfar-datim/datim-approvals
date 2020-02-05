@@ -1,7 +1,7 @@
 describe('Form Render', ()=>{
     it('Should render form content (Laboratory Settings)', ()=>{
         cy.loginAs('approvals-partner');
-        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'skj3e4YSiJY');
+        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'ptVxnBssua6');
         cy.containsAll([
             'Number of new health workers who graduated',
             'Disaggregated by Cadre Category',

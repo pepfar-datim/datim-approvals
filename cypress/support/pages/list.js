@@ -9,7 +9,7 @@ const workflowIdNameMap = {
 };
 
 const ouIdNameMap = {
-    'India':'skj3e4YSiJY',
+    'Asia Region':'ptVxnBssua6',
     'Global':'ybg3MO3hcf4',
     'Botswana':'l1KFEXKI4Dg',
 };
@@ -32,4 +32,8 @@ Cypress.Commands.add('mechanismAction', (action, css)=>{
     cy.get('#cy_mechanismListTab_'+action).click();
     cy.get(css).find('input').click();
     cy.get('#cy_list_mechanismAction').click();
+});
+
+Cypress.Commands.add('switchMechanismsTab',(action)=>{
+    cy.get(`#cy_mechanismListTab_${action}`).click();
 });
