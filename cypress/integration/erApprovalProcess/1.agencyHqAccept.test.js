@@ -11,7 +11,7 @@ describe('ER Approval Process #1 - Agency HQ ACCEPT', ()=>{
         cy.goHome();
         cy.searchMechanisms('ER Expenditures FYOct','2018Oct','Asia Region');
         cy.get('.cy_list_results').containsAll([
-            '9 mechanisms',
+            '37 mechanisms',
             '17286 - 6NU2GGH001346 - Care, Support and Treatment - HIV/TB Project',
             'submitted by agency',
         ]);

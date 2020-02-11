@@ -8,8 +8,7 @@ import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 
 function mechanismStatesUrl(workflow: string, period: string){
-    return `/dataApprovals/categoryOptionCombos?wf=${workflow}`
-        +`&pe=${period}`;
+    return `/dataApprovals/categoryOptionCombos?wf=${workflow}&pe=${period}`;
 }
 
 function mechanismsInfoUrl(mechanismIds:string[]){
@@ -29,10 +28,6 @@ function getActionUrl(action){
         case "recall": return '/dataApprovals/unapprovals';
         case "return": return '/dataApprovals/unapprovals';
     }
-}
-
-function catOptUrl(cocIds:string[]):string{
-    return `/categoryOptions.json?filter=categoryOptionCombos.id:in:[${cocIds.join(',')}]`;
 }
 
 const agencyGroupSet = 'bw8KHXzxd9i';
@@ -94,9 +89,11 @@ function transformCOCToMechanismState(workflow, combo){
     }
 }
 
-export function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
+export function getMechanismStates(workflow: string, period: string, mechanismsMeta: MechanismMeta[]):Promise<MechanismState>{
+    console.log(`/dataApprovals?wf=${workflow}&pe=${period}&aoc=${mechanismsMeta[0].cocId}&ou=${mechanismsMeta[0].ou}`);
+
     return api.get(mechanismStatesUrl(workflow, period))
-        .then(res => res.filter(categoryOptionCombo=>mechanisms.map(m=>m.meta.cocId).includes(categoryOptionCombo.id)))
+        .then(res => res.filter(categoryOptionCombo=>mechanismsMeta.map(m=>m.cocId).includes(categoryOptionCombo.id)))
         .then(categoryOptionCombos=>categoryOptionCombos.map(coc=>transformCOCToMechanismState(workflow, coc)))
         .then(mechanismStates=>{
             if (mechanismStates.every((val, i, arr)=>JSON.stringify(val)===JSON.stringify(arr[0]))) return mechanismStates[0];
@@ -104,7 +101,3 @@ export function getMechanismStates(workflow: string, period: string, mechanisms:
         });
 }
 
-
-export function getCoidByCocids(cocIds:string[]):Promise<string> {
-    return api.get(catOptUrl(cocIds)).then(response=>response.categoryOptions.map(co=>co.id).join(','));
-}

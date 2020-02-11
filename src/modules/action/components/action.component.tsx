@@ -14,12 +14,6 @@ import {getWorkflowNameById} from "../../shared/services/workflowService";
 import "../css/action.component.css";
 import Loading from "../../shared/components/loading.component";
 
-const styles = {
-    progress: {
-        marginBottom: 15
-    }
-};
-
 export default class Action extends React.Component<
     {postMessage: (message:string, type?:string)=>void, approvalCombos: ApprovalsCombo[], workflow: string, period: string},
     {
@@ -51,7 +45,7 @@ export default class Action extends React.Component<
             mechanisms: mechanisms,
             processing: false
         };
-        this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms);
+        this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta));
         this.getMechanismsInfo(this.state.mechanisms);
         this.getUserType();
         this.getUserOu();
@@ -62,8 +56,9 @@ export default class Action extends React.Component<
         });
     }
 
-    getMechanismStatuses(workflow: string, period: string, mechanisms: MechanismModel[]){
-        return getMechanismStates(workflow, period, mechanisms).then(state=>{
+    getMechanismStatuses(workflow: string, period: string, mechanismsMeta: MechanismMeta[]){
+        return getMechanismStates(workflow, period, mechanismsMeta).then(state=>{
+            console.log(state);
             this.setState({mechanismState: state});
         });
     }
@@ -92,7 +87,7 @@ export default class Action extends React.Component<
         performAction(action, this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta)).then((response)=>{
             this.setState({processing: false});
             if (!response.ok || response.redirected) return this.errorMessage(action);
-            this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms).then(()=>{
+            this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta)).then(()=>{
                 this.successMessage(action);
             });
         });

@@ -4,7 +4,7 @@ function checkField(de, co, data){
 
 function switchToFacility(){
     cy.get('#cy_formSelect_input').click();
-    cy.get('#cy_formSelect_dataset_MER_Results__Facility_Based').click();
+    cy.get('#cy_formSelect_dataset_MER_Results__Facility_Based_FY2019Q4').click();
 }
 
 describe('Aggregate Data', ()=> {
@@ -17,16 +17,16 @@ describe('Aggregate Data', ()=> {
             'All Mechanisms Overview',
             'HHS/CDC, USAID',
             'JHPIEGO CORPORATION, RIGHT TO CARE',
-        ]);
+        ], {timeout: 15000});
     });
     it('Should be able to switch to `MER Results: Facility based`', ()=>{
         switchToFacility();
     });
 
     it('Should have the right aggregated data', ()=>{
-        checkField('RhkU5KjtAi6','xjIOzgKKqaE','14');
-        checkField('RhkU5KjtAi6','srbCCscTJaK','655');
-        checkField('RhkU5KjtAi6','nsATUhYrzYh','1958');
+        checkField('RhkU5KjtAi6','xjIOzgKKqaE','45');
+        checkField('RhkU5KjtAi6','srbCCscTJaK','8257');
+        checkField('RhkU5KjtAi6','nsATUhYrzYh','18508');
     });
 
     it('Should be able to switch to 18304', ()=>{
@@ -35,9 +35,9 @@ describe('Aggregate Data', ()=> {
     });
 
     it('Should have the right for 18304', ()=>{
-        checkField('RhkU5KjtAi6','xjIOzgKKqaE','14');
-        checkField('RhkU5KjtAi6','srbCCscTJaK','54');
-        checkField('RhkU5KjtAi6','nsATUhYrzYh','911');
+        checkField('RhkU5KjtAi6','xjIOzgKKqaE','45');
+        checkField('RhkU5KjtAi6','srbCCscTJaK','2305');
+        checkField('RhkU5KjtAi6','nsATUhYrzYh','7630');
     });
 
     it('Should be able to switch to 17514', ()=>{
@@ -46,7 +46,7 @@ describe('Aggregate Data', ()=> {
     });
 
     it('Should have the right for 17514', ()=>{
-        checkField('RhkU5KjtAi6','srbCCscTJaK','601');
-        checkField('RhkU5KjtAi6','nsATUhYrzYh','1047');
+        checkField('RhkU5KjtAi6','srbCCscTJaK','5952');
+        checkField('RhkU5KjtAi6','nsATUhYrzYh','10878');
     });
 });

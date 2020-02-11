@@ -1,5 +1,5 @@
 Cypress.Commands.add('loadDone', ()=>{
-    cy.get('.cy_loading').should('not.exist');
+    cy.get('.cy_loading', { timeout: 20000 }).should('not.exist');
 });
 
 const workflowIdNameMap = {
