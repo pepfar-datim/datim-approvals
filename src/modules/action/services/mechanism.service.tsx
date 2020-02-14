@@ -1,5 +1,5 @@
 import api from "../../shared/services/api.service";
-import MechanismModel, {
+import {
     MechanismInfo,
     MechanismMeta,
     MechanismState
