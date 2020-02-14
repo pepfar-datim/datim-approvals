@@ -23,7 +23,8 @@ const tableOptions = {
     pageSize: 20,
     pageSizeOptions: [20, 50, 100],
     selection: true,
-    emptyRowsWhenPaging: false
+    emptyRowsWhenPaging: false,
+    thirdSortClick: false
 };
 
 function tranformMechanisms(allMechanisms:MechanismModel[]){

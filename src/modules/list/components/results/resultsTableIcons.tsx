@@ -2,7 +2,7 @@ import React from 'react';
 import { forwardRef } from 'react';
 
 import AddBox from '@material-ui/icons/AddBox';
-import ArrowUpward from '@material-ui/icons/ArrowUpward';
+import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import Check from '@material-ui/icons/Check';
 import ChevronLeft from '@material-ui/icons/ChevronLeft';
 import ChevronRight from '@material-ui/icons/ChevronRight';
@@ -32,7 +32,7 @@ export const tableIcons = {
     PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref as any} />),
     ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref as any} />),
     Search: forwardRef((props, ref) => <Search {...props} ref={ref as any} />),
-    SortArrow: forwardRef((props, ref) => <ArrowUpward {...props} ref={ref as any} />),
+    SortArrow: forwardRef((props, ref) => <KeyboardArrowDown {...props} ref={ref as any} />),
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref as any} />),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref as any} />)
 };

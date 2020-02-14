@@ -19,7 +19,7 @@ export default class Api{
         });
     }
 
-    static getFormHtml(url,){
+    static getFormHtml(url){
         return fetch(makeUrl(url), {credentials: 'include', headers: {Accept: 'text/html'}}).then(resp=>resp.text());
     }
 }
