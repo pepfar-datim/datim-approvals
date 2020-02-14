@@ -17,6 +17,7 @@ export default class ResultsTabs extends React.Component<
 
     switchTab = (ev, tabNr) => {
         const action = mechanismActions[tabNr];
+        if (this.state.action===action) return;
         let filteredMechanisms =  this.filterMechanisms(this.props.mechanisms, action);
         this.setState({action: action, filteredMechanisms: filteredMechanisms});
         this.props.onSwitchTab(action)
