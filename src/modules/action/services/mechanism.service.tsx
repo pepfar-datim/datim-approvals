@@ -60,13 +60,7 @@ function fixAgencyHq(mechanismsMeta: MechanismMeta[], action:string, currentStat
     if (workflow==='WUD8TApgOu1') {
         if (movingUp(action) && ['accepted by agency hq','submitted by agency hq'].includes(currentStatus)) replaceOuByGlobal(mechanismsMeta);
         if (movingDown(action) && ['accepted by global'].includes(currentStatus)) replaceOuByGlobal(mechanismsMeta);
-    } else {
-
-    }
-
-
-
-
+    } 
 }
 
 export function performAction(action: string, workflow: string, period: string, mechanismsMeta: MechanismMeta[], currentStatus:string){
