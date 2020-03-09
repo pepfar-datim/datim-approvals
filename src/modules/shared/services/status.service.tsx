@@ -6,7 +6,8 @@ export default function  getStatus(workflowType:string, level:string, accepted:b
     if (level==='4' && accepted && workflowType==='MER')  return 'accepted by inter-agency';
     if (level==='4' && accepted && workflowType==='ER')  return 'accepted by agency hq';
     if (level==='3' && !accepted && workflowType==='MER')  return 'submitted by inter-agency';
-    if (level==='3' && !accepted && workflowType==='ER')  return 'submitted by agency hq';
+    if (level==='2' && !accepted && workflowType==='ER')  return 'submitted by agency hq';
+    if (level==='2' && accepted && workflowType==='ER')  return 'accepted by global';
     if (level==='3' && accepted)  return 'accepted by global';
     return `${level} / ${accepted}`;
 }

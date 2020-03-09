@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://dev-jakub.datim.org/",
+  "baseUrl": "https://test.datim.org/",
   "sqlViewId": "rQZnEgCAhuI",
-  "apiVersion": "33"
+  "apiVersion": "30"
 }
