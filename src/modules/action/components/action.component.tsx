@@ -89,7 +89,7 @@ export default class Action extends React.Component<
 
     performAction = (action:string)=>{
         this.setState({processing: true});
-        performAction(action, this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta)).then((response)=>{
+        performAction(action, this.state.workflow.id, this.state.period.id, this.state.mechanisms.map(m=>m.meta), this.state.mechanismState.status).then((response)=>{
             if (!response.ok || response.redirected) {
                 this.setState({processing: false});
                 return this.errorMessage(action);
