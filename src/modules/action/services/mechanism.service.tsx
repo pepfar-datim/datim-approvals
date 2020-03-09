@@ -42,10 +42,12 @@ function getInfoByGroupSet(mechInfo, groupSetId){
     return mechInfo.categoryOptionGroups.filter(prop=>prop.groupSets[0].id===groupSetId)[0] || {};
 }
 
-function replaceOuByGlobal(mechanismsMeta: MechanismMeta[]):void{
-    mechanismsMeta.forEach((meta: MechanismMeta) => {
+function replaceOuByGlobal(mechanismsMeta: MechanismMeta[]):MechanismMeta[]{
+    let result = JSON.parse(JSON.stringify(mechanismsMeta));
+    result.forEach((meta: MechanismMeta) => {
         meta.ou = 'ybg3MO3hcf4';
     });
+    return result;
 }
 
 function movingUp(action:string):boolean{
@@ -56,15 +58,17 @@ function movingDown(action:string):boolean{
     return ['recall','return'].includes(action);
 }
 
-function fixAgencyHq(mechanismsMeta: MechanismMeta[], action:string, currentStatus:string, workflow:string):void{
+function fixAgencyHq(mechanismsMeta: MechanismMeta[], action:string, currentStatus:string, workflow:string):MechanismMeta[]{
     if (workflow==='WUD8TApgOu1') {
-        if (movingUp(action) && ['accepted by agency hq','submitted by agency hq'].includes(currentStatus)) replaceOuByGlobal(mechanismsMeta);
-        if (movingDown(action) && ['accepted by global'].includes(currentStatus)) replaceOuByGlobal(mechanismsMeta);
-    } 
+        if (movingUp(action) && ['accepted by agency hq','submitted by agency hq'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
+        if (movingDown(action) && ['accepted by global'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
+    }
+
+    return mechanismsMeta;
 }
 
 export function performAction(action: string, workflow: string, period: string, mechanismsMeta: MechanismMeta[], currentStatus:string){
-    fixAgencyHq(mechanismsMeta, action, currentStatus, workflow);
+    mechanismsMeta = fixAgencyHq(mechanismsMeta, action, currentStatus, workflow);
     return api.post(getActionUrl(action), {
         "approvals": mechanismsMeta.map(m=>{return {"aoc": m.cocId, "ou": m.ou}}),
         "pe": [period],
