@@ -31,7 +31,8 @@ export default class FormContent extends React.Component<
 
     }
     render() {
-        if (!this.state.formHtml) return <Loading message='Loading dataset...'/>;;
+        if (!this.state.formHtml && this.props.mechanismMetas.length>100) return <Loading message='Loading aggregated dataset. This may take several minutes.'/>;
+        if (!this.state.formHtml) return <Loading message='Loading dataset...'/>;
         return <FormRender formHtml={this.state.formHtml}/>;
     }
 }
