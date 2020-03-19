@@ -11,7 +11,7 @@ describe('ER Approval Process #2 - Global', ()=>{
         cy.goHome();
         cy.searchMechanisms('ER Expenditures FYOct','2018Oct','Asia Region');
         cy.get('.cy_list_results').containsAll([
-            '15 mechanisms',
+            '61 mechanisms',
             '17286 - 6NU2GGH001346 - Care, Support and Treatment - HIV/TB Project',
             'accepted by agency hq',
         ]);
@@ -39,7 +39,7 @@ describe('ER Approval Process #2 - Global', ()=>{
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([
-            '15 mechanisms',
+            '61 mechanisms',
             '17286 - 6NU2GGH001346 - Care, Support and Treatment - HIV/TB Project',
         ]);
         cy.get('#cy_results_17286___Care__Support_and_Treatment___HIV_TB_Project').containsAll([

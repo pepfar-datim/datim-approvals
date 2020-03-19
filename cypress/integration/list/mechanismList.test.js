@@ -27,10 +27,9 @@ describe('Mechanism List', function() {
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([
             '5 mechanisms',
-            '16566 - Orphans and Vulnerable Children Project',
-            '18593 - HIV/AIDS Services for Key Populations Affected by HIV Project',
+            '16566 - AID386A1400007 - Orphans and Vulnerable Children Project',
+            '17111 - AIDGHIO1200001 - Joint U.N. Programme on HIV/AIDS (UNAIDS III)',
             'UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS',
-            'KARNATAKA HEALTH PROMOTION TRUST'
         ]);
     });
 
