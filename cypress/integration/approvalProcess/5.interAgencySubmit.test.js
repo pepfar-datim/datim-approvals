@@ -21,7 +21,7 @@ describe('Approval Process #5 - Inter-Agency SUBMIT', ()=>{
 
     it('Should be able to SUBMIT mechanism as Inter-Agency', ()=>{
         cy.loginAs('approvals-inter-agency');
-        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'skj3e4YSiJY');
+        cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'ptVxnBssua6');
         cy.get('#cy_mechanismAction_submit').click();  
         cy.contains('Mechanism successfully submitted');        
         cy.actions().containsAll(['recall']);
