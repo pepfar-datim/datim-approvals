@@ -4,9 +4,12 @@ import json
 def fetch_users():
     params = {
         'fields': '*',
-        'filter': 'userCredentials.username:$like:approvals',
-        'filter': 'userCredentials.username:$like:cypress',
-        'rootJunction': 'OR'
+        'rootJunction': 'OR',
+        'filter': [
+            'userCredentials.username:$like:cypress-approvals',
+            'userCredentials.username:$like:cypress-superAdmin',
+            'userCredentials.username:$like:cypress-agency-india'
+        ]
     }
     res = api.get('users.json', params)
     print('Fetched',len(res['users']),'users')
