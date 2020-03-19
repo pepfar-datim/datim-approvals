@@ -25,7 +25,7 @@ export default class ResultsTabs extends React.Component<
 
     generateTabLabel(action: string) {
         let mechanismsNumber = this.filterMechanisms(this.props.mechanisms, action).length;
-        return <Badge color="primary" badgeContent={mechanismsNumber} style={{paddingRight: 15}}>
+        return <Badge color="primary" badgeContent={mechanismsNumber} style={{paddingRight: 15}} max={9999}>
              {action}
         </Badge>;
     }
