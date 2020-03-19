@@ -1,8 +1,8 @@
 describe('Approval Process #6 - Global ACCEPT', ()=>{
 
-    // it('_ return to pending at partner', ()=>{
-    //     cy.resetMerMechanism();
-    // });   
+    it('_ return to pending at partner', ()=>{
+        cy.resetMerMechanism();
+    });
     it('_ submit by partner', ()=>{
         cy.approvalsApiCall('partner', 'submit', 'mer');
     });
@@ -29,11 +29,12 @@ describe('Approval Process #6 - Global ACCEPT', ()=>{
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([    
-            '61 mechanisms',
+            '75 mechanisms',
             '16566 - AID386A1400007 - Orphans and Vulnerable Children Project',
-            '17111 - AIDGHIO1200001 - Joint U.N. Programme on HIV/AIDS (UNAIDS III)',
+            '17035 - International AIDS Education and Training Center',
             'UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS',
         ]);
+        cy.get('[placeholder="Search"]').type('17350');
         cy.get('#cy_results_17350___6NU2GGH001462___Laboratory_Strengthening').contains('submitted by inter-agency');
         cy.mechanismAction('accept', '#cy_results_17350___6NU2GGH001462___Laboratory_Strengthening');
     });
