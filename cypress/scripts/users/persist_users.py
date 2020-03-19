@@ -10,7 +10,8 @@ def load_users():
 def persist_users(users):
     print(len(users),'users loaded')
     for user in users:
-        user['userCredentials']['password'] = "blank"
+        api.delete('users/' + user['id'] + '.json')
+        user['userCredentials']['password'] = os.environ['CYPRESS_TEST_PASSWORD']
         res = api.post('users.json', user)
         print(res)
 

@@ -1,22 +1,31 @@
 import requests
+import os
 
-api = 'https://dev-jakub.datim.org/api/'
-credentials = ('bao-admin', 'Soller29-Seafowl10')
+api = os.environ['DHIS_BASEURL'] + '/api/'
+credentials = (os.environ['DHIS_USERNAME'], os.environ['DHIS_PASSWORD'])
 
-#api = 'https://dev.datim.org/api/'
-#credentials = ('bao-admin', 'Savaged21-Ree24')
+print('Connecting to DHIS2: ' + api)
 
 res = requests.get(api + 'resources.json', auth=credentials)
 if res.json()['resources'][0]:
-	print('Connected to DHIS 2 using ' + api)
+    print('Connected to DHIS 2 using ' + api)
 
 def get(url, params):
-	res = requests.get(api + url, auth=credentials, params=params)
-	return res.json()
+    res = requests.get(api + url, auth=credentials, params=params)
+    process_status_code(res, 'get')
+
+def delete(url):
+    res = requests.delete(api + url, auth=credentials)
+    process_status_code(res, 'delete')
+
 
 def post(url, body):
-	res = requests.post(api + url, auth=credentials, json=body)
-	if res.status_code < 200 or res.status_code > 204:
-		print('\n\n', 'ERROR', 'user', body, 'status code', res.status_code)
-		print('server response', res.text)
-	return res.json()
+    res = requests.post(api + url, auth=credentials, json=body)
+    process_status_code(res, 'post')
+
+def process_status_code(response, method):
+    if response.status_code in range(200,210):
+        print(method + ' to url ' + response.url + ' successful')
+    else:
+        print(method + ' to url ' + response.url + ' failed')
+        print(response.json()['message'])
