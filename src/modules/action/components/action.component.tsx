@@ -10,15 +10,8 @@ import WorkflowOverview from "./workflowOverview.component";
 import {idName} from "../models/idName";
 import WorkflowPeriodService from "../../shared/services/workflowsPeriods.service";
 import {getWorkflowNameById} from "../../shared/services/workflowService";
-
-import "../css/action.component.css";
 import Loading from "../../shared/components/loading.component";
-
-const styles = {
-    progress: {
-        marginBottom: 15
-    }
-};
+import "../css/action.component.css";
 
 export default class Action extends React.Component<
     {postMessage: (message:string, type?:string)=>void, approvalCombos: ApprovalsCombo[], workflow: string, period: string},

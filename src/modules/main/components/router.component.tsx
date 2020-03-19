@@ -41,9 +41,6 @@ export default function Router({postMessage}:{postMessage:(message:string, type?
                 DATIM Approvals
             </Typography>
             <HashRouter>
-                <Typography variant="h5" component="h2">
-                    <Route path="/search" exact render={()=>'Mechanisms List'}/>
-                </Typography>
                 <Divider/>
                 <Route path="/" exact render={({location})=><Redirect to={{
                     pathname: "/search",
