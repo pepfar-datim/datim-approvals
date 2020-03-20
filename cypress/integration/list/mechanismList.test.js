@@ -38,7 +38,7 @@ describe('Mechanism List', function() {
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Global');
         cy.get('.cy_list_results').containsAll([
-            '1620 mechanisms',
+            '1635 mechanisms',
             'Global',
         ],{timeout: 15000});
     });  
@@ -57,7 +57,7 @@ describe('Mechanism List', function() {
     it('Should have pagination', ()=>{
         cy.get('[title="Next Page"]').click();
         cy.get('.cy_list_results').containsAll([
-            '21-40 of 1620',
+            '21-40 of 1635',
             '00200 - PEPFAR-MOH align: PEPFAR Data'
         ]);
         cy.get('[title="Previous Page"]').click();
