@@ -4,7 +4,7 @@ function checkField(de, co, data){
 
 function switchToFacility(){
     cy.get('#cy_formSelect_input').click();
-    cy.get('#cy_formSelect_dataset_MER_Results__Facility_Based').click();
+    cy.get('#cy_formSelect_dataset_MER_Results__Facility_Based_FY2019Q4').click();
 }
 
 describe('Aggregate Data', ()=> {
