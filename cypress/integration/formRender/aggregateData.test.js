@@ -30,7 +30,7 @@ describe('Aggregate Data', ()=> {
     });
 
     it('Should be able to switch to 18304', ()=>{
-        cy.contains('18304 - EQUIP').click();
+        cy.contains('18304 - AIDOAAA1500070 - EQUIP').click();
         switchToFacility();
     });
 
@@ -41,7 +41,7 @@ describe('Aggregate Data', ()=> {
     });
 
     it('Should be able to switch to 17514', ()=>{
-        cy.contains('17514 - Jhpiego Follow-On').click();
+        cy.contains('17514 - GH001438 - Jhpiego Follow-On').click();
         switchToFacility();
     });
 

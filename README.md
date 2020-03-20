@@ -43,8 +43,14 @@ The tests depend on the following.
 3. A few mechanisms
 4. Collected data via data entry app
 
-There are the following scripts which should set the target environment to a state where all tests will pass:
+There are the following scripts inside `cypress/scripts` directory which should set the target environment to a state where all tests will pass:
 
-1. cypress/scripts/users/persistUsers.py
-2. cypress/scripts/datastore/fixDataStore.py
-3. cypress/scripts/mechanism/submitErToAgencyHq.py
+1. `users/persistUsers.py` 
+2. `datastore/fixDataStore.py`
+3. `mechanism/submitErToAgencyHq.py`
+4. `dataEntry/data.sql`
+
+Surrounding files are there to get data into source files (such as users.json or getData.sql) and should be kept in this repository. Although not needed to setup the tests.
+
+Make sure to use Jakub's `dhis_env` script or manually set environment variables to fill in credentials for the server. See `cypres/scripts/api.py` for more details.
+
