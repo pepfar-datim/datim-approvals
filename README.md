@@ -47,7 +47,7 @@ There are the following scripts inside `cypress/scripts` directory which should 
 
 1. `users/persistUsers.py` 
 2. `datastore/fixDataStore.py`
-3. `mechanism/submitErToAgencyHq.py`
+3. `mechanism/submitMechanisms.py`
 4. `dataEntry/data.sql`
 
 Surrounding files are there to get data into source files (such as users.json or getData.sql) and should be kept in this repository. Although not needed to setup the tests.

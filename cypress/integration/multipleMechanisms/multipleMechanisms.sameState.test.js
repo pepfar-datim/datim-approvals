@@ -8,7 +8,7 @@ describe('Multiple Mechanisms ~ Same Status', ()=>{
     });
     it('should not be able to view multiple mechanisms', ()=>{
         cy.get('#cy_results_00200___PEPFAR_MOH_align__PEPFAR_Data').find('input').click();
-        cy.get('#cy_results_10000___HAIVN').find('input').click();
+        cy.get('#cy_results_10000___NU2GGH001140___HAIVN').find('input').click();
         cy.get('#cy_list_mechanismAction').should('be.disabled');
         cy.contains('All selected mechanisms must have the same status to proceed');
     });
