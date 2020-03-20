@@ -33,4 +33,4 @@ def process_status_code(response, method):
         print(method + ' to url ' + response.url + ' successful')
     else:
         print(method + ' to url ' + response.url + ' failed')
-        print(response.json()['message'])
+        print(response.json())
