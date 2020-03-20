@@ -24,13 +24,12 @@ describe('Mechanism List', function() {
     it('Should see MER Results for India', function () {
         cy.loginAs('agency-india');
         cy.goHome();
-        cy.searchMechanisms('MER Results','2019Q3','India');
+        cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([
             '5 mechanisms',
-            '16566 - Orphans and Vulnerable Children Project',
-            '18593 - HIV/AIDS Services for Key Populations Affected by HIV Project',
+            '16566 - AID386A1400007 - Orphans and Vulnerable Children Project',
+            '17111 - AIDGHIO1200001 - Joint U.N. Programme on HIV/AIDS (UNAIDS III)',
             'UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS',
-            'KARNATAKA HEALTH PROMOTION TRUST'
         ]);
     });
 
@@ -39,7 +38,7 @@ describe('Mechanism List', function() {
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Global');
         cy.get('.cy_list_results').containsAll([
-            '1620 mechanisms',
+            '1635 mechanisms',
             'Global',
         ],{timeout: 15000});
     });  
@@ -47,7 +46,7 @@ describe('Mechanism List', function() {
     it('Should have tabs', ()=>{
         cy.get('#cy_mechanismListTab_recall').click();
         cy.get('.cy_list_results').containsAll([
-            '17350 - Laboratory Strengthening',
+            '17350 - 6NU2GGH001462 - Laboratory Strengthening',
         ]);
         cy.get('.cy_list_results').containsNotAll([
             '11040 - HIV in Refugee Camps'
@@ -58,7 +57,7 @@ describe('Mechanism List', function() {
     it('Should have pagination', ()=>{
         cy.get('[title="Next Page"]').click();
         cy.get('.cy_list_results').containsAll([
-            '21-40 of 1620',
+            '21-40 of 1635',
             '00200 - PEPFAR-MOH align: PEPFAR Data'
         ]);
         cy.get('[title="Previous Page"]').click();

@@ -4,7 +4,7 @@ function checkField(de, co, data){
 
 function switchToFacility(){
     cy.get('#cy_formSelect_input').click();
-    cy.get('#cy_formSelect_dataset_MER_Results__Facility_Based').click();
+    cy.get('#cy_formSelect_dataset_MER_Results__Facility_Based_FY2019Q4').click();
 }
 
 describe('Aggregate Data', ()=> {
@@ -30,7 +30,7 @@ describe('Aggregate Data', ()=> {
     });
 
     it('Should be able to switch to 18304', ()=>{
-        cy.contains('18304 - EQUIP').click();
+        cy.contains('18304 - AIDOAAA1500070 - EQUIP').click();
         switchToFacility();
     });
 
@@ -41,7 +41,7 @@ describe('Aggregate Data', ()=> {
     });
 
     it('Should be able to switch to 17514', ()=>{
-        cy.contains('17514 - Jhpiego Follow-On').click();
+        cy.contains('17514 - GH001438 - Jhpiego Follow-On').click();
         switchToFacility();
     });
 

@@ -37,8 +37,8 @@ function apiRequest(userType, action, body){
 
 Cypress.Commands.add('approvalsApiCall', (userType, action, workflowName)=>{
     let requestBody;
-    if (workflowName==='mer') requestBody = generateRequestBody('RwNpkAM7Hw7','2019Q3','skj3e4YSiJY','ifIy3vjx3Xx');
-    if (workflowName==='er') requestBody = generateRequestBody('WUD8TApgOu1','2018Oct', 'skj3e4YSiJY', 'm0NndYanyMR');
+    if (workflowName==='mer') requestBody = generateRequestBody('RwNpkAM7Hw7','2019Q3','ptVxnBssua6','ifIy3vjx3Xx');
+    if (workflowName==='er') requestBody = generateRequestBody('WUD8TApgOu1','2018Oct', 'ptVxnBssua6', 'm0NndYanyMR');
     if (workflowName==='multiple1') requestBody = generateRequestBody('RwNpkAM7Hw7','2019Q3','l1KFEXKI4Dg', 'TKBbV46WUX3');
     if (workflowName==='multiple2') requestBody = generateRequestBody('RwNpkAM7Hw7','2019Q3','l1KFEXKI4Dg', 'VdSh1pgKSLp');
     apiRequest(userType, action, requestBody);

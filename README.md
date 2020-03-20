@@ -30,3 +30,27 @@ This project is a DHIS2 custom app dedicated to mechanism approval process.
 2. `public` static files which will be part of `*.zip` build artifact
 3. `cypress` JavaScript test specs. Testing is done using `Cypress`
 4. `external` JS files used for rendering forms (datasets). These files are kept for reference only. They've been merged into two large files residing in `public/formJs`
+
+## Setting up a testing suite
+The Data Approvals app is covered by end-to-end tests implemented using `Cypress` test framework.
+Before each deployment to production the developer should run these tests and make sure all of them are passing.
+
+However, in order to make the tests pass. It might be necessary to set up the data in the server environment first.
+The tests depend on the following.
+
+1. Testing user accounts
+2. Datastore settings
+3. A few mechanisms
+4. Collected data via data entry app
+
+There are the following scripts inside `cypress/scripts` directory which should set the target environment to a state where all tests will pass:
+
+1. `users/persistUsers.py` 
+2. `datastore/fixDataStore.py`
+3. `mechanism/submitMechanisms.py`
+4. `dataEntry/data.sql`
+
+Surrounding files are there to get data into source files (such as users.json or getData.sql) and should be kept in this repository. Although not needed to setup the tests.
+
+Make sure to use Jakub's `dhis_env` script or manually set environment variables to fill in credentials for the server. See `cypres/scripts/api.py` for more details.
+

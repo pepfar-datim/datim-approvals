@@ -1,10 +1,15 @@
+function switchToOuLevel(){
+    cy.get('#cy_formSelect_input').click();
+    cy.get('#cy_formSelect_dataset_MER_Results__Operating_Unit_Level__IM__FY2019Q4').click();
+}
+
 describe('Form Render', ()=>{
     it('Should render form content (Laboratory Settings)', ()=>{
         cy.loginAs('approvals-partner-botswana');
         cy.gotoMechanism('lMYMYFB2ybp', 'RwNpkAM7Hw7', '2019Q3', 'l1KFEXKI4Dg');
-        // cy.wait(5000);
+        cy.contains('7320 - StateAFLaboratory - RPSO laboratory construction projects');
+        switchToOuLevel();
         cy.containsAll([
-            '7320 - RPSO laboratory construction projects',
             'Number of new health workers who graduated',
             'Disaggregated by Cadre Category',
         ], {timeout: 5000});

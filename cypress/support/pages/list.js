@@ -9,7 +9,7 @@ const workflowIdNameMap = {
 };
 
 const ouIdNameMap = {
-    'India':'skj3e4YSiJY',
+    'Asia Region':'ptVxnBssua6',
     'Global':'ybg3MO3hcf4',
     'Botswana':'l1KFEXKI4Dg',
 };
