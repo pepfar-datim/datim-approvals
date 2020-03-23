@@ -22,14 +22,12 @@ describe('Mechanism List', function() {
 
 
     it('Should see MER Results for India', function () {
-        cy.loginAs('agency-india');
+        cy.loginAs('approvals-agency');
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([
-            '5 mechanisms',
-            '16566 - AID386A1400007 - Orphans and Vulnerable Children Project',
-            '17111 - AIDGHIO1200001 - Joint U.N. Programme on HIV/AIDS (UNAIDS III)',
-            'UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS',
+            '29 mechanisms',
+            '16681 - National Center for Tuberculosis and Leprosy Control (CENAT) Phase II',
         ]);
     });
 
