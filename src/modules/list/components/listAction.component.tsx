@@ -48,7 +48,7 @@ function sameStatusError({mechanisms, theme, onMechanismsSelected}:{mechanisms: 
     if (checkMechanismStates(mechanisms)) return null;
     let majorStatus = getMajorStatus(mechanisms);
     return <Paper style={styles.error(theme)}>
-        <Button style={styles.selectOnly} onClick={()=>onMechanismsSelected(mechanisms.filter(m=>m.state.status===majorStatus))}>Select {majorStatus} only</Button>
+        <Button style={styles.selectOnly} id='cy_selectSingleStatus' onClick={()=>onMechanismsSelected(mechanisms.filter(m=>m.state.status===majorStatus))}>Select {majorStatus} only</Button>
         <Typography>All selected mechanisms must have the same status to proceed.</Typography>
     </Paper>
 }
