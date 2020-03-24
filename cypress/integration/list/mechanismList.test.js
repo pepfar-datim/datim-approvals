@@ -21,7 +21,7 @@ describe('Mechanism List', function() {
     });
 
 
-    it('Should see MER Results for India', function () {
+    it('Should see MER Results for Asia Region', function () {
         cy.loginAs('approvals-agency');
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
@@ -36,7 +36,7 @@ describe('Mechanism List', function() {
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Global');
         cy.get('.cy_list_results').containsAll([
-            '1635 mechanisms',
+            /16.. mechanisms/,
             'Global',
         ],{timeout: 15000});
     });  
@@ -55,7 +55,7 @@ describe('Mechanism List', function() {
     it('Should have pagination', ()=>{
         cy.get('[title="Next Page"]').click();
         cy.get('.cy_list_results').containsAll([
-            '21-40 of 1635',
+            /21-40 of 16../,
             '00200 - PEPFAR-MOH align: PEPFAR Data'
         ]);
         cy.get('[title="Previous Page"]').click();

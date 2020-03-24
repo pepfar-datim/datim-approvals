@@ -4,7 +4,7 @@ describe('Approval Process #1 - Submitted by Partner', function() {
         cy.resetMerMechanism();
     });   
 
-    it('Should see MER Results / India / Q1 / Pending', function () {
+    it('Should see MER Results / Asia Region / Q3 / Pending', function () {
         cy.loginAs('approvals-partner');
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
