@@ -2,9 +2,9 @@
   "launch_path": "index.html",
   "default_locale": "en",
   "appType": "APP",
-  "name": "Data Approval",
-  "version": "2.0.2",
-  "description": "DATIM Mechanisms Approval App",
+  "name": "Data Deduplication",
+  "version": "2.0.0",
+  "description": "DATIM Data Deduplication",
   "developer": {
     "name": "Jakub Flaska",
     "email": "jflaska@baosystems.com"

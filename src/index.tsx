@@ -8,8 +8,9 @@ import {Provider} from '@dhis2/app-runtime'
 import OldHeaderBar from '@dhis2/d2-ui-header-bar';
 
 import ThemeWrapper from "./modules/main/components/themeWrapper.component";
-import NetworkError from "./modules/main/components/networkError.component";
+import NetworkError from "./modules/shared/components/networkError.component";
 import "./index.css";
+import Main from "./modules/main/components/main.component";
 
 config.baseUrl = baseUrl + 'api';
 config.i18n.sources.add('i18n.txt');
@@ -21,7 +22,9 @@ function Dhis2(){
                 <HeaderBar/>
             </span>
             <br/><br/><br/>
-            <ThemeWrapper/>
+            <ThemeWrapper>
+                <Main/>
+            </ThemeWrapper>
         </Provider>
     );
 }
@@ -34,7 +37,9 @@ function OldDhis2(props:any){
             <OldHeaderBar d2={props.d2}/>
             </span>
             <br/><br/><br/>
-            <ThemeWrapper/>
+            <ThemeWrapper>
+                <Main/>
+            </ThemeWrapper>
         </React.Fragment>
     );
 }

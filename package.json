@@ -1,6 +1,6 @@
 {
-  "name": "datim-approvals",
-  "version": "2.0.1",
+  "name": "data-deduplication",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@dhis2/app-runtime": "^2.0.4",
@@ -28,7 +28,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build:react": "react-scripts build",
-    "build:zip": "(rm -f Data-Approval.zip && cd build && zip ../Data-Approval.zip -r .)",
+    "build:zip": "(rm -f Data-Deduplication.zip && cd build && zip ../Data-Deduplication.zip -r .)",
     "build": "npm run build:react && npm run build:zip",
     "test": "node_modules/cypress/bin/cypress open"
   },

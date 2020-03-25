@@ -1,9 +1,8 @@
-import React from 'react';
+import React, {ReactNode} from 'react';
 import {ThemeProvider} from '@material-ui/styles';
 import {createMuiTheme} from '@material-ui/core/styles';
-import Message from "./message.component";
 
-import "../css/themeWrapper.component.css";
+import "./themeWrapper.component.css";
 
 const theme = createMuiTheme({
     palette: {
@@ -26,11 +25,11 @@ const styles = {
     }
 };
 
-export default function ThemeWrapper() {
+export default function ThemeWrapper({children}:{children:ReactNode}) {
     return (
         <ThemeProvider theme={theme}>
             <div style={styles.wrapper}>
-                <Message/>
+                {children}
             </div>
         </ThemeProvider>
     );
