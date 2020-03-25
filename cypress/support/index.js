@@ -19,7 +19,6 @@ import "./utils/contains"
 import "./utils/visit"
 import "./login/login"
 import "./pages/list"
-import "./pages/action"
 import "./api/mechanism"
 import "./api/reset"
 
