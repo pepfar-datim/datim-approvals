@@ -1,11 +1,25 @@
 import React from "react";
 import Filters from "../../filters/components/filters.component";
-import {FiltersModel} from "../../filters/models/filters.model";
+import {DedupeTypeModel, FiltersModel, idName} from "../../filters/models/filters.model";
 
 export default class Main extends React.Component<{}, {
     selectedFilters:FiltersModel
 }> {
-    filtersSelected = (selectedFilters:FiltersModel):void=>{
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedFilters: {
+                organisationUnit: {id:'1',name:'angola'},
+                dataType: {id:'1',name:'angola'},
+                period: {id:'1',name:'angola'},
+                agency: {id:'1',name:'angola'},
+                technicalArea: {id:'1',name:'angola'},
+                dedupeType: 'crosswalk' as DedupeTypeModel
+            }
+        };
+    }
+
+    onFiltersSelect = (selectedFilters:FiltersModel):void=>{
         this.setState({selectedFilters});
     };
 
@@ -13,7 +27,7 @@ export default class Main extends React.Component<{}, {
         return <React.Fragment>
             <Filters
                 selectedFilters={this.state.selectedFilters}
-                filtersSelected={this.filtersSelected}
+                onFiltersSelect={this.onFiltersSelect}
             />
         </React.Fragment>;
     }
