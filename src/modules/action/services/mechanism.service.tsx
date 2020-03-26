@@ -128,8 +128,3 @@ export function getMechanismStates(workflow: string, period: string, mechanisms:
             else throw new Error("Mechanisms have different statuses.");
         });
 }
-
-
-export function getCoidByCocids(cocIds:string[]):Promise<string> {
-    return api.get(catOptUrl(cocIds)).then(response=>response.categoryOptions.map(co=>co.id).join(','));
-}

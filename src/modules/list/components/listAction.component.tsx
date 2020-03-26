@@ -44,11 +44,15 @@ function getMajorStatus(mechanisms: MechanismModel[]):string{
     return countedStatuses.sort(sortStatuses)[0].status;
 }
 
+function filterStatuses(onMechanismsSelected: (mechanisms:MechanismModel[])=>any, mechanisms:MechanismModel[], majorStatus:string):void{
+    return onMechanismsSelected(mechanisms.filter(m=>m.state.status===majorStatus))
+}
+
 function sameStatusError({mechanisms, theme, onMechanismsSelected}:{mechanisms: MechanismModel[], theme: any, onMechanismsSelected: (mechanisms:MechanismModel[])=>any}){
     if (checkMechanismStates(mechanisms)) return null;
-    let majorStatus = getMajorStatus(mechanisms);
+    let majorStatus:string = getMajorStatus(mechanisms);
     return <Paper style={styles.error(theme)}>
-        <Button style={styles.selectOnly} id='cy_selectSingleStatus' onClick={()=>onMechanismsSelected(mechanisms.filter(m=>m.state.status===majorStatus))}>Select {majorStatus} only</Button>
+        <Button style={styles.selectOnly} id='cy_selectSingleStatus' onClick={()=>filterStatuses(onMechanismsSelected, mechanisms, majorStatus)}>Select {majorStatus} only</Button>
         <Typography>All selected mechanisms must have the same status to proceed.</Typography>
     </Paper>
 }
