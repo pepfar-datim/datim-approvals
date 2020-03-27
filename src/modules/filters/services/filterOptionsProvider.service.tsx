@@ -8,8 +8,8 @@ function transformIdNameList(list:{id:string, displayName}[]):idName[]{
 function extractAgencyName(groupName:string):string{
     return groupName
         .replace(/OU .+ Agency /,'')
+        .replace('Global Agency ','')
         .replace(' users','')
-        .replace(' all mechanisms','');
 }
 
 export default class FilterOptionsProvider {
@@ -21,7 +21,7 @@ export default class FilterOptionsProvider {
         return Promise.all([
             this.getOrganisationUnits(),
             this.getAgencies(),
-            // this.getTechnicalAreas()
+            this.getTechnicalAreas()
         ]);
     }
 
@@ -34,11 +34,10 @@ export default class FilterOptionsProvider {
     }
 
     private getAgencies(){
-        return getData('/userGroups.json?filter=displayName:like:Agency&paging=false')
-            .then(res=>transformIdNameList(res.userGroups))
-            .then((userGroups)=>{
-                let agencies = userGroups.map(group=>{return {id:group.id, name: extractAgencyName(group.name)}});
-                this.agencyList = agencies;
+        return getData('/categoryOptionGroups.json?filter=groupSets.id:eq:bw8KHXzxd9i&paging=false')
+            .then(res=>transformIdNameList(res.categoryOptionGroups))
+            .then((agencyList)=>{
+                this.agencyList = agencyList;
         });
     }
 
@@ -51,7 +50,7 @@ export default class FilterOptionsProvider {
             case FilterType.agency: return this.agencyList;
             case FilterType.organisationUnit: return this.orgUnitList;
             //throw new Error('Unknown filter option')
-                return [];
+            default: return [];
         }
     }
 }

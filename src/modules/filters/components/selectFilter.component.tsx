@@ -12,14 +12,13 @@ export default function SelectFilter({filterType, filterValue, onFilterSelect, f
     console.log(filterOptions);
     return <React.Fragment>
         <InputLabel id={`selectFilter_${filterType}`}>{camelCaseToHuman(filterType)}</InputLabel>
-        {JSON.stringify(filterOptions)}
         <Select
             labelId={`selectFilter_${filterType}`}
             id={`cypress_filter_${filterType}`}
             value={filterValue?filterValue.id:null}
             onChange={onFilterSelect}
         >
-            {/*{filterOptions.map(option=><MenuItem value={option.id}>{option.name}</MenuItem>)}*/}
+            {filterOptions.map(option=><MenuItem value={option.id}>{option.name}</MenuItem>)}
         </Select>
     </React.Fragment>;
 }
