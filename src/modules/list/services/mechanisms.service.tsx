@@ -3,6 +3,7 @@ import MechanismModel, {MechanismActions} from "../../shared/models/mechanism.mo
 import getStatus from "../../shared/services/status.service";
 import Filters from "../models/filters.model";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
+import getPermittedActions from "../../shared/services/permittedActions.service";
 
 const agencyGroupSet = 'bw8KHXzxd9i';
 const partnerGroupSet = 'BOyWrF33hiR';
@@ -17,16 +18,6 @@ function getMechanismInfoUrl(ids){
     else filter = 'filter=categories.id:eq:SH885jaRe0o';
     let fields = 'fields=id,name,organisationUnits[id,name],categoryOptionGroups[id,name,groupSets[id]],categoryOptionCombos[id,name]';
     return `/categoryOptions.json?paging=false&${filter}&${fields}`;
-}
-
-function getActions(permissions):MechanismActions{
-    if (!permissions) return {};
-    return {
-        accept: permissions.mayAccept,
-        return: permissions.mayUnaccept,
-        submit: permissions.mayApprove,
-        recall: permissions.mayUnapprove,
-    }
 }
 
 function getInfoByGroupSet(mechInfo, groupSetId):string{
@@ -57,7 +48,7 @@ export function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>{
                     },
                     state: {
                         status: getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted),
-                        actions: getActions(mech.permissions),
+                        actions: getPermittedActions(mech.permissions),
                         view: mech.permissions.mayReadData
                     },
                     meta: {

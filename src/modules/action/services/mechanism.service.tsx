@@ -6,6 +6,7 @@ import MechanismModel, {
 } from "../../shared/models/mechanism.model";
 import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
+import getPermittedActions from "../../shared/services/permittedActions.service";
 
 function mechanismStatesUrl(workflow: string, period: string){
     return `/dataApprovals/categoryOptionCombos?wf=${workflow}`
@@ -109,12 +110,7 @@ export function getMechanismsInfo(mechanismIds: string[]):Promise<MechanismInfo[
 function transformCOCToMechanismState(workflow, combo){
     return {
         status: getStatus(getWorkflowTypeById(workflow), combo.level.level, combo.accepted),
-        actions: {
-            submit: combo.permissions.mayApprove,
-            recall: combo.permissions.mayUnapprove,
-            accept: combo.permissions.mayAccept,
-            return: combo.permissions.mayUnaccept,
-        },
+        actions: getPermittedActions(combo.permissions),
         view: combo.permissions.mayReadData
     }
 }
