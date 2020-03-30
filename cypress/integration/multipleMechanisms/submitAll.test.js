@@ -7,7 +7,7 @@ describe('Submit All', ()=>{
         cy.get('#cy_selectSingleStatus').click();
     });
     it('should see form preview and mech info', ()=>{
-        cy.get('#cy_mechanismAction_view').click();
+        cy.get('#cy_list_mechanismAction').click();
         cy.containsAll([
             'Angola, Asia Region, Botswana',
             '81378 - TBDawardUSAID - [Placeholder - 81378 Sierra Leone USAID ]',
