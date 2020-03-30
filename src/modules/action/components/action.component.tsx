@@ -108,6 +108,7 @@ export default class Action extends React.Component<
             case 'submit': message += 'submitted'; break;
             case 'recall': message += 'recalled'; break;
             case 'accept': message += 'accepted'; break;
+            case 'return': message += 'returned'; break;
         }
         this.props.postMessage(message);
     }

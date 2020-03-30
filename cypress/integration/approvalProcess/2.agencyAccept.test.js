@@ -15,14 +15,14 @@ describe('Approval Process #2 - Agency ACCEPT', ()=>{
     it('Should display mechanism detail with status ready to accept', ()=>{
         cy.mechanismAction('accept', '#cy_results_17350___6NU2GGH001462___Laboratory_Strengthening');
         cy.contains('Number of new health workers who graduated');
-        cy.actions().containsAll(['recall','accept']);
+        cy.permittedActions(['return','accept']);
         cy.info().contains('submitted by partner');
     });
 
     it('Should be able to return mechanism', ()=>{
-        cy.get('#cy_mechanismAction_recall').click();        
+        cy.get('#cy_mechanismAction_return').click();
         cy.containsAll([
-            'Mechanism successfully recalled',
+            'Mechanism successfully returned',
             'Number of new health workers who graduated'
         ]);
         cy.actions().contains('No actions');
@@ -37,7 +37,7 @@ describe('Approval Process #2 - Agency ACCEPT', ()=>{
         cy.loginAs('approvals-agency');
         cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'ptVxnBssua6');
 
-        cy.actions().containsAll(['accept', 'recall']);
+        cy.permittedActions(['accept', 'return']);
         cy.info().contains('submitted by partner');  
 
         cy.get('#cy_mechanismAction_accept').click();        
@@ -45,7 +45,7 @@ describe('Approval Process #2 - Agency ACCEPT', ()=>{
             'Mechanism successfully accepted',
             'Number of new health workers who graduated'
         ]);
-        cy.actions().containsAll(['return', 'submit']);
+        cy.permittedActions(['submit','return']);
         cy.info().contains('accepted by agency');          
     });         
 });

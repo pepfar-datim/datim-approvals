@@ -12,3 +12,14 @@ function generateAreaCommand(commandName, cssSelector){
 }
 
 actionPageAreas.forEach(area=>generateAreaCommand(area.name, area.css));
+
+const allActions = ['submit', 'accept', 'recall', 'return'];
+
+function getOtherActions(permittedActions){
+    return allActions.filter(action=>permittedActions.indexOf(action)==-1)
+}
+
+Cypress.Commands.add('permittedActions', (permittedActions)=>{
+    cy.actions().containsAll(permittedActions);
+    cy.actions().containsNotAll(getOtherActions(permittedActions))
+});

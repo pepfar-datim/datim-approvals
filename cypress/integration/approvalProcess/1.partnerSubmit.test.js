@@ -25,15 +25,16 @@ describe('Approval Process #1 - Submitted by Partner', function() {
         ]);
     });
     it('Should submit mechanism on SUBMIT click', ()=>{
+        cy.permittedActions(['submit']);
         cy.get('#cy_mechanismAction_submit').click();
         cy.contains('Mechanism successfully submitted');
         cy.info().containsAll([
             'submitted by partner',
             '17350 - 6NU2GGH001462 - Laboratory Strengthening'
         ]);
-        cy.actions().contains('recall');
     });
     it('Should recall mechanism on RECALL click', ()=>{
+        cy.permittedActions(['recall']);
         cy.get('#cy_mechanismAction_recall').click();
         cy.contains('Mechanism successfully recalled');
         cy.info().containsAll([
