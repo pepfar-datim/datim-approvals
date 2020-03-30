@@ -42,7 +42,7 @@ describe('Mechanism List', function() {
     });  
 
     it('Should have tabs', ()=>{
-        cy.get('#cy_mechanismListTab_recall').click();
+        cy.get('#cy_mechanismListTab_return').click();
         cy.get('.cy_list_results').containsAll([
             '17350 - 6NU2GGH001462 - Laboratory Strengthening',
         ]);
