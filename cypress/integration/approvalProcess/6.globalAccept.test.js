@@ -40,11 +40,11 @@ describe('Approval Process #6 - Global ACCEPT', ()=>{
     });
 
     it('Should be able to RECALL mechanism', ()=>{
-        cy.actions().containsAll(['recall', 'accept']);
+        cy.permittedActions(['accept','return']);
         cy.info().containsAll(['submitted by inter-agency', '17350 - 6NU2GGH001462 - Laboratory Strengthening']);
-        cy.get('#cy_mechanismAction_recall').click();  
-        cy.contains('Mechanism successfully recalled');        
-        cy.actions().contains('No actions');
+        cy.get('#cy_mechanismAction_return').click();
+        cy.contains('Mechanism successfully returned');
+        cy.permittedActions(['No actions']);
         cy.info().contains('accepted by inter-agency');        
     });    
 
@@ -55,11 +55,11 @@ describe('Approval Process #6 - Global ACCEPT', ()=>{
     it('Should be able to ACCEPT mechanism as Global', ()=>{
         cy.loginAs('approvals-global');
         cy.gotoMechanism('ifIy3vjx3Xx', 'RwNpkAM7Hw7', '2019Q3', 'ptVxnBssua6');
-        cy.actions().containsAll(['recall', 'accept']);
+        cy.permittedActions(['accept','return']);
         cy.info().containsAll(['submitted by inter-agency', '17350 - 6NU2GGH001462 - Laboratory Strengthening']);
         cy.get('#cy_mechanismAction_accept').click();  
         cy.contains('Mechanism successfully accepted');        
-        cy.actions().containsAll(['recall', 'return']);
+        cy.permittedActions(['return']);
         cy.info().contains('accepted by global');           
     });
 });

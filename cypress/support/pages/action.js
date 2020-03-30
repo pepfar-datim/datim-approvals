@@ -13,7 +13,7 @@ function generateAreaCommand(commandName, cssSelector){
 
 actionPageAreas.forEach(area=>generateAreaCommand(area.name, area.css));
 
-const allActions = ['submit', 'accept', 'recall', 'return'];
+const allActions = ['submit', 'accept', 'recall', 'return', 'No actions'];
 
 function getOtherActions(permittedActions){
     return allActions.filter(action=>permittedActions.indexOf(action)==-1)
