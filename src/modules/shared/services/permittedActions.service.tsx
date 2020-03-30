@@ -7,12 +7,22 @@ type Dhis2Permissions = {
     mayUnaccept:boolean;
 };
 
+function canRecall(dhis2Permissions:Dhis2Permissions):boolean{
+    if (!dhis2Permissions.mayAccept && dhis2Permissions.mayUnapprove) return true;
+    else return false;
+}
+
+function canReturn(dhis2Permissions:Dhis2Permissions):boolean{
+    if (dhis2Permissions.mayAccept && dhis2Permissions.mayUnapprove) return true;
+    else return false;
+}
+
 export default function getPermittedActions(dhis2permissions:Dhis2Permissions):MechanismActions {
     if (!dhis2permissions) return {};
     return {
         submit: dhis2permissions.mayApprove,
-        recall: dhis2permissions.mayUnapprove,
         accept: dhis2permissions.mayAccept,
-        return: dhis2permissions.mayUnaccept,
+        recall: canRecall(dhis2permissions),
+        return: canReturn(dhis2permissions),
     }
 }
