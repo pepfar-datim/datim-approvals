@@ -18,8 +18,9 @@ function canReturn(dhis2Permissions:Dhis2Permissions):boolean{
     return false;
 }
 
-export default function getPermittedActions(dhis2permissions:Dhis2Permissions):MechanismActions {
+export default function getPermittedActions(dhis2permissions:Dhis2Permissions, currentStatus:string):MechanismActions {
     if (!dhis2permissions) return {};
+    if (currentStatus==='accepted by global') dhis2permissions.mayApprove = false;
     return {
         submit: dhis2permissions.mayApprove,
         accept: dhis2permissions.mayAccept,

@@ -67,6 +67,7 @@ export default function Step({workflow, mechanismState, userType}:{workflow: str
     const classes = useStyles();
     if (!mechanismState) return <Loading message='Loading mechanism state...'/>;;
     if (!userType) return null;
+    if (mechanismState.status === 'submitted by global') return null;
     const workflowType = getWorkflowTypeById(workflow);
     return(
         <Stepper id='cy_actionPage_stepper' activeStep={getStepNr(mechanismState.status, workflowType)} alternativeLabel classes={{root:classes.root}}>

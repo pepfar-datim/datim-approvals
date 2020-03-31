@@ -1,5 +1,5 @@
 import api from "../../shared/services/api.service";
-import MechanismModel, {MechanismActions} from "../../shared/models/mechanism.model";
+import MechanismModel from "../../shared/models/mechanism.model";
 import getStatus from "../../shared/services/status.service";
 import Filters from "../models/filters.model";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
@@ -39,6 +39,7 @@ export function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>{
                 if (infoResp.categoryOptions.filter(i=>i.id===mech.id).length>1) console.log(`Two info records per mechanism ${mech.id} ${mechInfo.name}`);
                 if (!mechInfo.organisationUnits[0]) return console.log(`No OU info for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
                 if (mechInfo.organisationUnits[0].id!==filters.ou && filters.ou!=='ybg3MO3hcf4') return console.log(`OU info not matching for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
+                let status = getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted);
                 return {
                     info: {
                         name: mechInfo.name,
@@ -47,8 +48,8 @@ export function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>{
                         agency: getInfoByGroupSet(mechInfo, agencyGroupSet),
                     },
                     state: {
-                        status: getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted),
-                        actions: getPermittedActions(mech.permissions),
+                        status: status,
+                        actions: getPermittedActions(mech.permissions, status),
                         view: mech.permissions.mayReadData
                     },
                     meta: {
