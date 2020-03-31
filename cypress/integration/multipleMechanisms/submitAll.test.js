@@ -18,6 +18,5 @@ describe('Submit All', ()=>{
             'Oct 2019 - Sep 2020',
             'All Mechanisms Overview'
         ],{timeout: 20000});
-        cy.contains('Number of males circumcised as part of the voluntary medical male circumcision', {timeout: 4*60*1000});
     });
 });
