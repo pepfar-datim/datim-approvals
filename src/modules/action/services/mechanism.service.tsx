@@ -108,9 +108,10 @@ export function getMechanismsInfo(mechanismIds: string[]):Promise<MechanismInfo[
 }
 
 function transformCOCToMechanismState(workflow, combo){
+    let status = getStatus(getWorkflowTypeById(workflow), combo.level.level, combo.accepted);
     return {
-        status: getStatus(getWorkflowTypeById(workflow), combo.level.level, combo.accepted),
-        actions: getPermittedActions(combo.permissions),
+        status: status,
+        actions: getPermittedActions(combo.permissions, status),
         view: combo.permissions.mayReadData
     }
 }
