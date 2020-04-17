@@ -29,4 +29,4 @@ cypress/scripts/mechanism/api.pyc
 cypress/scripts/users/api.pyc
 cypress/scripts/dataStore/__pycache__/
 cypress/scripts/dataStore/api.pyc
-
+*.pyc
