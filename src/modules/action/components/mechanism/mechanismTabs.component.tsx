@@ -4,7 +4,15 @@ import MechanismInfo from "./mechanismInfo.component";
 import MechanismModel, {MechanismState} from "../../../shared/models/mechanism.model";
 import FormSelect from "./form/formSelect.component";
 import Loading from "../../../shared/components/loading.component";
+import { TextAlignProperty } from "csstype";
 
+const styles = {
+    datasetWarning: {
+        textAlign: 'center' as TextAlignProperty,
+        margin: '20px 0px',
+        fontWeight: 500
+    }
+}
 
 function lengthWarning(mechanismsLength: number, clicks: number){
     if (mechanismsLength<=30) return null;
@@ -31,6 +39,7 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
 function extractData(mechanisms: MechanismModel[], property: string){
     let [p1,p2] = property.split('.');
     let values = mechanisms.map(m=>m[p1][p2]).filter(s=>s);
+    if (property==='info.name') values = values.map(v=>v.replace(/ - .+$/,'')).map(v=>parseInt(v))
     let uniqueValues = [...new Set(values)];
     return uniqueValues.sort().join(', ');
 }
@@ -38,7 +47,7 @@ function extractData(mechanisms: MechanismModel[], property: string){
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
     if (mechanisms.length<=1 || openTab!==0) return;
     let aggregatedInfo = {
-        name: 'All Mechanisms Overview',
+        name: extractData(mechanisms, 'info.name'),
         ou: extractData(mechanisms, 'info.ou'),
         agency: extractData(mechanisms, 'info.agency'),
         partner: extractData(mechanisms, 'info.partner'),
@@ -46,7 +55,9 @@ function renderMechanismOverview(openTab:number, workflow:string, period:string,
     return <React.Fragment>
         <MechanismInfo mechanismState={mechanismState} mechanismInfo={aggregatedInfo}/>
         <br/>
-        <FormSelect workflow={workflow} period={period} userOu={userOu} mechanismMetas={mechanisms.map(m=>m.meta)}/>
+        {mechanisms.length<=30
+            ?<FormSelect workflow={workflow} period={period} userOu={userOu} mechanismMetas={mechanisms.map(m=>m.meta)}/>
+            :<Typography color='secondary' style={styles.datasetWarning}>Data cannot be shown when more than 30 mechanisms are selected</Typography>}
     </React.Fragment>
 }
 

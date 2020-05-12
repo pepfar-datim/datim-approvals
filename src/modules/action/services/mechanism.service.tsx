@@ -40,7 +40,12 @@ const agencyGroupSet = 'bw8KHXzxd9i';
 const partnerGroupSet = 'BOyWrF33hiR';
 
 function getInfoByGroupSet(mechInfo, groupSetId){
-    return mechInfo.categoryOptionGroups.filter(prop=>prop.groupSets[0].id===groupSetId)[0] || {};
+    try {
+        return mechInfo.categoryOptionGroups.filter(prop => prop.groupSets[0].id === groupSetId)[0] || {};
+    } catch(e){
+        console.error(e);
+        return mechInfo.categoryOptionGroups[0];
+    }
 }
 
 function replaceOuByGlobal(mechanismsMeta: MechanismMeta[]):MechanismMeta[]{

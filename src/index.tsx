@@ -20,7 +20,7 @@ function Dhis2(){
             <span id='dhis2HeaderBar'>
                 <HeaderBar/>
             </span>
-            <br/><br/><br/>
+            <br/>
             <ThemeWrapper/>
         </Provider>
     );
