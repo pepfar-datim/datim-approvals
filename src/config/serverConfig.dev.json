@@ -1,5 +1,5 @@
 {
-  "baseUrl": "https://sandbox.er.datim.org/",
+  "baseUrl": "https://nr.testing.datim.org/",
   "sqlViewId": "rQZnEgCAhuI",
-  "apiVersion": "30"
+  "apiVersion": "33"
 }
