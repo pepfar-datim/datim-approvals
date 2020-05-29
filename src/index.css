@@ -9,3 +9,7 @@ a:-webkit-any-link {
 #dhis2HeaderBar{
     font-family: sans-serif;
 }
+
+.MuiMenu-paper.MuiPopover-paper {
+    z-index: 1000000;
+}

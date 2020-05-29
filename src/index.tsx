@@ -16,11 +16,11 @@ config.i18n.sources.add('i18n.txt');
 
 function Dhis2(){
     return (
-        <Provider config={{baseUrl: baseUrl, apiVersion: '30'}}>
+        <Provider config={{baseUrl: baseUrl, apiVersion: '33'}}>
             <span id='dhis2HeaderBar'>
                 <HeaderBar/>
             </span>
-            <br/><br/><br/>
+            <br/>
             <ThemeWrapper/>
         </Provider>
     );
@@ -40,7 +40,7 @@ function OldDhis2(props:any){
 }
 
 init().then(d2 => {
-    render(<OldDhis2 d2={d2}/>, document.getElementById('root'));
+    render(<Dhis2/>, document.getElementById('root'));
 }).catch(e=>{
     render(<NetworkError/>, document.getElementById('root'));
 });

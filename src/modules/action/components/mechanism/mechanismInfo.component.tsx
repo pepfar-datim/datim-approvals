@@ -10,7 +10,7 @@ export default function MechanismInfo({mechanismState, mechanismInfo}:{mechanism
                 <TableBody>
                     <TableRow>
                         <TableCell>Name</TableCell>
-                        <TableCell>{mechanismInfo.name}</TableCell>
+                        <TableCell><ShowMore text={mechanismInfo.name}/></TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>OU</TableCell>
