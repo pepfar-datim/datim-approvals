@@ -39,9 +39,10 @@ function renderMechanismInfo(openTab:number, workflow:string, period:string, use
 function extractData(mechanisms: MechanismModel[], property: string){
     let [p1,p2] = property.split('.');
     let values = mechanisms.map(m=>m[p1][p2]).filter(s=>s);
-    if (property==='info.name') values = values.map(v=>v.replace(/ - .+$/,'')).map(v=>parseInt(v))
+    if (property==='info.name') values = values.map(v=>v.replace(/ - .+$/,''));
     let uniqueValues = [...new Set(values)];
-    return uniqueValues.sort().join(', ');
+    if (property==='info.name') return uniqueValues.sort((a,b)=>parseInt(a)-parseInt(b)).join(', ');
+    else return uniqueValues.sort().join(', ');
 }
 
 function renderMechanismOverview(openTab:number, workflow:string, period:string, userOu:string, mechanismState:MechanismState, mechanisms:MechanismModel[]) {
@@ -57,7 +58,7 @@ function renderMechanismOverview(openTab:number, workflow:string, period:string,
         <br/>
         {mechanisms.length<=30
             ?<FormSelect workflow={workflow} period={period} userOu={userOu} mechanismMetas={mechanisms.map(m=>m.meta)}/>
-            :<Typography color='secondary' style={styles.datasetWarning}>Data cannot be shown when more than 30 mechanisms are selected</Typography>}
+            :<Typography color='secondary' style={styles.datasetWarning}>Data cannot be shown when more than 30 mechanisms are selected. You can still approve these mechanisms.</Typography>}
     </React.Fragment>
 }
 
