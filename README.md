@@ -19,7 +19,7 @@ This project is a DHIS2 custom app dedicated to mechanism approval process.
 
 1. `git clone`
 2. `npm install`
-3. Check `src/config/serverCondig.dev.js` and make sure you have access to the server listed.
+3. Check `src/config/serverConfig.dev.js` and make sure you have access to the server listed.
 4. Login to the server and go to System Configuration > Access and whitelist `localhost:3003`
 5. Make sure you stayed logged in to the server in another browser tab.
 6. `npm start`
