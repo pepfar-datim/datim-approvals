@@ -1,4 +1,4 @@
-# Datim Approvals v2
+# DATIM Approvals v2
 
 [![Dependencies](https://david-dm.org/pepfar-datim/datim-approvals.svg)](https://david-dm.org/pepfar-datim/datim-approvals)
 
