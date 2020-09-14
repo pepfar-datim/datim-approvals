@@ -65,11 +65,10 @@ function movingDown(action:string):boolean{
 }
 
 function fixAgencyHq(mechanismsMeta: MechanismMeta[], action:string, currentStatus:string, workflow:string):MechanismMeta[]{
-    if (workflow==='WUD8TApgOu1') {
+    if (['WUD8TApgOu1','e8F8M6leZjj'].includes(workflow)) {
         if (movingUp(action) && ['accepted by agency hq','submitted by agency hq'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
         if (movingDown(action) && ['submitted by agency hq','accepted by global'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
     }
-
     return mechanismsMeta;
 }
 
