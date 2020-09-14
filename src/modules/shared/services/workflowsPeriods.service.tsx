@@ -66,6 +66,7 @@ export default class WorkflowPeriodService {
     }
 
     getPeriods(workflowId: string):idNameList{
+        if (!workflowId) return [];
         return this.workflowPeriods.filter(wf =>wf.id===workflowId)[0].periods;
     }
     getPeriodNameById(workflowId: string, periodId: string):string{

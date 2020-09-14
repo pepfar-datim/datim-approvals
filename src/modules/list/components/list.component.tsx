@@ -47,9 +47,9 @@ class List extends React.Component<
 
         this.workflowPeriodService = new WorkflowPeriodService();
         let workflowsPromise = this.workflowPeriodService.init().then((workflows)=>{
-            let selectedWorkflow = workflows[0].id;
+            let selectedWorkflow = workflows.length>0 && workflows[0].id;
             let periods = this.workflowPeriodService.getPeriods(selectedWorkflow);
-            this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods[0].id, ou: this.state.filters.ou}});
+            this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods.length>0&&periods[0].id, ou: this.state.filters.ou}});
             this.setFilterFromUrl('workflow');
             this.setFilterFromUrl('period');
         });
@@ -131,7 +131,7 @@ class List extends React.Component<
 
     renderResults(){
         if (this.state.loading.mechanisms) return <Loading message='Loading mechanisms...'/>;
-        if (!this.state.mechanisms) return null;
+        if (!this.state.mechanisms) return <Typography color="secondary">No currently active workflows, if you feel this is in error, please contact support</Typography>;
         if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
     }
@@ -140,7 +140,7 @@ class List extends React.Component<
         return (
             <React.Fragment>
                 {this.renderFilters()}
-                <Divider/>
+                {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
             </React.Fragment>
