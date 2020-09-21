@@ -4,7 +4,7 @@ import MechanismInfo from "./mechanismInfo.component";
 import MechanismModel, {MechanismState} from "../../../shared/models/mechanism.model";
 import FormSelect from "./form/formSelect.component";
 import Loading from "../../../shared/components/loading.component";
-import { TextAlignProperty } from "csstype";
+import {TextAlignProperty} from "csstype";
 
 const styles = {
     datasetWarning: {

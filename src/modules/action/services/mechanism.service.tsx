@@ -1,9 +1,5 @@
 import api from "../../shared/services/api.service";
-import MechanismModel, {
-    MechanismInfo,
-    MechanismMeta,
-    MechanismState
-} from "../../shared/models/mechanism.model";
+import MechanismModel, {MechanismInfo, MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
 import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
@@ -30,10 +26,6 @@ function getActionUrl(action){
         case "recall": return '/dataApprovals/unapprovals';
         case "return": return '/dataApprovals/unapprovals';
     }
-}
-
-function catOptUrl(cocIds:string[]):string{
-    return `/categoryOptions.json?filter=categoryOptionCombos.id:in:[${cocIds.join(',')}]`;
 }
 
 const agencyGroupSet = 'bw8KHXzxd9i';

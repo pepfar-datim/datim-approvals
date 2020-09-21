@@ -1,6 +1,6 @@
 import React from "react";
-import {HashRouter, Route, Redirect} from "react-router-dom";
-import {Typography, Paper, Divider} from "@material-ui/core";
+import {HashRouter, Redirect, Route} from "react-router-dom";
+import {Divider, Paper, Typography} from "@material-ui/core";
 import queryString from "query-string";
 
 import List from "../../list/components/list.component";

@@ -1,8 +1,8 @@
 import React from "react";
-import MechanismModel, {ApprovalsCombo,   MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
+import MechanismModel, {ApprovalsCombo, MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
 import {Divider, Paper} from "@material-ui/core";
 import ActionButtons from "./actionButtons.component";
-import {getMechanismsInfo, performAction, getMechanismStates} from "../services/mechanism.service";
+import {getMechanismsInfo, getMechanismStates, performAction} from "../services/mechanism.service";
 import Step from "./step/step.component";
 import MechanismTabs from "./mechanism/mechanismTabs.component";
 import {fetchUserOu, fetchUserType} from "../services/user.service";

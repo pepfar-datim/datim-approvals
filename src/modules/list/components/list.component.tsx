@@ -1,4 +1,4 @@
-import React from "react";
+import React, {CSSProperties} from "react";
 import {withRouter} from "react-router-dom";
 import queryString from "query-string";
 import {Divider, Typography} from "@material-ui/core";
@@ -13,6 +13,13 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
+
+const styles = {
+    link: {
+        color: 'inherit',
+        textDecoration: 'underline'
+    } as CSSProperties
+};
 
 class List extends React.Component<
     {history: any, urlSearchOptions: Filters},
@@ -130,8 +137,8 @@ class List extends React.Component<
     };
 
     renderResults(){
-        if (this.state.loading.mechanisms) return <Loading message='Loading mechanisms...'/>;
-        if (!this.state.mechanisms) return <Typography color="secondary">No currently active workflows, if you feel this is in error, please contact support</Typography>;
+        if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
+        if (!this.state.mechanisms) return <Typography color="secondary">There are no workflows active currently. If you feel this is an error, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link}>DATIM Support</a>.</Typography>;
         if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
     }
