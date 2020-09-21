@@ -30,22 +30,32 @@ function getPeriods(workflow):periodList{
     });
 }
 
-function transformDatastore(response):WorkflowPeriods{
+function transformDatastore(response, isSuperUser):WorkflowPeriods{
     return Object.keys(response).map(workflowName=>{
+        let periods:any = getPeriods(response[workflowName]);
+        if (!isSuperUser) periods = filterPeriods(periods);
         return {
             id: null,
             name: workflowName,
-            periods: filterPeriods(getPeriods(response[workflowName])),
+            periods: periods,
             type: null
         }
     });
 }
 
+function checkSuperUser():Promise<boolean>{
+    return api.get('/me?fields=userCredentials[userRoles[name]]')
+        .then(result=>result.userCredentials.userRoles)
+        .then(result=>result.map(r=>r.name))
+        .then(result=>result.includes("Superuser ALL authorities"))
+}
+
 export default class WorkflowPeriodService {
     private workflowPeriods:WorkflowPeriods;
-    init():Promise<WorkflowPeriods>{
+    async init():Promise<WorkflowPeriods>{
+        let isSuperUser:boolean = await checkSuperUser();
         let wfPromise = getWorkflows();
-        let wfPeriodPromise = this.fetchDatastorePeriods();
+        let wfPeriodPromise = this.fetchDatastorePeriods(isSuperUser);
         return Promise.all([wfPromise, wfPeriodPromise]).then(results=>{
             let workflows:idNameList = results[0];
             let workflowPeriods:WorkflowPeriods = results[1];
@@ -57,12 +67,15 @@ export default class WorkflowPeriodService {
             }).filter(wfp=>{
                 return wfp.periods.length>0;
             });
+            this.workflowPeriods.forEach(wfp=>{
+                wfp.periods = wfp.periods.sort((a,b)=>a.name>b.name?-1:1);
+            })
             return this.workflowPeriods;
         });
     }
 
-    private fetchDatastorePeriods(){
-        return api.get('/dataStore/approvals/periodSettings').then(transformDatastore);
+    private fetchDatastorePeriods(isSuperUser: boolean){
+        return api.get('/dataStore/approvals/periodSettings').then((result)=>transformDatastore(result, isSuperUser));
     }
 
     getPeriods(workflowId: string):idNameList{

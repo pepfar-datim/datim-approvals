@@ -130,7 +130,7 @@ class List extends React.Component<
     };
 
     renderResults(){
-        if (this.state.loading.mechanisms) return <Loading message='Loading mechanisms...'/>;
+        if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
         if (!this.state.mechanisms) return <Typography color="secondary">No currently active workflows, if you feel this is in error, please contact support</Typography>;
         if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
