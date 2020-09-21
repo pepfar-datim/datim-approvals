@@ -1,6 +1,6 @@
 import React from "react";
 import Router from "./router.component";
-import {IconButton, SnackbarContent, Snackbar, withTheme} from "@material-ui/core";
+import {IconButton, Snackbar, SnackbarContent, withTheme} from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 
 

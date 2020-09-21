@@ -1,5 +1,5 @@
 import React from "react";
-import {FormControl, Select, MenuItem, InputLabel, Typography} from "@material-ui/core";
+import {FormControl, InputLabel, MenuItem, Select, Typography} from "@material-ui/core";
 import Filters from "../models/filters.model";
 import {idNameList} from "../../shared/models/idNameList.model";
 

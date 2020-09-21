@@ -1,11 +1,9 @@
 import React from "react";
 import {render} from 'react-dom';
 import {baseUrl} from "./modules/shared/services/apiUrl.service";
-import {init, config} from 'd2';
+import {config, init} from 'd2';
 import {HeaderBar} from '@dhis2/ui-widgets'
 import {Provider} from '@dhis2/app-runtime'
-
-import OldHeaderBar from '@dhis2/d2-ui-header-bar';
 
 import ThemeWrapper from "./modules/main/components/themeWrapper.component";
 import NetworkError from "./modules/main/components/networkError.component";
@@ -23,19 +21,6 @@ function Dhis2(){
             <br/>
             <ThemeWrapper/>
         </Provider>
-    );
-}
-
-function OldDhis2(props:any){
-    if (!props.d2) return null;
-    return (
-        <React.Fragment>
-            <span id='dhis2HeaderBar'>
-            <OldHeaderBar d2={props.d2}/>
-            </span>
-            <br/><br/><br/>
-            <ThemeWrapper/>
-        </React.Fragment>
     );
 }
 

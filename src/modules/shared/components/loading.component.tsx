@@ -1,6 +1,6 @@
 import React from 'react';
 import {LinearProgress, Typography} from "@material-ui/core";
-import { TextAlignProperty } from 'csstype';
+import {TextAlignProperty} from 'csstype';
 
 const styles = {
     message: {

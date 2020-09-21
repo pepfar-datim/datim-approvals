@@ -1,5 +1,4 @@
-import React from 'react';
-import { forwardRef } from 'react';
+import React, {forwardRef} from 'react';
 
 import AddBox from '@material-ui/icons/AddBox';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';

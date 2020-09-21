@@ -1,5 +1,4 @@
 import {baseUrl} from "./apiUrl.service";
-import queryString from "query-string";
 
 function makeUrl(url:string){
     return baseUrl+'api'+url;
