@@ -66,7 +66,8 @@ export default class Action extends React.Component<
             mechanismsInfo.forEach((info,i)=>{
                 mechanisms[i].info = mechanismsInfo[i];
             });
-            this.setState({mechanisms: mechanisms});
+            mechanisms = mechanisms.sort((a,b)=>a.info.name>b.info.name?1:-1)
+            this.setState({mechanisms});
         });
     };
 
