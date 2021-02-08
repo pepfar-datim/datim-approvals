@@ -62,10 +62,10 @@ Make sure to use Jakub's `dhis_env` script or manually set environment variables
 4: Tag the release in github and upload Zip
 5: Make deploy script utilizing `src/lib/libAppRepairs.sh`
 
-   #!/usr/bin/env bash
-   source ../../src/lib/libAppRepairs.sh
-   APPROVAL_APP_VERSION="x.y.z"
-   printInfo 'Deleting the old Approvals App'
-   deleteOldVersion "Data-Approval"
-   installApp "Data-Approval" $APPROVAL_APP_VERSION
-   exit 0
+    #!/usr/bin/env bash
+    source ../../src/lib/libAppRepairs.sh
+    APPROVAL_APP_VERSION="x.y.z"
+    printInfo 'Deleting the old Approvals App'
+    deleteOldVersion "Data-Approval"
+    installApp "Data-Approval" $APPROVAL_APP_VERSION
+    exit 0
