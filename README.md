@@ -56,11 +56,11 @@ Make sure to use Jakub's `dhis_env` script or manually set environment variables
 
 ## Deploying
 
-1: Make sure tests are passing
-2: Update packages.json to increment version number
-3: Create Zip `npm run-scripts build`
-4: Tag the release in github and upload Zip
-5: Make deploy script utilizing `src/lib/libAppRepairs.sh`
+1. Make sure tests are passing
+2. Update packages.json to increment version number
+3. Create Zip `npm run-scripts build`
+4. Tag the release in github and upload Zip
+5. Make deploy script utilizing `src/lib/libAppRepairs.sh`
 
     #!/usr/bin/env bash
     source ../../src/lib/libAppRepairs.sh
