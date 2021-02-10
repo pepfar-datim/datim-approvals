@@ -9,7 +9,7 @@ export default function MechanismInfo({mechanismState, mechanismInfo}:{mechanism
             <Table size="small" className='cy_mechanismInfo'>
                 <TableBody>
                     <TableRow>
-                        <TableCell>Name</TableCell>
+                        <TableCell>Mech</TableCell>
                         <TableCell><ShowMore text={mechanismInfo.name}/></TableCell>
                     </TableRow>
                     <TableRow>

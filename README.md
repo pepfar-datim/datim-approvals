@@ -43,7 +43,7 @@ The tests depend on the following.
 3. A few mechanisms
 4. Collected data via data entry app
 
-There are the following scripts inside `cypress/scripts` directory which should set the target environment to a state where all tests will pass:
+There are the following scripts inside `testData` directory which should set the target environment to a state where all tests will pass:
 
 1. `users/persistUsers.py` 
 2. `datastore/fixDataStore.py`
@@ -52,5 +52,25 @@ There are the following scripts inside `cypress/scripts` directory which should 
 
 Surrounding files are there to get data into source files (such as users.json or getData.sql) and should be kept in this repository. Although not needed to setup the tests.
 
-Make sure to use Jakub's `dhis_env` script or manually set environment variables to fill in credentials for the server. See `cypres/scripts/api.py` for more details.
+Make sure to use Jakub's `dhis_env` script or manually set environment variables to fill in credentials for the server. See `testData/api.py` for more details.
 
+## Deploying
+If you are deploying to your own server you can run `npm run-scripts build` and upload the resulting zip file to your DHIS2 instance.
+
+For a production release there are a few more steps:
+
+1. Make sure tests are passing
+2. Update `packages.json` to increment version number
+3. Create the zip file: `npm run-scripts build`
+4. Tag the release in github and upload the zip file
+5. Make deploy script utilizing `src/lib/libAppRepairs.sh`
+
+```sh
+#!/usr/bin/env bash
+source ../../src/lib/libAppRepairs.sh
+APPROVAL_APP_VERSION="x.y.z"
+printInfo 'Deleting the old Approvals App'
+deleteOldVersion "Data-Approval"
+installApp "Data-Approval" $APPROVAL_APP_VERSION
+exit 0
+```
