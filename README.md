@@ -52,7 +52,16 @@ There are the following scripts inside `testData` directory which should set the
 
 Surrounding files are there to get data into source files (such as users.json or getData.sql) and should be kept in this repository. Although not needed to setup the tests.
 
-Make sure to use Jakub's `dhis_env` script or manually set environment variables to fill in credentials for the server. See `testData/api.py` for more details.
+Make sure to define these variables: 
+
+```sh
+export DHIS_BASEURL=...
+export DHIS_USERNAME=...
+export DHIS_PASSWORD=...
+export CYPRESS_TEST_PASSWORD=...
+```
+
+See `testData/api.py` for more details.
 
 ## Deploying
 If you are deploying to your own server you can run `npm run-scripts build` and upload the resulting zip file to your DHIS2 instance.
