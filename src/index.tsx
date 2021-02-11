@@ -14,7 +14,7 @@ config.i18n.sources.add('i18n.txt');
 
 function Dhis2(){
     return (
-        <Provider config={{baseUrl: baseUrl, apiVersion: '33'}}>
+        <Provider config={{baseUrl: baseUrl, apiVersion: 33}}>
             <span id='dhis2HeaderBar'>
                 <HeaderBar/>
             </span>
