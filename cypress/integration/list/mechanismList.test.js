@@ -26,7 +26,7 @@ describe('Mechanism List', function() {
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([
-            '29 mechanisms',
+            '30 mechanisms',
             '16681 - National Center for Tuberculosis and Leprosy Control (CENAT) Phase II',
         ]);
     });
@@ -36,27 +36,24 @@ describe('Mechanism List', function() {
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Global');
         cy.get('.cy_list_results').containsAll([
-            /16.. mechanisms/,
-            'Global',
+            /1... mechanisms/,
         ],{timeout: 15000});
     });  
 
     it('Should have tabs', ()=>{
         cy.get('#cy_mechanismListTab_return').click();
         cy.get('.cy_list_results').containsAll([
-            '17350 - 6NU2GGH001462 - Laboratory Strengthening',
+            '10000 - NU2GGH001140 - HAIVN',
         ]);
-        cy.get('.cy_list_results').containsNotAll([
-            '11040 - HIV in Refugee Camps'
-        ]);
+        cy.get('.cy_list_results').should('not.contain','11040 - HIV in Refugee Camps');
         cy.get('#cy_mechanismListTab_view').click();
     });
 
     it('Should have pagination', ()=>{
         cy.get('[title="Next Page"]').click();
         cy.get('.cy_list_results').containsAll([
-            /21-40 of 16../,
-            '00200 - PEPFAR-MOH align: PEPFAR Data'
+            /21-40 of 1.../,
+            '10557 - GH001561 - Mekelle'
         ]);
         cy.get('[title="Previous Page"]').click();
     });
@@ -65,9 +62,7 @@ describe('Mechanism List', function() {
         cy.get('.cy_list_results').containsAll([
             'Accelerating Progress in Communities (APC 2.0)'
         ]);
-        cy.get('.cy_list_results').containsNotAll([
-            '11040 - HIV in Refugee Camps'
-        ]);
+        cy.get('.cy_list_results').should('not.contain','11040 - HIV in Refugee Camps');
         
     });
 });
