@@ -65,7 +65,7 @@ describe('Mechanism List', function() {
         cy.get('.cy_list_results').should('not.contain','11040 - HIV in Refugee Camps');
         
     });
-    
+
     it('Should see Dedupe mechanisms as SuperAdmin', function () {
         cy.loginAs('superAdmin');
         cy.goHome();
@@ -73,6 +73,7 @@ describe('Mechanism List', function() {
         cy.get('.cy_list_results').containsAll([
             /.... mechanisms/,
             '00000 De-duplication adjustment',
+            'N/A'
         ],{timeout: 15000});
     });  
 

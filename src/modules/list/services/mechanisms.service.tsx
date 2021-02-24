@@ -24,7 +24,11 @@ function getMechanismInfoUrl(ids){
 
 function getInfoByGroupSet(mechInfo, groupSetId):string{
     try {
-        return mechInfo.categoryOptionGroups.filter(prop => prop.groupSets[0].id === groupSetId)[0].name;
+        const info = mechInfo.categoryOptionGroups.filter(prop => prop.groupSets[0].id === groupSetId)[0].name;
+        if (info === 'Dedupe adjustments Agency' || info === 'Dedupe adjustments Partner') {
+            return 'N/A';
+        }
+        return info;
     } catch (e){
         return null;
     }
