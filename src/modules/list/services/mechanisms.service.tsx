@@ -31,7 +31,7 @@ function getInfoByGroupSet(mechInfo, groupSetId):string{
 }
 
 // Function to ensure OU id exists in case of superuser (deduplication adjustments)
-function getOu(mech, mechInfo, isSuperUser):idName{
+function getOu(mech, mechInfo, isSuperUser:boolean):idName{
     let localOU = {...mechInfo.organisationUnits[0]};
     if (localOU.id) {
         if (isSuperUser) {
@@ -43,7 +43,7 @@ function getOu(mech, mechInfo, isSuperUser):idName{
 
 export async function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>{
     let sus = new SuperUserService();
-    let isSuperUser = await sus.init();
+    let isSuperUser:boolean = await sus.init();
     return api.get(generateMechanismsUrl(filters)).then(mechResp=>{
         if (mechResp.httpStatusCode===409) return;
         // this will remove our knowledge of the OUs on dedupe records
