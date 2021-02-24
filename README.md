@@ -66,7 +66,7 @@ See `testData/api.py` for more details.
 On OSX, you may need to run each script individually: `python -m persistUsers`
 
 ## Deploying
-If you are deploying to your own server you can run `npm run-scripts build` and upload the resulting zip file to your DHIS2 instance.
+If you are deploying to your own server you can run `npm run-script build` and upload the resulting zip file to your DHIS2 instance.
 
 For a production release there are a few more steps:
 
