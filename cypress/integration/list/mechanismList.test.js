@@ -28,7 +28,7 @@ describe('Mechanism List', function() {
         cy.get('.cy_list_results').containsAll([
             '30 mechanisms',
             '16681 - National Center for Tuberculosis and Leprosy Control (CENAT) Phase II',
-        ]);
+        ],{timeout: 15000});
     });
 
     it('Should see all mechanisms as Global', function () {
@@ -65,4 +65,29 @@ describe('Mechanism List', function() {
         cy.get('.cy_list_results').should('not.contain','11040 - HIV in Refugee Camps');
         
     });
+    
+    it('Should see Dedupe mechanisms as SuperAdmin', function () {
+        cy.loginAs('superAdmin');
+        cy.goHome();
+        cy.searchMechanisms('MER Results','2019Q3','Global');
+        cy.get('.cy_list_results').containsAll([
+            /.... mechanisms/,
+            '00000 De-duplication adjustment',
+        ],{timeout: 15000});
+    });  
+
+    it('Should NOT see Dedupe mechanisms as Global', function () {
+        cy.loginAs('approvals-global');
+        cy.goHome();
+        cy.searchMechanisms('MER Results','2019Q3','Global');
+        cy.get('.cy_list_results').should('not.contain','00000 De-duplication adjustment',{timeout: 15000});
+    });  
+
+    it('Should NOT see Dedupe mechanisms as Agency', function () {
+        cy.loginAs('approvals-agency');
+        cy.goHome();
+        cy.searchMechanisms('MER Results','2019Q3','Asia Region');
+        cy.get('.cy_list_results').should('not.contain','00000 De-duplication adjustment',{timeout: 15000});
+    });  
+
 });
