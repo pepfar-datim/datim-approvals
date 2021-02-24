@@ -33,7 +33,7 @@ function getInfoByGroupSet(mechInfo, groupSetId):string{
 // Function to ensure OU id exists in case of superuser (deduplication adjustments)
 function getOu(mech, mechInfo, isSuperUser):idName{
     let localOU = {...mechInfo.organisationUnits[0]};
-    if (localOU.id) {
+    if (!localOU.id) {
         if (isSuperUser) {
             localOU = { id: mech.ou, name: mech.ouName };
         }
@@ -56,7 +56,7 @@ export async function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>
 
                 // Make a local copy so that the map/filter doesn't ignore our superAdmin override
                 let localOU = getOu(mech, mechInfo, isSuperUser);
-                if(localOU.id) return console.log(`No OU info for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
+                if(!localOU.id) return console.log(`No OU info for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
                 if (localOU.id!==filters.ou && filters.ou!=='ybg3MO3hcf4') return console.log(`OU info not matching for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
                 let status = getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted);
                 return {
