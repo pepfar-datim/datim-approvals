@@ -38,7 +38,8 @@ function getInfoByGroupSet(mechInfo, groupSetId):string{
 function getOu(mech, mechInfo, isSuperUser:boolean):idName{
     let localOU = {...mechInfo.organisationUnits[0]};
     if (!localOU.id) {
-        if (isSuperUser) {
+        //Only add in the two dedupe mechs
+        if (isSuperUser && (mech.id === 'X8hrDf6bLDC' || mech.id === 'YGT1o7UxfFu')) {
             localOU = { id: mech.ou, name: mech.ouName };
         }
     }

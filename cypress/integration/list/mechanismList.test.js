@@ -77,6 +77,11 @@ describe('Mechanism List', function() {
         ],{timeout: 15000});
     });  
 
+    it('Should NOT see MoH mechanisms as SuperAdmin', function () {
+        cy.get('[placeholder="Search"]').type('PEPFAR-MOH align');
+        cy.get('.cy_list_results').should('not.contain','00100 - PEPFAR-MOH align: MOH Data',{timeout: 15000});
+    });  
+
     it('Should NOT see Dedupe mechanisms as Global', function () {
         cy.loginAs('approvals-global');
         cy.goHome();
