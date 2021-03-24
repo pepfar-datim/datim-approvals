@@ -69,7 +69,7 @@ export default function MechanismTabs({workflow, period, userOu, mechanisms, mec
     return <Paper>
         <Tabs value={openTab} onChange={(event,tabIndex)=>setOpenTab(tabIndex)} variant="scrollable" onClick={()=>userClicked(clicks+1)}>
             {renderOverviewTab(mechanisms.length)}
-            {mechanisms.slice(0, 29).map(mechanism=><Tab label={mechanism.info.name} key={mechanism.meta.cocId}/>)}
+            {mechanisms.slice(0, 29).map(mechanism=><Tab label={mechanism.info.name} key={mechanism.meta.cocId+mechanism.meta.ou}/>)}
         </Tabs>
         {lengthWarning(mechanisms.length, clicks)}
         {renderMechanismInfo(openTab, workflow, period, userOu, mechanismState, mechanisms)}

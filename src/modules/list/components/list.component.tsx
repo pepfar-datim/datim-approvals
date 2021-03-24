@@ -80,6 +80,7 @@ class List extends React.Component<
             if (!f.ou || !f.period || !f.workflow) return;
             this.setState({mechanisms: null, loading: {mechanisms: true}});
             fetchMechanisms(this.state.filters).then(mechanisms=>{
+                mechanisms.sort((a,b)=>a.info['ou']>b.info['ou']?1:-1)
                 this.setState({mechanisms: mechanisms, loading:{mechanisms: false}});
             });
         },0);
@@ -138,7 +139,7 @@ class List extends React.Component<
 
     renderResults(){
         if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
-        if (!this.state.mechanisms) return (
+        if (!this.state.loading.mechanisms && !this.state.mechanisms) return (
             <Typography color="secondary">
                 There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link}>PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link}>DATIM Support</a>.
             </Typography>);
