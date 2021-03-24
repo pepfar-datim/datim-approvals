@@ -73,7 +73,7 @@ For a production release there are a few more steps:
 1. Make sure tests are passing
 2. Update `packages.json` to increment version number
 3. Update `public/manifest.webapp` to increment version number
-4. Create the zip file: `npm run-scripts build`
+4. Create the zip file: `npm run-script build`
 5. Tag the release in github and upload the zip file
 6. Make deploy script utilizing `src/lib/libAppRepairs.sh`
 
