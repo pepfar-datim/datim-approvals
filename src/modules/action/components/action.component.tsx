@@ -6,6 +6,7 @@ import {getMechanismsInfo, getMechanismStates, performAction} from "../services/
 import Step from "./step/step.component";
 import MechanismTabs from "./mechanism/mechanismTabs.component";
 import {fetchUserOu, fetchUserType} from "../services/user.service";
+import {getLevel3OUs} from "../services/ou.service";
 import WorkflowOverview from "./workflowOverview.component";
 import {idName} from "../models/idName";
 import WorkflowPeriodService from "../../shared/services/workflowsPeriods.service";
@@ -22,7 +23,8 @@ export default class Action extends React.Component<
         userType: string,
         mechanisms: MechanismModel[],
         mechanismState: MechanismState,
-        processing: boolean
+        processing: boolean,
+        ous: []
     }
     > {
     constructor(props){
@@ -42,17 +44,22 @@ export default class Action extends React.Component<
             userOu: null,
             mechanismState: null,
             mechanisms: mechanisms,
-            processing: false
+            processing: false,
+            ous: []
         };
         this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms);
-        this.getMechanismsInfo(this.state.mechanisms);
-        this.getUserType();
-        this.getUserOu();
 
         let wfService = new WorkflowPeriodService();
         wfService.init().then(()=>{
             this.setState({period: {id: props.period, name: wfService.getPeriodNameById(props.workflow, props.period)}});
         });
+    }
+
+    async componentDidMount() {
+        await this.getL3Ous();
+        this.getMechanismsInfo(this.state.mechanisms, this.state.ous);
+        this.getUserType();
+        this.getUserOu();
     }
 
     getMechanismStatuses(workflow: string, period: string, mechanisms: MechanismModel[]){
@@ -61,12 +68,20 @@ export default class Action extends React.Component<
         });
     }
 
-    getMechanismsInfo(mechanisms: MechanismModel[]){
+    getMechanismsInfo(mechanisms: MechanismModel[], ous: []){
         getMechanismsInfo(mechanisms.map(m=>m.meta.cocId)).then(mechanismsInfo=>{
             mechanismsInfo.forEach((info,i)=>{
-                mechanisms[i].info = mechanismsInfo[i];
+                //assign is necessary because of dedupe sharing mechanismInfo
+                mechanisms[i].info = Object.assign({},mechanismsInfo[i]);
+                // Dedupe fix to get the correct OU displayed
+                if (!mechanisms[i].info['ou'] && mechanisms[i].meta['ou']) {
+                    let lookup = ous.filter(f=>f['id']===mechanisms[i].meta['ou']);
+                    if (lookup[0] && lookup[0]['displayName']) {
+                        mechanisms[i].info['ou'] = lookup[0]['displayName'];
+                    }
+                }
             });
-            mechanisms = mechanisms.sort((a,b)=>a.info.name>b.info.name?1:-1)
+            mechanisms = mechanisms.sort((a,b)=>a.info.name>b.info.name?1:a.info.ou>b.info.ou?1:-1)
             this.setState({mechanisms});
         });
     };
@@ -79,6 +94,11 @@ export default class Action extends React.Component<
 
     getUserOu(){
         fetchUserOu().then(ou=>this.setState({userOu: ou}));
+    }
+
+    async getL3Ous(){
+        let ous = await getLevel3OUs();
+        this.setState({ous: ous});
     }
 
     performAction = (action:string)=>{
