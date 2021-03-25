@@ -1,6 +1,6 @@
 import React from "react";
 import MechanismModel, {ApprovalsCombo, MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
-import {Divider, Paper} from "@material-ui/core";
+import {Divider, Paper, Typography} from "@material-ui/core";
 import ActionButtons from "./actionButtons.component";
 import {getMechanismsInfo, getMechanismStates, performAction} from "../services/mechanism.service";
 import Step from "./step/step.component";
@@ -24,6 +24,7 @@ export default class Action extends React.Component<
         mechanisms: MechanismModel[],
         mechanismState: MechanismState,
         processing: boolean,
+        networkError: boolean,
         ous: []
     }
     > {
@@ -45,6 +46,7 @@ export default class Action extends React.Component<
             mechanismState: null,
             mechanisms: mechanisms,
             processing: false,
+            networkError: false,
             ous: []
         };
         this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms);
@@ -65,7 +67,11 @@ export default class Action extends React.Component<
     getMechanismStatuses(workflow: string, period: string, mechanisms: MechanismModel[]){
         return getMechanismStates(workflow, period, mechanisms).then(state=>{
             this.setState({mechanismState: state});
-        });
+        })
+        .catch(e => this.setState({
+            networkError: true,
+            processing: false
+        }));
     }
 
     getMechanismsInfo(mechanisms: MechanismModel[], ous: []){
@@ -83,22 +89,44 @@ export default class Action extends React.Component<
             });
             mechanisms = mechanisms.sort((a,b)=>a.info.name>b.info.name?1:a.info.ou>b.info.ou?1:-1)
             this.setState({mechanisms});
-        });
+        })
+        .catch(e => this.setState({
+            networkError: true,
+            processing: false
+        }));
+
     };
 
     getUserType(){
         fetchUserType().then(userType=>{
             this.setState({userType: userType})
-        });
+        })
+        .catch(e => this.setState({
+            networkError: true,
+            processing: false
+        }));
     }
 
     getUserOu(){
-        fetchUserOu().then(ou=>this.setState({userOu: ou}));
+        fetchUserOu().then(ou=>this.setState({userOu: ou}))
+        .catch(e => this.setState({
+            networkError: true,
+            processing: false
+        }));
     }
 
     async getL3Ous(){
-        let ous = await getLevel3OUs();
-        this.setState({ous: ous});
+        try {
+            let ous = await getLevel3OUs();
+            console.log('ous',ous)
+            this.setState({ous: ous});
+        } catch (e) {
+            this.setState({
+                ous: [],
+                networkError: true,
+                processing: false,
+            });
+        }
     }
 
     performAction = (action:string)=>{
@@ -143,6 +171,9 @@ export default class Action extends React.Component<
         return (
             <React.Fragment>
                 <Paper>
+                    {this.state.networkError?<Typography color="secondary" align="center" style={{margin: 10, fontWeight: 500}}>
+                        Network Error. You may be able to continue.
+                    </Typography>:null}
                     {this.renderAction()}
                     <Divider/>
                     <Step workflow={this.state.workflow.id} mechanismState={this.state.mechanismState} userType={this.state.userType}/>
