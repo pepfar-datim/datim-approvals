@@ -118,7 +118,6 @@ export default class Action extends React.Component<
     async getL3Ous(){
         try {
             let ous = await getLevel3OUs();
-            console.log('ous',ous)
             this.setState({ous: ous});
         } catch (e) {
             this.setState({
