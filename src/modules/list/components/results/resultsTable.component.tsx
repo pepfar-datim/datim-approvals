@@ -8,11 +8,11 @@ import MechanismModel from "../../../shared/models/mechanism.model";
 const cellStyle = {padding: "0px 5px"};
 
 const tableColumns = [
-    {title: "Mechanism", field: "name", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc')},
-    {title: "OU", field: "ou", cellStyle: cellStyle},
-    {title: "Agency", field: "agency", cellStyle: cellStyle},
-    {title: "Partner", field: "partner", cellStyle: cellStyle},
-    {title: "Status", field: "status", cellStyle: cellStyle},
+    {title: "Mechanism", field: "name", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: (a, b) => (a.name + a.ou) > (b.name + b.ou) ? 1 : -1},
+    {title: "OU", field: "ou", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: (a, b) => (a.ou + a.name) > (b.ou + b.name) ? 1 : -1},
+    {title: "Agency", field: "agency", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: (a, b) => (a.agency + a.name) > (b.agency + b.name) ? 1 : -1},
+    {title: "Partner", field: "partner", cellStyle: cellStyle, customSort: (a, b) => (a.partner + a.name) > (b.partner + b.name) ? 1 : -1},
+    {title: "Status", field: "status", cellStyle: cellStyle, customSort: (a, b) => (a.status + a.name) > (b.status + b.name) ? 1 : -1},
 ];
 
 const localization = {
