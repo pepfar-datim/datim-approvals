@@ -10,8 +10,9 @@ describe('ER Approval Process #1 - Agency HQ ACCEPT', ()=>{
         cy.loginAs('approvals-agency-hq');
         cy.goHome();
         cy.searchMechanisms('ER Expenditures FYOct','2018Oct','Asia Region');
+        cy.get(`input[type="text"]`).type('17286');
         cy.get('.cy_list_results').containsAll([
-            '37 mechanisms',
+            '93 mechanisms',
             '17286 - 6NU2GGH001346 - Care, Support and Treatment - HIV/TB Project',
             'submitted by agency',
         ]);

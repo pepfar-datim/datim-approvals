@@ -12,7 +12,7 @@ Cypress.Commands.add('containsAll', { prevSubject: 'optional'}, (subject, texts,
 });
 
 Cypress.Commands.add('containsNot', { prevSubject: 'optional'}, (subject, text)=>{
-    getContext(subject).contains(text).should('not.visible');
+    getContext(subject).contains(text).should('not.exist');
 });
 
 

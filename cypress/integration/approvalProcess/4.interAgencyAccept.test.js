@@ -21,10 +21,8 @@ describe('Approval Process #4 - Inter-Agency ACCEPT', ()=>{
         cy.goHome();
         cy.searchMechanisms('MER Results','2019Q3','Asia Region');
         cy.get('.cy_list_results').containsAll([
-            '61 mechanisms',
+            '86 mechanisms',
             '16566 - AID386A1400007 - Orphans and Vulnerable Children Project',
-            '17111 - AIDGHIO1200001 - Joint U.N. Programme on HIV/AIDS (UNAIDS III)',
-            'UNAIDS JOINT UNITED NATIONS PROGRAMME ON HIV/AIDS',
         ]);
         cy.get('[placeholder="Search"]').type('17350');
         cy.get('#cy_results_17350___6NU2GGH001462___Laboratory_Strengthening').contains('submitted by agency');

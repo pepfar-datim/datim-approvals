@@ -11,7 +11,7 @@ describe('ER Approval Process #2 - Global', ()=>{
         cy.goHome();
         cy.searchMechanisms('ER Expenditures FYOct','2018Oct','Asia Region');
         cy.get('.cy_list_results').containsAll([
-            '75 mechanisms',
+            '237 mechanisms',
         ]);
         cy.get('[placeholder="Search"]').type('17286');
         cy.get('.cy_list_results').containsAll([
