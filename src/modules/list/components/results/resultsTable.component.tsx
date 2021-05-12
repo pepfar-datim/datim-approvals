@@ -7,12 +7,41 @@ import MechanismModel from "../../../shared/models/mechanism.model";
 
 const cellStyle = {padding: "0px 5px"};
 
+type SearchRow = {
+    name:string;
+    ou:string;
+    agency:string;
+    partner:string;
+    status:string;
+}
+
+type SortOutput = -1|0|1;
+
+function sortByKey(key:string,mech1:SearchRow, mech2:SearchRow):SortOutput{
+    let v1 = mech1[key];
+    let v2 = mech2[key];
+    if (key==='name'){
+        v1 = parseInt(v1);
+        v2 = parseInt(v2);
+    }
+    if (v1===v2) return 0;
+    return v1<v2?-1:1;
+}
+
+function sortFactory(primary:string, secondary:string){
+    return function sortFunction(mech1:SearchRow,mech2:SearchRow):SortOutput{
+        const sortResult = sortByKey(primary, mech1, mech2);
+        if (sortResult===0) return sortByKey(secondary, mech1, mech2);
+        else return sortResult;
+    }
+}
+
 const tableColumns = [
-    {title: "Mechanism", field: "name", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: (a, b) => (a.name + a.ou) > (b.name + b.ou) ? 1 : -1},
-    {title: "OU", field: "ou", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: (a, b) => (a.ou + a.name) > (b.ou + b.name) ? 1 : -1},
-    {title: "Agency", field: "agency", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: (a, b) => (a.agency + a.name) > (b.agency + b.name) ? 1 : -1},
-    {title: "Partner", field: "partner", cellStyle: cellStyle, customSort: (a, b) => (a.partner + a.name) > (b.partner + b.name) ? 1 : -1},
-    {title: "Status", field: "status", cellStyle: cellStyle, customSort: (a, b) => (a.status + a.name) > (b.status + b.name) ? 1 : -1},
+    {title: "Mechanism", field: "name", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: sortFactory('name','ou')},
+    {title: "OU", field: "ou", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: sortFactory('ou','name')},
+    {title: "Agency", field: "agency", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: sortFactory('agency','name')},
+    {title: "Partner", field: "partner", cellStyle: cellStyle, customSort: sortFactory('partner','name')},
+    {title: "Status", field: "status", cellStyle: cellStyle, customSort: sortFactory('status','name')},
 ];
 
 const localization = {
