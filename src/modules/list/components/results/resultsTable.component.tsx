@@ -23,6 +23,8 @@ function sortByKey(key:string,mech1:SearchRow, mech2:SearchRow):SortOutput{
     if (key==='name'){
         v1 = parseInt(v1);
         v2 = parseInt(v2);
+        if (isNaN(v1)) return 1;
+        if (isNaN(v2)) return -1;
     }
     if (v1===v2) return 0;
     return v1<v2?-1:1;
