@@ -57,7 +57,27 @@ function sameStatusError({mechanisms, theme, onMechanismsSelected}:{mechanisms: 
     </Paper>
 }
 
+
+function checkDedupMechanism(mechanisms: MechanismModel[]):boolean {
+    return mechanisms.some(m=>m.info.name.startsWith('00000') || m.info.name.startsWith('00001'));
+}
+
+function filterDedup(onMechanismsSelected: (mechanisms:MechanismModel[])=>any, mechanisms:MechanismModel[]):void{
+    return onMechanismsSelected(mechanisms.filter(m=>!m.info.name.startsWith('00000') && !m.info.name.startsWith('00001')))
+}
+
 let SameStatusError = withTheme(sameStatusError);
+
+function dedupSelected({mechanisms, theme, onMechanismsSelected}:{mechanisms: MechanismModel[], theme: any, onMechanismsSelected: (mechanisms:MechanismModel[])=>any}){
+    if (!checkDedupMechanism(mechanisms)) return null;
+    let majorStatus:string = getMajorStatus(mechanisms);
+    return <Paper style={styles.error(theme)}>
+        <Button style={styles.selectOnly} id='cy_selectSingleStatus' onClick={()=>filterDedup(onMechanismsSelected, mechanisms)}>Unselect Dedupe mechanisms</Button>
+        <Typography>Dedupe mechanisms are selected.</Typography>
+    </Paper>
+}
+
+let DedupSelected = withTheme(dedupSelected);
 
 export default function ListAction({selectedAction, selectedMechanisms, actionUrl, onMechanismsSelected}:{selectedAction: string, selectedMechanisms: MechanismModel[], actionUrl: string, onMechanismsSelected: (mechanisms:MechanismModel[])=>void}){
     if (!selectedAction || !selectedMechanisms || selectedMechanisms.length===0) return null;
@@ -69,6 +89,7 @@ export default function ListAction({selectedAction, selectedMechanisms, actionUr
         </Link>
         <Typography style={styles.infoText}>{selectedMechanisms.length} selected mechanism(s)</Typography>
         <SameStatusError mechanisms={selectedMechanisms} onMechanismsSelected={onMechanismsSelected}/>
+        <DedupSelected mechanisms={selectedMechanisms} onMechanismsSelected={onMechanismsSelected}/>
         <br/>
         <Divider/>
     </React.Fragment>;
