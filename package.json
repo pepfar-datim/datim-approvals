@@ -3,25 +3,25 @@
   "version": "2.1.3",
   "private": true,
   "dependencies": {
-    "@dhis2/app-runtime": "^2.0.4",
-    "@dhis2/d2-i18n": "^1.0.6",
+    "@dhis2/app-runtime": "^2.9.2",
+    "@dhis2/d2-i18n": "^1.1.0",
     "@dhis2/d2-ui-header-bar": "^6.5.6",
-    "@dhis2/ui-core": "^4.1.1",
-    "@dhis2/ui-widgets": "^2.0.5",
-    "@material-ui/core": "^4.7.2",
-    "@material-ui/icons": "^4.5.1",
-    "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.17",
-    "@types/react": "^16.9.16",
-    "@types/react-dom": "^16.9.4",
+    "@dhis2/ui-core": "^6.19.0",
+    "@dhis2/ui-widgets": "^6.19.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.7",
+    "@types/react": "^17.0.19",
+    "@types/react-dom": "^17.0.9",
     "d2": "^31.8.0",
-    "material-table": "^1.54.1",
-    "query-string": "^6.9.0",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.3.0",
-    "styled-jsx": "^3.2.4",
+    "material-table": "^1.69.3",
+    "query-string": "^7.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.1",
+    "react-scripts": "4.0.3",
+    "styled-jsx": "^4.0.1",
     "typescript": "3.4.5",
     "wait-until": "0.0.2"
   },
@@ -47,6 +47,6 @@
     ]
   },
   "devDependencies": {
-    "cypress": "^6.5.0"
+    "cypress": "^8.3.1"
   }
 }

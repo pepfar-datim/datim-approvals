@@ -78,7 +78,7 @@ function extractOrig(cb){
     }
 }
 
-function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void}) {
+export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void}) {
     return <MaterialTable
         columns={tableColumns}
         data={tranformMechanisms(mechanisms)}
@@ -91,4 +91,5 @@ function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: MechanismM
     />;
 }
 
-export default React.memo(ResultsTable);
+// export default React.memo(ResultsTable);
+// export default ResultsTable;

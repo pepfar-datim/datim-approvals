@@ -42,6 +42,8 @@ describe('Mechanism List', function() {
 
     it('Should have tabs', ()=>{
         cy.get('#cy_mechanismListTab_return').click();
+        cy.get('[title="Next Page"]').click();
+        cy.get('[title="Next Page"]').click();
         cy.get('.cy_list_results').containsAll([
             '10000 - NU2GGH001140 - HAIVN',
         ]);
@@ -52,7 +54,7 @@ describe('Mechanism List', function() {
     it('Should have pagination', ()=>{
         cy.get('[title="Next Page"]').click();
         cy.get('.cy_list_results').containsAll([
-            /21-40 of 1.../,
+            /61-80 of 1.../,
             '10557 - GH001561 - Mekelle'
         ]);
         cy.get('[title="Previous Page"]').click();
