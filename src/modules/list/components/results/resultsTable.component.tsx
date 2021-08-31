@@ -13,6 +13,8 @@ type SearchRow = {
     agency:string;
     partner:string;
     status:string;
+    _originalMechanism: MechanismModel;
+    tableData:{checked?:boolean}
 }
 
 type SortOutput = -1|0|1;
@@ -58,7 +60,7 @@ const tableOptions = {
     thirdSortClick: false
 };
 
-function tranformMechanisms(allMechanisms:MechanismModel[]){
+function tranformMechanisms(allMechanisms:MechanismModel[]):SearchRow[]{
     return allMechanisms.map(mechanism=>{
         return {
             name: mechanism.info.name,
@@ -66,7 +68,8 @@ function tranformMechanisms(allMechanisms:MechanismModel[]){
             agency: mechanism.info.agency,
             partner: mechanism.info.partner,
             status: mechanism.state.status,
-            _originalMechanism: mechanism
+            _originalMechanism: mechanism,
+            tableData:{}
         }
     })
 }
@@ -74,20 +77,36 @@ function tranformMechanisms(allMechanisms:MechanismModel[]){
 
 function extractOrig(cb){
     return function(rowData){
-        // rowData.selected = true;
         console.log(rowData);
         cb(rowData.map(m=>m._originalMechanism));
     }
 }
 
-export default class ResultsTable extends React.Component <{mechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void},{}>{
+function markSelected(filteredRows:SearchRow[], selectedMechanisms:MechanismModel[]):SearchRow[]{
+    console.log(filteredRows, selectedMechanisms);
+    if (!selectedMechanisms) return filteredRows;
+    return filteredRows.map(row=>{
+        let coId = row._originalMechanism.meta.coId;
+        let cocId = row._originalMechanism.meta.cocId;
+        let ou = row._originalMechanism.meta.ou;
+        if (selectedMechanisms.some(m=>m.meta.coId===coId && m.meta.cocId===cocId && m.meta.ou===ou)) {
+            row.tableData.checked = true;
+            console.log('checked', row)
+        }
+        return row;
+    });
+}
+
+export default class ResultsTable extends React.Component <{mechanisms: MechanismModel[], selectedMechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void},{}>{
     shouldComponentUpdate(nextProps, nextState){
-        return false;
+        if (!nextProps.selectedMechanisms || !this.props.selectedMechanisms) return false;
+        return this.props.selectedMechanisms.length!==nextProps.selectedMechanisms.length;
     }
     render(){
+        console.log('ResultTable render event')
         return <MaterialTable
             columns={tableColumns}
-            data={tranformMechanisms(this.props.mechanisms)}
+            data={markSelected(tranformMechanisms(this.props.mechanisms), this.props.selectedMechanisms)}
             icons={tableIcons as any}
             title={<Typography>{this.props.mechanisms.length} mechanisms</Typography>}
             options={tableOptions}

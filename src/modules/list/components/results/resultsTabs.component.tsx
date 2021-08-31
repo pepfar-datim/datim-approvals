@@ -6,7 +6,7 @@ import ResultsTable from "./resultsTable.component";
 const mechanismActions = ['view', 'accept', 'submit', 'recall', 'return'];
 
 export default class ResultsTabs extends React.Component<
-    {mechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void, onSwitchTab: (string)=>void},
+    {mechanisms: MechanismModel[], selectedMechanisms:MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void, onSwitchTab: (string)=>void},
     {action: string, filteredMechanisms: MechanismModel[]}
     > {
     constructor(props){
@@ -50,7 +50,7 @@ export default class ResultsTabs extends React.Component<
                     {this.renderTabs()}
                 </Tabs>
                 <Divider/>
-                <ResultsTable mechanisms={this.state.filteredMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>
+                <ResultsTable mechanisms={this.state.filteredMechanisms} selectedMechanisms={this.props.selectedMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>
             </div>
         );
     }
