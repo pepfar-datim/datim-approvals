@@ -1,13 +1,13 @@
 import React from "react";
 import {Badge, Divider, Tab, Tabs} from "@material-ui/core";
 import MechanismModel from "../../../shared/models/mechanism.model";
-import ResultsTable, {SearchRow} from "./resultsTable.component";
+import ResultsTable, {SearchMechanism} from "./resultsTable.component";
 
 const mechanismActions = ['view', 'accept', 'submit', 'recall', 'return'];
 
 export default class ResultsTabs extends React.Component<
-    {mechanisms: SearchRow[], onMechanismsSelected: (mechanisms:SearchRow[])=>void, onSwitchTab: (string)=>void},
-    {action: string, filteredMechanisms: SearchRow[]}
+    {mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void, onSwitchTab: (string)=>void},
+    {action: string, filteredMechanisms: SearchMechanism[]}
     > {
     constructor(props){
         super(props);
@@ -34,7 +34,7 @@ export default class ResultsTabs extends React.Component<
         return mechanismActions.map((action, i)=><Tab label={this.generateTabLabel(action)} key={i} disabled={this.filterMechanisms(this.props.mechanisms, action).length===0} id={`cy_mechanismListTab_${action}`}/>)
     }
 
-    filterMechanisms(allMechanisms: SearchRow[], action:string){
+    filterMechanisms(allMechanisms: SearchMechanism[], action:string){
         if (action==='view') return allMechanisms;
         else return allMechanisms.filter(m=>m._originalMechanism.state.actions[action]);
     }

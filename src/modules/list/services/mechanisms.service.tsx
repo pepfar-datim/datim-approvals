@@ -6,6 +6,7 @@ import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
 import SuperUserService from "../../shared/services/superuser.service"
 import {idName} from "../../action/models/idName";
+import {SearchMechanism, tranformMechanisms} from "../models/searchMechanism.model";
 
 const agencyGroupSet = 'bw8KHXzxd9i';
 const partnerGroupSet = 'BOyWrF33hiR';
@@ -46,23 +47,22 @@ function getOu(mech, mechInfo, isSuperUser:boolean):idName{
     return localOU;
 }
 
-export async function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>{
+export async function fetchMechanisms(filters:Filters):Promise<SearchMechanism[]>{
     let sus = new SuperUserService();
     let isSuperUser:boolean = await sus.init();
     return api.get(generateMechanismsUrl(filters)).then(mechResp=>{
-        if (mechResp.httpStatusCode===409) return;
+        if (mechResp.httpStatusCode===409) return [];
         // this will remove our knowledge of the OUs on dedupe records
         let mechanismIds = mechResp.map(m=>m.id);
         return api.get(getMechanismInfoUrl(mechanismIds)).then(categoryOptionsResp=>{
-            return mechResp.map(mech=>{
+            let mechanisms:MechanismModel[] = mechResp.map(mech=>{
                 let mechInfo = categoryOptionsResp.categoryOptions.filter(i=>i.categoryOptionCombos[0].id===mech.id)[0];
                 // if (!mechInfo) return console.log(`No Mechanism Info for mech.id ${mech.id}. Skipping.`);
                 if (categoryOptionsResp.categoryOptions.filter(i=>i.id===mech.id).length>1) console.log(`Two info records per mechanism ${mech.id} ${mechInfo.name}`);
-
                 // Make a local copy so that the map/filter doesn't ignore our superAdmin override
                 let localOU = getOu(mech, mechInfo, isSuperUser);
                 // if(!localOU.id) return console.log(`No OU info for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
-                if (localOU.id!==filters.ou && filters.ou!=='ybg3MO3hcf4') return console.log(`OU info not matching for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
+                // if (localOU.id!==filters.ou && filters.ou!=='ybg3MO3hcf4') return console.log(`OU info not matching for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
                 let status = getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted);
                 return {
                     info: {
@@ -81,11 +81,14 @@ export async function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>
                         ou: mech.ou,
                         coId: mechInfo.id
                     }
-                }
+                };
             }).filter(mech=>mech);
+            mechanisms.sort((a,b)=>a.info['ou']>b.info['ou']?1:-1)
+            return tranformMechanisms(mechanisms);
         }).catch(e=>{
             console.error(e);
+            return [];
         })
-    });
+    }).catch(e=>{return []});
 
 }

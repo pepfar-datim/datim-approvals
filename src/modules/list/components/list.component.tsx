@@ -13,7 +13,7 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
-import {SearchRow} from "./results/resultsTable.component";
+import {SearchMechanism} from "../models/searchMechanism.model";
 
 const styles = {
     link: {
@@ -22,26 +22,12 @@ const styles = {
     } as CSSProperties
 };
 
-function tranformMechanisms(allMechanisms:MechanismModel[]):SearchRow[]{
-    return allMechanisms.map(mechanism=>{
-        return {
-            name: mechanism.info.name,
-            ou: mechanism.info.ou,
-            agency: mechanism.info.agency,
-            partner: mechanism.info.partner,
-            status: mechanism.state.status,
-            _originalMechanism: mechanism,
-            tableData:{}
-        }
-    })
-}
-
-function hasSelected(mechs:SearchRow[]):boolean{
+function hasSelected(mechs:SearchMechanism[]):boolean{
     if (!mechs) return false;
     return mechs.some(m=>m.tableData.checked)
 }
 
-function getSelected(mechs:SearchRow[]):SearchRow[]{
+function getSelected(mechs:SearchMechanism[]):SearchMechanism[]{
     if (!mechs) return []
     return mechs.filter(r=>r.tableData.checked);
 }
@@ -50,7 +36,7 @@ class List extends React.Component<
     {history: any, urlSearchOptions: Filters},
     {
         filters: Filters,
-        mechanisms: SearchRow[],
+        mechanisms: SearchMechanism[],
         selectedAction: string,
         workflows: idNameList,
         periods: idNameList,
@@ -103,8 +89,7 @@ class List extends React.Component<
             if (!f.ou || !f.period || !f.workflow) return;
             this.setState({mechanisms: null, loading: {mechanisms: true}});
             fetchMechanisms(this.state.filters).then(mechanisms=>{
-                mechanisms.sort((a,b)=>a.info['ou']>b.info['ou']?1:-1)
-                this.setState({mechanisms: tranformMechanisms(mechanisms), loading:{mechanisms: false}});
+                this.setState({mechanisms, loading:{mechanisms: false}});
             });
         },0);
     }
@@ -152,7 +137,7 @@ class List extends React.Component<
         return '/action?' + queryString.stringify(params);
     }
 
-    onMechanismsSelected = (mechanisms:SearchRow[]):void=>{
+    onMechanismsSelected = (mechanisms:SearchMechanism[]):void=>{
         if (mechanisms.length===0){
             this.state.mechanisms.forEach(m=>{
                 m.tableData.checked = false;

@@ -3,23 +3,13 @@ import MaterialTable, {MTableBodyRow} from "material-table";
 import {tableIcons} from "./resultsTableIcons";
 import {Typography} from "@material-ui/core";
 import makeId from "../../../shared/services/makeId.service";
-import MechanismModel from "../../../shared/models/mechanism.model";
+import {SearchMechanism} from "../../models/searchMechanism.model";
 
 const cellStyle = {padding: "0px 5px"};
 
-export type SearchRow = {
-    name:string;
-    ou:string;
-    agency:string;
-    partner:string;
-    status:string;
-    _originalMechanism: MechanismModel;
-    tableData:{checked?:boolean}
-}
-
 type SortOutput = -1|0|1;
 
-function sortByKey(key:string,mech1:SearchRow, mech2:SearchRow):SortOutput{
+function sortByKey(key:string, mech1:SearchMechanism, mech2:SearchMechanism):SortOutput{
     let v1 = mech1[key];
     let v2 = mech2[key];
     if (key==='name'){
@@ -33,7 +23,7 @@ function sortByKey(key:string,mech1:SearchRow, mech2:SearchRow):SortOutput{
 }
 
 function sortFactory(primary:string, secondary:string){
-    return function sortFunction(mech1:SearchRow,mech2:SearchRow):SortOutput{
+    return function sortFunction(mech1:SearchMechanism, mech2:SearchMechanism):SortOutput{
         const sortResult = sortByKey(primary, mech1, mech2);
         if (sortResult===0) return sortByKey(secondary, mech1, mech2);
         else return sortResult;
@@ -61,7 +51,7 @@ const tableOptions = {
 };
 
 
-export default class ResultsTable extends React.Component <{mechanisms: SearchRow[], onMechanismsSelected: (mechanisms:SearchRow[])=>void},{}>{
+export default class ResultsTable extends React.Component <{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void},{}>{
     shouldComponentUpdate(nextProps, nextState){
         // if (!nextProps.selectedMechanisms || !this.props.selectedMechanisms) return false;
         // return this.props.selectedMechanisms.length!==nextProps.selectedMechanisms.length;
