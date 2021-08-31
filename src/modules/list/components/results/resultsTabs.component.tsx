@@ -1,13 +1,13 @@
 import React from "react";
 import {Badge, Divider, Tab, Tabs} from "@material-ui/core";
 import MechanismModel from "../../../shared/models/mechanism.model";
-import ResultsTable from "./resultsTable.component";
+import ResultsTable, {SearchRow} from "./resultsTable.component";
 
 const mechanismActions = ['view', 'accept', 'submit', 'recall', 'return'];
 
 export default class ResultsTabs extends React.Component<
-    {mechanisms: MechanismModel[], selectedMechanisms:MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void, onSwitchTab: (string)=>void},
-    {action: string, filteredMechanisms: MechanismModel[]}
+    {mechanisms: SearchRow[], onMechanismsSelected: (mechanisms:SearchRow[])=>void, onSwitchTab: (string)=>void},
+    {action: string, filteredMechanisms: SearchRow[]}
     > {
     constructor(props){
         super(props);
@@ -34,9 +34,9 @@ export default class ResultsTabs extends React.Component<
         return mechanismActions.map((action, i)=><Tab label={this.generateTabLabel(action)} key={i} disabled={this.filterMechanisms(this.props.mechanisms, action).length===0} id={`cy_mechanismListTab_${action}`}/>)
     }
 
-    filterMechanisms(allMechanisms: MechanismModel[], action:string){
+    filterMechanisms(allMechanisms: SearchRow[], action:string){
         if (action==='view') return allMechanisms;
-        else return allMechanisms.filter(m=>m.state.actions[action]);
+        else return allMechanisms.filter(m=>m._originalMechanism.state.actions[action]);
     }
 
     getTabIndex(action:string){
@@ -50,7 +50,7 @@ export default class ResultsTabs extends React.Component<
                     {this.renderTabs()}
                 </Tabs>
                 <Divider/>
-                <ResultsTable mechanisms={this.state.filteredMechanisms} selectedMechanisms={this.props.selectedMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>
+                <ResultsTable mechanisms={this.state.filteredMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>
             </div>
         );
     }

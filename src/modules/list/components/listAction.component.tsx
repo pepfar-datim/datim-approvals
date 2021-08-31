@@ -3,6 +3,7 @@ import {Button, Divider, Paper, Typography, withTheme} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import MechanismModel from "../../shared/models/mechanism.model";
 import {FloatProperty, PositionProperty} from 'csstype';
+import {SearchRow} from "./results/resultsTable.component";
 
 
 const styles = {
@@ -25,13 +26,13 @@ const styles = {
     }
 };
 
-function checkMechanismStates(mechanisms: MechanismModel[]):boolean {
-    let firstStatus = mechanisms[0].state.status;
-    return mechanisms.every(m=>m.state.status===firstStatus);
+function checkMechanismStates(mechanisms: SearchRow[]):boolean {
+    let firstStatus = mechanisms[0]._originalMechanism.state.status;
+    return mechanisms.every(m=>m._originalMechanism.state.status===firstStatus);
 }
 
-function getMajorStatus(mechanisms: MechanismModel[]):string{
-    let statuses = mechanisms.map(mech=>mech.state.status);
+function getMajorStatus(mechanisms: SearchRow[]):string{
+    let statuses = mechanisms.map(mech=>mech._originalMechanism.state.status);
     let statusCounts = {};
     statuses.forEach(s=>{
         if (!statusCounts[s]) statusCounts[s] = 0;
@@ -44,11 +45,14 @@ function getMajorStatus(mechanisms: MechanismModel[]):string{
     return countedStatuses.sort(sortStatuses)[0].status;
 }
 
-function filterStatuses(onMechanismsSelected: (mechanisms:MechanismModel[])=>any, mechanisms:MechanismModel[], majorStatus:string):void{
-    return onMechanismsSelected(mechanisms.filter(m=>m.state.status===majorStatus))
+function filterStatuses(onMechanismsSelected: (mechanisms:SearchRow[])=>any, mechanisms:SearchRow[], majorStatus:string):void{
+    mechanisms.forEach(m=>{
+        if (m._originalMechanism.state.status!==majorStatus) m.tableData.checked = false;
+    })
+    return onMechanismsSelected(mechanisms)
 }
 
-function sameStatusError({mechanisms, theme, onMechanismsSelected}:{mechanisms: MechanismModel[], theme: any, onMechanismsSelected: (mechanisms:MechanismModel[])=>any}){
+function sameStatusError({mechanisms, theme, onMechanismsSelected}:{mechanisms: SearchRow[], theme: any, onMechanismsSelected: (mechanisms:SearchRow[])=>any}){
     if (checkMechanismStates(mechanisms)) return null;
     let majorStatus:string = getMajorStatus(mechanisms);
     return <Paper style={styles.error(theme)}>
@@ -58,19 +62,22 @@ function sameStatusError({mechanisms, theme, onMechanismsSelected}:{mechanisms: 
 }
 
 
-function checkDedupMechanism(mechanisms: MechanismModel[]):boolean {
-    return mechanisms.some(m=>m.info.name.startsWith('00000') || m.info.name.startsWith('00001'));
+function checkDedupMechanism(mechanisms: SearchRow[]):boolean {
+    return mechanisms.some(m=>m._originalMechanism.info.name.startsWith('00000') || m._originalMechanism.info.name.startsWith('00001'));
 }
 
-function filterDedup(onMechanismsSelected: (mechanisms:MechanismModel[])=>any, mechanisms:MechanismModel[]):void{
-    return onMechanismsSelected(mechanisms.filter(m=>!m.info.name.startsWith('00000') && !m.info.name.startsWith('00001')))
+function filterDedup(onMechanismsSelected: (mechanisms:SearchRow[])=>any, mechanisms:SearchRow[]):void{
+    mechanisms.forEach(r=>{
+        let m = r._originalMechanism;
+        if(m.info.name.startsWith('00000') || m.info.name.startsWith('00001')) r.tableData.checked=false;
+    })
+    return onMechanismsSelected(mechanisms)
 }
 
 let SameStatusError = withTheme(sameStatusError);
 
-function dedupSelected({mechanisms, theme, onMechanismsSelected}:{mechanisms: MechanismModel[], theme: any, onMechanismsSelected: (mechanisms:MechanismModel[])=>any}){
+function dedupSelected({mechanisms, theme, onMechanismsSelected}:{mechanisms: SearchRow[], theme: any, onMechanismsSelected: (mechanisms:SearchRow[])=>any}){
     if (!checkDedupMechanism(mechanisms)) return null;
-    let majorStatus:string = getMajorStatus(mechanisms);
     return <Paper style={styles.error(theme)}>
         <Button style={styles.selectOnly} id='cy_selectSingleStatus' onClick={()=>filterDedup(onMechanismsSelected, mechanisms)}>Unselect Dedupe mechanisms</Button>
         <Typography>Dedupe mechanisms are selected.</Typography>
@@ -79,7 +86,7 @@ function dedupSelected({mechanisms, theme, onMechanismsSelected}:{mechanisms: Me
 
 let DedupSelected = withTheme(dedupSelected);
 
-export default function ListAction({selectedAction, selectedMechanisms, actionUrl, onMechanismsSelected}:{selectedAction: string, selectedMechanisms: MechanismModel[], actionUrl: string, onMechanismsSelected: (mechanisms:MechanismModel[])=>void}){
+export default function ListAction({selectedAction, selectedMechanisms, actionUrl, onMechanismsSelected}:{selectedAction: string, selectedMechanisms: SearchRow[], actionUrl: string, onMechanismsSelected: (mechanisms:SearchRow[])=>void}){
     if (!selectedAction || !selectedMechanisms || selectedMechanisms.length===0) return null;
     return <React.Fragment>
         <Link to={actionUrl}>

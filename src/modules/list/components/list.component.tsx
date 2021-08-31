@@ -13,6 +13,7 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
+import {SearchRow} from "./results/resultsTable.component";
 
 const styles = {
     link: {
@@ -21,12 +22,35 @@ const styles = {
     } as CSSProperties
 };
 
+function tranformMechanisms(allMechanisms:MechanismModel[]):SearchRow[]{
+    return allMechanisms.map(mechanism=>{
+        return {
+            name: mechanism.info.name,
+            ou: mechanism.info.ou,
+            agency: mechanism.info.agency,
+            partner: mechanism.info.partner,
+            status: mechanism.state.status,
+            _originalMechanism: mechanism,
+            tableData:{}
+        }
+    })
+}
+
+function hasSelected(mechs:SearchRow[]):boolean{
+    if (!mechs) return false;
+    return mechs.some(m=>m.tableData.checked)
+}
+
+function getSelected(mechs:SearchRow[]):SearchRow[]{
+    if (!mechs) return []
+    return mechs.filter(r=>r.tableData.checked);
+}
+
 class List extends React.Component<
     {history: any, urlSearchOptions: Filters},
     {
         filters: Filters,
-        mechanisms: MechanismModel[],
-        selectedMechanisms: MechanismModel[],
+        mechanisms: SearchRow[],
         selectedAction: string,
         workflows: idNameList,
         periods: idNameList,
@@ -43,7 +67,6 @@ class List extends React.Component<
             mechanisms: null,
             workflows: null,
             periods: null,
-            selectedMechanisms: null,
             selectedAction: null,
             ous: null
         };
@@ -81,7 +104,7 @@ class List extends React.Component<
             this.setState({mechanisms: null, loading: {mechanisms: true}});
             fetchMechanisms(this.state.filters).then(mechanisms=>{
                 mechanisms.sort((a,b)=>a.info['ou']>b.info['ou']?1:-1)
-                this.setState({mechanisms: mechanisms, loading:{mechanisms: false}});
+                this.setState({mechanisms: tranformMechanisms(mechanisms), loading:{mechanisms: false}});
             });
         },0);
     }
@@ -120,21 +143,27 @@ class List extends React.Component<
     }
 
     getActionUrl():string{
-        if (!this.state.selectedMechanisms) return null;
+        if (!hasSelected(this.state.mechanisms)) return null;
         let params = {
             period: this.state.filters.period,
             workflow: this.state.filters.workflow,
-            approvalCombos: this.state.selectedMechanisms.map(m=>`${m.meta.ou}:${m.meta.cocId}:${m.meta.coId}:`)
+            approvalCombos: getSelected(this.state.mechanisms).map(m=>`${m._originalMechanism.meta.ou}:${m._originalMechanism.meta.cocId}:${m._originalMechanism.meta.coId}:`)
         };
         return '/action?' + queryString.stringify(params);
     }
 
-    onMechanismsSelected = (mechanisms:MechanismModel[]):void=>{
-        this.setState({selectedMechanisms: mechanisms});
+    onMechanismsSelected = (mechanisms:SearchRow[]):void=>{
+        if (mechanisms.length===0){
+            this.state.mechanisms.forEach(m=>{
+                m.tableData.checked = false;
+            })
+            mechanisms = this.state.mechanisms;
+        }
+        this.setState({mechanisms});
     };
 
     onSwitchTab = (action)=>{
-        this.setState({selectedAction: action, selectedMechanisms: null});
+        this.setState({selectedAction: action});
     };
 
     renderResults(){
@@ -144,7 +173,7 @@ class List extends React.Component<
                 There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link}>PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link}>DATIM Support</a>.
             </Typography>);
         if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
-        return <ResultsTabs mechanisms={this.state.mechanisms} selectedMechanisms={this.state.selectedMechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
+        return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
     }
 
     render() {
@@ -152,7 +181,7 @@ class List extends React.Component<
             <React.Fragment>
                 {this.renderFilters()}
                 {this.state.filters.workflow && <Divider/>}
-                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
+                <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={getSelected(this.state.mechanisms)} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
             </React.Fragment>
         );

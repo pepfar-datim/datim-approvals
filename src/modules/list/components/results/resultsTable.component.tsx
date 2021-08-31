@@ -7,7 +7,7 @@ import MechanismModel from "../../../shared/models/mechanism.model";
 
 const cellStyle = {padding: "0px 5px"};
 
-type SearchRow = {
+export type SearchRow = {
     name:string;
     ou:string;
     agency:string;
@@ -60,59 +60,24 @@ const tableOptions = {
     thirdSortClick: false
 };
 
-function tranformMechanisms(allMechanisms:MechanismModel[]):SearchRow[]{
-    return allMechanisms.map(mechanism=>{
-        return {
-            name: mechanism.info.name,
-            ou: mechanism.info.ou,
-            agency: mechanism.info.agency,
-            partner: mechanism.info.partner,
-            status: mechanism.state.status,
-            _originalMechanism: mechanism,
-            tableData:{}
-        }
-    })
-}
 
-
-function extractOrig(cb){
-    return function(rowData){
-        console.log(rowData);
-        cb(rowData.map(m=>m._originalMechanism));
-    }
-}
-
-function markSelected(filteredRows:SearchRow[], selectedMechanisms:MechanismModel[]):SearchRow[]{
-    console.log(filteredRows, selectedMechanisms);
-    if (!selectedMechanisms) return filteredRows;
-    return filteredRows.map(row=>{
-        let coId = row._originalMechanism.meta.coId;
-        let cocId = row._originalMechanism.meta.cocId;
-        let ou = row._originalMechanism.meta.ou;
-        if (selectedMechanisms.some(m=>m.meta.coId===coId && m.meta.cocId===cocId && m.meta.ou===ou)) {
-            row.tableData.checked = true;
-            console.log('checked', row)
-        }
-        return row;
-    });
-}
-
-export default class ResultsTable extends React.Component <{mechanisms: MechanismModel[], selectedMechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void},{}>{
+export default class ResultsTable extends React.Component <{mechanisms: SearchRow[], onMechanismsSelected: (mechanisms:SearchRow[])=>void},{}>{
     shouldComponentUpdate(nextProps, nextState){
-        if (!nextProps.selectedMechanisms || !this.props.selectedMechanisms) return false;
-        return this.props.selectedMechanisms.length!==nextProps.selectedMechanisms.length;
+        // if (!nextProps.selectedMechanisms || !this.props.selectedMechanisms) return false;
+        // return this.props.selectedMechanisms.length!==nextProps.selectedMechanisms.length;
+        return true;
     }
     render(){
         console.log('ResultTable render event')
         return <MaterialTable
             columns={tableColumns}
-            data={markSelected(tranformMechanisms(this.props.mechanisms), this.props.selectedMechanisms)}
+            data={this.props.mechanisms}
             icons={tableIcons as any}
             title={<Typography>{this.props.mechanisms.length} mechanisms</Typography>}
             options={tableOptions}
             components={{Row: props => <MTableBodyRow {...props} id={`cy_results_${makeId(props.data.name)}`}/>}}
             localization={localization}
-            onSelectionChange={extractOrig(this.props.onMechanismsSelected)}
+            onSelectionChange={this.props.onMechanismsSelected}
         />;
     }
 }
