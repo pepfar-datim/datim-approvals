@@ -56,12 +56,12 @@ export async function fetchMechanisms(filters:Filters):Promise<MechanismModel[]>
         return api.get(getMechanismInfoUrl(mechanismIds)).then(categoryOptionsResp=>{
             return mechResp.map(mech=>{
                 let mechInfo = categoryOptionsResp.categoryOptions.filter(i=>i.categoryOptionCombos[0].id===mech.id)[0];
-                if (!mechInfo) return console.log(`No Mechanism Info for mech.id ${mech.id}. Skipping.`);
+                // if (!mechInfo) return console.log(`No Mechanism Info for mech.id ${mech.id}. Skipping.`);
                 if (categoryOptionsResp.categoryOptions.filter(i=>i.id===mech.id).length>1) console.log(`Two info records per mechanism ${mech.id} ${mechInfo.name}`);
 
                 // Make a local copy so that the map/filter doesn't ignore our superAdmin override
                 let localOU = getOu(mech, mechInfo, isSuperUser);
-                if(!localOU.id) return console.log(`No OU info for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
+                // if(!localOU.id) return console.log(`No OU info for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
                 if (localOU.id!==filters.ou && filters.ou!=='ybg3MO3hcf4') return console.log(`OU info not matching for Mechanism ${mech.id} ${mechInfo.name}. Mechanism filtered out.`, mech, mechInfo);
                 let status = getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted);
                 return {

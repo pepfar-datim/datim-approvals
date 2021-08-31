@@ -1,11 +1,11 @@
 import React from 'react';
 import {ThemeProvider} from '@material-ui/styles';
-import {createMuiTheme} from '@material-ui/core/styles';
+import {createTheme} from '@material-ui/core/styles';
 import Message from "./message.component";
 
 import "../css/themeWrapper.component.css";
 
-const theme = createMuiTheme({
+const theme = createTheme({
     palette: {
         primary: {
             main: 'rgb(39, 102, 150)'

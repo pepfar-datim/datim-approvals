@@ -74,22 +74,26 @@ function tranformMechanisms(allMechanisms:MechanismModel[]){
 
 function extractOrig(cb){
     return function(rowData){
+        // rowData.selected = true;
+        console.log(rowData);
         cb(rowData.map(m=>m._originalMechanism));
     }
 }
 
-export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void}) {
-    return <MaterialTable
-        columns={tableColumns}
-        data={tranformMechanisms(mechanisms)}
-        icons={tableIcons as any}
-        title={<Typography>{mechanisms.length} mechanisms</Typography>}
-        options={tableOptions}
-        components={{Row: props=><MTableBodyRow {...props} id={`cy_results_${makeId(props.data.name)}`}/>}}
-        localization={localization}
-        onSelectionChange={extractOrig(onMechanismsSelected)}
-    />;
+export default class ResultsTable extends React.Component <{mechanisms: MechanismModel[], onMechanismsSelected: (mechanisms:MechanismModel[])=>void},{}>{
+    shouldComponentUpdate(nextProps, nextState){
+        return false;
+    }
+    render(){
+        return <MaterialTable
+            columns={tableColumns}
+            data={tranformMechanisms(this.props.mechanisms)}
+            icons={tableIcons as any}
+            title={<Typography>{this.props.mechanisms.length} mechanisms</Typography>}
+            options={tableOptions}
+            components={{Row: props => <MTableBodyRow {...props} id={`cy_results_${makeId(props.data.name)}`}/>}}
+            localization={localization}
+            onSelectionChange={extractOrig(this.props.onMechanismsSelected)}
+        />;
+    }
 }
-
-// export default React.memo(ResultsTable);
-// export default ResultsTable;
