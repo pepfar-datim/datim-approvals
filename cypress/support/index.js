@@ -25,3 +25,4 @@ import "./api/reset"
 
 // enable stubbing
 Cypress.on('window:before:load', (win) => { win.fetch = null; });
+

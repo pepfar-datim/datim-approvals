@@ -3,7 +3,7 @@ import {Button, Divider, Paper, Typography, withTheme} from "@material-ui/core";
 import {Link} from "react-router-dom";
 import MechanismModel from "../../shared/models/mechanism.model";
 import {FloatProperty, PositionProperty} from 'csstype';
-import {SearchMechanism} from "./results/resultsTable.component";
+import {SearchMechanism} from "../models/searchMechanism.model";
 
 
 const styles = {

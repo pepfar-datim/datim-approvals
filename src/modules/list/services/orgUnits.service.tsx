@@ -1,4 +1,4 @@
-import api from "../../shared/services/api.service";
+import {getData} from "@pepfar-react-lib/http-tools";
 import {idNameList} from "../../shared/models/idNameList.model";
 
 let allOusUrl = `/organisationUnits/ybg3MO3hcf4.json`
@@ -23,14 +23,14 @@ export default class OrgUnits {
     }
 
     static fetchAllOus():Promise<idNameList>{
-        return api.get(allOusUrl).then(res => {
+        return getData(allOusUrl).then(res => {
             this.allOus = res.organisationUnits;
             return this.allOus;
         });
     }
 
     static fetchUserOus():Promise<idNameList>{
-        return api.get(userOusUrl).then(res => {
+        return getData(userOusUrl).then(res => {
             this.userOus = res.organisationUnits;
             return this.userOus;
         });

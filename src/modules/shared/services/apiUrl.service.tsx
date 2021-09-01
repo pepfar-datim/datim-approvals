@@ -1,9 +1,17 @@
-import devServerConfig from "../../../config/serverConfig.dev.json";
-import prodServerConfig from "../../../config/serverConfig.prod.json";
+import testConfig from "../../../config/serverConfig.test.json";
+import developmentConfig from "../../../config/serverConfig.dev.json";
+import productionConfig from "../../../config/serverConfig.prod.json";
 
-let serverConfig;
-if(process.env.NODE_ENV === 'production') serverConfig = prodServerConfig;
-else serverConfig = devServerConfig;
+let config;
 
-export let baseUrl = serverConfig.baseUrl;
-export let serverUrl = serverConfig.serverUrl;
+switch (process.env.NODE_ENV){
+    case "production": config = productionConfig; break;
+    case "test": config = testConfig; break;
+    case "development": config = developmentConfig; break;
+    default: config = developmentConfig; break;
+}
+
+if (!config) config = require("../../../config/serverConfig.dev.json");
+
+export const baseUrl = config.baseUrl;
+export const apiVersion = config.apiVersion;

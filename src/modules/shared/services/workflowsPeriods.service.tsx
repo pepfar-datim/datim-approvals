@@ -1,4 +1,4 @@
-import api from './api.service';
+import {getData} from "@pepfar-react-lib/http-tools";
 import {idNameList} from "../models/idNameList.model";
 import getWorkflows from "./workflowService";
 
@@ -44,7 +44,7 @@ function transformDatastore(response, isSuperUser):WorkflowPeriods{
 }
 
 function checkSuperUser():Promise<boolean>{
-    return api.get('/me?fields=userCredentials[userRoles[name]]')
+    return getData('/me?fields=userCredentials[userRoles[name]]')
         .then(result=>result.userCredentials.userRoles)
         .then(result=>result.map(r=>r.name))
         .then(result=>result.includes("Superuser ALL authorities"))
@@ -75,7 +75,7 @@ export default class WorkflowPeriodService {
     }
 
     private fetchDatastorePeriods(isSuperUser: boolean){
-        return api.get('/dataStore/approvals/periodSettings').then((result)=>transformDatastore(result, isSuperUser));
+        return getData('/dataStore/approvals/periodSettings').then((result)=>transformDatastore(result, isSuperUser));
     }
 
     getPeriods(workflowId: string):idNameList{

@@ -3,19 +3,21 @@
   "version": "2.1.4",
   "private": true,
   "dependencies": {
-    "@dhis2/app-runtime": "^2.9.2",
+    "@dhis2/app-runtime": "^2.11.0",
     "@dhis2/d2-i18n": "^1.1.0",
-    "@dhis2/d2-ui-header-bar": "^6.5.6",
-    "@dhis2/ui": "^6.19.1",
-    "@dhis2/ui-core": "^6.19.0",
-    "@dhis2/ui-widgets": "^6.19.0",
+    "@dhis2/ui": "^6.20.0",
+    "@dhis2/ui-core": "^6.20.0",
+    "@dhis2/ui-widgets": "^6.20.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
+    "@pepfar-react-lib/http-tools": "^0.1.6",
+    "@pepfar-react-lib/jest-tools": "^0.1.9",
+    "@pepfar-react-lib/local-package-builder": "^0.1.15",
     "@types/jest": "^27.0.1",
-    "@types/node": "^16.7.7",
+    "@types/node": "^16.7.10",
     "@types/react": "^17.0.19",
     "@types/react-dom": "^17.0.9",
-    "d2": "^31.8.0",
+    "jest-environment-jsdom-sixteen": "^2.0.0",
     "material-table": "^1.69.3",
     "query-string": "^7.0.1",
     "react": "^17.0.2",
@@ -23,7 +25,7 @@
     "react-router-dom": "^5.2.1",
     "react-scripts": "4.0.3",
     "styled-jsx": "^4.0.1",
-    "typescript": "3.4.5",
+    "typescript": "4.4.2",
     "wait-until": "0.0.2"
   },
   "scripts": {
@@ -31,7 +33,11 @@
     "build:react": "react-scripts build",
     "build:zip": "(rm -f Data-Approval.zip && cd build && zip ../Data-Approval.zip -r .)",
     "build": "npm run build:react && npm run build:zip",
-    "test": "node_modules/cypress/bin/cypress open"
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen --maxWorkers=12 --verbose",
+    "test:cache": "rm cachedApiCalls/*",
+    "test:init": "export JEST_TIMEOUT_SEC=240 && react-scripts test --env=jest-environment-jsdom-sixteen --maxWorkers=20 --verbose",
+    "dep:copy": "ts-node --skip-project packages/copyWatch.ts",
+    "dep:build": "ts-node --skip-project packages/buildWatch.ts"
   },
   "eslintConfig": {
     "extends": "react-app"

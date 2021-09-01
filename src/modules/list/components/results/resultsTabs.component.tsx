@@ -1,7 +1,8 @@
 import React from "react";
 import {Badge, Divider, Tab, Tabs} from "@material-ui/core";
 import MechanismModel from "../../../shared/models/mechanism.model";
-import ResultsTable, {SearchMechanism} from "./resultsTable.component";
+import ResultsTable from "./resultsTable.component";
+import {SearchMechanism} from "../../models/searchMechanism.model";
 
 const mechanismActions = ['view', 'accept', 'submit', 'recall', 'return'];
 

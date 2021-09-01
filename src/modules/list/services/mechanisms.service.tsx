@@ -1,4 +1,4 @@
-import api from "../../shared/services/api.service";
+import {getData} from "@pepfar-react-lib/http-tools";
 import MechanismModel from "../../shared/models/mechanism.model";
 import getStatus from "../../shared/services/status.service";
 import Filters from "../models/filters.model";
@@ -50,11 +50,11 @@ function getOu(mech, mechInfo, isSuperUser:boolean):idName{
 export async function fetchMechanisms(filters:Filters):Promise<SearchMechanism[]>{
     let sus = new SuperUserService();
     let isSuperUser:boolean = await sus.init();
-    return api.get(generateMechanismsUrl(filters)).then(mechResp=>{
+    return getData(generateMechanismsUrl(filters)).then(mechResp=>{
         if (mechResp.httpStatusCode===409) return [];
         // this will remove our knowledge of the OUs on dedupe records
         let mechanismIds = mechResp.map(m=>m.id);
-        return api.get(getMechanismInfoUrl(mechanismIds)).then(categoryOptionsResp=>{
+        return getData(getMechanismInfoUrl(mechanismIds)).then(categoryOptionsResp=>{
             let mechanisms:MechanismModel[] = mechResp.map(mech=>{
                 let mechInfo = categoryOptionsResp.categoryOptions.filter(i=>i.categoryOptionCombos[0].id===mech.id)[0];
                 // if (!mechInfo) return console.log(`No Mechanism Info for mech.id ${mech.id}. Skipping.`);

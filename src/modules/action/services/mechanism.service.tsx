@@ -1,4 +1,4 @@
-import api from "../../shared/services/api.service";
+import {getData, postData} from "@pepfar-react-lib/http-tools";
 import MechanismModel, {MechanismInfo, MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
 import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
@@ -66,7 +66,7 @@ function fixAgencyHq(mechanismsMeta: MechanismMeta[], action:string, currentStat
 
 export function performAction(action: string, workflow: string, period: string, mechanismsMeta: MechanismMeta[], currentStatus:string){
     mechanismsMeta = fixAgencyHq(mechanismsMeta, action, currentStatus, workflow);
-    return api.post(getActionUrl(action), {
+    return postData(getActionUrl(action), {
         "approvals": mechanismsMeta.map(m=>{return {"aoc": m.cocId, "ou": m.ou}}),
         "pe": [period],
         "wf": [workflow]
@@ -88,7 +88,7 @@ function transformCategoryOptionToMechanismInfo(categoryOption:any):MechanismInf
 }
 
 export function getMechanismsInfo(mechanismIds: string[]):Promise<MechanismInfo[]>{
-    return api.get(mechanismsInfoUrl(mechanismIds)).then(res=>res.categoryOptions)
+    return getData(mechanismsInfoUrl(mechanismIds)).then(res=>res.categoryOptions)
         .then(categoryOptions=>{
             let result = {};
             categoryOptions.forEach(categoryOption=>{
@@ -113,7 +113,7 @@ function transformCOCToMechanismState(workflow, combo){
 }
 
 export function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
-    return api.get(mechanismStatesUrl(workflow, period))
+    return getData(mechanismStatesUrl(workflow, period))
         .then(res => {
 
             return res.filter(categoryOptionCombo=>mechanisms.map(m=>`${m.meta.cocId};${m.meta.ou}`).includes(`${categoryOptionCombo.id};${categoryOptionCombo.ou}`))

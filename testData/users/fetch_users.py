@@ -11,7 +11,7 @@ def fetch_users():
             'userCredentials.username:$like:cypress-agency-india'
         ]
     }
-    res = api.get('users.json', params)
+    res = getData('users.json', params)
     print('Fetched',len(res['users']),'users')
     return res['users']
 

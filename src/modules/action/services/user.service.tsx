@@ -1,7 +1,7 @@
-import api from "../../shared/services/api.service";
+import {getData} from "@pepfar-react-lib/http-tools";
 
 export function fetchUserType():Promise<string>{
-    return api.get('/me?fields=userGroups[name]')
+    return getData('/me?fields=userGroups[name]')
         .then(response=>{
             return response.userGroups.map(g=>g.name.toLowerCase());
         }).then(groups=>{
@@ -23,5 +23,5 @@ export function fetchUserType():Promise<string>{
 }
 
 export function fetchUserOu():Promise<string>{
-    return api.get('/me?fields=organisationUnits').then(response=>response.organisationUnits[0].id);
+    return getData('/me?fields=organisationUnits').then(response=>response.organisationUnits[0].id);
 }

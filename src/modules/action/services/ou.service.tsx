@@ -1,4 +1,4 @@
-import api from "../../shared/services/api.service";
+import {getData} from "@pepfar-react-lib/http-tools";
 
 /**
  * get all the level 3 OUs which 
@@ -10,5 +10,5 @@ import api from "../../shared/services/api.service";
 }
 
 export function getLevel3OUs():Promise<[]>{
-    return api.get(getLevelThreeOusUrl()).then(response=>response.organisationUnits);
+    return getData(getLevelThreeOusUrl()).then(response=>response.organisationUnits);
 }

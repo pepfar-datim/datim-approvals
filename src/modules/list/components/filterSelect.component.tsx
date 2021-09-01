@@ -17,9 +17,12 @@ function renderInfo(selected: Filters){
     if (!selected.ou) return <Typography color='secondary' style={styles.info}>Please specify Organisation Unit</Typography>;
 }
 
-export default function FilterSelect(
-    {organisationUnits, workflows, periods, selected, select}
-    :{organisationUnits:idNameList, workflows:idNameList, periods:idNameList, selected:Filters, select:(property: string, value:string)=>void}
+export default function FilterSelect({organisationUnits, workflows, periods, selected, select}:{
+         organisationUnits:idNameList,
+         workflows:idNameList,
+         periods:idNameList,
+         selected:Filters,
+         select:(property: string, value:string)=>void}
     ){
     if(!organisationUnits) return null;
     if (!selected.workflow) return null;
@@ -31,8 +34,9 @@ export default function FilterSelect(
                     inputProps={{
                         name: 'workflow',
                         id: 'workflow',
-                        className: 'cy_list_workflowSelect'
+                        className: 'cy_list_workflowSelect',
                     }}
+                    data-testid={`filter_workflow`}
                     onChange={event=>select('workflow', event.target.value as string)}
                     value={selected.workflow || ''}
                 >
@@ -47,8 +51,9 @@ export default function FilterSelect(
                     inputProps={{
                         name: 'period',
                         id: 'period',
-                        className: 'cy_list_periodSelect'
+                        className: 'cy_list_periodSelect',
                     }}
+                    data-testid={`filter_period`}
                     onChange={event=>select('period', event.target.value as string)}
                     value={selected.period || ''}
                 >
@@ -63,8 +68,9 @@ export default function FilterSelect(
                     inputProps={{
                         name: 'ou',
                         id: 'ou',
-                        className: 'cy_list_ouSelect'
+                        className: 'cy_list_ouSelect',
                     }}
+                    data-testid={`filter_ou`}
                     onChange={event=>select('ou', event.target.value as string)}
                     value={selected.ou || ''}
                 >

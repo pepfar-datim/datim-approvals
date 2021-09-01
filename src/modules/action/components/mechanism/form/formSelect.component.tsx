@@ -1,6 +1,6 @@
 import React from "react";
 import FormContent from "./formContent.component";
-import api from "../../../../shared/services/api.service";
+import {getData} from "@pepfar-react-lib/http-tools";
 import DatasetSelect from "./datasetSelect.component";
 import {CircularProgress, Divider} from "@material-ui/core";
 import {getWorkflowNameById} from "../../../../shared/services/workflowService";
@@ -18,9 +18,9 @@ export default class FormSelect extends React.Component<
     constructor(props){
         super(props);
         this.state = {selectedDataset: {}, datasets: null};
-        api.get('/dataStore/approvals/periodSettings').then(res=>{
+        getData('/dataStore/approvals/periodSettings').then(res=>{
             let recommendedDatasets = res[getWorkflowNameById(props.workflow)][props.period].datasets;
-            api.get(getDatasetUrl(props.workflow)).then(res=>{
+            getData(getDatasetUrl(props.workflow)).then(res=>{
                 let allDatasets = res.dataApprovalWorkflows[0].dataSets;
                 let actualDatasets;
                 if (!recommendedDatasets || recommendedDatasets.length ===0) actualDatasets = allDatasets;

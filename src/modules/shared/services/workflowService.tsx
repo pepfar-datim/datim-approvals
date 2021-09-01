@@ -1,4 +1,4 @@
-import api from './api.service';
+import {getData} from "@pepfar-react-lib/http-tools";
 import {idNameList} from "../models/idNameList.model";
 import workflowData from "../../../config/workflows.json";
 
@@ -15,7 +15,7 @@ export function getWorkflowTypeById(workflowId: string):string{
 }
 
 export default function getWorkflows():Promise<idNameList> {
-    return api.get('/dataApprovalWorkflows.json').then(result=>{
+    return getData('/dataApprovalWorkflows.json').then(result=>{
         return result.dataApprovalWorkflows.map(wf=>{
             return {id: wf.id, name: wf.displayName};
         });
