@@ -27,7 +27,7 @@ const testCases:TestCase[] = [{
 function searchDedupesTest(testCase:TestCase){
     test(`1 > Search Dedupes > ${testCase.name}`, async()=>{
         await renderSearch(testCase.filters);
-        texts(testCase.expected);
+        texts(textToFind);
     })
 }
 
