@@ -3,7 +3,7 @@
   "default_locale": "en",
   "appType": "APP",
   "name": "Data Approval",
-  "version": "2.1.4",
+  "version": "2.1.5",
   "description": "DATIM Mechanisms Approval App",
   "developer": {
     "name": "Jakub Flaska",

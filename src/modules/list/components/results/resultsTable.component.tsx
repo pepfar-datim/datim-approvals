@@ -47,25 +47,27 @@ const tableOptions = {
     pageSizeOptions: [20, 50, 100],
     selection: true,
     emptyRowsWhenPaging: false,
-    thirdSortClick: false
+    thirdSortClick: false,
+    draggable: false
 };
 
 
 export default class ResultsTable extends React.Component <{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void},{}>{
-    shouldComponentUpdate(nextProps, nextState){
+    // shouldComponentUpdate(nextProps, nextState){
         // if (!nextProps.selectedMechanisms || !this.props.selectedMechanisms) return false;
         // return this.props.selectedMechanisms.length!==nextProps.selectedMechanisms.length;
-        return true;
-    }
+        // return true;
+    // }
     render(){
         console.log('ResultTable render event')
+        // return <>{JSON.stringify(this.props.mechanisms)}</>
         return <MaterialTable
             columns={tableColumns}
             data={this.props.mechanisms}
             icons={tableIcons as any}
             title={<Typography>{this.props.mechanisms.length} mechanisms</Typography>}
             options={tableOptions}
-            components={{Row: props => <MTableBodyRow {...props} id={`cy_results_${makeId(props.data.name)}`}/>}}
+            components={{Row: props => <MTableBodyRow {...props} id={`cy_results_${makeId(props.data.name)}`} />}}
             localization={localization}
             onSelectionChange={this.props.onMechanismsSelected}
         />;
