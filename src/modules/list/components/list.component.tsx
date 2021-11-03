@@ -5,6 +5,7 @@ import {Divider, Typography} from "@material-ui/core";
 
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
+import GoButton from "./goButton.component";
 import MechanismModel from "../../shared/models/mechanism.model";
 import ResultsTabs from "./results/resultsTabs.component";
 import Filters from "../models/filters.model";
@@ -31,6 +32,7 @@ class List extends React.Component<
         workflows: idNameList,
         periods: idNameList,
         loading: {filters?: boolean, mechanisms?: boolean},
+        goButtonClicked: boolean
         ous: idNameList
     }
     > {
@@ -45,6 +47,7 @@ class List extends React.Component<
             periods: null,
             selectedMechanisms: null,
             selectedAction: null,
+            goButtonClicked: false,
             ous: null
         };
         let ouPromise = orgUnits.init().then((ous)=>{
@@ -61,7 +64,11 @@ class List extends React.Component<
             this.setFilterFromUrl('period');
         });
 
-        Promise.all([ouPromise,workflowsPromise]).then(()=>this.fetchMechanisms());
+        //Promise.all([ouPromise,workflowsPromise]).then(()=>this.fetchMechanisms());
+        Promise.all([ouPromise,workflowsPromise]);
+
+        //binding in constuctor 
+        this.renderResults = this.renderResults.bind(this);
     }
 
     setFilterFromUrl(property:string){
@@ -97,6 +104,12 @@ class List extends React.Component<
     }
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
+        //this.fetchMechanisms();
+        //this.updateUrl();
+    };
+
+    onGo = ()=>{
+        this.setState({goButtonClicked: true});
         this.fetchMechanisms();
         this.updateUrl();
     };
@@ -138,7 +151,12 @@ class List extends React.Component<
     };
 
     renderResults(){
+        
         if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
+        if (!this.state.goButtonClicked) return (
+            <Typography color="secondary">
+                Please click Go to search.
+            </Typography>);
         if (!this.state.loading.mechanisms && !this.state.mechanisms) return (
             <Typography color="secondary">
                 There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link}>PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link}>DATIM Support</a>.
@@ -151,6 +169,7 @@ class List extends React.Component<
         return (
             <React.Fragment>
                 {this.renderFilters()}
+                {<GoButton select={this.onGo}/>}
                 {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
