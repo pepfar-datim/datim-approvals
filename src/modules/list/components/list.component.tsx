@@ -14,6 +14,7 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
+import api from "../../shared/services/api.service";
 
 const styles = {
     link: {
@@ -32,7 +33,8 @@ class List extends React.Component<
         workflows: idNameList,
         periods: idNameList,
         loading: {filters?: boolean, mechanisms?: boolean},
-        goButtonClicked: boolean
+        goButtonClicked: boolean,
+        isGlobalUser: boolean,
         ous: idNameList
     }
     > {
@@ -48,8 +50,13 @@ class List extends React.Component<
             selectedMechanisms: null,
             selectedAction: null,
             goButtonClicked: false,
+            isGlobalUser: false,
             ous: null
         };
+        //this.setState({isGlobalUser: Promise.resolve(this.checkGlobalUser())});
+        this.checkGlobalUser().then((result) => { 
+            this.setState({isGlobalUser: result});
+          });
         let ouPromise = orgUnits.init().then((ous)=>{
             this.setState({ous: ous});
             this.preselectOu(ous);
@@ -64,11 +71,17 @@ class List extends React.Component<
             this.setFilterFromUrl('period');
         });
 
-        //Promise.all([ouPromise,workflowsPromise]).then(()=>this.fetchMechanisms());
-        Promise.all([ouPromise,workflowsPromise]);
+        Promise.all([ouPromise,workflowsPromise]).then(()=>!this.state.isGlobalUser?this.fetchMechanisms():null);
 
         //binding in constuctor 
         this.renderResults = this.renderResults.bind(this);
+    }
+    
+    checkGlobalUser():Promise<boolean>{
+        return api.get('/me?fields=userGroups[name]')
+            .then(result=>result.userGroups)
+            .then(result=>result.map((r: { name: any; })=>r.name))
+            .then(result=>result.includes("Global users"))
     }
 
     setFilterFromUrl(property:string){
@@ -104,8 +117,11 @@ class List extends React.Component<
     }
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
-        //this.fetchMechanisms();
-        //this.updateUrl();
+        if (!this.state.isGlobalUser)
+        {
+            this.fetchMechanisms();
+            this.updateUrl();
+        }
     };
 
     onGo = ()=>{
@@ -153,7 +169,7 @@ class List extends React.Component<
     renderResults(){
         
         if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
-        if (!this.state.goButtonClicked) return (
+        if (!this.state.goButtonClicked && this.state.isGlobalUser) return (
             <Typography color="secondary">
                 Please click Go to search.
             </Typography>);
@@ -169,7 +185,7 @@ class List extends React.Component<
         return (
             <React.Fragment>
                 {this.renderFilters()}
-                {<GoButton select={this.onGo}/>}
+                {this.state.isGlobalUser?<GoButton select={this.onGo}/>:null}
                 {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={this.state.selectedMechanisms} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
