@@ -4,7 +4,7 @@ import {Done} from "@material-ui/icons";
 import {createTheme} from "@material-ui/core/styles";
 
 const styles = {
-    root: {float: 'right'} as any as CSSProperties
+    root: {marginTop: '15px', display: 'inline-block'} as any as CSSProperties
 }
 
 export default function GoButton({select}:{
