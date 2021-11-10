@@ -4,7 +4,7 @@ import getStatus from "../../shared/services/status.service";
 import Filters from "../models/filters.model";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
-import SuperUserService from "../../shared/services/superuser.service"
+import {checkSuperUser} from "../../shared/services/superuser.service"
 import {idName} from "../../action/models/idName";
 import {SearchMechanism, tranformMechanisms} from "../models/searchMechanism.model";
 
@@ -47,9 +47,21 @@ function getOu(mech, mechInfo, isSuperUser:boolean):idName{
     return localOU;
 }
 
+function filterSystemMechs(isSuperUser:boolean){
+    return (mech:MechanismModel)=>{
+        if (isSuperUser) return true;
+        try {
+            let code = mech.info.name.match(/^\d+/)[0];
+            return !['00000', '00001', '00100', '00200'].includes(code);
+        }catch(e) {
+            console.error(e);
+            return true;
+        }
+    }
+}
+
 export async function fetchMechanisms(filters:Filters):Promise<SearchMechanism[]>{
-    let sus = new SuperUserService();
-    let isSuperUser:boolean = await sus.init();
+    let isSuperUser:boolean = await checkSuperUser();
     return getData(generateMechanismsUrl(filters)).then(mechResp=>{
         if (mechResp.httpStatusCode===409) return [];
         // this will remove our knowledge of the OUs on dedupe records
@@ -82,7 +94,7 @@ export async function fetchMechanisms(filters:Filters):Promise<SearchMechanism[]
                         coId: mechInfo.id
                     }
                 };
-            }).filter(mech=>mech);
+            }).filter(mech=>mech).filter(filterSystemMechs(isSuperUser))
             mechanisms.sort((a,b)=>a.info['ou']>b.info['ou']?1:-1)
             return tranformMechanisms(mechanisms);
         }).catch(e=>{
