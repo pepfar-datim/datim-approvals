@@ -1,6 +1,6 @@
 {
   "name": "datim-approvals",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "private": true,
   "dependencies": {
     "@dhis2/app-runtime": "^2.11.0",

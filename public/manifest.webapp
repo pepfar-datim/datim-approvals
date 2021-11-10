@@ -3,11 +3,10 @@
   "default_locale": "en",
   "appType": "APP",
   "name": "Data Approval",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "DATIM Mechanisms Approval App",
   "developer": {
-    "name": "Jakub Flaska",
-    "email": "jflaska@baosystems.com"
+    "name": "PEPFAR"
   },
   "icons": {
     "48": "img/logo-48.png"
