@@ -5,6 +5,7 @@ import {Divider, Typography} from "@material-ui/core";
 
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
+import GoButton from "./goButton.component";
 import MechanismModel from "../../shared/models/mechanism.model";
 import ResultsTabs from "./results/resultsTabs.component";
 import Filters from "../models/filters.model";
@@ -14,6 +15,7 @@ import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
 import {SearchMechanism} from "../models/searchMechanism.model";
+import {getData} from "@pepfar-react-lib/http-tools";
 
 const styles = {
     link: {
@@ -41,6 +43,8 @@ class List extends React.Component<
         workflows: idNameList,
         periods: idNameList,
         loading: {filters?: boolean, mechanisms?: boolean},
+        goButtonClicked: boolean,
+        isGlobalUser: boolean,
         ous: idNameList
     }
     > {
@@ -54,8 +58,14 @@ class List extends React.Component<
             workflows: null,
             periods: null,
             selectedAction: null,
+            goButtonClicked: false,
+            isGlobalUser: false,
             ous: null
         };
+        //this.setState({isGlobalUser: Promise.resolve(this.checkGlobalUser())});
+        this.checkGlobalUser().then((result) => { 
+            this.setState({isGlobalUser: result});
+          });
         let ouPromise = orgUnits.init().then((ous)=>{
             this.setState({ous: ous});
             this.preselectOu(ous);
@@ -70,7 +80,17 @@ class List extends React.Component<
             this.setFilterFromUrl('period');
         });
 
-        Promise.all([ouPromise,workflowsPromise]).then(()=>this.fetchMechanisms());
+        Promise.all([ouPromise,workflowsPromise]).then(()=>!this.state.isGlobalUser?this.fetchMechanisms():null);
+
+        //binding in constuctor 
+        this.renderResults = this.renderResults.bind(this);
+    }
+    
+    checkGlobalUser():Promise<boolean>{
+        return getData('/me?fields=userGroups[name]')
+            .then(result=>result.userGroups)
+            .then(result=>result.map((r: { name: any; })=>r.name))
+            .then(result=>result.includes("Global users"))
     }
 
     setFilterFromUrl(property:string){
@@ -105,6 +125,15 @@ class List extends React.Component<
     }
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
+        if (!this.state.isGlobalUser)
+        {
+            this.fetchMechanisms();
+            this.updateUrl();
+        }
+    };
+
+    onGo = ()=>{
+        this.setState({goButtonClicked: true});
         this.fetchMechanisms();
         this.updateUrl();
     };
@@ -152,7 +181,12 @@ class List extends React.Component<
     };
 
     renderResults(){
+        
         if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
+        if (!this.state.goButtonClicked && this.state.isGlobalUser) return (
+            <Typography color="secondary">
+                Please click Go to search.
+            </Typography>);
         if (!this.state.loading.mechanisms && !this.state.mechanisms) return (
             <Typography color="secondary">
                 There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link}>PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link}>DATIM Support</a>.
@@ -165,6 +199,7 @@ class List extends React.Component<
         return (
             <React.Fragment>
                 {this.renderFilters()}
+                {this.state.isGlobalUser?<GoButton select={this.onGo}/>:null}
                 {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={getSelected(this.state.mechanisms)} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
