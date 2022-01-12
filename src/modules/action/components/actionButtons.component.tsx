@@ -1,6 +1,5 @@
 import React, {CSSProperties} from "react";
 import Button from "@material-ui/core/Button/Button";
-import {withRouter} from "react-router-dom";
 import {MechanismState} from "../../shared/models/mechanism.model";
 import {Typography} from "@material-ui/core";
 import {FloatProperty} from "csstype";
@@ -42,15 +41,13 @@ function renderButtons(actions:string[], mechanismsNr:number, performAction: (ac
     </Button>);
 }
 
-function ActionButtons({mechanismState, mechanismsNr, performAction, history}:{mechanismState: MechanismState, mechanismsNr: number, performAction: (action: string)=>void, history: any}){
+export default function ActionButtons({mechanismState, mechanismsNr, performAction}:{mechanismState: MechanismState, mechanismsNr: number, performAction: (action: string)=>void}){
     if (!mechanismState) return null;
     let actions = Object.keys(mechanismState.actions).filter(a=>mechanismState.actions[a]);
     return(
         <div id='cy_mechanismActions'>
-            <Button style={styles.back} onClick={history.goBack} id="cy_actionPage_back">Back</Button>
+            <Button style={styles.back} onClick={window.history.back} id="cy_actionPage_back">Back</Button>
             {renderButtons(actions, mechanismsNr, performAction)}
         </div>
     );
 }
-
-export default withRouter(ActionButtons);

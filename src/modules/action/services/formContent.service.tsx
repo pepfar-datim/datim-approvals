@@ -1,5 +1,5 @@
 import {MechanismMeta} from "../../shared/models/mechanism.model";
-import * as queryString from "querystring";
+import queryString from "query-string";
 import {getFormHtml} from "../../shared/services/api.service";
 
 export default function getFormContent(dataSet:string, period:string, userOu:string, mechanismMetas:MechanismMeta[]):Promise<string>{

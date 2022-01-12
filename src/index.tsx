@@ -5,7 +5,7 @@ import {Provider} from "@dhis2/app-runtime";
 import {HeaderBar} from '@dhis2/ui'
 import ThemeWrapper from "./modules/main/components/themeWrapper.component";
 import "./index.css";
-import {apiInit, isTestEnv} from "@pepfar-react-lib/http-tools";
+import {apiInit} from "@pepfar-react-lib/http-tools";
 
 apiInit(baseUrl,process.env.NODE_ENV);
 

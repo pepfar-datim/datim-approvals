@@ -1,6 +1,5 @@
 import React from "react";
 import {Badge, Divider, Tab, Tabs} from "@material-ui/core";
-import MechanismModel from "../../../shared/models/mechanism.model";
 import ResultsTable from "./resultsTable.component";
 import {SearchMechanism} from "../../models/searchMechanism.model";
 

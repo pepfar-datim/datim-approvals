@@ -13,10 +13,14 @@ import WorkflowPeriodService from "../../shared/services/workflowsPeriods.servic
 import {getWorkflowNameById} from "../../shared/services/workflowService";
 import Loading from "../../shared/components/loading.component";
 import "../css/action.component.css";
+import {getActionUrlData} from "../services/getActionUrlData.service";
 
-export default class Action extends React.Component<
-    {postMessage: (message:string, type?:string)=>void, approvalCombos: ApprovalsCombo[], workflow: string, period: string},
-    {
+export default class Action extends React.Component<{
+        postMessage: (message:string, type?:string)=>void,
+        // approvalCombos: ApprovalsCombo[],
+        // workflow: string,
+        // period: string
+    }, {
         workflow: idName,
         period: idName,
         userOu: string,
@@ -26,21 +30,21 @@ export default class Action extends React.Component<
         processing: boolean,
         networkError: boolean,
         ous: []
-    }
-    > {
+    }> {
     constructor(props){
         super(props);
-        let mechanismsMeta:MechanismMeta[] = props.approvalCombos.map(ac=>{return {
+        let {workflow, period,approvalCombos} = getActionUrlData();
+        let mechanismsMeta:MechanismMeta[] = approvalCombos.map(ac=>{return {
             ou: ac.ou,
             cocId: ac.cocId,
             coId: ac.coId,
-            workflow: props.workflow,
-            period: props.period
+            workflow: workflow,
+            period: period
         }});
         let mechanisms:MechanismModel[] = mechanismsMeta.map(meta=>{return {meta: meta}});
         this.state = {
-            workflow: {id: props.workflow, name: getWorkflowNameById(props.workflow)},
-            period: {id: props.period, name: null},
+            workflow: {id: workflow, name: getWorkflowNameById(workflow)},
+            period: {id: period, name: null},
             userType: null,
             userOu: null,
             mechanismState: null,
@@ -53,7 +57,7 @@ export default class Action extends React.Component<
 
         let wfService = new WorkflowPeriodService();
         wfService.init().then(()=>{
-            this.setState({period: {id: props.period, name: wfService.getPeriodNameById(props.workflow, props.period)}});
+            this.setState({period: {id: period, name: wfService.getPeriodNameById(workflow, period)}});
         });
     }
 

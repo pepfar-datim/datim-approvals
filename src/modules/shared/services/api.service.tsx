@@ -1,4 +1,3 @@
-import {baseUrl} from "./apiUrl.service";
 import {makeUrl} from "@pepfar-react-lib/http-tools";
 
 export function getFormHtml(url){

@@ -1,5 +1,3 @@
-/* global window */
-
 import React, {useEffect} from "react";
 import {FloatProperty} from "csstype";
 

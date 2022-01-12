@@ -1,4 +1,4 @@
-import {debug, loadingDone, renderComponent, select, texts} from "@pepfar-react-lib/jest-tools";
+import {loadingDone, renderComponent, select} from "@pepfar-react-lib/jest-tools";
 import Filters from "../../modules/list/models/filters.model";
 import {testAs} from "@pepfar-react-lib/http-tools";
 import ThemeWrapper from "../../modules/main/components/themeWrapper.component";

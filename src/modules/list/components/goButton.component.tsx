@@ -1,7 +1,6 @@
-import React, {CSSProperties, useState} from "react";
-import {Button, CircularProgress, Tooltip} from "@material-ui/core";
+import React, {CSSProperties} from "react";
+import {Button, Tooltip} from "@material-ui/core";
 import {Done} from "@material-ui/icons";
-import {createTheme} from "@material-ui/core/styles";
 
 const styles = {
     root: {marginTop: '15px', display: 'inline-block'} as any as CSSProperties

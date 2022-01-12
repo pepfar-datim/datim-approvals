@@ -1,12 +1,10 @@
 import React, {CSSProperties} from "react";
-import {withRouter} from "react-router-dom";
 import queryString from "query-string";
 import {Divider, Typography} from "@material-ui/core";
 
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
 import GoButton from "./goButton.component";
-import MechanismModel from "../../shared/models/mechanism.model";
 import ResultsTabs from "./results/resultsTabs.component";
 import Filters from "../models/filters.model";
 import ListAction from "./listAction.component";
@@ -34,9 +32,9 @@ function getSelected(mechs:SearchMechanism[]):SearchMechanism[]{
     return mechs.filter(r=>r.tableData.checked);
 }
 
-class List extends React.Component<
-    {history: any, urlSearchOptions: Filters},
-    {
+export default class List extends React.Component<{
+        // urlSearchOptions: Filters
+    }, {
         filters: Filters,
         mechanisms: SearchMechanism[],
         selectedAction: string,
@@ -46,8 +44,7 @@ class List extends React.Component<
         goButtonClicked: boolean,
         isGlobalUser: boolean,
         ous: idNameList
-    }
-    > {
+    }> {
     workflowPeriodService;
     constructor(props){
         super(props);
@@ -94,9 +91,9 @@ class List extends React.Component<
     }
 
     setFilterFromUrl(property:string){
-        if (!this.props.urlSearchOptions) return;
-        let value = this.props.urlSearchOptions[property];
-        if (value) this.setFilter(property, value);
+        // if (!this.props.urlSearchOptions) return;
+        // let value = this.props.urlSearchOptions[property];
+        // if (value) this.setFilter(property, value);
     }
 
     preselectOu(ous){
@@ -141,7 +138,7 @@ class List extends React.Component<
     updateUrl(){
         setTimeout(()=>{
             let url = queryString.stringify(this.state.filters);
-            this.props.history.push('/search?'+url);
+            // window.history.pushState(null,null,'/search?'+url);
         },0);
     }
 
@@ -189,7 +186,7 @@ class List extends React.Component<
             </Typography>);
         if (!this.state.loading.mechanisms && !this.state.mechanisms) return (
             <Typography color="secondary">
-                There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link}>PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link}>DATIM Support</a>.
+                There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link} rel="noreferrer">PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link} rel="noreferrer">DATIM Support</a>.
             </Typography>);
         if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
@@ -207,5 +204,3 @@ class List extends React.Component<
         );
     }
 }
-
-export default withRouter(List);

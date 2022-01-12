@@ -8,7 +8,7 @@ const styles = {
     }
 };
 
-export default function Loading({message}:{message:string}) {
+export default function Loading({message}:{message?:string}) {
     return <React.Fragment>
         <LinearProgress/>
         <br/>
