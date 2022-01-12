@@ -1,5 +1,5 @@
 import React from "react";
-import MechanismModel, {ApprovalsCombo, MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
+import MechanismModel, {MechanismMeta, MechanismState} from "../../shared/models/mechanism.model";
 import {Divider, Paper, Typography} from "@material-ui/core";
 import ActionButtons from "./actionButtons.component";
 import {getMechanismsInfo, getMechanismStates, performAction} from "../services/mechanism.service";

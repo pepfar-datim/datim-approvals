@@ -30,7 +30,6 @@ function assembleMechanismCombos(mechanisms: string[]):ApprovalsCombo[]{
 
 
 export function getActionUrlData():ActionUrlData{
-    let location = window.location;
     return {
         approvalCombos: assembleMechanismCombos(enforceArray(getQueryParams().approvalCombos)),
         workflow:getQueryParams().workflow,

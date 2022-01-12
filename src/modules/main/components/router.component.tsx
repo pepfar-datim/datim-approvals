@@ -1,11 +1,9 @@
 import React from "react";
 import {HashRouter, Route, Routes} from "react-router-dom";
 import {Divider, Paper, Typography} from "@material-ui/core";
-import queryString from "query-string";
 
 import List from "../../list/components/list.component";
 import Action from "../../action/components/action.component";
-import {ApprovalsCombo} from "../../shared/models/mechanism.model";
 import Loading from "../../shared/components/loading.component";
 
 const styles = {
@@ -22,7 +20,6 @@ const Redirect = ()=>{
 
 
 export default function Router({postMessage}:{postMessage:(message:string, type?:string)=>void}){
-    let location = window.location;
     return(
         <Paper style={styles.root}>
             <Typography variant="h4" component="h2">
