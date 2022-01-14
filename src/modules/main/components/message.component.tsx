@@ -1,5 +1,4 @@
 import React from "react";
-import Router from "./router.component";
 import {IconButton, Snackbar, SnackbarContent, withTheme} from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -22,7 +21,6 @@ class Message extends React.Component<{theme:any}, {text:string, open:boolean, t
     render(){
 
         return <React.Fragment>
-            <Router postMessage={this.postMessage}/>
             <Snackbar
                 open={this.state.open}
             >

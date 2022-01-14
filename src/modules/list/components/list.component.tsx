@@ -4,16 +4,15 @@ import {Divider, Typography} from "@material-ui/core";
 
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
-import GoButton from "./goButton.component";
 import ResultsTabs from "./results/resultsTabs.component";
-import Filters from "../models/filters.model";
+import {SearchFilters} from "../models/filters.model";
 import ListAction from "./listAction.component";
 import WorkflowPeriodService from "../../shared/services/workflowsPeriods.service";
 import {idNameList} from "../../shared/models/idNameList.model";
 import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
 import {SearchMechanism} from "../models/searchMechanism.model";
-import {getData} from "@pepfar-react-lib/http-tools";
+import {getMyUserType, UserType} from "@pepfar-react-lib/datim-tools"
 
 const styles = {
     link: {
@@ -33,41 +32,37 @@ function getSelected(mechs:SearchMechanism[]):SearchMechanism[]{
 }
 
 export default class List extends React.Component<{
-        // urlSearchOptions: Filters
     }, {
-        filters: Filters,
+        filters: SearchFilters,
         mechanisms: SearchMechanism[],
         selectedAction: string,
         workflows: idNameList,
         periods: idNameList,
         loading: {filters?: boolean, mechanisms?: boolean},
-        goButtonClicked: boolean,
-        isGlobalUser: boolean,
-        ous: idNameList
+        ous: idNameList,
+        globalUser:boolean
     }> {
     workflowPeriodService;
     constructor(props){
         super(props);
         this.state = {
             loading: {filters: true, mechanisms: false},
-            filters: new Filters(),
+            filters: {
+                ou:null,
+                workflow:null,
+                period:null
+            },
             mechanisms: null,
             workflows: null,
             periods: null,
             selectedAction: null,
-            goButtonClicked: false,
-            isGlobalUser: false,
-            ous: null
+            ous: null,
+            globalUser:null
         };
-        //this.setState({isGlobalUser: Promise.resolve(this.checkGlobalUser())});
-        this.checkGlobalUser().then((result) => { 
-            this.setState({isGlobalUser: result});
-          });
         let ouPromise = orgUnits.init().then((ous)=>{
             this.setState({ous: ous});
             this.preselectOu(ous);
         });
-
         this.workflowPeriodService = new WorkflowPeriodService();
         let workflowsPromise = this.workflowPeriodService.init().then((workflows)=>{
             let selectedWorkflow = workflows.length>0 && workflows[0].id;
@@ -76,19 +71,22 @@ export default class List extends React.Component<{
             this.setFilterFromUrl('workflow');
             this.setFilterFromUrl('period');
         });
+        let userTypePromise = getMyUserType().then((userType:UserType)=>{
+            this.setState({globalUser: userType===UserType.Global});
+        })
 
-        Promise.all([ouPromise,workflowsPromise]).then(()=>!this.state.isGlobalUser?this.fetchMechanisms():null);
-
-        //binding in constuctor 
-        this.renderResults = this.renderResults.bind(this);
+        Promise.all([ouPromise,workflowsPromise,userTypePromise]).then(()=>{
+            if (!this.state.globalUser) this.fetchMechanisms()
+        });
+        getMyUserType();
     }
     
-    checkGlobalUser():Promise<boolean>{
-        return getData('/me?fields=userGroups[name]')
-            .then(result=>result.userGroups)
-            .then(result=>result.map((r: { name: any; })=>r.name))
-            .then(result=>result.includes("Global users"))
-    }
+    // checkGlobalUser():Promise<boolean>{
+    //     return getData('/me?fields=userGroups[name]')
+    //         .then(result=>result.userGroups)
+    //         .then(result=>result.map((r: { name: any; })=>r.name))
+    //         .then(result=>result.includes("Global users"))
+    // }
 
     setFilterFromUrl(property:string){
         // if (!this.props.urlSearchOptions) return;
@@ -101,14 +99,14 @@ export default class List extends React.Component<{
         this.setFilter('ou', ous[0].id);
     }
     fetchMechanisms(){
-        setTimeout(()=>{
+        // setTimeout(()=>{
             let f = this.state.filters;
             if (!f.ou || !f.period || !f.workflow) return;
             this.setState({mechanisms: null, loading: {mechanisms: true}});
             fetchMechanisms(this.state.filters).then(mechanisms=>{
                 this.setState({mechanisms, loading:{mechanisms: false}});
             });
-        },0);
+        // },0);
     }
     setFilter(key:string, val:string){
         let filters = this.state.filters;
@@ -122,15 +120,15 @@ export default class List extends React.Component<{
     }
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
-        if (!this.state.isGlobalUser)
-        {
+        // if (!this.state.isGlobalUser)
+        // {
             this.fetchMechanisms();
             this.updateUrl();
-        }
+        // }
     };
 
     onGo = ()=>{
-        this.setState({goButtonClicked: true});
+        // this.setState({goButtonClicked: true});
         this.fetchMechanisms();
         this.updateUrl();
     };
@@ -180,10 +178,10 @@ export default class List extends React.Component<{
     renderResults(){
         
         if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
-        if (!this.state.goButtonClicked && this.state.isGlobalUser) return (
-            <Typography color="secondary">
-                Please click Go to search.
-            </Typography>);
+        // if (!this.state.goButtonClicked && this.state.isGlobalUser) return (
+        //     <Typography color="secondary">
+        //         Please click Go to search.
+        //     </Typography>);
         if (!this.state.loading.mechanisms && !this.state.mechanisms) return (
             <Typography color="secondary">
                 There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link} rel="noreferrer">PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link} rel="noreferrer">DATIM Support</a>.
@@ -196,7 +194,7 @@ export default class List extends React.Component<{
         return (
             <React.Fragment>
                 {this.renderFilters()}
-                {this.state.isGlobalUser?<GoButton select={this.onGo}/>:null}
+                {/*{this.state.isGlobalUser?<GoButton select={this.onGo}/>:null}*/}
                 {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={getSelected(this.state.mechanisms)} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}

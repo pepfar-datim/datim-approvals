@@ -1,7 +1,7 @@
 import React from "react";
 import {FormControl, InputLabel, MenuItem, Select, Typography} from "@material-ui/core";
-import Filters from "../models/filters.model";
 import {idNameList} from "../../shared/models/idNameList.model";
+import {SearchFilters} from "../models/filters.model";
 
 const styles = {
     formControl: {
@@ -13,7 +13,7 @@ const styles = {
     }
 };
 
-function renderInfo(selected: Filters){
+function renderInfo(selected: SearchFilters){
     if (!selected.ou) return <Typography color='secondary' style={styles.info}>Please specify Organisation Unit</Typography>;
 }
 
@@ -21,7 +21,7 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
          organisationUnits:idNameList,
          workflows:idNameList,
          periods:idNameList,
-         selected:Filters,
+         selected:SearchFilters,
          select:(property: string, value:string)=>void}
     ){
     if(!organisationUnits) return null;

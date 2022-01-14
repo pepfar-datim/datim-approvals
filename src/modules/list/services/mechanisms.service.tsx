@@ -1,12 +1,12 @@
 import {getData} from "@pepfar-react-lib/http-tools";
 import MechanismModel from "../../shared/models/mechanism.model";
 import getStatus from "../../shared/services/status.service";
-import Filters from "../models/filters.model";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
 import {checkSuperUser} from "../../shared/services/superuser.service"
 import {idName} from "../../action/models/idName";
 import {SearchMechanism, tranformMechanisms} from "../models/searchMechanism.model";
+import {SearchFilters} from "../models/filters.model";
 
 const agencyGroupSet = 'bw8KHXzxd9i';
 const partnerGroupSet = 'BOyWrF33hiR';
@@ -60,7 +60,7 @@ function filterSystemMechs(isSuperUser:boolean){
     }
 }
 
-export async function fetchMechanisms(filters:Filters):Promise<SearchMechanism[]>{
+export async function fetchMechanisms(filters:SearchFilters):Promise<SearchMechanism[]>{
     let isSuperUser:boolean = await checkSuperUser();
     return getData(generateMechanismsUrl(filters)).then(mechResp=>{
         if (mechResp.httpStatusCode===409) return [];

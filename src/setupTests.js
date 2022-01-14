@@ -8,6 +8,5 @@ HTMLCanvasElement.prototype.getContext = () => {
 initTestApiCache()
 apiInit(baseUrl,process.env.NODE_ENV);
 
-let timeout = process.env.JEST_TIMEOUT_SEC*1000||30000;
-console.log(`Test timeout is:\t${timeout}`)
+let timeout = process.env.JEST_TIMEOUT_SEC*1000||5000;
 jest.setTimeout(timeout);

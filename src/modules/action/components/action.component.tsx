@@ -14,9 +14,10 @@ import {getWorkflowNameById} from "../../shared/services/workflowService";
 import Loading from "../../shared/components/loading.component";
 import "../css/action.component.css";
 import {getActionUrlData} from "../services/getActionUrlData.service";
+import Message from "../../main/components/message.component";
 
 export default class Action extends React.Component<{
-        postMessage: (message:string, type?:string)=>void,
+        // postMessage: (message:string, type?:string)=>void,
         // approvalCombos: ApprovalsCombo[],
         // workflow: string,
         // period: string
@@ -29,7 +30,11 @@ export default class Action extends React.Component<{
         mechanismState: MechanismState,
         processing: boolean,
         networkError: boolean,
-        ous: []
+        ous: [],
+        message: {
+            success?: string,
+            error?: string,
+        }
     }> {
     constructor(props){
         super(props);
@@ -51,7 +56,8 @@ export default class Action extends React.Component<{
             mechanisms: mechanisms,
             processing: false,
             networkError: false,
-            ous: []
+            ous: [],
+            message: {}
         };
         this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms);
 
@@ -162,12 +168,14 @@ export default class Action extends React.Component<{
             case 'accept': message += 'accepted'; break;
             case 'return': message += 'returned'; break;
         }
-        this.props.postMessage(message);
+        // this.props.postMessage(message);
+        this.setState({message: {success: message}})
     }
 
     errorMessage(action:string){
         let plural = this.state.mechanisms.length>1?'s':'';
-        this.props.postMessage(`Server error: Failed to ${action} mechanism${plural}`, 'error');
+        // this.props.postMessage(`Server error: Failed to ${action} mechanism${plural}`, 'error');
+        this.setState({message: {error: `Server error: Failed to ${action} mechanism${plural}`}})
     }
 
     render() {
@@ -184,6 +192,7 @@ export default class Action extends React.Component<{
                     <WorkflowOverview workflow={this.state.workflow.name} period={this.state.period.name}/>
                 </Paper>
                 <MechanismTabs workflow={this.state.workflow.id} period={this.state.period.id} userOu={this.state.userOu} mechanisms={this.state.mechanisms} mechanismState={this.state.mechanismState}/>
+                <Message success={this.state.message.success} error={this.state.message.error}/>
             </React.Fragment>
         );
     }

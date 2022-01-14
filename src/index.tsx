@@ -6,6 +6,7 @@ import {HeaderBar} from '@dhis2/ui'
 import ThemeWrapper from "./modules/main/components/themeWrapper.component";
 import "./index.css";
 import {apiInit} from "@pepfar-react-lib/http-tools";
+import Router from "./modules/main/components/router.component";
 
 apiInit(baseUrl,process.env.NODE_ENV);
 
@@ -16,7 +17,9 @@ export function Index(){
                 <HeaderBar/>
             </span>
             <br/>
-            <ThemeWrapper/>
+            <ThemeWrapper>
+                <Router/>
+            </ThemeWrapper>
         </Provider>
     );
 }

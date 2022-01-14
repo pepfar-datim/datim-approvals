@@ -1,7 +1,6 @@
 import React from 'react';
 import {ThemeProvider} from '@material-ui/styles';
 import {createTheme} from '@material-ui/core/styles';
-import Message from "./message.component";
 
 import "../css/themeWrapper.component.css";
 
@@ -26,11 +25,11 @@ const styles = {
     }
 };
 
-export default function ThemeWrapper() {
+export default function ThemeWrapper({children}) {
     return (
         <ThemeProvider theme={theme}>
             <div style={styles.wrapper}>
-                <Message/>
+                {children}
             </div>
         </ThemeProvider>
     );

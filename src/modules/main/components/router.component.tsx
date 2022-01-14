@@ -19,20 +19,18 @@ const Redirect = ()=>{
 }
 
 
-export default function Router({postMessage}:{postMessage:(message:string, type?:string)=>void}){
-    return(
-        <Paper style={styles.root}>
-            <Typography variant="h4" component="h2">
-                DATIM Approvals
-            </Typography>
-            <HashRouter>
-                <Divider/>
-                <Routes>
-                    <Route path="/" element={<Redirect/>}/>
-                    <Route path="/search" element={<List/>} />
-                    <Route path="/action" element={<Action postMessage={postMessage}/>} />
-                </Routes>
-            </HashRouter>
-        </Paper>
-    );
+export default function Router(){
+    return <Paper style={styles.root}>
+        <Typography variant="h4" component="h2">
+            DATIM Approvals
+        </Typography>
+        <HashRouter>
+            <Divider/>
+            <Routes>
+                <Route path="/" element={<Redirect/>}/>
+                <Route path="/search" element={<List/>} />
+                <Route path="/action" element={<Action/>}/>
+            </Routes>
+        </HashRouter>
+    </Paper>
 }
