@@ -13,6 +13,7 @@ import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
 import {SearchMechanism} from "../models/searchMechanism.model";
 import {getMyUserType, UserType} from "@pepfar-react-lib/datim-tools"
+import GoButton from "./goButton.component";
 
 const styles = {
     link: {
@@ -80,13 +81,7 @@ export default class List extends React.Component<{
         });
         getMyUserType();
     }
-    
-    // checkGlobalUser():Promise<boolean>{
-    //     return getData('/me?fields=userGroups[name]')
-    //         .then(result=>result.userGroups)
-    //         .then(result=>result.map((r: { name: any; })=>r.name))
-    //         .then(result=>result.includes("Global users"))
-    // }
+
 
     setFilterFromUrl(property:string){
         // if (!this.props.urlSearchOptions) return;
@@ -120,17 +115,7 @@ export default class List extends React.Component<{
     }
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
-        // if (!this.state.isGlobalUser)
-        // {
-            this.fetchMechanisms();
-            this.updateUrl();
-        // }
-    };
-
-    onGo = ()=>{
-        // this.setState({goButtonClicked: true});
-        this.fetchMechanisms();
-        this.updateUrl();
+        //     this.updateUrl();
     };
 
     updateUrl(){
@@ -177,15 +162,11 @@ export default class List extends React.Component<{
 
     renderResults(){
         
-        if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading mechanisms...'/>;
-        // if (!this.state.goButtonClicked && this.state.isGlobalUser) return (
-        //     <Typography color="secondary">
-        //         Please click Go to search.
-        //     </Typography>);
-        if (!this.state.loading.mechanisms && !this.state.mechanisms) return (
-            <Typography color="secondary">
-                There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link} rel="noreferrer">PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link} rel="noreferrer">DATIM Support</a>.
-            </Typography>);
+        if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading...'/>;
+        if (this.state.globalUser&&!this.state.mechanisms) return <Typography color="secondary">Please click Go to search.</Typography>
+        if (!this.state.loading.mechanisms && !this.state.mechanisms) return <Typography color="secondary">
+            There are no workflows active currently. The quarter is currently closed for data entry and will reopen at a later date, per the <a target='_blank' href='https://datim.zendesk.com/hc/en-us/articles/115001940503-PEPFAR-Data-Calendar' style={styles.link} rel="noreferrer">PEPFAR Data Calendar</a>.  If you receive this during an active data entry period, please contact <a target='_blank' href='https://datim.zendesk.com/' style={styles.link} rel="noreferrer">DATIM Support</a>.
+        </Typography>
         if (this.state.mechanisms.length===0) return <Typography color="secondary">No mechanisms found</Typography>
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
     }
@@ -194,7 +175,7 @@ export default class List extends React.Component<{
         return (
             <React.Fragment>
                 {this.renderFilters()}
-                {/*{this.state.isGlobalUser?<GoButton select={this.onGo}/>:null}*/}
+                {this.state.globalUser&&<GoButton onClick={()=>this.fetchMechanisms()}/>}
                 {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={getSelected(this.state.mechanisms)} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
