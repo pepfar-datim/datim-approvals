@@ -161,7 +161,6 @@ export default class List extends React.Component<{
     };
 
     renderResults(){
-        
         if (this.state.loading.mechanisms || this.state.loading.filters) return <Loading message='Loading...'/>;
         if (this.state.globalUser&&!this.state.mechanisms) return <Typography color="secondary">Please click Go to search.</Typography>
         if (!this.state.loading.mechanisms && !this.state.mechanisms) return <Typography color="secondary">

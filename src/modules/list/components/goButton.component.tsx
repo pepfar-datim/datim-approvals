@@ -12,7 +12,7 @@ export default function GoButton({onClick}:{
     return <div style={styles.root}>
         <Tooltip title={'Fetch mechanisms'} placement="top-end">
             <div id='button'>
-                <Button size='small' variant="contained" color="secondary" onClick={onClick} startIcon={<Done/>}>
+                <Button size='small' variant="contained" color="secondary" data-testid={`searchGo`} onClick={onClick} startIcon={<Done/>}>
                     Go
                 </Button>
             </div>

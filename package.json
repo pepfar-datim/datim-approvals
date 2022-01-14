@@ -13,6 +13,8 @@
     "@pepfar-react-lib/http-tools": "^0.1.15",
     "@pepfar-react-lib/jest-tools": "^0.1.12",
     "@pepfar-react-lib/local-package-builder": "^0.1.16",
+    "@pepfar-react-lib/datim-tools":"0.1.1",
+    "@pepfar-react-lib/dhis2-helpers": "0.1.8",
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.8",
     "@types/react": "^17.0.38",
@@ -36,6 +38,7 @@
     "test": "react-scripts test --maxWorkers=12 --verbose",
     "test:cache": "rm cachedApiCalls/*",
     "test:init": "export JEST_TIMEOUT_SEC=240 && react-scripts test--maxWorkers=20 --verbose",
+    "test:data": "dhis_env && ts-node --skip-project newTestData/insertTestData.ts",
     "dep:copy": "ts-node --skip-project packages/copyWatch.ts",
     "dep:build": "ts-node --skip-project packages/buildWatch.ts"
   },

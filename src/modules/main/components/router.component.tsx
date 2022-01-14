@@ -4,7 +4,6 @@ import {Divider, Paper, Typography} from "@material-ui/core";
 
 import List from "../../list/components/list.component";
 import Action from "../../action/components/action.component";
-import Loading from "../../shared/components/loading.component";
 
 const styles = {
     root: {
@@ -12,12 +11,6 @@ const styles = {
         margin: 10
     }
 };
-
-const Redirect = ()=>{
-    window.location.href = window.location.href+"#/search"
-    return <Loading/>
-}
-
 
 export default function Router(){
     return <Paper style={styles.root}>
@@ -27,7 +20,7 @@ export default function Router(){
         <HashRouter>
             <Divider/>
             <Routes>
-                <Route path="/" element={<Redirect/>}/>
+                <Route path="/" element={<List/>} />
                 <Route path="/search" element={<List/>} />
                 <Route path="/action" element={<Action/>}/>
             </Routes>
