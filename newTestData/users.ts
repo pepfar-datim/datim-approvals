@@ -1,18 +1,13 @@
+import {insertUser} from "@pepfar-react-lib/dhis2-helpers";
 
 const superAdmin = {
-    "lastUpdated": "2021-04-09T18:56:40.074",
     "id": "WQEkD3SA4Jb",
-    "created": "2019-03-29T16:06:12.355",
     "name": "SuperAdmin",
     "displayName": "SuperAdmin",
-    "externalAccess": false,
     "surname": "SuperAdmin",
     "employer": "BAO Systems",
     "email": "jflaska@baosystems.com",
-    "lastCheckedInterpretations": "2019-03-18T14:25:44.997",
     "firstName": "SuperAdmin",
-    "phoneNumber": "3014013049",
-    "favorite": false,
     "access": {
         "read": true,
         "update": true,
@@ -23,8 +18,6 @@ const superAdmin = {
     },
     "userCredentials": {
         "id": "dDaFWbJeyXz",
-        "lastLogin": "2021-04-20T18:58:24.612",
-        "disabled": false,
         "username": "superAdmin",
         "userRoles": [
             {
@@ -36,12 +29,7 @@ const superAdmin = {
                 "id": "b2uHwX9YLhu"
             }
         ],
-        "cogsDimensionConstraints": [],
-        "catDimensionConstraints": []
     },
-    "favorites": [],
-    "teiSearchOrganisationUnits": [],
-    "translations": [],
     "organisationUnits": [
         {
             "name": "Global",
@@ -53,8 +41,6 @@ const superAdmin = {
             "id": "ybg3MO3hcf4"
         }
     ],
-    "userGroupAccesses": [],
-    "attributeValues": [],
     "userGroups": [
         {
             "name": "Dev dev*.datim.org, pilot*.datim.org admin access",
@@ -93,21 +79,14 @@ const superAdmin = {
             "id": "c6hGi8GEZot"
         }
     ],
-    "userAccesses": []
 };
 const partnerSouthAfrica = {
-    "lastUpdated": "2020-03-02T11:48:49.408",
     "id": "Du99dgDHSsF",
-    "created": "2020-03-02T07:12:29.969",
     "name": "Stephen Stafford",
     "displayName": "Stephen Stafford",
-    "externalAccess": false,
     "surname": "Stafford",
-    "employer": "Shout-it-Now",
     "email": "stephen.stafford@shoutitnow.org",
     "firstName": "Stephen",
-    "phoneNumber": "+1 917-209-9887",
-    "favorite": false,
     "access": {
         "read": true,
         "update": true,
@@ -118,8 +97,6 @@ const partnerSouthAfrica = {
     },
     "userCredentials": {
         "id": "dTb2JhHgvfG",
-        "lastLogin": "2020-03-06T14:52:45.309",
-        "disabled": false,
         "username": "partnerSouthAfrica",
         "userRoles": [
             {
@@ -139,16 +116,12 @@ const partnerSouthAfrica = {
                 "id": "b2uHwX9YLhu"
             }
         ],
-        "cogsDimensionConstraints": [],
         "catDimensionConstraints": [
             {
                 "id": "SH885jaRe0o"
             }
         ]
     },
-    "favorites": [],
-    "teiSearchOrganisationUnits": [],
-    "translations": [],
     "organisationUnits": [
         {
             "name": "South Africa",
@@ -160,8 +133,6 @@ const partnerSouthAfrica = {
             "id": "cDGPF739ZZr"
         }
     ],
-    "userGroupAccesses": [],
-    "attributeValues": [],
     "userGroups": [
         {
             "name": "Data ER access",
@@ -192,7 +163,6 @@ const partnerSouthAfrica = {
             "id": "c6hGi8GEZot"
         }
     ],
-    "userAccesses": []
 };
 const partnerTanzania = {
     "lastUpdated": "2020-04-20T07:27:01.526",
@@ -512,9 +482,17 @@ const globalUser = {
 export const users = [
     superAdmin,
     partnerSouthAfrica,
-    partnerTanzania,
-    agencySouthAfrica,
-    interAgencySouthAfrica,
-    globalAgencyHhsCdc,
-    globalUser
+    // partnerTanzania,
+    // agencySouthAfrica,
+    // interAgencySouthAfrica,
+    // globalAgencyHhsCdc,
+    // globalUser
 ];
+
+
+
+export function insertUsers() {
+    users.forEach(async u => {
+        insertUser(u);
+    });
+}

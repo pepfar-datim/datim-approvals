@@ -38,7 +38,7 @@
     "test": "react-scripts test --maxWorkers=12 --verbose",
     "test:cache": "rm cachedApiCalls/*",
     "test:init": "export JEST_TIMEOUT_SEC=240 && react-scripts test--maxWorkers=20 --verbose",
-    "test:data": "dhis_env && ts-node --skip-project newTestData/insertTestData.ts",
+    "test:data": "ts-node --skip-project newTestData/insertTestData.ts",
     "dep:copy": "ts-node --skip-project packages/copyWatch.ts",
     "dep:build": "ts-node --skip-project packages/buildWatch.ts"
   },

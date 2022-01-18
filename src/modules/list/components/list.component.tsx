@@ -79,7 +79,6 @@ export default class List extends React.Component<{
         Promise.all([ouPromise,workflowsPromise,userTypePromise]).then(()=>{
             if (!this.state.globalUser) this.fetchMechanisms()
         });
-        getMyUserType();
     }
 
 
@@ -115,6 +114,7 @@ export default class List extends React.Component<{
     }
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
+        if (!this.state.globalUser) setTimeout(()=>this.fetchMechanisms(),1);
         //     this.updateUrl();
     };
 

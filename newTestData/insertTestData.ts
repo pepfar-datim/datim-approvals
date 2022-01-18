@@ -1,6 +1,5 @@
-import {insertUser} from "@pepfar-react-lib/dhis2-helpers";
-import {users} from "./users.data";
+import {insertUsers} from "./users";
+import {openPeriodsInDataStore} from "./dataStore";
 
-users.forEach(async u=>{
-    insertUser(u);
-});
+insertUsers();
+openPeriodsInDataStore();

@@ -22,7 +22,7 @@ const botswanaList = [
 ];
 
 export const testCases:TestCase[] = [{
-    name: '#1 - SuperUser in Botswana 2020',
+    name: '#1a - Global in Botswana 2020',
     asUser: 'superAdmin',
     filters: {
         workflow: 'MER Results',
@@ -30,13 +30,28 @@ export const testCases:TestCase[] = [{
         ou: 'Botswana',
     },
     actions: [{
+        noTexts: botswanaList,
+        texts: ['Please click Go to search.']
+    },{
         click: 'searchGo',
         texts: botswanaList
     },{
         click: 'resultTabs_submit',
         noTexts: botswanaList
-    },,{
+    },{
         click: 'resultTabs_return',
         texts: botswanaList
+    }]
+},{
+    name: '#1b - Partner in SouthAfrica 2020Q3',
+    asUser: 'partnerSouthAfrica',
+    filters: {
+        workflow: 'MER Results',
+        period: 'Jul - Sep 2020',
+        ou: 'South Africa',
+    },
+    actions: [{
+        noTexts: ['Please click Go to search.'],
+        texts: ['81891 - GH002187 - SiN (GH002187)', 'HHS/CDC', 'accepted by agency', 'SHOUT IT NOW']
     }]
 }]
