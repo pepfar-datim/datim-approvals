@@ -1,6 +1,7 @@
 import MechanismModel from "../../shared/models/mechanism.model";
 
 export type SearchMechanism = {
+    id: number;
     name:string;
     ou:string;
     agency:string;
@@ -11,8 +12,9 @@ export type SearchMechanism = {
 }
 
 export function tranformMechanisms(allMechanisms:MechanismModel[]):SearchMechanism[]{
-    return allMechanisms.map(mechanism=>{
+    return allMechanisms.map((mechanism,i)=>{
         return {
+            id: i,
             name: mechanism.info.name,
             ou: mechanism.info.ou,
             agency: mechanism.info.agency,

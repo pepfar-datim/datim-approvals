@@ -1,61 +1,54 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import {SearchMechanism} from "../../models/searchMechanism.model";
+
+const tableColumns = [
+    // {title: "Mechanism", field: "name", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: sortFactory('name','ou')},
+    // {title: "OU", field: "ou", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: sortFactory('ou','name')},
+    // {title: "Agency", field: "agency", cellStyle: cellStyle, defaultSort: "asc" as ('asc' | 'desc'), customSort: sortFactory('agency','name')},
+    // {title: "Partner", field: "partner", cellStyle: cellStyle, customSort: sortFactory('partner','name')},
+    // {title: "Status", field: "status", cellStyle: cellStyle, customSort: sortFactory('status','name')},
+];
 
 const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
     {
-        field: 'firstName',
-        headerName: 'First name',
-        width: 150,
-        editable: true,
+        field: 'name',
+        headerName: 'Mechanism',
+        width: 320
+    }, {
+        field: 'ou',
+        headerName: 'OU',
+        width: 80,
+    }, {
+        field: 'agency',
+        headerName: 'Agency',
+        width: 80,
+    }, {
+        field: 'partner',
+        headerName: 'Partner',
+        // type: 'number',
+        width: 180,
     },
     {
-        field: 'lastName',
-        headerName: 'Last name',
-        width: 150,
-        editable: true,
-    },
-    {
-        field: 'age',
-        headerName: 'Age',
-        type: 'number',
-        width: 110,
-        editable: true,
-    },
-    {
-        field: 'fullName',
-        headerName: 'Full name',
+        field: 'status',
+        headerName: 'Status',
         description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 160,
-        valueGetter: (params) =>
-            `${params.row.firstName || ''} ${params.row.lastName || ''}`,
+        // sortable: false,
+        width: 150,
+        // valueGetter: (params) =>
+        //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
 ];
 
-const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 35 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 42 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 45 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 16 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-];
-
-export default function NewResultsTable() {
-    return (
-        <div style={{ height: 400, width: '100%' }}>
-            <DataGrid
-                rows={rows}
-                columns={columns}
-                pageSize={5}
-                rowsPerPageOptions={[5]}
-                checkboxSelection
-                disableSelectionOnClick
-            />
-        </div>
-    );
+export default function NewResultsTable({mechanisms}:{mechanisms: SearchMechanism[]}) {
+    return <DataGrid
+        rows={mechanisms}
+        columns={columns}
+        pageSize={20}
+        autoHeight={true}
+        rowsPerPageOptions={[20,50,100]}
+        checkboxSelection
+        disableSelectionOnClick
+        // density={'compact'}
+    />
 }
