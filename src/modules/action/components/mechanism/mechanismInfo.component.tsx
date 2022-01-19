@@ -6,7 +6,7 @@ import ShowMore from "./showMore.component";
 export default function MechanismInfo({mechanismState, mechanismInfo}:{mechanismState: MechanismState, mechanismInfo: MechanismInfoModel}){
     if (!mechanismInfo || !mechanismState) return null;
     return(
-            <Table size="small" className='cy_mechanismInfo'>
+            <Table size="small">
                 <TableBody>
                     <TableRow>
                         <TableCell>Mech</TableCell>

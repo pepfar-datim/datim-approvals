@@ -45,7 +45,7 @@ export default function ActionButtons({mechanismState, mechanismsNr, performActi
     if (!mechanismState) return null;
     let actions = Object.keys(mechanismState.actions).filter(a=>mechanismState.actions[a]);
     return(
-        <div id='cy_mechanismActions'>
+        <div>
             <Button style={styles.back} onClick={window.history.back} id="cy_actionPage_back">Back</Button>
             {renderButtons(actions, mechanismsNr, performAction)}
         </div>

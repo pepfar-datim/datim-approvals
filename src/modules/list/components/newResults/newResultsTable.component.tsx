@@ -10,11 +10,25 @@ const tableColumns = [
     // {title: "Status", field: "status", cellStyle: cellStyle, customSort: sortFactory('status','name')},
 ];
 
+const style={
+    '& .MuiDataGrid-cell': {
+        whiteSpace: 'normal'
+    },
+    border: 'none',
+};
+
+function compareMechNames(name1:string,name2:string):1|-1{
+    let mech1Nr = parseInt(name1);
+    let mech2Nr = parseInt(name2);
+    return mech2Nr<mech1Nr?1:-1;
+}
+
 const columns = [
     {
         field: 'name',
         headerName: 'Mechanism',
-        width: 320
+        width: 320,
+        sortComparator: compareMechNames
     }, {
         field: 'ou',
         headerName: 'OU',
@@ -32,9 +46,8 @@ const columns = [
     {
         field: 'status',
         headerName: 'Status',
-        description: 'This column has a value getter and is not sortable.',
         // sortable: false,
-        width: 150,
+        width: 170,
         // valueGetter: (params) =>
         //     `${params.row.firstName || ''} ${params.row.lastName || ''}`,
     },
@@ -49,6 +62,9 @@ export default function NewResultsTable({mechanisms}:{mechanisms: SearchMechanis
         rowsPerPageOptions={[20,50,100]}
         checkboxSelection
         disableSelectionOnClick
+        sx={style}
+        rowHeight={59}
+        disableColumnMenu={true}
         // density={'compact'}
     />
 }
