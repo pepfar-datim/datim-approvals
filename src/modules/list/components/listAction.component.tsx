@@ -87,7 +87,6 @@ let DedupSelected = withTheme(dedupSelected);
 
 export default function ListAction({selectedAction, selectedMechanisms, actionUrl, onMechanismsSelected}:{selectedAction: string, selectedMechanisms: SearchMechanism[], actionUrl: string, onMechanismsSelected: (mechanisms:SearchMechanism[])=>void}){
     if (!selectedAction || !selectedMechanisms || selectedMechanisms.length===0) return null;
-    console.log(actionUrl)
     return <React.Fragment>
         <Link to={actionUrl}>
             <Button disabled={!checkMechanismStates(selectedMechanisms)} id='cy_list_mechanismAction' variant="contained" color="secondary">

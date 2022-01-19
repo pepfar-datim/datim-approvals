@@ -76,7 +76,6 @@ function transformCategoryOptionToMechanismInfo(categoryOption:any):MechanismInf
     let ouName;
     if (categoryOption.organisationUnits[0]) ouName = categoryOption.organisationUnits[0].name;
     else {
-        console.log(categoryOption);
         console.error(Error("Mechanism has no assigned OU"));
     }
     return {
