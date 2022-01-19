@@ -2,6 +2,7 @@ import React from "react";
 import {Badge, Divider, Tab, Tabs} from "@material-ui/core";
 import ResultsTable from "./resultsTable.component";
 import {SearchMechanism} from "../../models/searchMechanism.model";
+import NewResultsTable from "../newResults/newResultsTable.component";
 
 const mechanismActions = ['view', 'accept', 'submit', 'recall', 'return'];
 
@@ -50,7 +51,8 @@ export default class ResultsTabs extends React.Component<
                     {this.renderTabs()}
                 </Tabs>
                 <Divider/>
-                <ResultsTable mechanisms={this.state.filteredMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>
+                {/*<ResultsTable mechanisms={this.state.filteredMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>*/}
+                <NewResultsTable/>
             </div>
         );
     }
