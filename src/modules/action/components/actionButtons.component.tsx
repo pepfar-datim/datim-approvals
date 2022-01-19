@@ -35,7 +35,7 @@ function ActionButtonIcon({action}:{action:string}){
 
 function renderButtons(actions:string[], mechanismsNr:number, performAction: (action: string)=>void){
     if (actions.length===0) return <Typography>No actions available with selected mechanisms</Typography>;
-    else return actions.map(action=><Button variant="contained" color="secondary" onClick={()=>performAction(action)} id={`cy_mechanismAction_${action}`} key={action} style={styles.actionButton}>
+    else return actions.map(action=><Button variant="contained" color="secondary" onClick={()=>performAction(action)} key={action} style={styles.actionButton}>
         <ActionButtonIcon action={action}/>
         {action} {mechanismsNr>1?mechanismsNr:null} mechanism{mechanismsNr>1?'s':null}
     </Button>);

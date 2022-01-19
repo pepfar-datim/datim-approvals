@@ -70,7 +70,7 @@ export default function Step({workflow, mechanismState, userType}:{workflow: str
     if (mechanismState.status === 'submitted by global') return null;
     const workflowType = getWorkflowTypeById(workflow);
     return(
-        <Stepper id='cy_actionPage_stepper' activeStep={getStepNr(mechanismState.status, workflowType)} alternativeLabel classes={{root:classes.root}}>
+        <Stepper activeStep={getStepNr(mechanismState.status, workflowType)} alternativeLabel classes={{root:classes.root}}>
             {renderSteps(userType, workflowType)}
         </Stepper>
     );

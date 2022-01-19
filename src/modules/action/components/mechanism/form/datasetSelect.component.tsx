@@ -10,7 +10,6 @@ export default function DatasetSelect({selectedDataset, onDsChange, datasets}){
     return <FormControl>
         <InputLabel htmlFor="dataset">Dataset</InputLabel>
         <Select
-            id='cy_formSelect_input'
             value={selectedDataset.id}
             onChange={(event)=>onDsChange({id: event.target.value, name: event.target.name})}
             inputProps={{
@@ -18,7 +17,7 @@ export default function DatasetSelect({selectedDataset, onDsChange, datasets}){
                 id: 'dataset',
             }}
         >
-            {datasets.map(ds=><MenuItem value={ds.id} key={ds.id} id={`cy_formSelect_dataset_${makeId(ds.name)}`}>{ds.name}</MenuItem>)}
+            {datasets.map(ds=><MenuItem value={ds.id} key={ds.id}>{ds.name}</MenuItem>)}
         </Select>
     </FormControl>
 }

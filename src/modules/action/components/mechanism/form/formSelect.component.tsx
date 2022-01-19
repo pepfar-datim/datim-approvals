@@ -41,7 +41,7 @@ export default class FormSelect extends React.Component<
 
     render(){
         if (!this.state.selectedDataset.id) return <CircularProgress/>;
-        return <div id='cy_actionPage_form'>
+        return <div>
             <DatasetSelect selectedDataset={this.state.selectedDataset} datasets={this.state.datasets} onDsChange={this.onDsChange}/>
             <br/>
             <Divider/>

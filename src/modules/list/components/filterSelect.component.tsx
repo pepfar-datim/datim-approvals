@@ -34,7 +34,6 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
                     inputProps={{
                         name: 'workflow',
                         id: 'workflow',
-                        className: 'cy_list_workflowSelect',
                     }}
                     data-testid={`filter_workflow`}
                     onChange={event=>select('workflow', event.target.value as string)}
@@ -68,7 +67,6 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
                     inputProps={{
                         name: 'ou',
                         id: 'ou',
-                        className: 'cy_list_ouSelect',
                     }}
                     data-testid={`filter_ou`}
                     onChange={event=>select('ou', event.target.value as string)}

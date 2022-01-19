@@ -55,7 +55,7 @@ function sameStatusError({mechanisms, theme, onMechanismsSelected}:{mechanisms: 
     if (checkMechanismStates(mechanisms)) return null;
     let majorStatus:string = getMajorStatus(mechanisms);
     return <Paper style={styles.error(theme)}>
-        <Button style={styles.selectOnly} id='cy_selectSingleStatus' onClick={()=>filterStatuses(onMechanismsSelected, mechanisms, majorStatus)}>Select {majorStatus} only</Button>
+        <Button style={styles.selectOnly} onClick={()=>filterStatuses(onMechanismsSelected, mechanisms, majorStatus)}>Select {majorStatus} only</Button>
         <Typography>All selected mechanisms must have the same status to proceed.</Typography>
     </Paper>
 }
@@ -78,7 +78,7 @@ let SameStatusError = withTheme(sameStatusError);
 function dedupSelected({mechanisms, theme, onMechanismsSelected}:{mechanisms: SearchMechanism[], theme: any, onMechanismsSelected: (mechanisms:SearchMechanism[])=>any}){
     if (!checkDedupMechanism(mechanisms)) return null;
     return <Paper style={styles.error(theme)}>
-        <Button style={styles.selectOnly} id='cy_selectSingleStatus' onClick={()=>filterDedup(onMechanismsSelected, mechanisms)}>Unselect Dedupe mechanisms</Button>
+        <Button style={styles.selectOnly} onClick={()=>filterDedup(onMechanismsSelected, mechanisms)}>Unselect Dedupe mechanisms</Button>
         <Typography>Dedupe mechanisms are selected.</Typography>
     </Paper>
 }
@@ -89,7 +89,7 @@ export default function ListAction({selectedAction, selectedMechanisms, actionUr
     if (!selectedAction || !selectedMechanisms || selectedMechanisms.length===0) return null;
     return <React.Fragment>
         <Link to={actionUrl}>
-            <Button disabled={!checkMechanismStates(selectedMechanisms)} id='cy_list_mechanismAction' variant="contained" color="secondary">
+            <Button disabled={!checkMechanismStates(selectedMechanisms)} variant="contained" color="secondary">
                 {selectedAction}
             </Button>
         </Link>

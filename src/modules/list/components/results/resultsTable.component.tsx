@@ -67,7 +67,7 @@ export default class ResultsTable extends React.Component <{mechanisms: SearchMe
             icons={tableIcons as any}
             title={<Typography>{this.props.mechanisms.length} mechanisms</Typography>}
             options={tableOptions}
-            components={{Row: props => <MTableBodyRow {...props} id={`cy_results_${makeId(props.data.name)}`} />}}
+            components={{Row: props => <MTableBodyRow {...props} />}}
             localization={localization}
             onSelectionChange={this.props.onMechanismsSelected}
         />;

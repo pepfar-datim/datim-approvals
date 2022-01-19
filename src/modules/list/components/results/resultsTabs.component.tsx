@@ -32,7 +32,7 @@ export default class ResultsTabs extends React.Component<
     }
 
     renderTabs(){
-        return mechanismActions.map((action, i)=><Tab label={this.generateTabLabel(action)} key={i} disabled={this.filterMechanisms(this.props.mechanisms, action).length===0} id={`cy_mechanismListTab_${action}`} data-testid={`resultTabs_${action}`}/>)
+        return mechanismActions.map((action, i)=><Tab label={this.generateTabLabel(action)} key={i} disabled={this.filterMechanisms(this.props.mechanisms, action).length===0} data-testid={`resultTabs_${action}`}/>)
     }
 
     filterMechanisms(allMechanisms: SearchMechanism[], action:string){
