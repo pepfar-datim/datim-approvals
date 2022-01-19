@@ -53,7 +53,16 @@ const columns = [
     },
 ];
 
-export default function NewResultsTable({mechanisms}:{mechanisms: SearchMechanism[]}) {
+function updateSelection(mechanisms:SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void){
+    return (selectedIds)=>{
+        mechanisms.forEach((m:SearchMechanism)=>{
+            m.selected = selectedIds.includes(m.id)
+        });
+        onMechanismsSelected(mechanisms);
+    }
+}
+
+export default function NewResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void,}) {
     return <DataGrid
         rows={mechanisms}
         columns={columns}
@@ -65,6 +74,7 @@ export default function NewResultsTable({mechanisms}:{mechanisms: SearchMechanis
         sx={style}
         rowHeight={59}
         disableColumnMenu={true}
+        onSelectionModelChange={updateSelection(mechanisms,onMechanismsSelected)}
         // density={'compact'}
     />
 }

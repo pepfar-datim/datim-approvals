@@ -24,12 +24,12 @@ const styles = {
 
 function hasSelected(mechs:SearchMechanism[]):boolean{
     if (!mechs) return false;
-    return mechs.some(m=>m.tableData.checked)
+    return mechs.some(m=>m.selected)
 }
 
 function getSelected(mechs:SearchMechanism[]):SearchMechanism[]{
     if (!mechs) return []
-    return mechs.filter(r=>r.tableData.checked);
+    return mechs.filter(r=>r.selected);
 }
 
 export default class List extends React.Component<{
@@ -147,12 +147,12 @@ export default class List extends React.Component<{
     }
 
     onMechanismsSelected = (mechanisms:SearchMechanism[]):void=>{
-        if (mechanisms.length===0){
-            this.state.mechanisms.forEach(m=>{
-                m.tableData.checked = false;
-            })
-            mechanisms = this.state.mechanisms;
-        }
+        // if (mechanisms.length===0){
+        //     this.state.mechanisms.forEach(m=>{
+        //         m.tableData.checked = false;
+        //     })
+        //     mechanisms = this.state.mechanisms;
+        // }
         this.setState({mechanisms});
     };
 

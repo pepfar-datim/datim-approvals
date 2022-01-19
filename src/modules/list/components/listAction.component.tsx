@@ -46,7 +46,7 @@ function getMajorStatus(mechanisms: SearchMechanism[]):string{
 
 function filterStatuses(onMechanismsSelected: (mechanisms:SearchMechanism[])=>any, mechanisms:SearchMechanism[], majorStatus:string):void{
     mechanisms.forEach(m=>{
-        if (m._originalMechanism.state.status!==majorStatus) m.tableData.checked = false;
+        if (m._originalMechanism.state.status!==majorStatus) m.selected = false;
     })
     return onMechanismsSelected(mechanisms)
 }
@@ -68,7 +68,7 @@ function checkDedupMechanism(mechanisms: SearchMechanism[]):boolean {
 function filterDedup(onMechanismsSelected: (mechanisms:SearchMechanism[])=>any, mechanisms:SearchMechanism[]):void{
     mechanisms.forEach(r=>{
         let m = r._originalMechanism;
-        if(m.info.name.startsWith('00000') || m.info.name.startsWith('00001')) r.tableData.checked=false;
+        if(m.info.name.startsWith('00000') || m.info.name.startsWith('00001')) r.selected=false;
     })
     return onMechanismsSelected(mechanisms)
 }
