@@ -95,7 +95,13 @@ export async function fetchMechanisms(filters:SearchFilters):Promise<SearchMecha
                     }
                 };
             }).filter(mech=>mech).filter(filterSystemMechs(isSuperUser))
-            mechanisms.sort((a,b)=>a.info['ou']>b.info['ou']?1:-1)
+            mechanisms.sort((a,b)=>{
+                let m1Id = parseInt(a.info.name);
+                let m2Id = parseInt(b.info.name);
+                if (m1Id===m2Id) return a.info['ou']>b.info['ou']?1:-1
+                return m1Id>m2Id?1:-1;
+                // a.info['ou']>b.info['ou']?1:-1
+            })
             return tranformMechanisms(mechanisms);
         }).catch(e=>{
             console.error(e);

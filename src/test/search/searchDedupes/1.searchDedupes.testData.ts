@@ -2,6 +2,7 @@ import {SearchFilters} from "../../../modules/list/models/filters.model";
 
 export type TestAction = {
     click?: string;
+    clickByCss?:string;
     texts?: string[];
     noTexts?: string[]
 }
@@ -22,7 +23,7 @@ const botswanaList = [
 ];
 
 export const testCases:TestCase[] = [{
-    name: '#1a - Global in Botswana 2020',
+    name: '#1a - Global sees Go button',
     asUser: 'superAdmin',
     filters: {
         workflow: 'MER Results',
@@ -31,7 +32,7 @@ export const testCases:TestCase[] = [{
     },
     actions: [{
         noTexts: botswanaList,
-        texts: ['Please click Go to search.']
+        texts: ['Please click Go to search']
     },{
         click: 'searchGo',
         texts: botswanaList
@@ -43,7 +44,7 @@ export const testCases:TestCase[] = [{
         texts: botswanaList
     }]
 },{
-    name: '#1b - Partner in SouthAfrica 2020Q3',
+    name: `#1b - Partner doesn't see Go button`,
     asUser: 'partnerSouthAfrica',
     filters: {
         workflow: 'MER Results',
@@ -51,7 +52,21 @@ export const testCases:TestCase[] = [{
         ou: 'South Africa',
     },
     actions: [{
-        noTexts: ['Please click Go to search.'],
+        noTexts: ['Please click Go to search'],
         texts: ['81891 - GH002187 - SiN (GH002187)', 'HHS/CDC', 'accepted by agency', 'SHOUT IT NOW']
     }]
+// },{
+//     name: `#1c - Partner can select mechanisms`,
+//     asUser: 'partnerSouthAfrica',
+//     filters: {
+//         workflow: 'MER Results',
+//         period: 'Jul - Sep 2020',
+//         ou: 'South Africa',
+//     },
+//     actions: [{
+//         texts: ['81891 - GH002187 - SiN (GH002187)', 'HHS/CDC', 'accepted by agency', 'SHOUT IT NOW']
+//     },{
+//         clickByCss: '[data-id="1"] input',
+//         texts: ['1 selected mechanism(s)']
+//     }]
 }]
