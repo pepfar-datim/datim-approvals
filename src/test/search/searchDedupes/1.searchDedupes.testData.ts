@@ -55,18 +55,18 @@ export const testCases:TestCase[] = [{
         noTexts: ['Please click Go to search'],
         texts: ['81891 - GH002187 - SiN (GH002187)', 'HHS/CDC', 'accepted by agency', 'SHOUT IT NOW']
     }]
-// },{
-//     name: `#1c - Partner can select mechanisms`,
-//     asUser: 'partnerSouthAfrica',
-//     filters: {
-//         workflow: 'MER Results',
-//         period: 'Jul - Sep 2020',
-//         ou: 'South Africa',
-//     },
-//     actions: [{
-//         texts: ['81891 - GH002187 - SiN (GH002187)', 'HHS/CDC', 'accepted by agency', 'SHOUT IT NOW']
-//     },{
-//         clickByCss: '[data-id="1"] input',
-//         texts: ['1 selected mechanism(s)']
-//     }]
+},{
+    name: `#1c - Partner can select mechanisms`,
+    asUser: 'partnerSouthAfrica',
+    filters: {
+        workflow: 'MER Results',
+        period: 'Jul - Sep 2020',
+        ou: 'South Africa',
+    },
+    actions: [{
+        texts: ['81891 - GH002187 - SiN (GH002187)', 'HHS/CDC', 'accepted by agency', 'SHOUT IT NOW']
+    },{
+        clickByCss: '[data-id="0"] input',
+        texts: ['1 selected mechanism(s)']
+    }]
 }]

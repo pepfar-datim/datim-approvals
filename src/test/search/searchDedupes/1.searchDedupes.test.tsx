@@ -3,6 +3,8 @@ import {click, clickByCss, debug, noTexts, texts, textsWait} from "@pepfar-react
 import {TestAction, TestCase, testCases} from "./1.searchDedupes.testData";
 import {screen} from "@testing-library/react";
 
+jest.mock('react-router-dom', () => ({ Link: ({to,children}:{to:string,children:any}) => <a href={to}>{children}</a>}));
+
 async function performTestAction(action:TestAction){
     if (action.click) click(action.click);
     if (action.clickByCss) clickByCss(action.clickByCss);
