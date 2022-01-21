@@ -16,8 +16,8 @@ async function performTestAction(action:TestAction){
 function searchDedupesTest(testCase:TestCase){
     test(`1 > Search Dedupes > ${testCase.name}`, async()=>{
         await renderSearch(testCase);
-        for (let i=0;i<testCase.actions.length;i++){
-            await performTestAction(testCase.actions[i]);
+        for (const action of testCase.actions){
+            await performTestAction(action);
         }
     })
 }
