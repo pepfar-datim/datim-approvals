@@ -34,7 +34,7 @@ const botswanaPage2 = [
 ]
 
 export const testCases:TestCase[] = [{
-    name: '#1a - Global sees Go button',
+    name: '#1a - Global sees Go button, pagination works, switching tabs works',
     asUser: 'superAdmin',
     filters: {
         workflow: 'MER Results',
@@ -71,7 +71,7 @@ export const testCases:TestCase[] = [{
         texts: ['81891 - GH002187 - SiN (GH002187)', 'HHS/CDC', 'accepted by agency', 'SHOUT IT NOW']
     }]
 },{
-    name: `#1c - Partner can select mechanisms`,
+    name: `#1c - Partner can select mechanisms, link is generated properly`,
     asUser: 'partnerSouthAfrica',
     filters: {
         workflow: 'MER Results',
