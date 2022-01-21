@@ -1,10 +1,13 @@
 import {SearchFilters} from "../../../modules/list/models/filters.model";
+import {checkAttribute} from "@pepfar-react-lib/jest-tools";
+import {get} from "@pepfar-react-lib/jest-tools";
 
 export type TestAction = {
     click?: string;
     clickByCss?:string;
     texts?: string[];
     noTexts?: string[]
+    custom?: ()=>void
 }
 
 export type TestCase = {
@@ -14,13 +17,21 @@ export type TestCase = {
     actions: TestAction[];
 }
 
-const botswanaList = [
+const botswanaPage1 = [
     '7320 - StateAFLaboratory - RPSO laboratory construction projects',
     '9915 - GH001116 - Capacity building assistance for global HIV/AIDS microbiological labs',
     'American Society For Microbiology',
     '17275 - GGH001314 - Voluntary Medical Male Circumcision',
-    'accepted by global'
+    'accepted by global',
+    '1–20 of 87'
 ];
+
+const botswanaPage2 = [
+    '18253 - 6NU2GGH002070 - Community HIV Testing and Counseling and KP Support',
+    '18458 - GH002027 - Botswana Combination Prevention Program (BCPP)',
+    '81543 - TBDawardDOD - [Placeholder - 81543 Botswana DOD]',
+    '21–40 of 87'
+]
 
 export const testCases:TestCase[] = [{
     name: '#1a - Global sees Go button',
@@ -31,17 +42,21 @@ export const testCases:TestCase[] = [{
         ou: 'Botswana',
     },
     actions: [{
-        noTexts: botswanaList,
+        noTexts: botswanaPage1,
         texts: ['Please click Go to search']
     },{
         click: 'searchGo',
-        texts: botswanaList
+        texts: botswanaPage1
     },{
         click: 'resultTabs_submit',
-        noTexts: botswanaList
+        noTexts: botswanaPage1,
+        texts: ['1–4 of 4']
     },{
-        click: 'resultTabs_return',
-        texts: botswanaList
+        click: 'resultTabs_view',
+        texts: botswanaPage1
+    },{
+        clickByCss: '[title="Go to next page"]',
+        texts:botswanaPage2
     }]
 },{
     name: `#1b - Partner doesn't see Go button`,
@@ -68,5 +83,10 @@ export const testCases:TestCase[] = [{
     },{
         clickByCss: '[data-id="0"] input',
         texts: ['1 selected mechanism(s)']
+    },{
+        custom: ()=>{
+            checkAttribute('listActionLink','href','/action?approvalCombos=cDGPF739ZZr%3Ac8eyZgNfGfB%3AJJMwJ8r9weR%3A&period=2020Q3&workflow=RwNpkAM7Hw7')
+        }
     }]
 }]
+
