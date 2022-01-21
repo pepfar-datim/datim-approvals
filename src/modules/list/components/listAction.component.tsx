@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {Button, Divider, Paper, Typography, withTheme} from "@material-ui/core";
 import {Link} from "react-router-dom";
-import {FloatProperty, PositionProperty} from 'csstype';
 import {SearchMechanism} from "../models/searchMechanism.model";
 
 
@@ -14,15 +13,15 @@ const styles = {
         backgroundColor: theme.palette.secondary.main,
         marginTop: 10,
         color: 'white',
-        position: 'relative' as PositionProperty
-    }},
+        position: 'relative'
+    } as CSSProperties},
     selectOnly: {
-        float: 'right' as FloatProperty,
+        float: 'right',
         color: 'white',
-        position: 'absolute' as PositionProperty,
+        position: 'absolute',
         right: 10,
         top: 4
-    }
+    } as CSSProperties
 };
 
 function checkMechanismStates(mechanisms: SearchMechanism[]):boolean {

@@ -1,11 +1,10 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {LinearProgress, Typography} from "@material-ui/core";
-import {TextAlignProperty} from 'csstype';
 
 const styles = {
     message: {
-        textAlign: 'center' as TextAlignProperty
-    }
+        textAlign: 'center'
+    } as CSSProperties
 };
 
 export default function Loading({message}:{message?:string}) {

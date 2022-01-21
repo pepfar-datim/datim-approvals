@@ -1,7 +1,7 @@
 import React from "react";
 import {automatedTest, checkAttribute, TestCase} from "@pepfar-react-lib/jest-tools";
-import {selectSearchFilters} from "../../shared/setup.testServices";
-import List from "../../../modules/list/components/list.component";
+import {selectSearchFilters} from "../shared/setup.testServices";
+import List from "../../modules/list/components/list.component";
 
 const botswanaPage1 = [
     '7320 - StateAFLaboratory - RPSO laboratory construction projects',

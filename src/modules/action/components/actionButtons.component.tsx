@@ -2,15 +2,14 @@ import React, {CSSProperties} from "react";
 import Button from "@material-ui/core/Button/Button";
 import {MechanismState} from "../../shared/models/mechanism.model";
 import {Typography} from "@material-ui/core";
-import {FloatProperty} from "csstype";
 
 import {CallMade, CallReceived, Check} from '@material-ui/icons';
 
 const styles = {
     back: {
-        float: 'right' as FloatProperty,
+        float: 'right',
         textDecoration: 'none'
-    },
+    } as CSSProperties,
     infoText: {
         display: 'inline-block',
     },

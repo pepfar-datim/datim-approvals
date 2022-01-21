@@ -1,5 +1,4 @@
-import React, {useEffect} from "react";
-import {FloatProperty} from "csstype";
+import React, {CSSProperties, useEffect} from "react";
 
 var waitUntil = require('wait-until');
 
@@ -13,7 +12,7 @@ const styles = {
         overflow: 'hidden',
         fontFamily: 'Arial'
     },
-    clear: {clear: 'both' as FloatProperty}
+    clear: {clear: 'both'} as CSSProperties
 };
 
 function loadStaticScript(url){

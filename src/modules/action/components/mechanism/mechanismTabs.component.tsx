@@ -1,17 +1,16 @@
-import React from "react";
+import React, {CSSProperties} from "react";
 import {Paper, Tab, Tabs, Typography} from "@material-ui/core";
 import MechanismInfo from "./mechanismInfo.component";
 import MechanismModel, {MechanismState} from "../../../shared/models/mechanism.model";
 import FormSelect from "./form/formSelect.component";
 import Loading from "../../../shared/components/loading.component";
-import {TextAlignProperty} from "csstype";
 
 const styles = {
     datasetWarning: {
-        textAlign: 'center' as TextAlignProperty,
+        textAlign: 'center',
         margin: '20px 0px',
         fontWeight: 500
-    }
+    } as CSSProperties
 }
 
 function lengthWarning(mechanismsLength: number, clicks: number){
