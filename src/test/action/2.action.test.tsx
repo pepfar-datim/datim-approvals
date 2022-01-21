@@ -22,7 +22,12 @@ export const testCases:TestCase[] = [{
         ]
     },{
         clickByText: '14707 - StateAFSmallGrants - Ambassador\'s PEPFAR Small Grants Program',
-        texts: ['']
+    }, {
+        click: 'actionButton_return',
+        expectPost: {
+            url: '/dataApprovals/unapprovals',
+            body: {"approvals":[{"aoc":"TKBbV46WUX3","ou":"l1KFEXKI4Dg"},{"aoc":"VdSh1pgKSLp","ou":"l1KFEXKI4Dg"},{"aoc":"lMYMYFB2ybp","ou":"l1KFEXKI4Dg"},{"aoc":"pVkEOqie8Qi","ou":"l1KFEXKI4Dg"}],"pe":["2020Q4"],"wf":["RwNpkAM7Hw7"]}
+        }
     }]
 }];
 
