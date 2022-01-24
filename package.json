@@ -8,6 +8,7 @@
     "@dhis2/ui": "^7.14.2",
     "@dhis2/ui-core": "^6.24.0",
     "@dhis2/ui-widgets": "^6.24.0",
+    "@emotion/styled": "^11.6.0",
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@mui/x-data-grid": "^5.3.0",
@@ -25,12 +26,12 @@
     "query-string": "^7.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-error-overlay": "^6.0.9",
     "react-router-dom": "^6.2.1",
     "react-scripts": "4.0.3",
     "styled-jsx": "^4.0.1",
     "typescript": "4.5.5",
-    "wait-until": "0.0.2",
-    "@emotion/styled": "^11.6.0"
+    "wait-until": "0.0.2"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -57,5 +58,9 @@
     "development": [
       "last 1 chrome version"
     ]
+  },
+  "resolutions": {
+    "//": "See https://github.com/facebook/create-react-app/issues/11773",
+    "react-error-overlay": "6.0.9"
   }
 }

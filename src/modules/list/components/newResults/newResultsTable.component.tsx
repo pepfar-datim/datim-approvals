@@ -65,6 +65,7 @@ export default function NewResultsTable({mechanisms, onMechanismsSelected}:{mech
         onSelectionModelChange={updateSelection(mechanisms,onMechanismsSelected)}
         sortingOrder={['asc', 'desc']}
         columnBuffer={20}
+        
         // componentsProps={{
         //     baseCheckbox: {
         //         inputProps: {

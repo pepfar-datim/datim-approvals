@@ -26,7 +26,7 @@ function getMechanismInfoUrl(ids){
 function getInfoByGroupSet(mechInfo, groupSetId):string{
     try {
         const info = mechInfo.categoryOptionGroups.filter(prop => prop.groupSets[0].id === groupSetId)[0].name;
-        if (info === 'Dedupe adjustments Agency' || info === 'Dedupe adjustments Partner') {
+        if (['Dedupe adjustments Agency','Dedupe adjustments Partner','De-duplication adjustment'].includes(info)) {
             return 'N/A';
         }
         return info;

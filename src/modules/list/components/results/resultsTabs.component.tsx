@@ -54,6 +54,7 @@ export default class ResultsTabs extends React.Component<
                 {/*<ResultsTable mechanisms={this.state.filteredMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>*/}
                 <NewResultsTable mechanisms={this.state.filteredMechanisms} onMechanismsSelected={this.props.onMechanismsSelected}/>
             </div>
+
         );
     }
 }
