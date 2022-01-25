@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import {SearchMechanism} from "../../models/searchMechanism.model";
+import {ResultsHeader} from "./resultsHeader.component";
+import {useState} from "react";
 
 const style={
     '& .MuiDataGrid-cell': {
@@ -50,9 +52,18 @@ function updateSelection(mechanisms:SearchMechanism[], onMechanismsSelected: (me
     }
 }
 
+function filterMechanisms(filterBy:string, mechanisms: SearchMechanism[]):SearchMechanism[]{
+    return mechanisms.filter(m=>m.name.includes(filterBy));
+}
+
 export default function NewResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void,}) {
-    return <DataGrid
-        rows={mechanisms}
+    let [filterBy, setFilterBy] = useState(null);
+    let filteredMechanisms:SearchMechanism[] = mechanisms;
+    if (filterBy && filterBy!=='') filteredMechanisms = filterMechanisms(filterBy, mechanisms);
+    return <>
+        <ResultsHeader filterBy={filterBy} setFilterBy={setFilterBy} mechanismCount={filteredMechanisms.length}/>
+        <DataGrid
+        rows={filteredMechanisms}
         columns={columns}
         pageSize={20}
         autoHeight={true}
@@ -65,7 +76,6 @@ export default function NewResultsTable({mechanisms, onMechanismsSelected}:{mech
         onSelectionModelChange={updateSelection(mechanisms,onMechanismsSelected)}
         sortingOrder={['asc', 'desc']}
         columnBuffer={20}
-        
         // componentsProps={{
         //     baseCheckbox: {
         //         inputProps: {
@@ -73,5 +83,5 @@ export default function NewResultsTable({mechanisms, onMechanismsSelected}:{mech
                 // }
             // }
         // }}
-    />
+    /></>
 }
