@@ -114,7 +114,6 @@ function transformCOCToMechanismState(workflow, combo){
 export function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
     return getData(mechanismStatesUrl(workflow, period))
         .then(res => {
-
             return res.filter(categoryOptionCombo=>mechanisms.map(m=>`${m.meta.cocId};${m.meta.ou}`).includes(`${categoryOptionCombo.id};${categoryOptionCombo.ou}`))
         })
         .then(categoryOptionCombos=>categoryOptionCombos.map(coc=>transformCOCToMechanismState(workflow, coc)))

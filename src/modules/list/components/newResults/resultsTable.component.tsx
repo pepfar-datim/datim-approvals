@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import {DataGrid, GridSortModel} from '@mui/x-data-grid';
 import {SearchMechanism} from "../../models/searchMechanism.model";
 import {ResultsHeader} from "./resultsHeader.component";
 import {useState} from "react";
@@ -60,28 +60,27 @@ export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechani
     let [filterBy, setFilterBy] = useState(null);
     let filteredMechanisms:SearchMechanism[] = mechanisms;
     if (filterBy && filterBy!=='') filteredMechanisms = filterMechanisms(filterBy, mechanisms);
+    const [sortModel, setSortModel] = React.useState<GridSortModel>([{
+        field: 'name',
+        sort: 'asc',
+    }]);
     return <>
         <ResultsHeader filterBy={filterBy} setFilterBy={setFilterBy} mechanismCount={filteredMechanisms.length}/>
         <DataGrid
-        rows={filteredMechanisms}
-        columns={columns}
-        pageSize={20}
-        autoHeight={true}
-        rowsPerPageOptions={[20,50,100]}
-        checkboxSelection
-        disableSelectionOnClick
-        sx={style}
-        rowHeight={59}
-        disableColumnMenu={true}
-        onSelectionModelChange={updateSelection(mechanisms,onMechanismsSelected)}
-        sortingOrder={['asc', 'desc']}
-        columnBuffer={20}
-        // componentsProps={{
-        //     baseCheckbox: {
-        //         inputProps: {
-                    //'data-testid': 'hello world'
-                // }
-            // }
-        // }}
+            rows={filteredMechanisms}
+            columns={columns}
+            pageSize={20}
+            autoHeight={true}
+            rowsPerPageOptions={[20,50,100]}
+            checkboxSelection
+            disableSelectionOnClick
+            sx={style}
+            rowHeight={59}
+            disableColumnMenu={true}
+            onSelectionModelChange={updateSelection(mechanisms,onMechanismsSelected)}
+            sortingOrder={['asc', 'desc']}
+            columnBuffer={20}
+            sortModel={sortModel}
+            onSortModelChange={setSortModel}
     /></>
 }
