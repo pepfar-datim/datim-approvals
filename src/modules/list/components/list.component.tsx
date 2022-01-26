@@ -1,7 +1,6 @@
 import React, {CSSProperties} from "react";
 import queryString from "query-string";
 import {Divider, Typography} from "@material-ui/core";
-
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
 import ResultsTabs from "./results/resultsTabs.component";
@@ -63,15 +62,9 @@ export default class List extends React.Component<{
         };
         let ouPromise = orgUnits.init().then((ous)=>{
             this.setState({ous: ous});
-            // this.preselectOu(ous);
         });
         this.workflowPeriodService = new WorkflowPeriodService();
         let workflowsPromise = this.workflowPeriodService.init().then((workflows)=>{
-            // let selectedWorkflow = workflows.length>0 && workflows[0].id;
-            // let periods = this.workflowPeriodService.getPeriods(selectedWorkflow);
-            // this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods.length>0&&periods[0].id, ou: this.state.filters.ou}});
-            // this.setFilterFromUrl('workflow');
-            // this.setFilterFromUrl('period');
             this.setState({workflows})
         });
         let userTypePromise = getMyUserType().then((userType:UserType)=>{
@@ -88,8 +81,6 @@ export default class List extends React.Component<{
                 periods,
                 filters: {workflow, period, ou: this.state.ous[0].id}
             });
-            // let periods = this.workflowPeriodService.getPeriods(selectedWorkflow);
-            // this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods.length>0&&periods[0].id, ou: this.state.filters.ou}});
             if (!this.state.globalUser) setTimeout(()=>this.fetchMechanisms(),0);
         });
     }
@@ -97,24 +88,13 @@ export default class List extends React.Component<{
     preselectFromUrl(){
         let {ou, workflow, period}:SearchFilters = getUrlFilters();
         if (!ou||!workflow||!period) return false;
-        // ['workflow', 'period', 'ou'].forEach(prop=>{
-        //     if (urlFilters[prop]) this.setFilter(prop, urlFilters[prop]);
-        // })
-        // if (urlFilters.period) setTimeout(()=>this.fetchMechanisms(),0);
         let periods = this.workflowPeriodService.getPeriods(workflow);
         this.setState({filters: {ou,workflow,period}, periods, loading: {filters:false, mechanisms: false} })
         setTimeout(()=>this.fetchMechanisms(),0);
         return true;
     }
 
-    setFilterFromUrl(property:string){
-        // if (!this.props.urlSearchOptions) return;
-        // let value = this.props.urlSearchOptions[property];
-        // if (value) this.setFilter(property, value);
-    }
-
     preselectOu(ous){
-        this.setFilterFromUrl('ou');
         this.setFilter('ou', ous[0].id);
     }
     fetchMechanisms(){
@@ -124,7 +104,6 @@ export default class List extends React.Component<{
         fetchMechanisms(this.state.filters).then(mechanisms=>{
             this.setState({mechanisms, loading:{mechanisms: false}});
         });
-        // this.updateUrl();
         setUrl(this.state.filters)
     }
     setFilter(key:string, val:string){
@@ -140,15 +119,7 @@ export default class List extends React.Component<{
     onUserSelect = (property:string, value:string)=>{
         this.setFilter(property, value);
         if (!this.state.globalUser) setTimeout(()=>this.fetchMechanisms(),1);
-        //     this.updateUrl();
     };
-
-    // updateUrl(){
-    //     setTimeout(()=>{
-    //         let url = queryString.stringify(this.state.filters);
-    //         window.history.pushState(null,null,'#/search?'+url);
-    //     },0);
-    // }
 
     renderFilters(){
         if (this.state.loading.filters) return <Loading message='Loading workflow information...'/>;
