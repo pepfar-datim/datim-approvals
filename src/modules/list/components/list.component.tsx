@@ -93,14 +93,12 @@ export default class List extends React.Component<{
         this.setFilter('ou', ous[0].id);
     }
     fetchMechanisms(){
-        // setTimeout(()=>{
-            let f = this.state.filters;
-            if (!f.ou || !f.period || !f.workflow) return;
-            this.setState({mechanisms: null, loading: {mechanisms: true}});
-            fetchMechanisms(this.state.filters).then(mechanisms=>{
-                this.setState({mechanisms, loading:{mechanisms: false}});
-            });
-        // },0);
+        let f = this.state.filters;
+        if (!f.ou || !f.period || !f.workflow) return;
+        this.setState({mechanisms: null, loading: {mechanisms: true}});
+        fetchMechanisms(this.state.filters).then(mechanisms=>{
+            this.setState({mechanisms, loading:{mechanisms: false}});
+        });
     }
     setFilter(key:string, val:string){
         let filters = this.state.filters;
@@ -147,12 +145,6 @@ export default class List extends React.Component<{
     }
 
     onMechanismsSelected = (mechanisms:SearchMechanism[]):void=>{
-        // if (mechanisms.length===0){
-        //     this.state.mechanisms.forEach(m=>{
-        //         m.tableData.checked = false;
-        //     })
-        //     mechanisms = this.state.mechanisms;
-        // }
         this.setState({mechanisms});
     };
 

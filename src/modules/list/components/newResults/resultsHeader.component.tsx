@@ -3,17 +3,14 @@ import {TextField, Typography} from "@material-ui/core";
 
 const styles = {
     root: {
-        // float: 'right'
         display: 'flex',
         height: 48,
         justifyContent: 'space-between'
     } as CSSProperties,
     mechanismCount: {
-        // lineHeight: '48px'
         paddingTop:19
     },
     input: {
-        // margin: 'auto 0px auto auto'
     }
 };
 
