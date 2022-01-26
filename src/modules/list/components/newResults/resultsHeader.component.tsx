@@ -17,6 +17,6 @@ const styles = {
 export function ResultsHeader({filterBy, setFilterBy, mechanismCount}:{filterBy:string, setFilterBy: (string)=>void, mechanismCount: number}) {
     return <div style={styles.root}>
         <Typography style={styles.mechanismCount}>{mechanismCount} mechanisms</Typography>
-        <TextField label="Search" variant="standard" style={styles.input} value={filterBy||''} onChange={(v)=>setFilterBy(v.target.value)}/>
+        <TextField label="Search" variant="standard" style={styles.input} value={filterBy||''} onChange={(v)=>setFilterBy(v.target.value)} inputProps={{'data-testid':'listFilter'}}/>
     </div>
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import {automatedTest, checkAttribute, TestCase} from "@pepfar-react-lib/jest-tools";
+import {automatedTest, checkAttribute, click, TestCase, textsWait} from "@pepfar-react-lib/jest-tools";
 import {selectSearchFilters} from "../shared/setup.testServices";
 import List from "../../modules/list/components/list.component";
 
@@ -82,6 +82,26 @@ export const testCases:TestCase[] = [{
         custom: ()=>{
             checkAttribute('listActionLink','href','/action?approvalCombos=cDGPF739ZZr%3Ac8eyZgNfGfB%3AJJMwJ8r9weR%3A&period=2020Q3&workflow=RwNpkAM7Hw7')
         }
+    }]
+},{
+    name: '#1d - Filter results',
+    asUser: 'superAdmin',
+    component: <List/>,
+    postRender: async ()=>{
+        await selectSearchFilters({
+            workflow: 'MER Results',
+            period: 'Oct - Dec 2020',
+            ou: 'Botswana',
+        });
+        click('searchGo')
+        await textsWait(botswanaPage1);
+    },
+    actions: [{
+        type: {
+            where: 'listFilter',
+            what: 'placeholder'
+        },
+        texts: ['81484 - TBDawardStateSGAC - [Placeholder - 81484 Botswana State/SGAC]','81542 - TBDawardDOD - [Placeholder - 81542 Botswana DOD]']
     }]
 }]
 

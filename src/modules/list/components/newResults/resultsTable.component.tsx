@@ -53,10 +53,10 @@ function updateSelection(mechanisms:SearchMechanism[], onMechanismsSelected: (me
 }
 
 function filterMechanisms(filterBy:string, mechanisms: SearchMechanism[]):SearchMechanism[]{
-    return mechanisms.filter(m=>m.name.includes(filterBy));
+    return mechanisms.filter(m=>m.name.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase()));
 }
 
-export default function NewResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void,}) {
+export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void,}) {
     let [filterBy, setFilterBy] = useState(null);
     let filteredMechanisms:SearchMechanism[] = mechanisms;
     if (filterBy && filterBy!=='') filteredMechanisms = filterMechanisms(filterBy, mechanisms);
