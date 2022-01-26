@@ -14,6 +14,7 @@ import Loading from "../../shared/components/loading.component";
 import {SearchMechanism} from "../models/searchMechanism.model";
 import {getMyUserType, UserType} from "@pepfar-react-lib/datim-tools"
 import GoButton from "./goButton.component";
+import {getUrlFilters, setUrl} from "../services/url.service";
 
 const styles = {
     link: {
@@ -62,25 +63,49 @@ export default class List extends React.Component<{
         };
         let ouPromise = orgUnits.init().then((ous)=>{
             this.setState({ous: ous});
-            this.preselectOu(ous);
+            // this.preselectOu(ous);
         });
         this.workflowPeriodService = new WorkflowPeriodService();
         let workflowsPromise = this.workflowPeriodService.init().then((workflows)=>{
-            let selectedWorkflow = workflows.length>0 && workflows[0].id;
-            let periods = this.workflowPeriodService.getPeriods(selectedWorkflow);
-            this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods.length>0&&periods[0].id, ou: this.state.filters.ou}});
-            this.setFilterFromUrl('workflow');
-            this.setFilterFromUrl('period');
+            // let selectedWorkflow = workflows.length>0 && workflows[0].id;
+            // let periods = this.workflowPeriodService.getPeriods(selectedWorkflow);
+            // this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods.length>0&&periods[0].id, ou: this.state.filters.ou}});
+            // this.setFilterFromUrl('workflow');
+            // this.setFilterFromUrl('period');
+            this.setState({workflows})
         });
         let userTypePromise = getMyUserType().then((userType:UserType)=>{
             this.setState({globalUser: userType===UserType.Global});
         })
 
         Promise.all([ouPromise,workflowsPromise,userTypePromise]).then(()=>{
-            if (!this.state.globalUser) this.fetchMechanisms()
+            if (this.preselectFromUrl()) return;
+            let workflow = this.state.workflows.length>0 && this.state.workflows[0].id;
+            let periods = this.workflowPeriodService.getPeriods(workflow);
+            let period = periods.length>0&&periods[0].id;
+            this.setState({
+                loading: {filters: false, mechanisms: false},
+                periods,
+                filters: {workflow, period, ou: this.state.ous[0].id}
+            });
+            // let periods = this.workflowPeriodService.getPeriods(selectedWorkflow);
+            // this.setState({loading: {filters: false, mechanisms: false}, workflows: workflows, periods: periods, filters:{workflow: selectedWorkflow, period: periods.length>0&&periods[0].id, ou: this.state.filters.ou}});
+            if (!this.state.globalUser) setTimeout(()=>this.fetchMechanisms(),0);
         });
     }
 
+    preselectFromUrl(){
+        let {ou, workflow, period}:SearchFilters = getUrlFilters();
+        if (!ou||!workflow||!period) return false;
+        // ['workflow', 'period', 'ou'].forEach(prop=>{
+        //     if (urlFilters[prop]) this.setFilter(prop, urlFilters[prop]);
+        // })
+        // if (urlFilters.period) setTimeout(()=>this.fetchMechanisms(),0);
+        let periods = this.workflowPeriodService.getPeriods(workflow);
+        this.setState({filters: {ou,workflow,period}, periods, loading: {filters:false, mechanisms: false} })
+        setTimeout(()=>this.fetchMechanisms(),0);
+        return true;
+    }
 
     setFilterFromUrl(property:string){
         // if (!this.props.urlSearchOptions) return;
@@ -99,6 +124,8 @@ export default class List extends React.Component<{
         fetchMechanisms(this.state.filters).then(mechanisms=>{
             this.setState({mechanisms, loading:{mechanisms: false}});
         });
+        // this.updateUrl();
+        setUrl(this.state.filters)
     }
     setFilter(key:string, val:string){
         let filters = this.state.filters;
@@ -116,12 +143,12 @@ export default class List extends React.Component<{
         //     this.updateUrl();
     };
 
-    updateUrl(){
-        setTimeout(()=>{
-            let url = queryString.stringify(this.state.filters);
-            // window.history.pushState(null,null,'/search?'+url);
-        },0);
-    }
+    // updateUrl(){
+    //     setTimeout(()=>{
+    //         let url = queryString.stringify(this.state.filters);
+    //         window.history.pushState(null,null,'#/search?'+url);
+    //     },0);
+    // }
 
     renderFilters(){
         if (this.state.loading.filters) return <Loading message='Loading workflow information...'/>;
