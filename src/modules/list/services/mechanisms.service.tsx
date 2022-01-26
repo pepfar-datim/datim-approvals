@@ -23,15 +23,16 @@ function getMechanismInfoUrl(ids){
     return `/categoryOptions.json?paging=false&${filter}&${fields}`;
 }
 
+const isInternalMechanism = (info)=>['Dedupe adjustments Agency','Dedupe adjustments Partner'].includes(info);
+
 function getInfoByGroupSet(mechInfo, groupSetId):string{
     try {
         const info = mechInfo.categoryOptionGroups.filter(prop => prop.groupSets[0].id === groupSetId)[0].name;
-        if (['Dedupe adjustments Agency','Dedupe adjustments Partner','De-duplication adjustment'].includes(info)) {
-            return 'N/A';
-        }
-        return info;
+        if (!info||isInternalMechanism(info)) return 'N/A';
+        else return info;
     } catch (e){
-        return null;
+        // console.error(e);
+        return 'N/A'
     }
 }
 
