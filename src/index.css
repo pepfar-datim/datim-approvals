@@ -13,3 +13,7 @@ a:-webkit-any-link {
 .MuiMenu-paper.MuiPopover-paper {
     z-index: 1000000;
 }
+
+/*.MuiDataGrid-cell:nth-child(7){*/
+/*    display:none;*/
+/*}*/

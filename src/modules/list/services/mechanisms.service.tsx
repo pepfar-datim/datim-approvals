@@ -80,7 +80,7 @@ export async function fetchMechanisms(filters:SearchFilters):Promise<SearchMecha
                 return {
                     info: {
                         name: mechInfo.name,
-                        ou: localOU.name,
+                        ou: localOU.name||'N/A',
                         partner: getInfoByGroupSet(mechInfo, partnerGroupSet),
                         agency: getInfoByGroupSet(mechInfo, agencyGroupSet),
                     },

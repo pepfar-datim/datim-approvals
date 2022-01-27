@@ -6,7 +6,15 @@ import {useState} from "react";
 
 const style={
     '& .MuiDataGrid-cell': {
-        whiteSpace: 'normal'
+        whiteSpace: 'normal',
+        maxHeight: 'none!important',
+        height: 'auto!important'
+    },
+    '& .MuiDataGrid-row':{
+        maxHeight: 'none!important'
+    },
+    '& .MuiDataGrid-virtualScrollerContent':{
+        overflow: 'hidden'
     },
     border: 'none',
 };
@@ -40,7 +48,7 @@ const columns = [
         field: 'status',
         headerName: 'Status',
         width: 170,
-    },
+    }
 ];
 
 function updateSelection(mechanisms:SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void){
@@ -56,6 +64,24 @@ function filterMechanisms(filterBy:string, mechanisms: SearchMechanism[]):Search
     return mechanisms.filter(m=>m.name.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase()));
 }
 
+function fixHeight(){
+    setTimeout(()=>{
+        let totalHeight = 0;
+        document.querySelectorAll('.MuiDataGrid-row').forEach((r:any)=>totalHeight+=r.offsetHeight)
+        document.querySelector('.MuiDataGrid-virtualScroller > div').setAttribute('style',`height:${totalHeight}px`)
+    },1);
+}
+
+function hideColumn(){
+    let lastColumn = document.querySelectorAll('.MuiDataGrid-cell:nth-child(6)');
+    lastColumn.forEach(c=>c.setAttribute('style','display:none'))
+}
+
+function runhooks(){
+    fixHeight();
+    // hideColumn()
+}
+
 export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void,}) {
     let [filterBy, setFilterBy] = useState(null);
     let filteredMechanisms:SearchMechanism[] = mechanisms;
@@ -67,6 +93,8 @@ export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechani
     return <>
         <ResultsHeader filterBy={filterBy} setFilterBy={setFilterBy} mechanismCount={filteredMechanisms.length}/>
         <DataGrid
+            onPageChange={fixHeight}
+            disableVirtualization={true}
             rows={filteredMechanisms}
             columns={columns}
             pageSize={20}
