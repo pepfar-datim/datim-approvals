@@ -8,13 +8,16 @@ const style={
     '& .MuiDataGrid-cell': {
         whiteSpace: 'normal',
         maxHeight: 'none!important',
-        height: 'auto!important'
+        height: 'auto!important',
     },
     '& .MuiDataGrid-row':{
         maxHeight: 'none!important'
     },
     '& .MuiDataGrid-virtualScrollerContent':{
         overflow: 'hidden'
+    },
+    '& .MuiDataGrid-columnHeaderTitleContainer':{
+        padding: 0
     },
     border: 'none',
 };
@@ -29,16 +32,16 @@ const columns = [
     {
         field: 'name',
         headerName: 'Mechanism',
-        width: 320,
+        width: 310,
         sortComparator: compareMechNames,
     }, {
         field: 'ou',
         headerName: 'OU',
-        width: 80,
+        width: 100,
     }, {
         field: 'agency',
         headerName: 'Agency',
-        width: 80,
+        width: 100,
     }, {
         field: 'partner',
         headerName: 'Partner',
@@ -77,27 +80,29 @@ function hideColumn(){
     lastColumn.forEach(c=>c.setAttribute('style','display:none'))
 }
 
-function runhooks(){
-    fixHeight();
-    // hideColumn()
-}
-
 export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void,}) {
     let [filterBy, setFilterBy] = useState(null);
+    const [pageSize, setPageSize] = React.useState(20);
     let filteredMechanisms:SearchMechanism[] = mechanisms;
     if (filterBy && filterBy!=='') filteredMechanisms = filterMechanisms(filterBy, mechanisms);
     const [sortModel, setSortModel] = React.useState<GridSortModel>([{
         field: 'name',
         sort: 'asc',
     }]);
+    fixHeight();
     return <>
         <ResultsHeader filterBy={filterBy} setFilterBy={setFilterBy} mechanismCount={filteredMechanisms.length}/>
         <DataGrid
             onPageChange={fixHeight}
+            // onPageSizeChange={fixHeight}
+            onPageSizeChange={(newPageSize) => {
+                setPageSize(newPageSize);
+                fixHeight();
+            }}
             disableVirtualization={true}
             rows={filteredMechanisms}
             columns={columns}
-            pageSize={20}
+            pageSize={pageSize}
             autoHeight={true}
             rowsPerPageOptions={[20,50,100]}
             checkboxSelection
