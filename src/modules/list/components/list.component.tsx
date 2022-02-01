@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
 import queryString from "query-string";
-import {Divider, Typography} from "@material-ui/core";
+import {CircularProgress, Divider, Typography} from "@material-ui/core";
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
 import ResultsTabs from "./results/resultsTabs.component";
@@ -129,6 +129,7 @@ export default class List extends React.Component<{
             workflows={this.state.workflows}
             selected={this.state.filters}
             select={this.onUserSelect}
+            disabled={this.state.loading.mechanisms}
         />
     }
 
@@ -160,11 +161,17 @@ export default class List extends React.Component<{
         return <ResultsTabs mechanisms={this.state.mechanisms} onMechanismsSelected={this.onMechanismsSelected} onSwitchTab={this.onSwitchTab}/>;
     }
 
+    renderGoButton(){
+        if (!this.state.globalUser) return null;
+        if (this.state.loading.filters) return null;
+        return <GoButton onClick={()=>this.fetchMechanisms()} disabled={this.state.loading.mechanisms}/>
+    }
+
     render() {
         return (
             <React.Fragment>
                 {this.renderFilters()}
-                {this.state.globalUser&&<GoButton onClick={()=>this.fetchMechanisms()}/>}
+                {this.renderGoButton()}
                 {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={getSelected(this.state.mechanisms)} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}

@@ -6,13 +6,14 @@ const styles = {
     root: {marginTop: '15px', display: 'inline-block'} as any as CSSProperties
 }
 
-export default function GoButton({onClick}:{
+export default function GoButton({disabled, onClick}:{
+    disabled,
     onClick: ()=>void
 }) {
     return <div style={styles.root}>
         <Tooltip title={'Fetch mechanisms'} placement="top-end">
             <div id='button'>
-                <Button size='small' variant="contained" color="secondary" data-testid={`searchGo`} onClick={onClick} startIcon={<Done/>}>
+                <Button size='small' variant="contained" color="secondary" data-testid={`searchGo`} onClick={onClick} startIcon={<Done/>} disabled={disabled}>
                     Go
                 </Button>
             </div>

@@ -17,13 +17,14 @@ function renderInfo(selected: SearchFilters){
     if (!selected.ou) return <Typography color='secondary' style={styles.info}>Please specify Organisation Unit</Typography>;
 }
 
-export default function FilterSelect({organisationUnits, workflows, periods, selected, select}:{
-         organisationUnits:idNameList,
-         workflows:idNameList,
-         periods:idNameList,
-         selected:SearchFilters,
-         select:(property: string, value:string)=>void}
-    ){
+export default function FilterSelect({organisationUnits, workflows, periods, selected, select, disabled}:{
+    organisationUnits:idNameList,
+    workflows:idNameList,
+    periods:idNameList,
+    selected:SearchFilters,
+    select:(property: string, value:string)=>void,
+    disabled: boolean
+}){
     if(!organisationUnits) return null;
     if (!selected.workflow) return null;
     return(
@@ -38,6 +39,7 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
                     data-testid={`filter_workflow`}
                     onChange={event=>select('workflow', event.target.value as string)}
                     value={selected.workflow || ''}
+                    disabled={disabled}
                 >
                     {workflows.map(wf=>
                         <MenuItem value={wf.id} key={wf.id}>{wf.name}</MenuItem>
@@ -55,6 +57,7 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
                     data-testid={`filter_period`}
                     onChange={event=>select('period', event.target.value as string)}
                     value={selected.period || ''}
+                    disabled={disabled}
                 >
                     {periods.map(p=>
                         <MenuItem value={p.id} key={p.id}>{p.name}</MenuItem>
@@ -71,6 +74,7 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
                     data-testid={`filter_ou`}
                     onChange={event=>select('ou', event.target.value as string)}
                     value={selected.ou || ''}
+                    disabled={disabled}
                 >
                     {organisationUnits.map(ou=>
                         <MenuItem value={ou.id} key={ou.id}>{ou.name}</MenuItem>
