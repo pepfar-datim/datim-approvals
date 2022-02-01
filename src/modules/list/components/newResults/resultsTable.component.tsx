@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DataGrid, GridSortModel} from '@mui/x-data-grid';
+import {DataGrid, GridFooter, GridInitialState, GridPagination, GridSortModel} from '@mui/x-data-grid';
 import {SearchMechanism} from "../../models/searchMechanism.model";
 import {ResultsHeader} from "./resultsHeader.component";
 import {useState} from "react";
@@ -80,29 +80,33 @@ function hideColumn(){
     lastColumn.forEach(c=>c.setAttribute('style','display:none'))
 }
 
+const initialState:GridInitialState = {
+    pagination: {pageSize:20},
+    sorting: {
+        sortModel: [{field: 'name', sort: 'asc'}]
+    }
+};
+
+function CustomPagination() {
+    return <p>pager</p>
+}
+
 export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechanisms: SearchMechanism[], onMechanismsSelected: (mechanisms:SearchMechanism[])=>void,}) {
     let [filterBy, setFilterBy] = useState(null);
-    const [pageSize, setPageSize] = React.useState(20);
     let filteredMechanisms:SearchMechanism[] = mechanisms;
     if (filterBy && filterBy!=='') filteredMechanisms = filterMechanisms(filterBy, mechanisms);
-    const [sortModel, setSortModel] = React.useState<GridSortModel>([{
-        field: 'name',
-        sort: 'asc',
-    }]);
     fixHeight();
     return <>
         <ResultsHeader filterBy={filterBy} setFilterBy={setFilterBy} mechanismCount={filteredMechanisms.length}/>
         <DataGrid
+            initialState={initialState}
             onPageChange={fixHeight}
-            // onPageSizeChange={fixHeight}
             onPageSizeChange={(newPageSize) => {
-                setPageSize(newPageSize);
                 fixHeight();
             }}
             disableVirtualization={true}
             rows={filteredMechanisms}
             columns={columns}
-            pageSize={pageSize}
             autoHeight={true}
             rowsPerPageOptions={[20,50,100]}
             checkboxSelection
@@ -113,7 +117,5 @@ export default function ResultsTable({mechanisms, onMechanismsSelected}:{mechani
             onSelectionModelChange={updateSelection(mechanisms,onMechanismsSelected)}
             sortingOrder={['asc', 'desc']}
             columnBuffer={20}
-            sortModel={sortModel}
-            onSortModelChange={setSortModel}
     /></>
 }
