@@ -107,6 +107,8 @@ export const testCases:TestCase[] = [{
 
 jest.mock('react-router-dom', () => ({Link:({to,children}:{to:string,children:any})=><a href={to} data-testid="listActionLink">{children}</a>}));
 
+window.history.pushState = ()=>{};
+
 for (const testCase of testCases) {
     automatedTest(testCase);
 }

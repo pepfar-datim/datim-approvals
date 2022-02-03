@@ -3,7 +3,6 @@ import React from "react";
 import InputLabel from "@material-ui/core/InputLabel";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import makeId from "../../../../shared/services/makeId.service";
 
 export default function DatasetSelect({selectedDataset, onDsChange, datasets}){
     if (!datasets) return null;

@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
 import queryString from "query-string";
-import {CircularProgress, Divider, Typography} from "@material-ui/core";
+import {Divider, Typography} from "@material-ui/core";
 import orgUnits from "../services/orgUnits.service"
 import FilterSelect from "./filterSelect.component";
 import ResultsTabs from "./results/resultsTabs.component";

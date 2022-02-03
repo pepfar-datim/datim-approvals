@@ -1,8 +1,8 @@
 import * as React from 'react';
-import {DataGrid, GridFooter, GridInitialState, GridPagination, GridSortModel} from '@mui/x-data-grid';
+import {useState} from 'react';
+import {DataGrid, GridInitialState} from '@mui/x-data-grid';
 import {SearchMechanism} from "../../models/searchMechanism.model";
 import {ResultsHeader} from "./resultsHeader.component";
-import {useState} from "react";
 
 const style={
     '& .MuiDataGrid-cell': {

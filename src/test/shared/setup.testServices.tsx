@@ -1,6 +1,4 @@
-import {loadingDone, renderComponent, select} from "@pepfar-react-lib/jest-tools";
-import {testAs} from "@pepfar-react-lib/http-tools";
-import List from "../../modules/list/components/list.component";
+import {loadingDone, select} from "@pepfar-react-lib/jest-tools";
 import {SearchFilters} from "../../modules/list/models/filters.model";
 // import {TestCase} from "../search/searchDedupes/1.searchDedupes.testData";
 

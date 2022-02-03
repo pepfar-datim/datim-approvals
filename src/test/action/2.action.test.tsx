@@ -1,5 +1,4 @@
 import {automatedTest, TestCase} from "@pepfar-react-lib/jest-tools";
-import {selectSearchFilters} from "../shared/setup.testServices";
 import React from "react";
 import Action from "../../modules/action/components/action.component";
 

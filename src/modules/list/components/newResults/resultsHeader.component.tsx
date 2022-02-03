@@ -1,6 +1,6 @@
 import React, {CSSProperties} from "react";
 import {IconButton, TextField, Typography} from "@material-ui/core";
-import {Close, Search} from "@material-ui/icons";
+import {Close} from "@material-ui/icons";
 
 const styles = {
     root: {
