@@ -8,7 +8,6 @@ export type SearchMechanism = {
     partner:string;
     status:string;
     _originalMechanism: MechanismModel;
-    // tableData:{checked?:boolean},
     selected:boolean;
 }
 
@@ -22,7 +21,6 @@ export function tranformMechanisms(allMechanisms:MechanismModel[]):SearchMechani
             partner: mechanism.info.partner,
             status: mechanism.state.status,
             _originalMechanism: mechanism,
-            // tableData:{},
             selected: false
         }
     })

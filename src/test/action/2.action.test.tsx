@@ -30,4 +30,8 @@ export const testCases:TestCase[] = [{
     }]
 }];
 
-testCases.forEach(automatedTest);
+testCases.forEach((testCase:TestCase)=>{
+    test(`#2 > Action test ${testCase.name}`, async ()=>{
+        await automatedTest(testCase);
+    })
+});

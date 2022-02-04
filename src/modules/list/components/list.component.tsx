@@ -129,7 +129,7 @@ export default class List extends React.Component<{
             workflows={this.state.workflows}
             selected={this.state.filters}
             select={this.onUserSelect}
-            disabled={this.state.loading.mechanisms}
+            disabled={false}
         />
     }
 
@@ -164,7 +164,7 @@ export default class List extends React.Component<{
     renderGoButton(){
         if (!this.state.globalUser) return null;
         if (this.state.loading.filters) return null;
-        return <GoButton onClick={()=>this.fetchMechanisms()} disabled={this.state.loading.mechanisms}/>
+        return <GoButton onClick={()=>this.fetchMechanisms()} disabled={false}/>
     }
 
     render() {
