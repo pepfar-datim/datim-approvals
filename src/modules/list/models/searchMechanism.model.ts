@@ -1,4 +1,5 @@
 import MechanismModel from "../../shared/models/mechanism.model";
+import {SearchFilters} from "./filters.model";
 
 export type SearchMechanism = {
     id: number;
@@ -9,6 +10,11 @@ export type SearchMechanism = {
     status:string;
     _originalMechanism: MechanismModel;
     selected:boolean;
+}
+
+export type SearchResults = {
+    filters: SearchFilters;
+    mechanisms: SearchMechanism[];
 }
 
 export function tranformMechanisms(allMechanisms:MechanismModel[]):SearchMechanism[]{

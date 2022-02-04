@@ -64,6 +64,7 @@ function filterSystemMechs(isSuperUser:boolean){
 export async function fetchMechanisms(filters:SearchFilters):Promise<SearchMechanism[]>{
     let isSuperUser:boolean = await checkSuperUser();
     return getData(generateMechanismsUrl(filters)).then(mechResp=>{
+        // console.log(mechResp, mechResp)
         if (mechResp.httpStatusCode===409) return [];
         let mechanismIds = mechResp.map(m=>m.id);
         return getData(getMechanismInfoUrl(mechanismIds)).then(categoryOptionsResp=>{

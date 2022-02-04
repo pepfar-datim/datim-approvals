@@ -110,5 +110,7 @@ jest.mock('react-router-dom', () => ({Link:({to,children}:{to:string,children:an
 window.history.pushState = ()=>{};
 
 for (const testCase of testCases) {
-    automatedTest(testCase);
+    test(`Search Dedupes > ${testCase.name}`,async ()=>{
+        await automatedTest(testCase);
+    });
 }

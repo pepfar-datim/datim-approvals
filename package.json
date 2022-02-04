@@ -40,7 +40,7 @@
     "build": "npm run build:react && npm run build:zip",
     "test": "react-scripts test --maxWorkers=12 --verbose",
     "test:cache": "rm cachedApiCalls/*",
-    "test:init": "export JEST_TIMEOUT_SEC=240 && react-scripts test--maxWorkers=20 --verbose",
+    "test:init": "export JEST_TIMEOUT_SEC=120 && react-scripts test --maxWorkers=20 --verbose",
     "test:data": "ts-node --skip-project newTestData/insertTestData.ts",
     "dep:copy": "ts-node --skip-project packages/copyWatch.ts",
     "dep:build": "ts-node --skip-project packages/buildWatch.ts"

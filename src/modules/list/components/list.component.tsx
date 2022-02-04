@@ -102,7 +102,10 @@ export default class List extends React.Component<{
         if (!f.ou || !f.period || !f.workflow) return;
         this.setState({mechanisms: null, loading: {mechanisms: true}});
         fetchMechanisms(this.state.filters).then(mechanisms=>{
+            console.log(mechanisms)
             this.setState({mechanisms, loading:{mechanisms: false}});
+        }).catch((e)=>{
+            console.error(e);
         });
         setUrl(this.state.filters)
     }
