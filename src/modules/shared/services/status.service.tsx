@@ -1,6 +1,5 @@
 export default function  getStatus(workflowType:string, level:string, accepted:boolean){
     if (!level) return 'pending at partner';
-    console.log(level)
     if (level==='5' && !accepted)  return 'submitted by partner';
     if (level==='5' && accepted)  return 'accepted by agency';
     if (level==='4' && !accepted)  return 'submitted by agency';
