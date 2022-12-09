@@ -14,7 +14,7 @@ const styles = {
 };
 
 function renderInfo(selected: SearchFilters){
-    if (!selected.ou) return <Typography color='secondary' style={styles.info}>Please specify Organisation Unit</Typography>;
+    if (!selected.ou) return <Typography color='secondary' style={styles.info}>Please specify Operating Unit</Typography>;
 }
 
 export default function FilterSelect({organisationUnits, workflows, periods, selected, select, disabled}:{
@@ -65,7 +65,7 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
                 </Select>
             </FormControl>
             <FormControl style={styles.formControl}>
-                <InputLabel htmlFor="ou">Organisation Unit</InputLabel>
+                <InputLabel htmlFor="ou">Operating Unit</InputLabel>
                 <Select
                     inputProps={{
                         name: 'ou',
