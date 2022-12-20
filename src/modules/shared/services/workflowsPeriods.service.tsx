@@ -1,3 +1,4 @@
+import { ContactSupportOutlined } from "@material-ui/icons";
 import {getData} from "@pepfar-react-lib/http-tools";
 import {idNameList} from "../models/idNameList.model";
 import getWorkflows from "./workflowService";
@@ -11,12 +12,20 @@ export type WorkflowPeriods = {
 
 type periodList = {name: string, id:string, startDate: Date, endDate:Date}[];
 
-function filterPeriods(periods:periodList):idNameList{
-    return periods.filter(period=>{
-        let today = new Date();
-        return today>period.startDate && today<period.endDate;
-    });
-}
+function filterPeriods(isSuperUser, periods:periodList):idNameList{
+        return periods.filter(period=>{
+            let today = new Date();
+            if(isSuperUser) {
+                if (!(today>period.startDate && today<period.endDate)){
+                    period.name = period.name + " (closed)"          
+                };
+                return period
+            }
+            else {
+                return today>period.startDate && today<period.endDate;
+            }
+                    });
+            }   
 
 function getPeriods(workflow):periodList{
     return Object.keys(workflow).map(periodId=>{
@@ -33,7 +42,7 @@ function getPeriods(workflow):periodList{
 function transformDatastore(response, isSuperUser):WorkflowPeriods{
     return Object.keys(response).map(workflowName=>{
         let periods:any = getPeriods(response[workflowName]);
-        if (!isSuperUser) periods = filterPeriods(periods);
+        periods = filterPeriods(isSuperUser,periods);
         return {
             id: null,
             name: workflowName,
