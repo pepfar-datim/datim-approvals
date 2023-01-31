@@ -12,14 +12,23 @@ const agencyGroupSet = 'bw8KHXzxd9i';
 const partnerGroupSet = 'BOyWrF33hiR';
 
 function generateMechanismsUrl(filters){
-    return `/dataApprovals/categoryOptionCombos?wf=${filters.workflow}&pe=${filters.period}&ou=${filters.ou}`;
+    return `/dataApprovals/categoryOptionCombos?wf=${filters.workflow}&pe=${filters.period}`;
 }
 
-function getMechanismInfoUrl(ids){
+function getMechanismInfoUrl(filters, isSuperUser){
+    
     let filter;
-    if (ids.length < 500) filter = `filter=categoryOptionCombos.id:in:[${ids.join(',')}]`;
-    else filter = 'filter=categories.id:eq:SH885jaRe0o';
     let fields = 'fields=id,name,organisationUnits[id,name],categoryOptionGroups[id,name,groupSets[id]],categoryOptionCombos[id,name]';
+    if(filters.ou === 'ybg3MO3hcf4') return `/categoryOptions.json?paging=false&${fields}`;
+    else 
+    {
+        
+    if(isSuperUser){
+        filter = `filter=id:in:[xEzelmtHWPn,OM58NubPbx1,mXjFJEexCHJ,t6dWOH7W5Ml]&filter=organisationUnits.id:eq:${filters.ou}&rootJunction=OR`;
+    }
+    else
+    filter = `filter=organisationUnits.id:eq:${filters.ou}`;
+    }
     return `/categoryOptions.json?paging=false&${filter}&${fields}`;
 }
 
@@ -61,42 +70,59 @@ function filterSystemMechs(isSuperUser:boolean){
     }
 }
 
+
+function filterOUbased(mechi, mech, orgUnit, isSuperUser){ 
+    let exists = false
+    if (isSuperUser && orgUnit !== 'ybg3MO3hcf4'){
+    if (mechi.organisationUnits.length !== 0){
+        if( mechi.categoryOptionCombos[0].id === mech.id && mechi.organisationUnits[0].id === mech.ou){
+            exists = true
+        }
+    }
+    else {
+    if (mechi.categoryOptionCombos[0].id === mech.id){
+        if(orgUnit === mech.ou ){
+            exists = true
+            }   
+        }
+        }
+    }
+    else { 
+        if(mechi.categoryOptionCombos[0].id===mech.id) exists = true
+        }
+        return exists
+        }
+
 export async function fetchMechanisms(filters:SearchFilters):Promise<SearchMechanism[]>{
     let isSuperUser:boolean = await checkSuperUser();
-    return getData(generateMechanismsUrl(filters)).then(mechResp=>{
-        // console.log(mechResp, mechResp)
-        if (mechResp.httpStatusCode===409) return [];
-        let mechanismIds = mechResp.map(m=>m.id);
-        return getData(getMechanismInfoUrl(mechanismIds)).then(categoryOptionsResp=>{
-            let mechanisms:MechanismModel[] = mechResp.map(mech=>{
-                let mechInfo = categoryOptionsResp.categoryOptions.filter(i=>i.categoryOptionCombos[0].id===mech.id)[0];
-                if (categoryOptionsResp.categoryOptions.filter(i=>i.id===mech.id).length>1) console.log(`Two info records per mechanism ${mech.id} ${mechInfo.name}`);
-                let localOU = getOu(mech, mechInfo, isSuperUser);
-                let status = getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted);
-                return {
-                    info: {
-                        name: mechInfo.name,
-                        ou: localOU.name||'N/A',
-                        partner: getInfoByGroupSet(mechInfo, partnerGroupSet),
-                        agency: getInfoByGroupSet(mechInfo, agencyGroupSet),
-                    },
-                    state: {
-                        status: status,
-                        actions: getPermittedActions(mech.permissions, status),
-                        view: mech.permissions.mayReadData
-                    },
-                    meta: {
-                        cocId: mech.id,
-                        ou: mech.ou,
-                        coId: mechInfo.id
-                    }
-                };
-            }).filter(mech=>mech).filter(filterSystemMechs(isSuperUser))
-            return tranformMechanisms(mechanisms);
-        }).catch(e=>{
-            console.error(e);
-            return [];
-        })
-    }).catch(e=>{return []});
-
+    let getMechData = await getData(generateMechanismsUrl(filters))
+    let  getMechinfoData = await getData(getMechanismInfoUrl(filters,isSuperUser))
+    if (getMechData.httpStatusCode===409) return [];
+    let mechanisms:MechanismModel[] = await getMechData.map(mech=>{
+        let mechInfo = getMechinfoData.categoryOptions.filter(i=>filterOUbased(i,mech,filters.ou,isSuperUser))[0]
+        if (getMechinfoData.categoryOptions.filter(i=>i.id===mech.id).length>1) console.log(`Two info records per mechanism ${mech.id} ${mechInfo.name}`);
+        if (mechInfo){
+        let localOU = getOu(mech, mechInfo, isSuperUser);   
+        let status = getStatus(getWorkflowTypeById(filters.workflow), mech.level.level, mech.accepted);
+        return {
+            info: {
+                name: mechInfo.name,
+                ou: localOU.name||'N/A',
+                partner: getInfoByGroupSet(mechInfo, partnerGroupSet),
+                agency: getInfoByGroupSet(mechInfo, agencyGroupSet),
+            },
+            state: {
+                status: status,
+                actions: getPermittedActions(mech.permissions, status),
+                view: mech.permissions.mayReadData
+            },
+            meta: {
+                cocId: mech.id,
+                ou: mech.ou,
+                coId: mechInfo.id
+            }
+        };
+    }
+    }).filter(mech=>mech).filter(filterSystemMechs(isSuperUser))
+    return tranformMechanisms(mechanisms);
 }
