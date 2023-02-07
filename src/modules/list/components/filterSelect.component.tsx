@@ -60,7 +60,7 @@ export default function FilterSelect({organisationUnits, workflows, periods, sel
                     disabled={disabled}
                 >
                     {periods.map(p=>
-                        <MenuItem value={p.id} key={p.id}>{p.name}</MenuItem>
+                        <MenuItem value={p.id} key={p.id}> { p.name.endsWith('(closed)')? <i>{p.name}</i>: p.name}</MenuItem>
                     )}
                 </Select>
             </FormControl>
