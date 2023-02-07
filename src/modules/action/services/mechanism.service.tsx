@@ -58,8 +58,8 @@ function movingDown(action:string):boolean{
 
 function fixAgencyHq(mechanismsMeta: MechanismMeta[], action:string, currentStatus:string, workflow:string):MechanismMeta[]{
     if (['WUD8TApgOu1','e8F8M6leZjj','TsowbK0Ql3T'].includes(workflow)) {
-        if (movingUp(action) && ['accepted by gobal agency','submitted by gobal agency'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
-        if (movingDown(action) && ['submitted by gobal agency','accepted by global'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
+        if (movingUp(action) && ['accepted by global agency','submitted by global agency'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
+        if (movingDown(action) && ['submitted by global agency','accepted by global'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
     }
     return mechanismsMeta;
 }

@@ -2142,7 +2142,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "USAID",
             "partner": "FHI Development 360 LLC",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "17308 - AIDOAAA1400045 - Family Health International 360",
@@ -2151,7 +2151,7 @@ export const testCases:TestCase[] = [{
                     "agency": "USAID"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2174,7 +2174,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "HHS/CDC",
             "partner": "NATIONAL INSTITUTE OF AIDS",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "17848 - GH001918 - INLS",
@@ -2183,7 +2183,7 @@ export const testCases:TestCase[] = [{
                     "agency": "HHS/CDC"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2206,7 +2206,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "HHS/CDC",
             "partner": "NATIONAL SCHOOL OF PUBLIC HEALTH, GOVERNMENT OF REPUBLIC OF ANGOLA",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "17851 - GH001919 - SPH",
@@ -2215,7 +2215,7 @@ export const testCases:TestCase[] = [{
                     "agency": "HHS/CDC"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2238,7 +2238,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "HHS/CDC",
             "partner": "Trustees Of Columbia University In The City Of New York",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "17850 - GH000994 - ICAP",
@@ -2247,7 +2247,7 @@ export const testCases:TestCase[] = [{
                     "agency": "HHS/CDC"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2334,7 +2334,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "DOD",
             "partner": "CHARLES DREW UNIVERSITY OF MEDICINE AND SCIENCE",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "17397 - N002441510001 - CDU  Angola",
@@ -2343,7 +2343,7 @@ export const testCases:TestCase[] = [{
                     "agency": "DOD"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2366,7 +2366,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "HHS/CDC",
             "partner": "Association of Public Health Laboratories, Inc. (THE)",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "17490 - GH001097 - APHL",
@@ -2375,7 +2375,7 @@ export const testCases:TestCase[] = [{
                     "agency": "HHS/CDC"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2430,7 +2430,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "USAID",
             "partner": "Population Services International",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "18347 - AID654A1700003 - Health for All (HFA)",
@@ -2439,7 +2439,7 @@ export const testCases:TestCase[] = [{
                     "agency": "USAID"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2462,7 +2462,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "USAID",
             "partner": "Chemonics International, Inc.",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "18437 - AIDOAAI1500004AIDOAATO1500007 - GHSC-PSM",
@@ -2471,7 +2471,7 @@ export const testCases:TestCase[] = [{
                     "agency": "USAID"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,
@@ -2558,7 +2558,7 @@ export const testCases:TestCase[] = [{
             "ou": "Angola",
             "agency": "HHS/CDC",
             "partner": "AFRICAN SOCIETY FOR LABORATOR Y MEDICINE",
-            "status": "accepted by gobal agency",
+            "status": "accepted by global agency",
             "_originalMechanism": {
                 "info": {
                     "name": "17471 - African Society for Laboratory Medicine",
@@ -2567,7 +2567,7 @@ export const testCases:TestCase[] = [{
                     "agency": "HHS/CDC"
                 },
                 "state": {
-                    "status": "accepted by gobal agency",
+                    "status": "accepted by global agency",
                     "actions": {
                         "submit": false,
                         "accept": false,

@@ -12,7 +12,7 @@ export function fetchUserType():Promise<string>{
                 if (groupName.indexOf('global users') > -1) type = 'global';
                 if (groupName.indexOf('country team') > -1) type = 'inter-agency';
                 if (groupName.indexOf('agency') > -1) type = 'agency';
-                if (groupName.indexOf('global agency') > -1) type = 'gobal agency';
+                if (groupName.indexOf('global agency') > -1) type = 'global agency';
                 if (groupName.indexOf('partner') > -1) type = 'partner';
 
                 if (groupName.indexOf('admin') > -1) type = 'global';
