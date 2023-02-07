@@ -29,8 +29,8 @@ const erSteps = [
     'submitted by partner',
     'accepted by agency',
     'submitted by agency',
-    'accepted by gobal agency',
-    'submitted by gobal agency',
+    'accepted by global agency',
+    'submitted by global agency',
     'accepted by global'
 ];
 
@@ -46,8 +46,8 @@ function getSteps(userType: string, workflowType: string):string[]{
     let lastStep;
     if (userType==='partner') lastStep = 'accepted by agency';
     if (userType==='agency' && workflowType==='MER') lastStep = 'accepted by inter-agency';
-    if (userType==='agency' && workflowType==='ER') lastStep = 'accepted by gobal agency';
-    if (userType==='inter-agency' || userType==='gobal agency') lastStep = 'accepted by global';
+    if (userType==='agency' && workflowType==='ER') lastStep = 'accepted by global agency';
+    if (userType==='inter-agency' || userType==='global agency') lastStep = 'accepted by global';
     if (userType==='global') lastStep = 'accepted by global';
     const steps = getStepsByWorkflowType(workflowType);
     return steps.slice(0,steps.indexOf(lastStep)+1);
