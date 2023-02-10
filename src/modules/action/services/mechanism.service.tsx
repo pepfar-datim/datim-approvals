@@ -33,11 +33,19 @@ const partnerGroupSet = 'BOyWrF33hiR';
 
 function getInfoByGroupSet(mechInfo, groupSetId){
     try {
-        return mechInfo.categoryOptionGroups.filter(prop => prop.groupSets[0].id === groupSetId)[0] || {};
+        return mechInfo.categoryOptionGroups.filter(prop => 
+            { findGroupSets(prop, groupSetId) });
     } catch(e){
         console.error(e);
         return mechInfo.categoryOptionGroups[0];
     }
+}
+function findGroupSets(prob, groupSetId){
+        let groupsets = {}
+     if(prob.groupSets.length !==0) {
+        groupsets = prob.groupSets[0].id === groupSetId
+     }
+     return groupsets[0]
 }
 
 function replaceOuByGlobal(mechanismsMeta: MechanismMeta[]):MechanismMeta[]{
@@ -74,9 +82,10 @@ export function performAction(action: string, workflow: string, period: string, 
 }
 function transformCategoryOptionToMechanismInfo(categoryOption:any):MechanismInfo{
     let ouName;
-    if (categoryOption.organisationUnits[0]) ouName = categoryOption.organisationUnits[0].name;
+    if (categoryOption.organisationUnits.length !== 0 && categoryOption.organisationUnits[0]) ouName = categoryOption.organisationUnits[0].name;
     else {
-        console.error(Error("Mechanism has no assigned OU"));
+        // console.error(Error("Mechanism has no assigned OU"));
+        ouName = 'N/A'
     }
     return {
         name: categoryOption.name,

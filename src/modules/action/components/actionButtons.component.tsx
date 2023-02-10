@@ -2,6 +2,7 @@ import React, {CSSProperties} from "react";
 import Button from "@material-ui/core/Button/Button";
 import {MechanismState} from "../../shared/models/mechanism.model";
 import {Typography} from "@material-ui/core";
+import {useNavigate} from "react-router-dom";
 
 import {CallMade, CallReceived, Check} from '@material-ui/icons';
 
@@ -41,11 +42,12 @@ function renderButtons(actions:string[], mechanismsNr:number, performAction: (ac
 }
 
 export default function ActionButtons({mechanismState, mechanismsNr, performAction}:{mechanismState: MechanismState, mechanismsNr: number, performAction: (action: string)=>void}){
-    if (!mechanismState) return null;
+    const navigate = useNavigate();
+    if (!mechanismState) return null;;
     let actions = Object.keys(mechanismState.actions).filter(a=>mechanismState.actions[a]);
     return(
         <div>
-            <Button style={styles.back} onClick={window.history.back} id="cy_actionPage_back">Back</Button>
+            <Button style={styles.back} onClick={() => navigate(-1)} id="cy_actionPage_back">Back</Button>
             {renderButtons(actions, mechanismsNr, performAction)}
         </div>
     );
