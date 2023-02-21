@@ -3,6 +3,7 @@ import MechanismModel, {MechanismInfo, MechanismMeta, MechanismState} from "../.
 import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
+import { ConsoleWriter } from "istanbul-lib-report";
 
 function mechanismStatesUrl(workflow: string, period: string){
     return `/dataApprovals/categoryOptionCombos?wf=${workflow}`
@@ -33,19 +34,19 @@ const partnerGroupSet = 'BOyWrF33hiR';
 
 function getInfoByGroupSet(mechInfo, groupSetId){
     try {
-        return mechInfo.categoryOptionGroups.filter(prop => 
-            { findGroupSets(prop, groupSetId) });
+        return mechInfo.categoryOptionGroups.filter(findGroupSets(groupSetId))[0] || {};
     } catch(e){
         console.error(e);
         return mechInfo.categoryOptionGroups[0];
     }
 }
-function findGroupSets(prob, groupSetId){
-        let groupsets = {}
-     if(prob.groupSets.length !==0) {
-        groupsets = prob.groupSets[0].id === groupSetId
-     }
-     return groupsets[0]
+function findGroupSets(groupSetId){
+    return function(element){
+        if(element.groupSets.length !== 0) {
+            return element.groupSets[0].id === groupSetId }
+        else return false
+
+    }
 }
 
 function replaceOuByGlobal(mechanismsMeta: MechanismMeta[]):MechanismMeta[]{
