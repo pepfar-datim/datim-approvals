@@ -3,7 +3,6 @@ import MechanismModel, {MechanismInfo, MechanismMeta, MechanismState} from "../.
 import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
-import { ConsoleWriter } from "istanbul-lib-report";
 
 function mechanismStatesUrl(workflow: string, period: string){
     return `/dataApprovals/categoryOptionCombos?wf=${workflow}`
