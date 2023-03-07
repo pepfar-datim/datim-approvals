@@ -3,7 +3,6 @@ import MechanismModel from "../../shared/models/mechanism.model";
 import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
-import {checkSuperUser} from "../../shared/services/superuser.service"
 import {idName} from "../../action/models/idName";
 import {SearchMechanism, tranformMechanisms} from "../models/searchMechanism.model";
 import {SearchFilters} from "../models/filters.model";
@@ -93,8 +92,7 @@ function filterOUbased(mechi, mech, orgUnit, isSuperUser){
         return exists
         }
 
-export async function fetchMechanisms(filters:SearchFilters):Promise<SearchMechanism[]>{
-    let isSuperUser:boolean = await checkSuperUser();
+export async function fetchMechanisms(filters:SearchFilters, isSuperUser:boolean):Promise<SearchMechanism[]>{
     let getMechData = await getData(generateMechanismsUrl(filters))
     let  getMechinfoData = await getData(getMechanismInfoUrl(filters,isSuperUser))
     if (getMechData.httpStatusCode===409) return [];

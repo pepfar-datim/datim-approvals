@@ -5,6 +5,7 @@ export type TestCase = {
     name: string;
     filters: SearchFilters;
     mechanisms: SearchMechanism[];
+    isSuperUser:boolean;
 };
 
 export const testCases:TestCase[] = [{
@@ -1359,7 +1360,8 @@ export const testCases:TestCase[] = [{
             },
             "selected": false
         }
-    ]
+    ],
+    isSuperUser: false
 },{
     name: `ER / 2017Oct / Angola`,
     filters: {
@@ -2744,5 +2746,6 @@ export const testCases:TestCase[] = [{
             },
             "selected": false
         }
-    ]
+    ],
+    isSuperUser:false
 }];
