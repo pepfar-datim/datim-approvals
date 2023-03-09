@@ -33,10 +33,18 @@ const partnerGroupSet = 'BOyWrF33hiR';
 
 function getInfoByGroupSet(mechInfo, groupSetId){
     try {
-        return mechInfo.categoryOptionGroups.filter(prop => prop.groupSets[0].id === groupSetId)[0] || {};
+        return mechInfo.categoryOptionGroups.filter(findGroupSets(groupSetId))[0] || {};
     } catch(e){
         console.error(e);
         return mechInfo.categoryOptionGroups[0];
+    }
+}
+function findGroupSets(groupSetId){
+    return function(element){
+        if(element.groupSets.length !== 0) {
+            return element.groupSets[0].id === groupSetId }
+        else return false
+
     }
 }
 
@@ -58,8 +66,8 @@ function movingDown(action:string):boolean{
 
 function fixAgencyHq(mechanismsMeta: MechanismMeta[], action:string, currentStatus:string, workflow:string):MechanismMeta[]{
     if (['WUD8TApgOu1','e8F8M6leZjj','TsowbK0Ql3T'].includes(workflow)) {
-        if (movingUp(action) && ['accepted by gobal agency','submitted by gobal agency'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
-        if (movingDown(action) && ['submitted by gobal agency','accepted by global'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
+        if (movingUp(action) && ['accepted by global agency','submitted by global agency'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
+        if (movingDown(action) && ['submitted by global agency','accepted by global'].includes(currentStatus)) mechanismsMeta = replaceOuByGlobal(mechanismsMeta);
     }
     return mechanismsMeta;
 }
@@ -74,9 +82,10 @@ export function performAction(action: string, workflow: string, period: string, 
 }
 function transformCategoryOptionToMechanismInfo(categoryOption:any):MechanismInfo{
     let ouName;
-    if (categoryOption.organisationUnits[0]) ouName = categoryOption.organisationUnits[0].name;
+    if (categoryOption.organisationUnits.length !== 0 && categoryOption.organisationUnits[0]) ouName = categoryOption.organisationUnits[0].name;
     else {
-        console.error(Error("Mechanism has no assigned OU"));
+        // console.error(Error("Mechanism has no assigned OU"));
+        ouName = 'N/A'
     }
     return {
         name: categoryOption.name,

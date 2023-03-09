@@ -25,10 +25,15 @@ function loadStaticScript(url){
 
 function loadDynamicScripts(html){
     try {
+        if (/<script>(.|\n|\r)+?<\/script>/gi.exec(html)){
         let script = /<script>(.|\n|\r)+?<\/script>/gi.exec(html)[0];
         script = script.replace('<script>', '').replace('</script>', '')
         console.log(`Evaluating external script ${script.substr(0, 100)}`);
         (window as any).eval(script);
+        }
+        else{
+            console.log('external javascripts not found');
+        }    
     } catch (e){
         console.error('cannot load external javascripts');
         console.error(e);
