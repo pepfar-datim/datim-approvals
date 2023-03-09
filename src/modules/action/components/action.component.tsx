@@ -6,6 +6,7 @@ import {getMechanismsInfo, getMechanismStates, performAction} from "../services/
 import Step from "./step/step.component";
 import MechanismTabs from "./mechanism/mechanismTabs.component";
 import {fetchUserOu, fetchUserType} from "../services/user.service";
+import {checkSuperUser} from "../../shared/services/superuser.service"
 import {getLevel3OUs} from "../services/ou.service";
 import WorkflowOverview from "./workflowOverview.component";
 import {idName} from "../models/idName";
@@ -25,6 +26,7 @@ export default class Action extends React.Component<{
         workflow: idName,
         period: idName,
         userOu: string,
+        isSuperUser:boolean,
         userType: string,
         mechanisms: MechanismModel[],
         mechanismState: MechanismState,
@@ -52,6 +54,7 @@ export default class Action extends React.Component<{
             period: {id: period, name: null},
             userType: null,
             userOu: null,
+            isSuperUser:null,
             mechanismState: null,
             mechanisms: mechanisms,
             processing: false,
@@ -62,7 +65,7 @@ export default class Action extends React.Component<{
         this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms);
 
         let wfService = new WorkflowPeriodService();
-        wfService.init().then(()=>{
+        wfService.init(this.state.isSuperUser).then(()=>{
             this.setState({period: {id: period, name: wfService.getPeriodNameById(workflow, period)}});
         });
     }
@@ -72,6 +75,7 @@ export default class Action extends React.Component<{
         this.getMechanismsInfo(this.state.mechanisms, this.state.ous);
         this.getUserType();
         this.getUserOu();
+        this.checkSuperUser();
     }
 
     getMechanismStatuses(workflow: string, period: string, mechanisms: MechanismModel[]){
@@ -119,6 +123,13 @@ export default class Action extends React.Component<{
 
     getUserOu(){
         fetchUserOu().then(ou=>this.setState({userOu: ou}))
+        .catch(e => this.setState({
+            networkError: true,
+            processing: false
+        }));
+    }
+    checkSuperUser(){
+        checkSuperUser().then(superUser=>this.setState({isSuperUser: superUser}))
         .catch(e => this.setState({
             networkError: true,
             processing: false

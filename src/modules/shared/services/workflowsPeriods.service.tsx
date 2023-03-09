@@ -52,17 +52,9 @@ function transformDatastore(response, isSuperUser):WorkflowPeriods{
     });
 }
 
-function checkSuperUser():Promise<boolean>{
-    return getData('/me?fields=userCredentials[userRoles[name]]')
-        .then(result=>result.userCredentials.userRoles)
-        .then(result=>result.map(r=>r.name))
-        .then(result=>result.includes("Superuser ALL authorities"))
-}
-
-export default class WorkflowPeriodService {
+export default class WorkflowPeriodService{
     private workflowPeriods:WorkflowPeriods;
-    async init():Promise<WorkflowPeriods>{
-        let isSuperUser:boolean = await checkSuperUser();
+    async init(isSuperUser:boolean):Promise<WorkflowPeriods>{
         let wfPromise = getWorkflows();
         let wfPeriodPromise = this.fetchDatastorePeriods(isSuperUser);
         return Promise.all([wfPromise, wfPeriodPromise]).then(results=>{
