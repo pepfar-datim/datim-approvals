@@ -4,10 +4,10 @@ import {TestCase, testCases} from "./3.fetchMechanisms.data";
 
 
 
-function fetchMechsTest({name, filters, mechanisms}:TestCase) {
+function fetchMechsTest({name, filters, mechanisms,isSuperUser}:TestCase) {
     test(`#3 > Fetch mechanisms > ${name}`, async () => {
         testAs('superAdmin');
-        let actualMechs = await fetchMechanisms(filters);
+        let actualMechs = await fetchMechanisms(filters, isSuperUser);
         expect(actualMechs).toStrictEqual(mechanisms)
     });
 }
