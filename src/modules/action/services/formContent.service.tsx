@@ -10,6 +10,8 @@ export default function getFormContent(dataSet:string, period:string, userOu:str
         filter: 'queryFilter',
         selectedUnitOnly: false
     };
+    const d = new Date();
+    let time = d.getTime();
     let requestUrl = queryString.stringify(request).replace('queryFilter','SH885jaRe0o:'+mechanismMetas.map(mm=>mm.coId).join(';'));
-    return getFormHtml('/dataSetReport/custom?'+requestUrl);
+    return getFormHtml('/dataSetReport/custom?'+requestUrl+'&cb='+time);
 }
