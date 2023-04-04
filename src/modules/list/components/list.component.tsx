@@ -14,7 +14,9 @@ import {SearchMechanism} from "../models/searchMechanism.model";
 import {getMyUserType, UserType} from "@pepfar-react-lib/datim-tools"
 import {checkSuperUser} from "../../shared/services/superuser.service"
 import GoButton from "./goButton.component";
+import StopButton from "./stopButton.component";
 import {getUrlFilters, setUrl} from "../services/url.service";
+import { ControlPointDuplicateRounded, Event } from "@material-ui/icons";
 
 const styles = {
     link: {
@@ -107,18 +109,29 @@ export default class List extends React.Component<{
     preselectOu(ous){
         this.setFilter('ou', ous[0].id);
     }
+
+    stopFetchingMechs(){
+        this.setState({
+            loading: {filters: false, mechanisms: false},
+        });
+        return
+
+    }
     fetchMechanisms(){
         let f = this.state.filters;
         if (!f.ou || !f.period || !f.workflow) return;
-        this.setState({mechanisms: null, loading: {mechanisms: true}});
+        this.setState({mechanisms: null, loading: { mechanisms: true}});
         fetchMechanisms(this.state.filters, this.state.isSuperUser).then(mechanisms=>{
-            this.setState({mechanisms, loading:{mechanisms: false}});
+            if(this.state.loading.mechanisms){
+                this.setState({mechanisms, loading:{mechanisms: false}}); 
+            }
         }).catch((e)=>{
             console.error(e);
         });
         setUrl(this.state.filters)
+        
     }
-    setFilter(key:string, val:string){
+    setFilter(key:string, val:string){      
         let filters = this.state.filters;
         filters[key] = val;
         this.setState({filters: filters});
@@ -180,14 +193,24 @@ export default class List extends React.Component<{
     renderGoButton(){
         if (!this.state.globalUser) return null;
         if (this.state.loading.filters) return null;
+        if (this.state.loading.mechanisms) return null;
         return <GoButton onClick={()=>this.fetchMechanisms()} disabled={false}/>
     }
+
+    renderStopButton(){
+        if (!this.state.globalUser) return null;
+        if (!this.state.loading.mechanisms) return null;
+        return <StopButton onClick={()=>this.stopFetchingMechs()} disabled={false}/>
+    }
+
+
 
     render() {
         return (
             <React.Fragment>
                 {this.renderFilters()}
                 {this.renderGoButton()}
+                {this.renderStopButton()}
                 {this.state.filters.workflow && <Divider/>}
                 <ListAction selectedAction={this.state.selectedAction} selectedMechanisms={getSelected(this.state.mechanisms)} actionUrl={this.getActionUrl()} onMechanismsSelected={this.onMechanismsSelected}/>
                 {this.renderResults()}
