@@ -135,13 +135,17 @@ export default class List extends React.Component<{
 
     renderFilters(){
         if (this.state.loading.filters) return <Loading message='Loading workflow information...'/>;
+        let disable = false
+        if (this.state.loading.mechanisms === true){
+            disable = true
+        }
         return <FilterSelect
             organisationUnits={this.state.ous}
             periods={this.state.periods}
             workflows={this.state.workflows}
             selected={this.state.filters}
             select={this.onUserSelect}
-            disabled={false}
+            disabled={disable}
         />
     }
 
