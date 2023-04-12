@@ -10,6 +10,10 @@ a:-webkit-any-link {
     font-family: sans-serif;
 }
 
+#dhis2HeaderBar a > div {
+    padding: 0;
+}
+
 .MuiMenu-paper.MuiPopover-paper {
     z-index: 1000000;
 }
