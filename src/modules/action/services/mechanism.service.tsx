@@ -126,39 +126,18 @@ function transformCOCToMechanismState(workflow, combo){
     }
 }
 
-export function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
-    var mechs:MechanismState[] = []
-     let coc_id: string[] = mechanisms.map(m=>`${m.meta.cocId}`)
-    if (coc_id.length < 20){
-        var mechStates = new Promise<MechanismState[]>( ( resolve, reject ) => {
-            setTimeout( function(): void {
-            for (let index = 0; index <= coc_id.length-1; index++) {
-                var element = coc_id[index];
-                getData(singleMechanismStatesUrl(workflow, period, element)).then( res => {
-                    console.log(res)
-                    mechs[index]= transformCOCToMechanismState(workflow, res[0] )        
-                }
-                ) 
-            }
-            if( mechs) {   
-            resolve( mechs );
-            } 
-            else {
-            reject( 'No Mechs' );
-            }
-            }, 2000 );
-            } );
-        return mechStates.then(mechanismStates=>{
-            console.log(JSON.stringify(mechanismStates))
-            if (mechanismStates.every((val, i, arr)=>
-                JSON.stringify(val)===JSON.stringify(arr[0]))
-            ) {
-                console.log(mechanismStates)
-                 return mechanismStates[0]
-                }
-            else {throw new Error("Mechanisms have different statuses.")
-            };
+export async function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
+
+    let coc_id: string[] = mechanisms.map(m=>`${m.meta.cocId}`)
+    if (coc_id.length < 20) {
+        let mechs:MechanismState[] = await Promise.all(coc_id.map(async (element) => {
+            let res = await getData(singleMechanismStatesUrl(workflow, period, element));
+            return transformCOCToMechanismState(workflow, res[0]);
+        }));
+        mechs.forEach(({status})=>{
+            if (mechs[0].status!==status) throw Error('Mechanisms have different statuses');
         });
+        return mechs[0];
     }
     else if (coc_id.length > 20){
         return getData(allMechanismStatesUrl(workflow, period))
@@ -167,10 +146,8 @@ export function getMechanismStates(workflow: string, period: string, mechanisms:
         })
         .then(categoryOptionCombos=>categoryOptionCombos.map(coc=>transformCOCToMechanismState(workflow, coc)))
         .then(mechanismStates=>{
-            if (mechanismStates.every((val, i, arr)=>JSON.stringify(val)===JSON.stringify(arr[0]))) { 
-                console.log(JSON.stringify(mechanismStates))
-                return mechanismStates[0]}
+            if (mechanismStates.every((val, i, arr)=>JSON.stringify(val)===JSON.stringify(arr[0]))) return mechanismStates[0]
             else throw new Error("Mechanisms have different statuses.");
         });
-}
+    }
 }
