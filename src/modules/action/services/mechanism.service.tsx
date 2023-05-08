@@ -129,7 +129,7 @@ function transformCOCToMechanismState(workflow, combo){
 export async function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
 
     let coc_id: string[] = mechanisms.map(m=>`${m.meta.cocId}`)
-    if (coc_id.length < 20) {
+    if (coc_id.length <= 30) {
         let mechs:MechanismState[] = await Promise.all(coc_id.map(async (element) => {
             let res = await getData(singleMechanismStatesUrl(workflow, period, element));
             return transformCOCToMechanismState(workflow, res[0]);
@@ -139,7 +139,7 @@ export async function getMechanismStates(workflow: string, period: string, mecha
         });
         return mechs[0];
     }
-    else if (coc_id.length > 20){
+    else if (coc_id.length > 30){
         return getData(allMechanismStatesUrl(workflow, period))
         .then(res => {
             return res.filter(categoryOptionCombo=>mechanisms.map(m=>`${m.meta.cocId};${m.meta.ou}`).includes(`${categoryOptionCombo.id};${categoryOptionCombo.ou}`))
