@@ -4,9 +4,15 @@ import getStatus from "../../shared/services/status.service";
 import {getWorkflowTypeById} from "../../shared/services/workflowService";
 import getPermittedActions from "../../shared/services/permittedActions.service";
 
-function mechanismStatesUrl(workflow: string, period: string){
+function allMechanismStatesUrl(workflow: string, period: string){   
     return `/dataApprovals/categoryOptionCombos?wf=${workflow}`
         +`&pe=${period}`;
+}
+
+
+function singleMechanismStatesUrl(workflow: string, period: string, cocid: string){
+    return `/dataApprovals/categoryOptionCombos?wf=${workflow}`
+        +`&pe=${period}&aoc=${cocid}`;
 }
 
 function mechanismsInfoUrl(mechanismIds:string[]){
@@ -120,14 +126,28 @@ function transformCOCToMechanismState(workflow, combo){
     }
 }
 
-export function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
-    return getData(mechanismStatesUrl(workflow, period))
+export async function getMechanismStates(workflow: string, period: string, mechanisms: MechanismModel[]):Promise<MechanismState>{
+
+    let coc_id: string[] = mechanisms.map(m=>`${m.meta.cocId}`)
+    if (coc_id.length <= 30) {
+        let mechs:MechanismState[] = await Promise.all(coc_id.map(async (element) => {
+            let res = await getData(singleMechanismStatesUrl(workflow, period, element));
+            return transformCOCToMechanismState(workflow, res[0]);
+        }));
+        mechs.forEach(({status})=>{
+            if (mechs[0].status!==status) throw Error('Mechanisms have different statuses');
+        });
+        return mechs[0];
+    }
+    else if (coc_id.length > 30){
+        return getData(allMechanismStatesUrl(workflow, period))
         .then(res => {
             return res.filter(categoryOptionCombo=>mechanisms.map(m=>`${m.meta.cocId};${m.meta.ou}`).includes(`${categoryOptionCombo.id};${categoryOptionCombo.ou}`))
         })
         .then(categoryOptionCombos=>categoryOptionCombos.map(coc=>transformCOCToMechanismState(workflow, coc)))
         .then(mechanismStates=>{
-            if (mechanismStates.every((val, i, arr)=>JSON.stringify(val)===JSON.stringify(arr[0]))) return mechanismStates[0];
+            if (mechanismStates.every((val, i, arr)=>JSON.stringify(val)===JSON.stringify(arr[0]))) return mechanismStates[0]
             else throw new Error("Mechanisms have different statuses.");
         });
+    }
 }
