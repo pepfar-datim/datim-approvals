@@ -55,7 +55,6 @@ function transformDatastore(response, isSuperUser):WorkflowPeriods{
 export default class WorkflowPeriodService{
     private workflowPeriods:WorkflowPeriods;
     async init(isSuperUser:boolean):Promise<WorkflowPeriods>{
-        console.log("workflowPeriods", isSuperUser)
         let wfPromise = getWorkflows();
         let wfPeriodPromise = this.fetchDatastorePeriods(isSuperUser);
         return Promise.all([wfPromise, wfPeriodPromise]).then(results=>{
