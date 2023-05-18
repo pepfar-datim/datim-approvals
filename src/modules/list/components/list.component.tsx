@@ -76,7 +76,7 @@ export default class List extends React.Component<{
         let superUserPromise = checkSuperUser().then((superUserCheck)=>{
             this.setState({isSuperUser:superUserCheck});
         });
-        let val =  checkSuperUser()
+        let val = checkSuperUser().then((res)=> val = res);
         this.workflowPeriodService = new WorkflowPeriodService();
         let workflowsPromise = this.workflowPeriodService.init(val).then((workflows)=>{
             this.setState({workflows})
