@@ -30,6 +30,7 @@ function hasSelected(mechs:SearchMechanism[]):boolean{
     return mechs.some(m=>m.selected)
 }
 
+
 function getSelected(mechs:SearchMechanism[]):SearchMechanism[]{
     if (!mechs) return []
     return mechs.filter(r=>r.selected);
@@ -49,6 +50,7 @@ export default class List extends React.Component<{
 
     }> {
     workflowPeriodService;
+    
     constructor(props){
         super(props);
         this.state = {
@@ -70,11 +72,13 @@ export default class List extends React.Component<{
         let ouPromise = orgUnits.init().then((ous)=>{
             this.setState({ous: ous});
         });
+        
         let superUserPromise = checkSuperUser().then((superUserCheck)=>{
             this.setState({isSuperUser:superUserCheck});
         });
+        let val = checkSuperUser().then((res)=> val = res);
         this.workflowPeriodService = new WorkflowPeriodService();
-        let workflowsPromise = this.workflowPeriodService.init(this.state.isSuperUser).then((workflows)=>{
+        let workflowsPromise = this.workflowPeriodService.init(val).then((workflows)=>{
             this.setState({workflows})
         });
         let userTypePromise = getMyUserType().then((userType:UserType)=>{

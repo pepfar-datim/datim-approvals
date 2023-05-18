@@ -11,7 +11,8 @@ const agencyGroupSet = 'bw8KHXzxd9i';
 const partnerGroupSet = 'BOyWrF33hiR';
 
 function generateMechanismsUrl(filters) {
-    return `/dataApprovals/categoryOptionCombos?wf=${filters.workflow}&pe=${filters.period}&ouFilter=${filters.ou}`;
+    if (filters.ou === 'ybg3MO3hcf4' ) return `/dataApprovals/categoryOptionCombos?wf=${filters.workflow}&pe=${filters.period}`;
+    else return `/dataApprovals/categoryOptionCombos?wf=${filters.workflow}&pe=${filters.period}&ouFilter=${filters.ou}`
 }
 
 function getMechanismInfoUrl(filters, isSuperUser) {

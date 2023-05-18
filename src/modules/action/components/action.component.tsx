@@ -63,9 +63,9 @@ export default class Action extends React.Component<{
             message: {}
         };
         this.getMechanismStatuses(this.state.workflow.id, this.state.period.id, this.state.mechanisms);
-
+        let val = checkSuperUser().then((res)=> val = res);
         let wfService = new WorkflowPeriodService();
-        wfService.init(this.state.isSuperUser).then(()=>{
+        wfService.init(val).then(()=>{
             this.setState({period: {id: period, name: wfService.getPeriodNameById(workflow, period)}});
         });
     }
