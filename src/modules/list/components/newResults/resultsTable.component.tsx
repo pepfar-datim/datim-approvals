@@ -4,9 +4,6 @@ import {DataGrid, GridInitialState} from '@mui/x-data-grid';
 import {SearchMechanism} from "../../models/searchMechanism.model";
 import {ResultsHeader} from "./resultsHeader.component";
 import { useTheme } from "@mui/material/styles";
-// import MaterialTable, {MTableBodyRow,showFirstButton,showLastButton } from "material-table";
-// import { TablePagination } from '@mui/material';
-
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
@@ -74,7 +71,16 @@ function updateSelection(mechanisms:SearchMechanism[], onMechanismsSelected: (me
 }
 
 function filterMechanisms(filterBy:string, mechanisms: SearchMechanism[]):SearchMechanism[]{
-    return mechanisms.filter(m=>m.name.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase()));
+   return  mechanisms.filter(
+    m => {
+        if
+        (m.name.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase()) ||
+        m.ou.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase()) ||
+        m.agency.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase()) ||
+        m.partner.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase())||
+        m.status.toLocaleLowerCase().includes(filterBy.toLocaleLowerCase()))
+        return m
+    })
 }
 
 function fixHeight(){
