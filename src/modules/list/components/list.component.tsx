@@ -12,7 +12,6 @@ import {fetchMechanisms} from "../services/mechanisms.service";
 import Loading from "../../shared/components/loading.component";
 import {SearchMechanism} from "../models/searchMechanism.model";
 import {getMyUserType, UserType} from "@pepfar-react-lib/datim-tools"
-import {checkSuperUser} from "../../shared/services/superuser.service"
 import GoButton from "./goButton.component";
 import StopButton from "./stopButton.component";
 import {getUrlFilters, setUrl} from "../services/url.service";
@@ -45,8 +44,7 @@ export default class List extends React.Component<{
         periods: idNameList,
         loading: {filters?: boolean, mechanisms?: boolean},
         ous: idNameList,
-        globalUser:boolean,
-        isSuperUser:boolean
+        globalUser:boolean
 
     }> {
     workflowPeriodService;
@@ -65,37 +63,28 @@ export default class List extends React.Component<{
             periods: null,
             selectedAction: null,
             ous: null,
-            globalUser:null,
-            isSuperUser:null
+            globalUser:null
             
         };
         let ouPromise = orgUnits.init().then((ous)=>{
             this.setState({ous: ous});
         });
-        
-        let superUserPromise = checkSuperUser().then((superUserCheck)=>{
-            this.setState({isSuperUser:superUserCheck});
-        });
-        let val = checkSuperUser().then((res)=> val = res);
         this.workflowPeriodService = new WorkflowPeriodService();
-        let workflowsPromise = this.workflowPeriodService.init(val).then((workflows)=>{
+        let workflowsPromise = this.workflowPeriodService.init().then((workflows)=>{
             this.setState({workflows})
         });
         let userTypePromise = getMyUserType().then((userType:UserType)=>{
             this.setState({globalUser: userType===UserType.Global});
         })
-
-        Promise.all([ouPromise,workflowsPromise,userTypePromise,superUserPromise]).then(()=>{
+        Promise.all([ouPromise,workflowsPromise,userTypePromise]).then(()=>{
             if (this.preselectFromUrl()) return;
             let workflow = this.state.workflows.length>0 && this.state.workflows[0].id;
             let periods = this.workflowPeriodService.getPeriods(workflow);
             let period = periods.length>0&&periods[0].id;
-            let superUser = this.state.isSuperUser
             this.setState({
                 loading: {filters: false, mechanisms: false},
                 periods,
-                filters: {workflow, period, ou: this.state.ous[0].id},
-                isSuperUser: superUser
+                filters: {workflow, period, ou: this.state.ous[0].id}
             });
             if (!this.state.globalUser) setTimeout(()=>this.fetchMechanisms(),0);
         });
@@ -125,7 +114,7 @@ export default class List extends React.Component<{
         let f = this.state.filters;
         if (!f.ou || !f.period || !f.workflow) return;
         this.setState({mechanisms: null, loading: { mechanisms: true}});
-        fetchMechanisms(this.state.filters, this.state.isSuperUser).then(mechanisms=>{
+        fetchMechanisms(this.state.filters).then(mechanisms=>{
             if(this.state.loading.mechanisms){
                 this.setState({mechanisms, loading:{mechanisms: false}}); 
             }
