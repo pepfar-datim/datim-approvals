@@ -1,9 +1,14 @@
 import {getData} from "@pepfar-react-lib/http-tools";
 import {idNameList} from "../../shared/models/idNameList.model";
 
-let allOusUrl = `/organisationUnits/ybg3MO3hcf4.json`
+// let allOusUrl = `/organisationUnits/ybg3MO3hcf4.json`
+//     +`?fields=id,name,displayName`
+//     +`&level=2`
+//     +`&paging=false`;
+
+let allOusUrl = `/organisationUnits.json`
     +`?fields=id,name,displayName`
-    +`&level=2`
+    +`&level=3`
     +`&paging=false`;
 
 let userOusUrl = `/me?fields=organisationUnits[id,name]`;
