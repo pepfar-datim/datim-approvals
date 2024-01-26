@@ -1,0 +1,1 @@
+export const globalOuId = 'ybg3MO3hcf4'

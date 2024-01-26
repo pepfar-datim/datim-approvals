@@ -1,0 +1,19 @@
+{
+  "launch_path": "search/index.html",
+  "default_locale": "en",
+  "appType": "APP",
+  "name": "Approvals",
+  "version": "2.3.0",
+  "description": "DATIM Mechanisms Approval App",
+  "developer": {
+    "name": "PEPFAR"
+  },
+  "icons": {
+    "48": "img/logo-48.png"
+  },
+  "activities": {
+    "dhis": {
+        "href": "*"
+    }
+  }
+}
