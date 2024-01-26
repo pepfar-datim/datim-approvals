@@ -1,0 +1,14 @@
+{
+  "name": "@approvals/service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "exports.ts",
+  "type": "module",
+  "peerDependencies": {
+    "@testing-library/react": "^14.1.2",
+    "vitest": "^1.1.3"
+  },
+  "scripts": {
+    "test": "vitest"
+  }
+}

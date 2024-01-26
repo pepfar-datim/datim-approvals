@@ -1,0 +1,4 @@
+.MuiDataGrid-row--lastVisible{
+    /*background-color: red!important;*/
+    max-height: unset!important;
+}
