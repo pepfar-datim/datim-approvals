@@ -3,6 +3,7 @@ import {Tab, Tabs, Typography} from "@mui/material";
 import {Mechanism, SetFunction} from '@approvals/service'
 
 function getTabIndex(selectedMechanism: Mechanism|null, mechanisms: Mechanism[]):number{
+    if (mechanisms.length===1) return 0
     if(!selectedMechanism) return 0
     return mechanisms.indexOf(selectedMechanism)+1
 }

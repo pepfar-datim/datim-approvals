@@ -72,6 +72,9 @@ const tableStyle={
     '& .MuiDataGrid-columnHeaderTitleContainer':{
         padding: 0
     },
+    '& .MuiDataGrid-columnSeparator':{
+        visibility: 'visible!important'
+    },
     border: 'none',
 };
 
@@ -113,6 +116,9 @@ export function SearchResultsComponent({mechanisms, selectedMechanismIds, setSel
                     sorting: {
                         sortModel: [{field: 'info.mechanismName', sort: 'asc'}]
                     }
+                }}
+                onPaginationModelChange={(paginationModel, details) => {
+                    setTimeout(()=>window.scrollTo(0, 1e6),0)
                 }}
 
                 // Behavior

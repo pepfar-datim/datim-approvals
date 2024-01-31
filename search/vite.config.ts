@@ -11,7 +11,7 @@ try {
 
 
 const proxy = {
-    target: 'https://dev.datim.org/',
+    target: 'https://test.datim.org/',
     configure: (proxy, options) => {
         options.headers = {Authorization: `Basic ${auth}`}
     },

@@ -3,7 +3,7 @@ import {Typography} from "@mui/material";
 
 const styles = {
 	root: {
-		paddingTop: '1rem',
+		paddingTop: 1,
 	}
 }
 export function PleaseStart({}:{}){

@@ -7,12 +7,17 @@ import {compare, Mechanism, MechanismActions, SearchResults, SelectedFilters} fr
 
 const styles = {
 	tab:{
+		overflow: 'visible',
 		width: {
-			md: '120px',
-		}
+			lg: '160px',
+			md: '140px',
+			sm: '120px',
+			xs: '90px'
+		},
+		textAlign: 'center',
 	},
 	badge: {
-		paddingRight: 2,
+		// paddingRight: 2,
 	}
 }
 
@@ -27,7 +32,27 @@ function getOperations(mechanisms:Mechanism[]):Operation[]{
 	})
 }
 
+function getTabOffset(count:number):number{
+	switch(count.toString().length){
+		case 1:
+			return -12
+		case 2:
+			return -16
+		case 3:
+			return -20
+		case 4:
+			return -22
+	}
+}
 
+function getBadgeStyles(count:number){
+	return {
+		...styles.badge,
+		'& .MuiBadge-badge': {
+			right: getTabOffset(count),
+		}
+	}
+}
 
 export function SearchTabs({selectedFilters, searchResults}:{
 	selectedFilters: SelectedFilters,
@@ -53,10 +78,10 @@ export function SearchTabs({selectedFilters, searchResults}:{
 		<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 			<Tabs value={getActionIndex(selectedAction)} onChange={switchTab}>
 				{operations.map(({name, count})=><Tab label={
-					<Badge badgeContent={count} color={'primary'} max={9999} sx={styles.badge}>
-						{name}
+					<Badge badgeContent={count} color={'primary'} max={9999} sx={getBadgeStyles(count)}>
+					 	{name}
 					</Badge>
-				} key={name} sx={styles.tab}/>)}
+				} key={name} sx={styles.tab} disabled={count===0}/>)}
 			</Tabs>
 		</Box>
 		<SearchResultsComponent

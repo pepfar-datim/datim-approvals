@@ -1,5 +1,5 @@
 import {Check, Close} from "@mui/icons-material";
-import {Box, Button} from "@mui/material";
+import {Box, Button, useMediaQuery, useTheme} from "@mui/material";
 import {Select} from "./select.component.tsx";
 import {MenuOptions} from "../../search/types/search.types.ts";
 import "./menu.style.css"
@@ -14,6 +14,8 @@ export function Menu({selectedFilters, updateFilters, menuOptions, triggerSearch
 	loading: boolean
 }){
 	const {ouList, workflows} = menuOptions;
+	const theme = useTheme()
+	const largeScreen = useMediaQuery(theme.breakpoints.up('md'))
 	return <Box display={'flex'} gap={1} alignItems={'center'} role={'menu'}>
 		<Select
 			name={'Workflow'}
@@ -28,7 +30,7 @@ export function Menu({selectedFilters, updateFilters, menuOptions, triggerSearch
 			onChange={period=>updateFilters({...selectedFilters, period})}
 		/>
 		<Select
-			name={'Operating Unit'}
+			name={largeScreen?'Operating Unit':'OU'}
 			selectedValue={selectedFilters.ouId}
 			values={ouList}
 			onChange={ouId=>updateFilters({...selectedFilters, ouId})}

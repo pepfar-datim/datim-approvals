@@ -40,18 +40,16 @@ async function getWorkflows(superUser:boolean):Promise<Workflow[]>{
 
     const workflows: Workflow[] = Object.entries(dataStore).map(([workflowName, periodMap])=>({
         name: workflowName,
-        id: allWorkflows.find(({name})=>name===workflowName)['id'],
+        id: allWorkflows.find(({name})=>name===workflowName)?.id,
         periods: Object.entries(periodMap).map(([periodCode, periodInfo])=>({
             name: periodInfo.name,
             id: periodCode,
             expired: isPeriodExpired(periodInfo)
         })).reverse()
-    }))
+    })).filter(({id})=>id)
 
     if (superUser) return workflows
-    const activeWorkflows:Workflow[] =  filterExpired(workflows)
-    assert(activeWorkflows.length>0,`Must have at least one workflow`)
-    return activeWorkflows
+    return filterExpired(workflows)
 }
 
 export async function getMenuOptions():Promise<MenuOptions>{

@@ -14,7 +14,7 @@ const styles = {
     }
 }
 export function MechanismsPreview({viewPageModel}:{viewPageModel: ViewPageModel}){
-    const [selectedMechanism, setSelectedMechanism] = React.useState<Mechanism|null>(null)
+    const [selectedMechanism, setSelectedMechanism] = React.useState<Mechanism|null>(viewPageModel.mechanisms.length===1?viewPageModel.mechanisms[0]:null)
     const {mechanisms, state} = viewPageModel
     const info = selectedMechanism ? selectedMechanism?.info : getAggregateInfo(mechanisms.map(({info})=>info))
     return<>

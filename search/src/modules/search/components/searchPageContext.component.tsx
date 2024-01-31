@@ -4,6 +4,7 @@ import {SearchPage} from "./searchPage.component.tsx";
 import {getMenuOptions} from "../services/getMenuOptions.service.ts";
 import {MenuLoading} from "../../searchMenu/components/menuLoading.component.tsx";
 import {SelectedFilters} from '@approvals/service'
+import {AllExpired} from "./allExpired.component.tsx";
 
 export function SearchPageContext(){
     const [menuOptions,setMenuOptions] = useState<MenuOptions>()
@@ -23,7 +24,11 @@ export function SearchPageContext(){
         })
     },[menuOptions])
     if (!defaultFilters) return <MenuLoading/>
+    if (menuOptions.workflows.length===0) return <AllExpired/>
 	return <>
-        <SearchPage menuOptions={menuOptions} defaultFilters={defaultFilters}/>
+        <SearchPage
+            menuOptions={menuOptions}
+            defaultFilters={defaultFilters}
+        />
 	</>
 }

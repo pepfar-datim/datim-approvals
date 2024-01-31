@@ -17,6 +17,8 @@ export function SearchPage({defaultFilters, menuOptions}:{
 	const [loading, setLoading] = useState<boolean>(false)
 	useEffect(()=>{
 		if (window.location.search) triggerSearch()
+		// else if (menuOptions.ouList.length===1) triggerSearch()
+
 	},[])
 	function cancelSearch() {
 		canceledSearch.push(JSON.stringify(selectedFilters))
