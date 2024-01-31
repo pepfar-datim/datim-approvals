@@ -17,7 +17,7 @@ function parseUrlData():UrlData{
     const query = new URLSearchParams(window.location.hash.replace('#',''))
     const selectedFilters = parseSelectedFilters(query.get('selectedFilters'))
     const mechanismIds:MechanismMetadata[] = query.get('mechanisms').split('_').map(entry => {
-        let [ou, approvalsId, categoryOptionComboId] = entry.split('.');
+        const [ou, approvalsId, categoryOptionComboId] = entry.split('.');
         return {ou, approvalsId, categoryOptionComboId}
     })
     return {selectedFilters, mechanismIds}

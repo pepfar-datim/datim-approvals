@@ -7,12 +7,6 @@ import {Divider, Paper} from "@mui/material";
 import {MechanismDataContext} from "../../mechanismData/components/mechanismDataContext.component.tsx";
 import {ViewPageModel} from "../../viewPage/type/viewPage.types.ts";
 
-const styles = {
-    root: {
-        mt:1,
-        p:1
-    }
-}
 export function MechanismsPreview({viewPageModel}:{viewPageModel: ViewPageModel}){
     const [selectedMechanism, setSelectedMechanism] = React.useState<Mechanism|null>(viewPageModel.mechanisms.length===1?viewPageModel.mechanisms[0]:null)
     const {mechanisms, state} = viewPageModel

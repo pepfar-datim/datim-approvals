@@ -11,7 +11,7 @@ function parsePage(code:string):Webpage{
 }
 
 export async function getDatasetWebpage(selectedMechanism:Mechanism, allMechanisms:Mechanism[], selectedDataset: string):Promise<Webpage> {
-    let categoryOptionId:string = selectedMechanism?selectedMechanism.identifiers.categoryOptionId:allMechanisms.map(m=>m.identifiers.categoryOptionId).join(';')
+    const categoryOptionId:string = selectedMechanism?selectedMechanism.identifiers.categoryOptionId:allMechanisms.map(m=>m.identifiers.categoryOptionId).join(';')
     const ouId:string = allMechanisms[0].selectedFilters.ouId
     const period:string = allMechanisms[0].selectedFilters.period
     const url = `/api/dataSetReport/custom?ds=${selectedDataset}&filter=SH885jaRe0o:${categoryOptionId}&ou=${ouId}&pe=${period}&selectedUnitOnly=false&cachebuster=${Math.random()*1e10}`

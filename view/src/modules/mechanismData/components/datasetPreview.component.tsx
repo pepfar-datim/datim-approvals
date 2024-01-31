@@ -17,11 +17,11 @@ export function DatasetPreview({webpage:{html, scripts}}:{webpage:Webpage}){
 	useEffect(()=>{
 		if (!scripts||scripts.length===0) return setLoading(false)
 		import('../staticJs/1.css.js')
-		import("../staticJs/1.jquery.js").then(async (factory) => {
+		import("../staticJs/1.jquery.js").then(async () => {
 			await import("../staticJs/2.jqueryUi.js")
 			await import("../staticJs/3.dhis.js")
 			console.log(`Importing jQuery & DHIS2 scripts.`, `DHIS2 Initialization started`)
-			// @ts-ignore
+			// @ts-expect-error dhis2 is not a standard property of window
 			await waitFor(() => window.dhis2 && window.dhis2.de)
 			console.log(`DHIS2 initialization finished`, 'Importing custom DataSet scripts')
 			scripts.forEach(script => {
@@ -33,7 +33,7 @@ export function DatasetPreview({webpage:{html, scripts}}:{webpage:Webpage}){
 			await waitFor(() => !document.getElementById('PEPFAR_main')?.getAttribute('style').includes('display:none'))
 			setLoading(false)
 		});
-	},[html])
+	},[html, scripts])
 
 	return <>
 		{loading&&<LoadingForm/>}

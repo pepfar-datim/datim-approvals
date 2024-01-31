@@ -9,10 +9,10 @@ export function clone<T>(obj:T):MapOf<T>{
     return JSON.parse(JSON.stringify(obj))
 }
 
-export function compare(object1:MapOf<any>, object2:MapOf<any>):boolean{
+export function compare(object1:MapOf<string>, object2:MapOf<string>):boolean{
     return JSON.stringify(object1) === JSON.stringify(object2)
 }
 
 export function repeat(n: number, component: React.ReactNode){
-    return [...Array(n).keys()].map(key=>React.cloneElement(component as React.ReactElement<any>, {key}))
+    return [...Array(n).keys()].map(key=>React.cloneElement(component as React.ReactElement, {key}))
 }

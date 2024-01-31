@@ -14,7 +14,7 @@ export function DatasetPreviewContext({selectedDataset, selectedMechanism, allMe
 	const [loading, setLoading] = useState<boolean>(true)
 	useEffect(()=>{
 		getDatasetWebpage(selectedMechanism, allMechanisms, selectedDataset).then(setDatasetWebpage).finally(()=>setLoading(false))
-	},[selectedDataset])
+	},[selectedDataset, selectedMechanism, allMechanisms])
 	if (loading) return <CircularProgress/>
 	return <>
         <DatasetPreview webpage={datasetWebpage}/>

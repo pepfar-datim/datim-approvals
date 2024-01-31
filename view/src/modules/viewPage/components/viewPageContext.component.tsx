@@ -6,7 +6,7 @@ import {ViewPageModel} from "../type/viewPage.types.ts";
 import {MechanismActions} from '@approvals/service'
 import {sendApprovalAction} from "../services/sendApprovalAction.service.ts";
 
-export function ViewPageContext({}:{}) {
+export function ViewPageContext() {
 	const [loading, setLoading] = React.useState<boolean>(true)
 	const [viewPageData, setViewPageData] = React.useState<ViewPageModel>(null)
 	useEffect(() => {

@@ -15,7 +15,7 @@ export function MechanismDataContext({selectedMechanism, viewPageModel}:{
     useEffect(()=>{
         const {workflow, period} = viewPageModel
         getDatasetList(workflow, period).then(setDatasetList)
-    },[])
+    },[viewPageModel])
     if (!selectedMechanism&&viewPageModel.mechanisms.length>Config.maxMechanismCountForPreview) return <CannotShowData/>
     if (!datasetList) return <LoadingData/>
 	return <MechanismData

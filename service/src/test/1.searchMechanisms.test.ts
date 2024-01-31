@@ -2,7 +2,7 @@ import {searchMechanisms} from "../mechanism/services/searchMechanisms.service.t
 import {SelectedFilters} from "../misc/types/misc.types.ts";
 import {mockFetch} from "../testUtils/services/mockFetch.service.ts";
 import {searchAsia} from "../testUtils/urls/searchUrls.const.ts";
-import {ApprovalStatus, PossibleActions} from "../approvalStatus/types/approvalStatus.types.ts";
+import {ApprovalStatus} from "../approvalStatus/types/approvalStatus.types.ts";
 import {expect} from "vitest";
 
 test(`1 > Search mechanisms and get correct statuses`, async () => {

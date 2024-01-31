@@ -37,7 +37,7 @@ function ActionButtons({possibleActions, count, performAction}:{
     performAction: SetFunction<Actions>
 }) {
     return <Stack direction={'row'} gap={1} role={'toolbar'}>
-        {Object.entries(possibleActions).filter(([action, allowed]) => allowed).map(([action]) => <ActionButton
+        {Object.entries(possibleActions).filter(([, allowed]) => allowed).map(([action]) => <ActionButton
             action={action}
             count={count}
             onClick={() => performAction(action as Actions)}

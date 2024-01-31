@@ -8,7 +8,7 @@ function fetchAll(workflowId:string):Promise<IdName[]>{
 }
 
 async function fetchAllowedIds(workflowName:string, periodId:string):Promise<string[]>{
-    const dataStore = await fetch('/api/dataStore/approvals/periodSettings').then(r=>r.json())
+    const dataStore = await fetch('/api/dataStore/approvals/periods').then(r=>r.json())
     return dataStore[workflowName][periodId].datasets
 }
 
