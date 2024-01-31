@@ -33,7 +33,7 @@ function filterExpired(workflows:Workflow[]):Workflow[]{
 }
 async function getWorkflows(superUser:boolean):Promise<Workflow[]>{
     const allWorkflows:IdName[] = (await fetch('/api/dataApprovalWorkflows.json?fields=id,name').then(r=>r.json()))['dataApprovalWorkflows'];
-    const dataStore:DataStore = await fetch('/api/dataStore/approvals/periodSettings').then(r=>r.json());
+    const dataStore:DataStore = await fetch('/api/dataStore/approvals/periods').then(r=>r.json());
 
     assert(allWorkflows.length>1,`Must have at least one workflow`)
     assert(dataStore[allWorkflows[0].name],`Worfklow must be present in datastore`)

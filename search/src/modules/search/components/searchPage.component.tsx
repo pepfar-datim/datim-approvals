@@ -19,8 +19,6 @@ export function SearchPage({defaultFilters, menuOptions, userType}:{
 	const [loading, setLoading] = useState<boolean>(false)
 	useEffect(()=>{
 		if (window.location.search) triggerSearch()
-		// else if (menuOptions.ouList.length===1) triggerSearch()
-		// console.log(userType)
 		if (![UserType.Global, UserType.GlobalAgency].includes(userType)) triggerSearch()
 
 	},[])
