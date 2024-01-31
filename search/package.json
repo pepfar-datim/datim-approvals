@@ -10,6 +10,7 @@
     "preview": "npm run import && npm run build && vite preview",
     "test": "vitest",
     "import": "npm run import:page && npm run import:service",
+    "import:user": "rm -rf node_modules/.vite && npm run dep:copy ../../javascript-libraries/datimuser",
     "import:page": "rm -rf node_modules/.vite && npm run dep:copy ../page",
     "import:service": "rm -rf node_modules/.vite && npm run dep:copy ../service",
     "dep:copy": "node --experimental-specifier-resolution=node node_modules/@pepfar-react-lib/dep-copy/build/bin/fullCopy.js"
@@ -20,6 +21,7 @@
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "@mui/x-data-grid": "^6.18.2",
+    "@pepfar-react-lib/datimuser": "^0.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

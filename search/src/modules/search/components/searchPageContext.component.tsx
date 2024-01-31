@@ -5,10 +5,13 @@ import {getMenuOptions} from "../services/getMenuOptions.service.ts";
 import {MenuLoading} from "../../searchMenu/components/menuLoading.component.tsx";
 import {SelectedFilters} from '@approvals/service'
 import {AllExpired} from "./allExpired.component.tsx";
+import {UserType} from "@pepfar-react-lib/datimuser";
+import {getUserType} from "../services/getUserType.service.ts";
 
 export function SearchPageContext(){
     const [menuOptions,setMenuOptions] = useState<MenuOptions>()
     const [defaultFilters, setDefaultFilters] = useState<SelectedFilters>()
+    const [userType, setUserType] = useState<UserType>()
     useEffect(()=>{
         getMenuOptions().then(setMenuOptions)
     },[])
@@ -22,13 +25,15 @@ export function SearchPageContext(){
             period: queryParams.get('period')||menuOptions.workflows[0].periods[0].id,
             ouId: queryParams.get('ouId')||menuOptions.ouList[0].id
         })
+        getUserType().then(setUserType)
     },[menuOptions])
-    if (!defaultFilters) return <MenuLoading/>
+    if (!defaultFilters||!userType) return <MenuLoading/>
     if (menuOptions.workflows.length===0) return <AllExpired/>
 	return <>
         <SearchPage
             menuOptions={menuOptions}
             defaultFilters={defaultFilters}
+            userType={userType}
         />
 	</>
 }

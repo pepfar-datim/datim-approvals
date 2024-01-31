@@ -6,11 +6,13 @@ import {Divider} from "@mui/material";
 import {PleaseStart} from "./pleaseStart.conponent.tsx";
 import {SearchTabs} from "../../searchResults/components/searchTabs.component.tsx";
 import {searchMechanisms, SearchResults, SelectedFilters} from '@approvals/service'
+import { UserType } from "@pepfar-react-lib/datimuser";
 
 const canceledSearch = []
-export function SearchPage({defaultFilters, menuOptions}:{
+export function SearchPage({defaultFilters, menuOptions, userType}:{
 	defaultFilters: SelectedFilters,
-	menuOptions:MenuOptions
+	menuOptions:MenuOptions,
+	userType:UserType
 }){
 	const [selectedFilters, setSelectedFilters] = useState<SelectedFilters>(defaultFilters)
 	const [searchResults, setSearchResults] = useState<SearchResults>(null)
@@ -18,6 +20,8 @@ export function SearchPage({defaultFilters, menuOptions}:{
 	useEffect(()=>{
 		if (window.location.search) triggerSearch()
 		// else if (menuOptions.ouList.length===1) triggerSearch()
+		// console.log(userType)
+		if (![UserType.Global, UserType.GlobalAgency].includes(userType)) triggerSearch()
 
 	},[])
 	function cancelSearch() {
