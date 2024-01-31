@@ -79,7 +79,7 @@ export function SearchTabs({selectedFilters, searchResults}:{
 			<Tabs value={getActionIndex(selectedAction)} onChange={switchTab}>
 				{operations.map(({name, count})=><Tab label={
 					<Badge badgeContent={count} color={'primary'} max={9999} sx={getBadgeStyles(count)}>
-					 	{name}
+						{name}
 					</Badge>
 				} key={name} sx={styles.tab} disabled={count===0}/>)}
 			</Tabs>

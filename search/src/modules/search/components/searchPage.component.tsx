@@ -6,7 +6,7 @@ import {Divider} from "@mui/material";
 import {PleaseStart} from "./pleaseStart.conponent.tsx";
 import {SearchTabs} from "../../searchResults/components/searchTabs.component.tsx";
 import {searchMechanisms, SearchResults, SelectedFilters} from '@approvals/service'
-import { UserType } from "@pepfar-react-lib/datimuser";
+import {UserType} from "@pepfar-react-lib/datimuser";
 
 const canceledSearch = []
 export function SearchPage({defaultFilters, menuOptions, userType}:{
@@ -20,8 +20,7 @@ export function SearchPage({defaultFilters, menuOptions, userType}:{
 	useEffect(()=>{
 		if (window.location.search) triggerSearch()
 		if (![UserType.Global, UserType.GlobalAgency].includes(userType)) triggerSearch()
-
-	},[])
+	},[userType])
 	function cancelSearch() {
 		canceledSearch.push(JSON.stringify(selectedFilters))
 		setLoading(false)

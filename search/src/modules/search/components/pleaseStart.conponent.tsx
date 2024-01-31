@@ -6,7 +6,7 @@ const styles = {
 		paddingTop: 1,
 	}
 }
-export function PleaseStart({}:{}){
+export function PleaseStart(){
 	return <Typography color={'secondary'} sx={styles.root}>
         Please click Go to search.
 	</Typography>

@@ -27,7 +27,7 @@ export function Actions({filteredMechanisms, selectedMechanismIds, setSelectedMe
         <Box display={'flex'} alignItems={'center'} gap={2}>
             <Button variant={'contained'} color={'secondary'} href={getActionUrl(selectedFilters, filteredMechanisms, selectedMechanismIds)} disabled={!sameStatus || disabled} data-testid={`action`}> {selectedAction}</Button>
             <Typography>{selectedMechanismIds.length} selected mechanism{selectedMechanismIds.length>1&&'s'}</Typography>
-	    </Box>
+        </Box>
         <SameStatus filteredMechanisms={filteredMechanisms} selectedMechanismIds={selectedMechanismIds} setSelectedMechanismIds={setSelectedMechanismIds}/>
         <UnselectDedupe filteredMechanisms={filteredMechanisms} selectedMechanismIds={selectedMechanismIds} setSelectedMechanismIds={setSelectedMechanismIds}/>
         <Divider/>

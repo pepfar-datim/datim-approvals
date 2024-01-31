@@ -5,7 +5,6 @@ import {ResultsFilter} from "./resultsFilter.component.tsx";
 import {Status} from "./status.component.tsx";
 import {ResultsPagination} from "./resultsPagination.component.tsx";
 import {GridRowSelectionModel} from "@mui/x-data-grid/models/gridRowSelectionModel";
-import {GridCallbackDetails} from "@mui/x-data-grid/models/api";
 import {Mechanism, SetFunction} from "@approvals/service";
 import {GridValueGetterParams} from "@mui/x-data-grid/models/params/gridCellParams";
 import './searchResults.css'
@@ -15,7 +14,7 @@ function compareMechanismNames(mechName1:string, mechName2:string):1|-1{
     return parseInt(mechName2)<parseInt(mechName1)?1:-1;
 }
 
-const getProperty = (property:string)=>(record: GridValueGetterParams<Mechanism, any>) => record.row.info[property]
+const getProperty = (property:string)=>(record: GridValueGetterParams<Mechanism, string>) => record.row.info[property]
 
 const columns: GridColDef[] = [
     {
@@ -48,7 +47,7 @@ const columns: GridColDef[] = [
         field: 'state.approvalStatus',
         headerName: 'Status',
         width: 120,
-        valueGetter: (record: GridValueGetterParams<Mechanism, any>) =>record.row.state.approvalStatus,
+        valueGetter: (record: GridValueGetterParams<Mechanism, string>) =>record.row.state.approvalStatus,
         renderCell: ({value}) => {
             return <Status status={value}/>
         }
@@ -85,7 +84,7 @@ export function SearchResultsComponent({mechanisms, selectedMechanismIds, setSel
 }){
     const [filter, setFilter] = useState('')
     const filteredMechanisms:Mechanism[] = mechanisms.filter(({info, state:{approvalStatus}})=>{
-        return Object.entries({...info, approvalStatus}).some(([prop,value])=>{
+        return Object.values({...info, approvalStatus}).some((value)=>{
             return value?.toLowerCase().includes(filter?.toLowerCase())
         })
     })
@@ -117,7 +116,7 @@ export function SearchResultsComponent({mechanisms, selectedMechanismIds, setSel
                         sortModel: [{field: 'info.mechanismName', sort: 'asc'}]
                     }
                 }}
-                onPaginationModelChange={(paginationModel, details) => {
+                onPaginationModelChange={() => {
                     setTimeout(()=>window.scrollTo(0, 1e6),0)
                 }}
 
@@ -136,7 +135,7 @@ export function SearchResultsComponent({mechanisms, selectedMechanismIds, setSel
 
                 // Select
                 rowSelectionModel={selectedMechanismIds}
-                onRowSelectionModelChange={(rowSelectionModel: GridRowSelectionModel, details: GridCallbackDetails) => {
+                onRowSelectionModelChange={(rowSelectionModel: GridRowSelectionModel) => {
                     setSelectedMechanisms(rowSelectionModel as string[])
                 }}
             />
