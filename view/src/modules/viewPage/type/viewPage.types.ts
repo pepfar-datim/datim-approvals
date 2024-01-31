@@ -1,10 +1,4 @@
-import {IdName, Mechanism, MechanismState, SelectedFilters} from '@approvals/service'
-
-export type MechanismMetadata = {
-    ou: string;
-    approvalsId: string;
-    categoryOptionComboId: string;
-}
+import {IdName, Mechanism, MechanismState, SelectedFilters, MechanismMetadata} from '@approvals/service'
 
 export type Period = {expired: boolean} & IdName;
 

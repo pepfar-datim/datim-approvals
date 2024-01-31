@@ -15,22 +15,25 @@ import {getPossibleActions} from "../../approvalStatus/services/getPossibleActio
 import {getWorkflowType} from "../../misc/services/getWorkflowType.service.ts";
 import {SelectedFilters} from "../../misc/types/misc.types.ts";
 import {globalOuId} from "../../misc/const/misc.const.ts";
+import {MechanismMetadata} from "../types/searchMechanism.types.ts";
 
-function getMechanismsInfoUrl(selectedFilters:SelectedFilters):string{
-    const {ouId} = selectedFilters
-    const ouFilter = ouId!==globalOuId ? `&filter=organisationUnits.id:eq:${ouId}&filter=id:in:[xEzelmtHWPn,OM58NubPbx1,mXjFJEexCHJ,t6dWOH7W5Ml]&rootJunction=OR` : ''
-    return `/api/categoryOptions.json?paging=false${ouFilter}&fields=id,name,organisationUnits[id,name],categoryOptionGroups[id,name,groupSets[id]],categoryOptionCombos[id,name]`
+function getMechanismInfoUrl(selectedFilters:SelectedFilters, selectedIds:MechanismMetadata[]=null):string{
+    let filter:string
+    if (selectedIds) filter = `filter=categoryOptionCombos.id:in:[${selectedIds.map(({categoryOptionComboId})=>categoryOptionComboId).join(',')}]`
+    else filter = `filter=organisationUnits.id:eq:${selectedFilters.ouId}&filter=id:in:[xEzelmtHWPn,OM58NubPbx1,mXjFJEexCHJ,t6dWOH7W5Ml]&rootJunction=OR`
+    const fields:string = `fields=id,name,organisationUnits[id,name],categoryOptionGroups[id,name,groupSets[id]],categoryOptionCombos[id,name]`
+    return `/api/categoryOptions.json?${filter}&${fields}&paging=false&`
 }
-export async function fetchMechanismsInfo(selectedFilters: SelectedFilters){
-    return fetch(getMechanismsInfoUrl(selectedFilters)).then(res => res.json())
+export async function fetchMechanismsInfo(selectedFilters: SelectedFilters, selectedIds:MechanismMetadata[]=null){
+    return fetch(getMechanismInfoUrl(selectedFilters, selectedIds)).then(res => res.json())
         .then(({categoryOptions})=>categoryOptions)
 }
-export async function searchMechanisms(selectedFilters:SelectedFilters):Promise<SearchResults>{
-    const dhisApprovalStatuses: DhisApprovalStatus[] = await getApprovalStatuses(selectedFilters)
-    const mechanismInfos:DhisMechanismInfo[] = await fetchMechanismsInfo(selectedFilters)
+export async function searchMechanisms(selectedFilters:SelectedFilters, selectedIds:MechanismMetadata[]=null):Promise<SearchResults>{
+    const dhisApprovalStatuses: DhisApprovalStatus[] = await getApprovalStatuses(selectedFilters, selectedIds)
+    const mechanismInfos:DhisMechanismInfo[] = await fetchMechanismsInfo(selectedFilters, selectedIds)
     const mechanisms:Mechanism[] = dhisApprovalStatuses.map((approvalsItem) => {
         const categoryOption = getMechanismInfoByApprovalsId(approvalsItem.id, mechanismInfos)
-        assert(categoryOption, `Mechanism info not found for ${approvalsItem.id}`)
+        assert(!!categoryOption, `Mechanism info not found for ${approvalsItem.id}`)
         const identifiers:Identifiers = {
             approvalsId: approvalsItem.id,
             categoryOptionCombinationId: categoryOption.categoryOptionCombos[0].id,

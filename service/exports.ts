@@ -12,6 +12,7 @@ export * from './src/mechanism/services/searchMechanisms.service'
 
 export * from './src/mechanism/types/dhisMechanism.types'
 export * from './src/mechanism/types/mechanism.types'
+export * from './src/mechanism/types/searchMechanism.types'
 
 /* DataStore */
 export * from './src/dataStore/services/periodSettings.services'

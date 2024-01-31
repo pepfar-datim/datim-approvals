@@ -1,6 +1,6 @@
-import {MechanismMetadata, UrlData, ViewPageModel} from "../type/viewPage.types.ts";
+import {UrlData, ViewPageModel} from "../type/viewPage.types.ts";
 import {getPeriodIdName} from "./getPeriodData.service.ts";
-import {IdName, Mechanism, MechanismState, searchMechanisms, SelectedFilters} from '@approvals/service'
+import {IdName, Mechanism, MechanismState, searchMechanisms, SelectedFilters, MechanismMetadata} from '@approvals/service'
 
 
 async function getWorkflowIdName(workflowId:string):Promise<IdName>{
@@ -25,7 +25,7 @@ function parseUrlData():UrlData{
 
 export async function getViewPageData():Promise<ViewPageModel>{
     const {selectedFilters, mechanismIds} = parseUrlData()
-    const {mechanisms} = await searchMechanisms(selectedFilters)
+    const {mechanisms} = await searchMechanisms(selectedFilters, mechanismIds.length<30&&mechanismIds)
     const filteredMechanisms:Mechanism[] = mechanisms.filter(({identifiers: {approvalsId}, selectedFilters:{ouId}})=>{
         return mechanismIds.map(({ou, approvalsId})=>`${ou}.${approvalsId}`).includes(`${ouId}.${approvalsId}`)
     })
