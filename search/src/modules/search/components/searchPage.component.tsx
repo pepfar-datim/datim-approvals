@@ -19,7 +19,7 @@ export function SearchPage({defaultFilters, menuOptions, userType}:{
 	const [loading, setLoading] = useState<boolean>(false)
 	useEffect(()=>{
 		if (window.location.search) triggerSearch()
-		if (![UserType.Global, UserType.GlobalAgency].includes(userType)) triggerSearch()
+		if (![UserType.Global, UserType.GlobalAgency, UserType.superAdmin].includes(userType)) triggerSearch()
 	},[userType])
 	function cancelSearch() {
 		canceledSearch.push(JSON.stringify(selectedFilters))
@@ -28,7 +28,7 @@ export function SearchPage({defaultFilters, menuOptions, userType}:{
 	}
 	async function triggerSearch():Promise<void> {
 		setLoading(true)
-		const searchResults = await searchMechanisms(selectedFilters)
+		const searchResults = await searchMechanisms(selectedFilters, null, userType===UserType.superAdmin)
 		if (canceledSearch.includes(JSON.stringify(searchResults.selectedFilters))) return
 		setSearchResults(searchResults)
 		setLoading(false)

@@ -4,7 +4,7 @@ import {ViewPageContext} from "../../modules/viewPage/components/viewPageContext
 import {expect} from "vitest";
 
 
-export async function renderView(urls:MapOf<MapOf<string>>):Promise<void>{
+export async function renderView(urls:MapOf<any>):Promise<void>{
     mockFetch(urls)
     render(<ViewPageContext/>)
     await screen.findByRole('toolbar')

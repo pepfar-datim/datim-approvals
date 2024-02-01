@@ -36,7 +36,7 @@ async function getWorkflows(superUser:boolean):Promise<Workflow[]>{
     const dataStore:DataStore = await fetch('/api/dataStore/approvals/periods').then(r=>r.json());
 
     assert(allWorkflows.length>1,`Must have at least one workflow`)
-    assert(dataStore[allWorkflows[0].name],`Worfklow must be present in datastore`)
+    assert(!!dataStore[allWorkflows[0].name],`Worfklow must be present in datastore`)
 
     const workflows: Workflow[] = Object.entries(dataStore).map(([workflowName, periodMap])=>({
         name: workflowName,

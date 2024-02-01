@@ -1,5 +1,4 @@
-import {ApprovalStatus} from '@approvals/service'
-import {MechanismMetadata} from "../type/viewPage.types.ts";
+import {ApprovalStatus, MechanismMetadata} from '@approvals/service'
 
 export async function getMechanismsStatus(periodId:string, workflowId: string, mechanismsMetadata:MechanismMetadata[]):Promise<ApprovalStatus>{
     let ou = '';

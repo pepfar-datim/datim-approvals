@@ -5,7 +5,7 @@ function clean(url:string):string{
 }
 
 export function mockFetch(urlList:MapOf<object>):void{
-    //@ts-expect-error global is not defined
+    //@ts-ignore
     global.fetch = vitest.fn().mockImplementation((url:string)=>{
         url = clean(url)
         if (!urlList[url]) throw new Error(`URL is not mocked ${url}`)
