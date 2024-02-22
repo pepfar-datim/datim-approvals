@@ -2,3 +2,7 @@ body{
     margin:0;
     font-family: Roboto, sans-serif;
 }
+
+header a > div {
+    padding: 0!important;
+}

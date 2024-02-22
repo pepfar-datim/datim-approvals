@@ -1,7 +1,11 @@
-import {Container, Divider, Paper, Typography} from "@mui/material";
+import {Container, Divider, Paper, Typography} from "@mui/material"
 import {Theme} from "./theme.component.tsx";
-import React, {ReactElement, useEffect, useState} from "react";
+import React, {ReactElement, useEffect, useState} from "react"
 import './page.css'
+import '@fontsource/roboto/300.css'
+import '@fontsource/roboto/400.css'
+import '@fontsource/roboto/500.css'
+import '@fontsource/roboto/700.css'
 
 const styles = {
     root:{
@@ -17,7 +21,7 @@ const devMode = window.location.host.includes('localhost')&&!window.location.hos
 export function Page({children}:{children: ReactElement}){
     const [header, setHeader] = useState(null)
     useEffect(()=>{
-        if (devMode) return;
+        // if (devMode) return;
         import("./dhis2Header.component.tsx").then(({Dhis2Header}) =>setHeader(<Dhis2Header/>))
     },[])
     return <>
