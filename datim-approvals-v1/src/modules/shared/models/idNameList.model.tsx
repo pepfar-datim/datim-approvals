@@ -1,1 +1,0 @@
-export type idNameList = {id:string, name:string}[];
