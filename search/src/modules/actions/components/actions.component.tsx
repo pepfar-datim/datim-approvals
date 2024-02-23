@@ -7,10 +7,11 @@ import {SameStatus} from "./sameStatus.components.tsx";
 import {areSameStatus} from "../services/areSameStatus.service.ts";
 import {getActionPageUrlService} from "../services/getActionPageUrl.service.ts";
 
-function getActionUrl({ouId, workflow, period}: SelectedFilters, allMechanisms:Mechanism[], selectedMechanismIds: string[]):string{
+function getActionUrl({ouId: filterOuId, workflow, period}: SelectedFilters, allMechanisms:Mechanism[], selectedMechanismIds: string[]):string{
     const selectedMechanisms:Mechanism[] = getSelectedMechanisms(allMechanisms, selectedMechanismIds)
-    const mechanisms:string = selectedMechanisms.map(({identifiers:{approvalsId, categoryOptionCombinationId}, selectedFilters:{ouId}})=>`${ouId}.${approvalsId}.${categoryOptionCombinationId}`).join('_')
-    return `${getActionPageUrlService()}#selectedFilters=${period}.${workflow}.${ouId}&mechanisms=${mechanisms}`
+    // const mechanisms:string = selectedMechanisms.map(({identifiers:{approvalsId, categoryOptionCombinationId}, selectedFilters:{ouId}})=>`${ouId}.${approvalsId}.${categoryOptionCombinationId}`).join('_')
+    const mechanisms:string = selectedMechanisms.map(({identifiers:{approvalsId, categoryOptionCombinationId, ouId}})=>`${ouId}.${approvalsId}.${categoryOptionCombinationId}`).join('_')
+    return `${getActionPageUrlService()}#selectedFilters=${period}.${workflow}.${ filterOuId}&mechanisms=${mechanisms}`
 }
 
 export function Actions({filteredMechanisms, selectedMechanismIds, setSelectedMechanismIds, selectedAction, selectedFilters, disabled}:{

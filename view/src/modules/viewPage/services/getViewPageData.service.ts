@@ -26,7 +26,11 @@ function parseUrlData():UrlData{
 export async function getViewPageData():Promise<ViewPageModel>{
     const {selectedFilters, mechanismIds} = parseUrlData()
     const {mechanisms} = await searchMechanisms(selectedFilters, mechanismIds.length<30&&mechanismIds)
-    const filteredMechanisms:Mechanism[] = mechanisms.filter(({identifiers: {approvalsId}, selectedFilters:{ouId}})=>{
+    // const filteredMechanisms:Mechanism[] = mechanisms.filter(({identifiers: {approvalsId}, selectedFilters:{ouId}})=>{
+    //     return mechanismIds.map(({ou, approvalsId})=>`${ou}.${approvalsId}`).includes(`${ouId}.${approvalsId}`)
+    // })
+
+    const filteredMechanisms:Mechanism[] = mechanisms.filter(({identifiers: {approvalsId, ouId}})=>{
         return mechanismIds.map(({ou, approvalsId})=>`${ou}.${approvalsId}`).includes(`${ouId}.${approvalsId}`)
     })
 

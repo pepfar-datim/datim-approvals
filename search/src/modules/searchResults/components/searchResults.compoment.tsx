@@ -113,7 +113,10 @@ export function SearchResultsComponent({mechanisms, selectedMechanismIds, setSel
                         },
                     },
                     sorting: {
-                        sortModel: [{field: 'info.mechanismName', sort: 'asc'}]
+                        sortModel: [
+                            {field: 'info.mechanismName', sort: 'asc'},
+                            {field: 'info.ouName', sort: 'asc'}
+                        ]
                     }
                 }}
                 onPaginationModelChange={() => {

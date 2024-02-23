@@ -7,6 +7,7 @@ import {PleaseStart} from "./pleaseStart.conponent.tsx";
 import {SearchTabs} from "../../searchResults/components/searchTabs.component.tsx";
 import {searchMechanisms, SearchResults, SelectedFilters} from '@approvals/service'
 import {UserType} from "@pepfar-react-lib/datimuser";
+import {sortMechanismsByCodeAndOu} from "../services/sortMechanismsByCodeAndOu.service.ts";
 
 const canceledSearch = []
 export function SearchPage({defaultFilters, menuOptions, userType}:{
@@ -29,6 +30,7 @@ export function SearchPage({defaultFilters, menuOptions, userType}:{
 	async function triggerSearch():Promise<void> {
 		setLoading(true)
 		const searchResults = await searchMechanisms(selectedFilters, null, userType===UserType.superAdmin)
+		sortMechanismsByCodeAndOu(searchResults.mechanisms)
 		if (canceledSearch.includes(JSON.stringify(searchResults.selectedFilters))) return
 		setSearchResults(searchResults)
 		setLoading(false)

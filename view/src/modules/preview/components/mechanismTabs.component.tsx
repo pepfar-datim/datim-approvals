@@ -1,6 +1,7 @@
 import React from 'react';
-import {Tab, Tabs, Typography} from "@mui/material";
+import {styled, Tab as MuiTab, Tabs, Typography} from "@mui/material";
 import {Mechanism, SetFunction} from '@approvals/service'
+import {TabProps} from "@mui/material/Tab/Tab";
 
 function getTabIndex(selectedMechanism: Mechanism|null, mechanisms: Mechanism[]):number{
     if (mechanisms.length===1) return 0
@@ -23,6 +24,10 @@ const styles = {
 }
 const wrap = (text:string)=>text.length>80?text.slice(0,80)+'...':text
 
+const Tab = styled(MuiTab)<TabProps>(()=>({
+    fontSize: '0.85rem',
+    textTransform: 'none'
+}))
 export function MechanismTabs({selectedMechanism, mechanisms, onMechanismSelect}:{
     selectedMechanism: Mechanism|null,
     mechanisms: Mechanism[],
@@ -35,7 +40,7 @@ export function MechanismTabs({selectedMechanism, mechanisms, onMechanismSelect}
         variant="scrollable"
     >
         {mechanisms.length>1&&<Tab label={'All mechanisms overview'} key={'all'} wrapped/>}
-        {mechanismSubset.map(({info:{mechanismName}, identifiers:{applicationId}})=><Tab label={wrap(mechanismName)} key={applicationId}/>)}
-        {mechanismSubset.length>30&&<Tab disabled label={<Typography color={'secondary'} sx={styles.warning}>Mechanism preview is limited to 30 mechanisms only</Typography>}/>}
+        {mechanismSubset.map(({info:{mechanismName}, identifiers:{applicationId}})=><Tab label={wrap(mechanismName)} key={applicationId} wrapped/>)}
+        {mechanismSubset.length>30&&<Tab disabled wrapped label={<Typography color={'secondary'} sx={styles.warning}>Mechanism preview is limited to 30 mechanisms only</Typography>}/>}
     </Tabs>
 }

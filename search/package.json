@@ -9,11 +9,11 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "npm run import && npm run build && vite preview",
     "test": "vitest",
-    "import": "npm run import:page && npm run import:service",
-    "import:user": "rm -rf node_modules/.vite && npm run dep:copy ../../javascript-libraries/datimuser",
-    "import:page": "rm -rf node_modules/.vite && npm run dep:copy ../page",
-    "import:service": "rm -rf node_modules/.vite && npm run dep:copy ../service",
-    "dep:copy": "node --experimental-specifier-resolution=node node_modules/@pepfar-react-lib/dep-copy/build/bin/fullCopy.js"
+    "import": "npm run import:page && npm run import:service && npm run import:user",
+    "import:user": "rm -rf node_modules/.vite && import ../../javascript-libraries/datimuser",
+    "import:page": "rm -rf node_modules/.vite && import ../page",
+    "import:service": "rm -rf node_modules/.vite && import ../service",
+    "postinstall": "npm run import"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -26,7 +26,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@pepfar-react-lib/dep-copy": "^0.0.31",
+    "@pepfar-react-lib/local-import": "1.0.8",
     "@testing-library/react": "^14.1.2",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.37",

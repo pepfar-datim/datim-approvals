@@ -27,7 +27,7 @@ function getMechanismInfoUrl(selectedFilters:SelectedFilters, selectedIds:Mechan
         filter = `filter=organisationUnits.id:eq:${selectedFilters.ouId}`
         if (isSuperUser) filter += `&filter=id:in:[xEzelmtHWPn,OM58NubPbx1,mXjFJEexCHJ,t6dWOH7W5Ml]&rootJunction=OR`
     }
-    return `/api/categoryOptions.json?${filter}&${fields}&paging=false&`
+    return `/api/categoryOptions.json?${filter}&${fields}&paging=false`
 }
 export async function fetchMechanismsInfo(selectedFilters: SelectedFilters, selectedIds:MechanismMetadata[]=null, isSuperUser:boolean=false){
     return fetch(getMechanismInfoUrl(selectedFilters, selectedIds, isSuperUser)).then(res => res.json())

@@ -6,6 +6,9 @@ import {getActionIndex, getActionName} from "../../search/types/search.types.ts"
 import {compare, Mechanism, MechanismActions, SearchResults, SelectedFilters} from '@approvals/service'
 
 const styles = {
+	tabs:{
+		p: '16px 0px'
+	},
 	tab:{
 		overflow: 'visible',
 		width: {
@@ -76,7 +79,7 @@ export function SearchTabs({selectedFilters, searchResults}:{
 			disabled={!compare(selectedFilters, searchResults.selectedFilters)}
 		/>
 		<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-			<Tabs value={getActionIndex(selectedAction)} onChange={switchTab}>
+			<Tabs value={getActionIndex(selectedAction)} onChange={switchTab} sx={styles.tabs}>
 				{operations.map(({name, count})=><Tab label={
 					<Badge badgeContent={count} color={'primary'} max={9999} sx={getBadgeStyles(count)}>
 						{name}

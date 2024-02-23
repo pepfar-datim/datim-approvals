@@ -1,5 +1,6 @@
 import {SelectedFilters} from "../../misc/types/misc.types.ts";
 import {MechanismMetadata} from "../../mechanism/types/searchMechanism.types.ts";
+import {DhisApprovalStatus} from "../types/approvalStatus.types.ts";
 
 export function getApprovalsUrl(selectedFilters: SelectedFilters, selectedIds:MechanismMetadata[]): string {
     const {workflow, period, ouId} = selectedFilters
@@ -7,6 +8,10 @@ export function getApprovalsUrl(selectedFilters: SelectedFilters, selectedIds:Me
     const mechanismFilter = selectedIds ? `&aoc=${selectedIds.map(({approvalsId})=>approvalsId).join(',')}` : ''
     return `/api/dataApprovals/categoryOptionCombos?wf=${workflow}&pe=${period}${ouFilter}${mechanismFilter}`
 }
-export function getApprovalStatuses(selectedFilters: SelectedFilters, selectedIds:MechanismMetadata[]){
-    return fetch(getApprovalsUrl(selectedFilters, selectedIds)).then(res => res.json())
+export async function getApprovalStatuses(selectedFilters: SelectedFilters, selectedIds:MechanismMetadata[]):Promise<DhisApprovalStatus[]>{
+    const dhisApprovalStatuses:DhisApprovalStatus[] = await fetch(getApprovalsUrl(selectedFilters, selectedIds)).then(res => res.json())
+    if (!selectedIds||selectedIds.length===0) return dhisApprovalStatuses
+    return dhisApprovalStatuses.filter(({id, ou})=>{
+        return selectedIds.map(({approvalsId, ou:ouId})=>approvalsId+ouId).includes(id+ou)
+    })
 }

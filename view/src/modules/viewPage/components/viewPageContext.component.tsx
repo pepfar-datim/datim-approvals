@@ -18,7 +18,6 @@ export function ViewPageContext() {
 		await getViewPageData().then(setViewPageData)
 		setLoading(false)
 	}
-	// const loadSwitch = <button style={{position: 'fixed', top: 10, left: 10, display: 'none'}} onClick={() => setLoading(!loading)}>loading</button>
 	if (loading) return <><Loading/></>
 	return <>
 		<ViewPage viewPageModel={viewPageData} performAction={performAction}/>
