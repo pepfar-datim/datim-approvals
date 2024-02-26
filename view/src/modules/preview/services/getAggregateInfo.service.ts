@@ -9,7 +9,9 @@ function aggregateValue(mechanisms: MechanismInfo[], key: keyof MechanismInfo): 
     const uniqueValues = [...new Set(values)]
     let sortedValues:string[] = null
     if (key==='code') sortedValues = uniqueValues.sort(sortByCode)
-    else sortedValues = uniqueValues.sort()
+    else sortedValues = uniqueValues.sort(function(value1, value2){
+        return value1.toLocaleLowerCase()<value2.toLocaleLowerCase()?-1:1
+    })
     return sortedValues.join(', ')
 }
 export function getAggregateInfo(mechanisms: MechanismInfo[]):MechanismInfo{

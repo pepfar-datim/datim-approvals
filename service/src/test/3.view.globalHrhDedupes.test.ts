@@ -36,4 +36,6 @@ test(`3 > HRH > Global > 3 selected dedupes`, async () => {
     // 3 results
     expect(mechanisms.length).toBe(3)
 
+    expect(mechanisms[0].info.partnerName).toBe('Dedupe adjustments Partner')
+    expect(mechanisms[0].info.agency).toBe('Dedupe adjustments Agency')
 })

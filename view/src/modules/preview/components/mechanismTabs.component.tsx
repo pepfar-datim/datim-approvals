@@ -25,7 +25,7 @@ const styles = {
 const wrap = (text:string)=>text.length>80?text.slice(0,80)+'...':text
 
 const Tab = styled(MuiTab)<TabProps>(()=>({
-    fontSize: '0.85rem',
+    fontSize: '0.93rem',
     textTransform: 'none'
 }))
 export function MechanismTabs({selectedMechanism, mechanisms, onMechanismSelect}:{

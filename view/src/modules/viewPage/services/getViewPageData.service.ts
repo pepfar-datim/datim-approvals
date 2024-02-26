@@ -26,13 +26,16 @@ function parseUrlData():UrlData{
 export async function getViewPageData():Promise<ViewPageModel>{
     const {selectedFilters, mechanismIds} = parseUrlData()
     const {mechanisms} = await searchMechanisms(selectedFilters, mechanismIds.length<30&&mechanismIds)
-    // const filteredMechanisms:Mechanism[] = mechanisms.filter(({identifiers: {approvalsId}, selectedFilters:{ouId}})=>{
-    //     return mechanismIds.map(({ou, approvalsId})=>`${ou}.${approvalsId}`).includes(`${ouId}.${approvalsId}`)
-    // })
 
     const filteredMechanisms:Mechanism[] = mechanisms.filter(({identifiers: {approvalsId, ouId}})=>{
         return mechanismIds.map(({ou, approvalsId})=>`${ou}.${approvalsId}`).includes(`${ouId}.${approvalsId}`)
     })
+
+    filteredMechanisms.sort(function(mechanism1:Mechanism, mechanism2:Mechanism){
+        return mechanism1.info.code>mechanism2.info.code?1:-1
+    })
+
+    filteredMechanisms.filter(({info:{code}})=>code!=='000000').forEach(({info})=>info.ouName='N/A')
 
     const state:MechanismState = {
         approvalStatus: filteredMechanisms[0].state.approvalStatus,
