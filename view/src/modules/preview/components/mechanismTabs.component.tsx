@@ -40,7 +40,7 @@ export function MechanismTabs({selectedMechanism, mechanisms, onMechanismSelect}
         variant="scrollable"
     >
         {mechanisms.length>1&&<Tab label={'All mechanisms overview'} key={'all'} wrapped/>}
-        {mechanismSubset.map(({info:{mechanismName}, identifiers:{applicationId}})=><Tab label={wrap(mechanismName)} key={applicationId} wrapped/>)}
+        {mechanismSubset.map(({info:{mechanismName}, identifiers:{applicationId}})=><Tab label={wrap(mechanismName)} key={applicationId} wrapped sx={{maxWidth: 300}}/>)}
         {mechanismSubset.length>30&&<Tab disabled wrapped label={<Typography color={'secondary'} sx={styles.warning}>Mechanism preview is limited to 30 mechanisms only</Typography>}/>}
     </Tabs>
 }

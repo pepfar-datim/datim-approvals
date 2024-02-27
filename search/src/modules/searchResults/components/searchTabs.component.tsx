@@ -1,23 +1,24 @@
 import React, {useState} from 'react';
 import {SearchResultsComponent} from "./searchResults.compoment.tsx";
-import {Badge, Box, Tab, Tabs} from "@mui/material";
+import {Badge, Box, Tab, Tabs, Typography} from "@mui/material";
 import {Actions} from "../../actions/components/actions.component.tsx";
 import {getActionIndex, getActionName} from "../../search/types/search.types.ts";
 import {compare, Mechanism, MechanismActions, SearchResults, SelectedFilters} from '@approvals/service'
 
 const styles = {
 	tabs:{
-		p: '16px 0px'
+		p: '8px 0px 12px',
 	},
 	tab:{
-		overflow: 'visible',
-		width: {
-			lg: '160px',
-			md: '140px',
-			sm: '120px',
-			xs: '90px'
-		},
-		textAlign: 'center',
+		borderBottom: '3px solid lightgray',
+	},
+	tabCount:{
+		verticalAlign: 'super',
+		fontSize: '12px',
+		backgroundColor: '#2c6693',
+		color: 'white',
+		borderRadius: '10px',
+		padding: '4px'
 	},
 	badge: {
 		// paddingRight: 2,
@@ -48,13 +49,8 @@ function getTabOffset(count:number):number{
 	}
 }
 
-function getBadgeStyles(count:number){
-	return {
-		...styles.badge,
-		'& .MuiBadge-badge': {
-			right: getTabOffset(count),
-		}
-	}
+function getTabStyle(count:number){
+	return {...styles.tab, borderColor: count>0?'lightgray':'rgb(235,235,235)'}
 }
 
 export function SearchTabs({selectedFilters, searchResults}:{
@@ -79,12 +75,10 @@ export function SearchTabs({selectedFilters, searchResults}:{
 			disabled={!compare(selectedFilters, searchResults.selectedFilters)}
 		/>
 		<Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-			<Tabs value={getActionIndex(selectedAction)} onChange={switchTab} sx={styles.tabs}>
-				{operations.map(({name, count})=><Tab label={
-					<Badge badgeContent={count} color={'primary'} max={9999} sx={getBadgeStyles(count)}>
-						{name}
-					</Badge>
-				} key={name} sx={styles.tab} disabled={count===0}/>)}
+			<Tabs value={getActionIndex(selectedAction)} onChange={switchTab} sx={styles.tabs} variant={'fullWidth'}>
+				{operations.map(({name, count})=><Tab label={<div>
+					{name} {count>0&&<span style={styles.tabCount}>{count}</span>}
+				</div>} key={name} sx={getTabStyle(count)} disabled={count===0}/>)}
 			</Tabs>
 		</Box>
 		<SearchResultsComponent
