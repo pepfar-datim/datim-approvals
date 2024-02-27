@@ -18,17 +18,17 @@ export function SearchPageContext(){
     useEffect(()=>{
         /* Select default filters
         * Either from URL or first choice for each dropdown */
-        if (!menuOptions) return;
+        if (!menuOptions||menuOptions.workflows.length===0) return;
         const queryParams = new URLSearchParams(window.location.search)
         setDefaultFilters({
-            workflow: queryParams.get('workflow')||menuOptions.workflows[0].id,
+            workflow: queryParams.get('workflow')||menuOptions.workflows[0]?.id,
             period: queryParams.get('period')||menuOptions.workflows[0].periods[0].id,
             ouId: queryParams.get('ouId')||menuOptions.ouList[0].id
         })
         getUserType().then(setUserType)
     },[menuOptions])
+    if (menuOptions?.workflows.length===0) return <AllExpired/>
     if (!defaultFilters||!userType) return <MenuLoading/>
-    if (menuOptions.workflows.length===0) return <AllExpired/>
 	return <>
         <SearchPage
             menuOptions={menuOptions}

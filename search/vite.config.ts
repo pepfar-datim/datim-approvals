@@ -31,5 +31,8 @@ export default defineConfig({
     base: '',
     plugins: [react()],
     server,
-    preview: server
+    preview: server,
+    build: {
+        assetsDir: 'search_assets'
+    }
 })

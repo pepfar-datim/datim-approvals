@@ -33,6 +33,6 @@ export default defineConfig({
         include: ['@mui/material']
     },
     build: {
-        minify: false,
+        assetsDir: 'view'
     }
 })
