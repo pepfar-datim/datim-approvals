@@ -10,14 +10,17 @@ init:
 build_search:
 	# build search		
 	(cd search && npm run import && npm run build)
-	mv search/dist build_temp
-	mv build_temp/dist build_temp/search
+#	mv search/dist build_temp
+#	mv build_temp/dist build_temp/search
+	cp -r search/dist/* build_temp
 
 build_view:
 	# build search		
 	(cd view && npm run import && npm run build)
-	mv view/dist build_temp
-	mv build_temp/dist build_temp/view	
+	#mv view/dist build_temp
+	#mv build_temp/dist build_temp/view
+	mv view/dist/index.html view/dist/view.html
+	cp -r view/dist/* build_temp
 
 manifest:
 	# manifest

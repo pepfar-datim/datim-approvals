@@ -33,6 +33,6 @@ export default defineConfig({
     server,
     preview: server,
     build: {
-        assetsDir: 'search_assets'
+        assetsDir: 'search'
     }
 })
