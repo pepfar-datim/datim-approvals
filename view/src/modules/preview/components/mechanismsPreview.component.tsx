@@ -19,7 +19,7 @@ export function MechanismsPreview({viewPageModel}:{viewPageModel: ViewPageModel}
                 onMechanismSelect={setSelectedMechanism}
             />
             <Divider sx={{m:0}}/>
-            <MechanismInfo info={info} status={state.approvalStatus}/>
+            <MechanismInfo info={info}/>
         </Paper>
         <Paper>
             <MechanismDataContext viewPageModel={viewPageModel} selectedMechanism={selectedMechanism}/>

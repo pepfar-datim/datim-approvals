@@ -10,13 +10,12 @@ function Row({label, value}:{label: string, value: string}){
     </TableRow>
 }
 
-export function MechanismInfo({info:{mechanismName, ouName, agency, partnerName}, status}:{info: MechanismInfo, status: ApprovalStatus}){
+export function MechanismInfo({info:{mechanismName, ouName, agency, partnerName}}:{info: MechanismInfo}){
     const data = {
         Mech: mechanismName,
         OU: ouName,
         Agency: agency,
         Partner: partnerName,
-        Status: getHumanReadableStatus(status),
     }
 	return <Table size={'small'}>
         <TableBody>

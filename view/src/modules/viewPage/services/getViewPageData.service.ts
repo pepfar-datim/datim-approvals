@@ -35,7 +35,7 @@ export async function getViewPageData():Promise<ViewPageModel>{
         return mechanism1.info.code>mechanism2.info.code?1:-1
     })
 
-    filteredMechanisms.filter(({info:{code}})=>code!=='000000').forEach(({info})=>info.ouName='N/A')
+    filteredMechanisms.filter(({info:{code}})=>code==='00000').forEach(({info})=>info.ouName='N/A')
 
     const state:MechanismState = {
         approvalStatus: filteredMechanisms[0].state.approvalStatus,

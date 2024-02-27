@@ -5,7 +5,7 @@ function sortByCode(code1:string, code2:string):number{
 }
 
 function aggregateValue(mechanisms: MechanismInfo[], key: keyof MechanismInfo): string {
-    const values = mechanisms.map(m=>m[key])
+    const values = mechanisms.map(m=>m[key]).filter(v=>v!=='N/A')
     const uniqueValues = [...new Set(values)]
     let sortedValues:string[] = null
     if (key==='code') sortedValues = uniqueValues.sort(sortByCode)
