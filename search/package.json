@@ -9,8 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "npm run import && npm run build && vite preview",
     "test": "vitest",
-    "import": "npm run import:page && npm run import:service && npm run import:user",
-    "import:user": "rm -rf node_modules/.vite && import ../../javascript-libraries/datimuser",
+    "import": "npm run import:page && npm run import:service",
     "import:page": "rm -rf node_modules/.vite && import ../page",
     "import:service": "rm -rf node_modules/.vite && import ../service",
     "postinstall": "npm run import"
@@ -21,7 +20,7 @@
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "@mui/x-data-grid": "^6.18.2",
-    "@pepfar-react-lib/datimuser": "^0.0.7",
+    "@pepfar-react-lib/datimuser": "^0.0.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

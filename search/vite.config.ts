@@ -1,19 +1,14 @@
-import {defineConfig, loadEnv, ProxyOptions, ServerOptions} from 'vite'
+import {defineConfig, ProxyOptions, ServerOptions} from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import {getEnv} from "./scripts/getEnv.service";
+import ReportPlugin from "./scripts/reportPlugin";
 
-let auth;
-try {
-    auth = loadEnv('development', process.cwd())['VITE_DHIS_AUTH']
-} catch (e) {
-    throw new Error(`You have to specify VITE_DHIS_AUTH env variable. E.g. btoa('username:password') in JavaScript`)
-}
-
-
+const {server:target, authorization:Authorization} = getEnv()
 
 const proxy:ProxyOptions = {
-    target: 'https://dev.datim.org/',
+    target,
     configure: (proxy, options) => {
-        options.headers = {Authorization: `Basic ${auth}`}
+        options.headers = {Authorization}
     },
     secure: false,
     changeOrigin: true
@@ -29,7 +24,7 @@ const server:ServerOptions = {
 
 export default defineConfig({
     base: '',
-    plugins: [react()],
+    plugins: [react(), ReportPlugin()],
     server,
     preview: server,
     build: {

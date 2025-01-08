@@ -41,8 +41,14 @@ build:
 ######################
 # INSTALL
 ######################
-install:
+reinstall:
 	(cd service && rm -rf node_modules && rm package-lock.json && npm --force install)
 	(cd page && rm -rf node_modules && rm package-lock.json && npm --force install)
 	(cd search && rm -rf node_modules && rm package-lock.json && npm --force install && npm run import)
 	(cd view && rm -rf node_modules && rm package-lock.json && npm --force install && npm run import)
+
+install:
+	(cd service && npm --force install)
+	(cd page && npm --force install)
+	(cd search && npm --force install && npm run import)
+	(cd view && npm --force install && npm run import)
